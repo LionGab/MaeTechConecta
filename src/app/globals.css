@@ -62,3 +62,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+.gradient-instagram {
+  background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045);
+}
+
+.gradient-primary {
+    background: linear-gradient(to right, #d946ef, #ef4444);
+}

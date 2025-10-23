@@ -7,6 +7,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   OAuthProvider,
+  FacebookAuthProvider,
   // Assume getAuth and app are initialized elsewhere
 } from 'firebase/auth';
 
@@ -37,4 +38,9 @@ export function initiateAppleSignIn(authInstance: Auth): Promise<any> {
     return signInWithPopup(authInstance, provider);
 }
 
-    
+/** Initiate Instagram (via Facebook) sign-in with a popup. */
+export function initiateInstagramSignIn(authInstance: Auth): Promise<any> {
+    const provider = new FacebookAuthProvider();
+    // Firebase uses the Facebook provider for Instagram login
+    return signInWithPopup(authInstance, provider);
+}
