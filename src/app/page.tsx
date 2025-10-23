@@ -49,7 +49,7 @@ export default function AuthPage() {
           toast({
             variant: "destructive",
             title: `Erro no login com ${provider}`,
-            description: "Não foi possível fazer o login. Por favor, tente novamente.",
+            description: "Não foi possível fazer o login. Verifique as configurações do seu projeto Firebase ou tente novamente.",
         });
       }
     } finally {
@@ -75,7 +75,7 @@ export default function AuthPage() {
          let description = "Ocorreu um erro. Verifique suas credenciais e tente novamente.";
          if (error.code === 'auth/email-already-in-use') {
             description = 'Este endereço de e-mail já está em uso por outra conta.'
-         } else if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+         } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
             description = 'E-mail ou senha inválidos.'
          }
         toast({
@@ -132,15 +132,15 @@ export default function AuthPage() {
                 <form onSubmit={(e) => handleEmailSubmit(e, 'login')} className="space-y-4">
                     <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                        <Input id="login-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={isLoading} className="pl-10"/>
+                        <Input id="login-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={!!isLoading} className="pl-10"/>
                     </div>
                      <div className="relative">
-                        <Input id="login-password" type={showPassword ? "text" : "password"} placeholder="Senha" required value={password} onChange={(e) => setPassword(e.target.value)} disabled={isLoading} className="pr-10"/>
+                        <Input id="login-password" type={showPassword ? "text" : "password"} placeholder="Senha" required value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="pr-10"/>
                         <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground">
                             {showPassword ? <EyeOff /> : <Eye />}
                         </button>
                     </div>
-                    <Button type="submit" className="w-full text-white gradient-primary" disabled={isLoading}>
+                    <Button type="submit" className="w-full text-white gradient-primary" disabled={!!isLoading}>
                         {isLoading === 'email' && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         Entrar
                     </Button>
@@ -150,19 +150,19 @@ export default function AuthPage() {
             <TabsContent value="signup">
                 <form onSubmit={(e) => handleEmailSubmit(e, 'signup')} className="space-y-4">
                     <div className="relative">
-                        <Input id="signup-name" type="text" placeholder="Nome" required value={name} onChange={(e) => setName(e.target.value)} disabled={isLoading} />
+                        <Input id="signup-name" type="text" placeholder="Nome" required value={name} onChange={(e) => setName(e.target.value)} disabled={!!isLoading} />
                     </div>
                      <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                        <Input id="signup-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={isLoading} className="pl-10" />
+                        <Input id="signup-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={!!isLoading} className="pl-10" />
                     </div>
                      <div className="relative">
-                        <Input id="signup-password" type={showPassword ? "text" : "password"} placeholder="Senha" required value={password} onChange={(e) => setPassword(e.target.value)} disabled={isLoading} className="pr-10" />
+                        <Input id="signup-password" type={showPassword ? "text" : "password"} placeholder="Senha" required value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="pr-10" />
                          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground">
                             {showPassword ? <EyeOff /> : <Eye />}
                         </button>
                     </div>
-                    <Button type="submit" className="w-full text-white gradient-primary" disabled={isLoading}>
+                    <Button type="submit" className="w-full text-white gradient-primary" disabled={!!isLoading}>
                         {isLoading === 'email' && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         Criar Conta
                     </Button>
