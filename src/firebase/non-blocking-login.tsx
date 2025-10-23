@@ -4,6 +4,9 @@ import {
   signInAnonymously,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  OAuthProvider,
   // Assume getAuth and app are initialized elsewhere
 } from 'firebase/auth';
 
@@ -21,3 +24,17 @@ export function initiateEmailSignUp(authInstance: Auth, email: string, password:
 export function initiateEmailSignIn(authInstance: Auth, email: string, password: string): Promise<any> {
   return signInWithEmailAndPassword(authInstance, email, password);
 }
+
+/** Initiate Google sign-in with a popup. */
+export function initiateGoogleSignIn(authInstance: Auth): Promise<any> {
+    const provider = new GoogleAuthProvider();
+    return signInWithPopup(authInstance, provider);
+}
+
+/** Initiate Apple sign-in with a popup. */
+export function initiateAppleSignIn(authInstance: Auth): Promise<any> {
+    const provider = new OAuthProvider('apple.com');
+    return signInWithPopup(authInstance, provider);
+}
+
+    
