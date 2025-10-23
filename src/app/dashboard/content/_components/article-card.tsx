@@ -12,12 +12,14 @@ interface ArticleCardProps {
     description: string;
     image: ImagePlaceholder;
     category: string;
+    source: string;
   };
+  className?: string;
 }
 
-export function ArticleCard({ item }: ArticleCardProps) {
+export function ArticleCard({ item, className }: ArticleCardProps) {
   return (
-    <Card className="overflow-hidden transition-shadow hover:shadow-lg flex flex-col md:flex-row">
+    <Card className={`overflow-hidden transition-shadow hover:shadow-lg flex flex-col md:flex-row ${className}`}>
       <div className="md:w-1/3">
         <div className="relative aspect-video md:aspect-square h-full">
           <Image
@@ -31,8 +33,8 @@ export function ArticleCard({ item }: ArticleCardProps) {
       </div>
       <div className="md:w-2/3 flex flex-col">
         <CardContent className="p-6 flex-grow">
-          <div className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
-            {item.category}
+           <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+            {item.source}
           </div>
           <h3 className="font-headline text-2xl font-semibold leading-tight">{item.title}</h3>
           <p className="mt-3 text-base text-muted-foreground">{item.description}</p>

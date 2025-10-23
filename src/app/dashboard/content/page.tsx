@@ -6,35 +6,26 @@ import { useToast } from '@/hooks/use-toast';
 
 const articles = [
   {
-    title: "Encontrando força na fé durante a maternidade",
-    description: "Uma reflexão profunda sobre como a espiritualidade pode ser o alicerce para os desafios e as alegrias de ser mãe, inspirada em falas de Nathália Valente.",
+    title: "Saúde mental da mulher: como a sobrecarga afeta o bem-estar feminino",
+    description: "Uma análise aprofundada sobre os desafios da mulher moderna e o impacto na saúde mental, com dicas de especialistas para encontrar o equilíbrio.",
     image: PlaceHolderImages.find(p => p.id === 'hero')!,
-    category: "Fé e Espiritualidade"
+    category: "Bem-estar",
+    source: "Revista Elle"
   },
   {
-    title: "Autocuidado não é egoísmo: é necessidade",
-    description: "Nathália nos lembra que, para cuidar bem dos nossos filhos, precisamos primeiro cuidar de nós mesmas. Descubra dicas práticas para incluir o autocuidado na sua rotina.",
+    title: "Empreendedorismo feminino cresce e inspira novas gerações",
+    description: "Conheça histórias de mulheres que transformaram suas paixões em negócios de sucesso e estão abrindo caminho para outras.",
     image: PlaceHolderImages.find(p => p.id === 'avatar-2')!,
-    category: "Bem-estar"
+    category: "Carreira",
+    source: "Forbes Mulher"
   },
   {
-    title: "Lidando com a culpa materna: você está fazendo o seu melhor",
-    description: "Uma conversa sincera para desmistificar a culpa que muitas mães sentem, com conselhos para abraçar a imperfeição e celebrar cada passo da jornada.",
+    title: "Os segredos da longevidade feminina: o que a ciência diz",
+    description: "Estudos recentes revelam hábitos e fatores que contribuem para uma vida mais longa e saudável para as mulheres.",
     image: PlaceHolderImages.find(p => p.id === 'content-1')!,
-    category: "Maternidade Real"
+    category: "Saúde",
+    source: "National Geographic"
   },
-  {
-    title: "A importância da rede de apoio: ninguém precisa estar sozinha",
-    description: "Entenda por que construir e nutrir uma rede de apoio é vital no pós-parto e na criação dos filhos. Juntas somos mais fortes.",
-    image: PlaceHolderImages.find(p => p.id === 'feature-matches')!,
-    category: "Comunidade"
-  },
-  {
-    title: "Sono do bebê: estratégias para noites mais tranquilas",
-    description: "Estratégias e dicas valiosas para ajudar seu bebê (e você) a ter um sono de mais qualidade, estabelecendo rotinas saudáveis e com muito afeto.",
-    image: PlaceHolderImages.find(p => p.id === 'content-2')!,
-    category: "Criação de Filhos"
-  }
 ];
 
 export default function ContentPage() {
@@ -50,8 +41,8 @@ export default function ContentPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-headline text-3xl font-bold">Notícias para Você</h1>
-        <p className="text-muted-foreground mt-1">Artigos e reflexões inspirados no universo de Nathália Valente.</p>
+        <h1 className="font-headline text-3xl font-bold">Conteúdo para Você</h1>
+        <p className="text-muted-foreground mt-1">Notícias e artigos selecionados sobre o universo feminino.</p>
         <div className="mt-6 grid gap-8">
           {articles.map((item) => (
             <ArticleCard key={item.title} item={item} />
