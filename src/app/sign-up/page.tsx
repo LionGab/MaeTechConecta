@@ -38,14 +38,11 @@ export default function SignUpPage() {
     setIsLoading(true);
     try {
       await initiateEmailSignUp(auth, email, password);
-      // We are not setting the displayName here, this should be done
-      // after creation, perhaps on a profile setup page.
-      
       toast({
         title: "Conta criada com sucesso!",
-        description: "Redirecionando para o dashboard...",
+        description: "Redirecionando para a página de assinatura...",
       });
-      router.push('/dashboard');
+      router.push('/dashboard/pricing');
     } catch (error: any) {
       let description = "Ocorreu um erro ao tentar criar a conta.";
       if (error.code === 'auth/email-already-in-use') {
@@ -97,7 +94,7 @@ export default function SignUpPage() {
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Criar conta
+                    Criar conta e assinar
                 </Button>
             </form>
              <div className="relative my-4">

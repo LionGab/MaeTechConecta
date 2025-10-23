@@ -1,7 +1,7 @@
 'use client';
 
 import { useUser } from '@/firebase';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 
@@ -12,15 +12,27 @@ export default function DashboardLayout({
 }) {
   const { user, isUserLoading } = useUser();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    // If user loading is finished and there's no user, redirect to login.
+    // Se o carregamento do usuário terminar e não houver usuário, redirecione para o login.
     if (!isUserLoading && !user) {
       router.replace('/');
+      return;
     }
-  }, [user, isUserLoading, router]);
 
-  // While checking auth state, show a loader.
+    // Após o login, força o redirecionamento para a página de preços se o usuário não estiver nela.
+    // Esta é uma lógica simplificada para um modelo "pago no início".
+    // Em um app real, verificaríamos o status da assinatura do usuário.
+    if (!isUserLoading && user) {
+        if (pathname !== '/dashboard/pricing') {
+            router.replace('/dashboard/pricing');
+        }
+    }
+
+  }, [user, isUserLoading, router, pathname]);
+
+  // Enquanto verifica o estado de autenticação, mostra um loader.
   if (isUserLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -29,13 +41,12 @@ export default function DashboardLayout({
     );
   }
 
-  // If there's a user, show the dashboard content.
+  // Se houver um usuário, renderiza o conteúdo (que será a página de preços ou o children se a lógica for expandida).
   if (user) {
     return <>{children}</>;
   }
 
-  // If no user and not loading, this will be momentarily visible before redirect happens.
-  // Or you can return null. A loader is generally better for UX.
+  // Se não houver usuário e não estiver carregando, isso será visível momentaneamente antes do redirecionamento.
   return (
     <div className="flex h-screen items-center justify-center">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />

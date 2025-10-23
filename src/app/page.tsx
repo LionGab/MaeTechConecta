@@ -36,14 +36,11 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await initiateEmailSignIn(auth, email, password);
-      // The onAuthStateChanged listener in FirebaseProvider will handle the redirect
-      // For now, we can optimistically redirect or wait for the user object to be updated.
-      // Let's assume for now the user will be redirected by a listener.
       toast({
         title: "Login bem-sucedido!",
-        description: "Redirecionando para o dashboard...",
+        description: "Redirecionando para a assinatura...",
       });
-       router.push('/dashboard');
+       router.push('/dashboard/pricing');
     } catch (error: any) {
       toast({
         variant: "destructive",

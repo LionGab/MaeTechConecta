@@ -62,12 +62,12 @@ export default function PricingPage() {
                 Assinar o Plano Premium
               </Button>
                <Button
-                variant="ghost"
-                className="w-full"
+                variant="link"
+                className="w-full text-muted-foreground"
                 size="lg"
                 asChild
               >
-                <Link href="/dashboard">Voltar</Link>
+                <Link href="#">Sair</Link>
               </Button>
             </CardFooter>
           </Card>
