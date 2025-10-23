@@ -1,0 +1,383 @@
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a user profile in the application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user profile."
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address.",
+          "format": "email"
+        },
+        "nickname": {
+          "type": "string",
+          "description": "User's chosen nickname."
+        },
+        "avatarUrl": {
+          "type": "string",
+          "description": "URL of the user's avatar image.",
+          "format": "uri"
+        },
+        "interests": {
+          "type": "array",
+          "description": "User's interests for matching purposes.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "location": {
+          "type": "string",
+          "description": "User's location (e.g., neighborhood/city)."
+        },
+        "subscriptionTier": {
+          "type": "string",
+          "description": "The user's current subscription tier (Free, Premium, VIP)."
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "nickname",
+        "location",
+        "subscriptionTier"
+      ]
+    },
+    "MarketplaceItem": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "MarketplaceItem",
+      "type": "object",
+      "description": "Represents an item listed on the marketplace.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the marketplace item."
+        },
+        "sellerId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N MarketplaceItem)"
+        },
+        "photos": {
+          "type": "array",
+          "description": "URLs of the item's photos.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the item."
+        },
+        "price": {
+          "type": "number",
+          "description": "Price of the item."
+        },
+        "rating": {
+          "type": "number",
+          "description": "Rating of the seller (aggregated from sales)."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Date and time when the item was listed.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "sellerId",
+        "photos",
+        "description",
+        "price"
+      ]
+    },
+    "Content": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Content",
+      "type": "object",
+      "description": "Represents content such as videos, Q&A sessions, or forum posts.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the content."
+        },
+        "contentType": {
+          "type": "string",
+          "description": "Type of content (e.g., video, qa, forum_post)."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the content."
+        },
+        "url": {
+          "type": "string",
+          "description": "URL of the content (e.g., video link).",
+          "format": "uri"
+        },
+        "text": {
+          "type": "string",
+          "description": "Content text. For text-based content, such as a form post."
+        },
+        "authorId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Content)"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Date and time when the content was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "contentType",
+        "title",
+        "authorId",
+        "createdAt"
+      ]
+    },
+    "Match": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Match",
+      "type": "object",
+      "description": "Represents a social match between two users.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the match."
+        },
+        "user1Id": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Match - User 1)"
+        },
+        "user2Id": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Match - User 2)"
+        },
+        "matchDate": {
+          "type": "string",
+          "description": "Date and time when the match occurred.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "user1Id",
+        "user2Id",
+        "matchDate"
+      ]
+    },
+    "ChatMessage": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ChatMessage",
+      "type": "object",
+      "description": "Represents a message exchanged between users.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the chat message."
+        },
+        "senderId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N ChatMessage - Sender)"
+        },
+        "receiverId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N ChatMessage - Receiver)"
+        },
+        "message": {
+          "type": "string",
+          "description": "The content of the chat message."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Date and time when the message was sent.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "senderId",
+        "receiverId",
+        "message",
+        "timestamp"
+      ]
+    },
+    "Subscription": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Subscription",
+      "type": "object",
+      "description": "Represents a user's subscription information.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the subscription."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Subscription)"
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Date when the subscription started.",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "Date when the subscription ends.",
+          "format": "date-time"
+        },
+        "tier": {
+          "type": "string",
+          "description": "The subscription tier (Free, Premium, VIP)."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "startDate",
+        "endDate",
+        "tier"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profiles. Includes user ID as document ID for direct access. The `userId` is used as the document ID, enabling path-based ownership.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/marketplace_items/{marketplaceItemId}",
+        "definition": {
+          "entityName": "MarketplaceItem",
+          "schema": {
+            "$ref": "#/backend/entities/MarketplaceItem"
+          },
+          "description": "Stores marketplace items. The `sellerId` field is used to reference the user who listed the item.",
+          "params": [
+            {
+              "name": "marketplaceItemId",
+              "description": "The unique identifier for the marketplace item."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/content/{contentId}",
+        "definition": {
+          "entityName": "Content",
+          "schema": {
+            "$ref": "#/backend/entities/Content"
+          },
+          "description": "Stores content such as videos, Q&A sessions, and forum posts. The `contentType` field is used to categorize the content.",
+          "params": [
+            {
+              "name": "contentId",
+              "description": "The unique identifier for the content."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/matches/{matchId}",
+        "definition": {
+          "entityName": "Match",
+          "schema": {
+            "$ref": "#/backend/entities/Match"
+          },
+          "description": "Stores match information between two users.  Includes `user1Id` and `user2Id` fields to reference the matched users.",
+          "params": [
+            {
+              "name": "matchId",
+              "description": "The unique identifier for the match."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/chats/{chatId}/messages/{messageId}",
+        "definition": {
+          "entityName": "ChatMessage",
+          "schema": {
+            "$ref": "#/backend/entities/ChatMessage"
+          },
+          "description": "Stores chat messages for a specific chat between two users. This structure provides path-based ownership for secure chat access.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user participating in the chat."
+            },
+            {
+              "name": "chatId",
+              "description": "The unique identifier for the chat between two users."
+            },
+            {
+              "name": "messageId",
+              "description": "The unique identifier for the chat message."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/subscriptions/{subscriptionId}",
+        "definition": {
+          "entityName": "Subscription",
+          "schema": {
+            "$ref": "#/backend/entities/Subscription"
+          },
+          "description": "Stores subscription information for a user. The `userId` is used as part of the path for ownership.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "subscriptionId",
+              "description": "The unique identifier for the subscription."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/roles_admin/{userId}",
+        "definition": {
+          "entityName": "AdminRole",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores admin roles. The existence of a document at this path grants admin privileges.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user with admin privileges."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support the \"MãeTech Conecta\" application, focusing on connecting mothers through a local marketplace, social matching, content streaming, and a moderated forum. The structure prioritizes authorization independence by denormalizing authorization context and leveraging path-based ownership where applicable.\n\n**Authorization Independence and QAPs:**\n*   **User Profiles:** Stored under `/users/{userId}` to ensure path-based ownership. This immediately secures user-specific data and simplifies security rules.\n*   **Marketplace Items:** Stored under `/marketplace_items/{marketplaceItemId}` with the `sellerId` field referencing the user. This allows for easy querying of items and supports QAPs because listing is open to the public but filtered to only return items from a given radius using geo queries.\n*   **Content:** Stored under `/content/{contentId}`, categorized by `contentType`. This allows different content types to have different access rules (e.g., public videos, premium Q&A sessions). The `authorId` field references the user, and for premium content, a separate role-based check can be implemented.\n*   **Matches:** Stored under `/matches/{matchId}` with `user1Id` and `user2Id` fields. This structure allows for querying matches between users and simplifies security rules.\n*   **Chat Messages:** Stored under `/users/{userId}/chats/{chatId}/messages/{messageId}`. This hierarchical structure secures chat data by making it path-based and ensuring only the participating users can access the messages. An alternative design could put chat messages in a top-level `/chats/{chatId}/messages/{messageId}`, including `user1Id` and `user2Id` in the `chatId`. This allows listing all chats/messages, but then also need security rules to only allow `user1Id` and `user2Id` to read/write.\n*   **Subscriptions:** Stored under `/users/{userId}/subscriptions/{subscriptionId}`. This ensures path-based ownership and simplifies subscription management.\n*   **Roles:** The structure does not prescribe a specific role collection, as roles are mirrored in the `UserProfile`. However, for administrative roles, a separate collection `/roles_admin/{userId}` can be used, leveraging existence-based rules.\n\nThis structure supports the required QAPs by using structural segregation and path-based ownership. Different data types are stored in separate collections, each with specific security requirements. Denormalization of authorization fields ensures that security rules can be evaluated without `get()` calls, enabling atomic operations and simplifying debugging."
+  }
+}
