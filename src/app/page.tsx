@@ -10,6 +10,7 @@ import { Icons } from '@/components/icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { FirebaseError } from 'firebase/app';
 
 export default function AuthPage() {
   const auth = useAuth();
@@ -22,6 +23,57 @@ export default function AuthPage() {
   const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
+
+  const handleAuthSuccess = (provider: string) => {
+    toast({
+      title: "Login bem-sucedido!",
+      description: `Autenticado com ${provider}. Redirecionando...`,
+    });
+    router.push('/dashboard');
+  }
+
+  const handleAuthError = (error: any, provider: string) => {
+    console.error(`Error with ${provider} login:`, error);
+    let title = `Erro no login com ${provider}`;
+    let description = "Ocorreu um erro inesperado. Tente novamente.";
+
+    if (error instanceof FirebaseError) {
+        switch (error.code) {
+            case 'auth/popup-closed-by-user':
+                title = 'Login cancelado';
+                description = 'A janela de login foi fechada antes da conclusão.';
+                break;
+            case 'auth/account-exists-with-different-credential':
+                title = 'Conta já existe';
+                description = 'Já existe uma conta com este e-mail, mas com um método de login diferente. Tente fazer login com o outro método.';
+                break;
+            case 'auth/unauthorized-domain':
+                title = 'Domínio não autorizado';
+                description = 'Este domínio não está autorizado para operações de autenticação. Verifique a configuração no seu painel Firebase.';
+                break;
+            case 'auth/email-already-in-use':
+                title = 'E-mail já cadastrado';
+                description = 'Este e-mail já está em uso. Por favor, faça login ou use um e-mail diferente.';
+                break;
+            case 'auth/invalid-credential':
+            case 'auth/wrong-password':
+            case 'auth/user-not-found':
+                 title = 'Credenciais inválidas';
+                description = 'E-mail ou senha incorretos. Verifique os dados e tente novamente.';
+                break;
+            case 'auth/network-request-failed':
+                title = 'Erro de rede';
+                description = 'Não foi possível conectar ao Firebase. Verifique sua conexão com a internet.';
+                break;
+        }
+    }
+    
+    toast({
+        variant: "destructive",
+        title: title,
+        description: description,
+    });
+  }
 
 
   const handleSocialLogin = async (provider: 'google' | 'apple' | 'instagram') => {
@@ -41,21 +93,10 @@ export default function AuthPage() {
       }
       
       await signInFunction(auth);
-      toast({
-        title: "Login bem-sucedido!",
-        description: "Redirecionando para a assinatura...",
-      });
-      router.push('/dashboard/pricing');
+      handleAuthSuccess(provider);
+
     } catch (error: any) {
-      // Don't show an error toast if the user closes the third-party sign-in popup.
-      if (error.code !== 'auth/popup-closed-by-user') {
-          toast({
-            variant: "destructive",
-            title: `Erro no login com ${provider}`,
-            description: `Não foi possível fazer o login. Verifique se o provedor ${provider} está habilitado e configurado corretamente no seu projeto Firebase.`,
-        });
-        console.error(`Error with ${provider} login:`, error);
-      }
+        handleAuthError(error, provider);
     } finally {
         setIsLoading(null);
     }
@@ -70,30 +111,15 @@ export default function AuthPage() {
         if (type === 'login') {
             await initiateEmailSignIn(auth, email, password);
         } else {
-            await initiateEmailSignUp(auth, email, password);
-            // Idealmente, aqui você também atualizaria o perfil do usuário com o nome.
-            // Ex: await updateProfile(auth.currentUser, { displayName: name });
+            const userCredential = await initiateEmailSignUp(auth, email, password);
+            // Aqui você pode atualizar o perfil do usuário com o nome, se desejar
+            // await updateProfile(userCredential.user, { displayName: name });
         }
-        toast({
-            title: `${type === 'login' ? 'Login' : 'Cadastro'} bem-sucedido!`,
-            description: "Redirecionando para a assinatura...",
-        });
-        router.push('/dashboard/pricing');
+        handleAuthSuccess('E-mail');
     } catch (error: any) {
-         let description = "Ocorreu um erro. Verifique suas credenciais e tente novamente.";
-         if (error.code === 'auth/email-already-in-use') {
-            description = 'Este e-mail já está cadastrado. Por favor, faça login ou use outro e-mail.'
-         } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
-            description = 'E-mail ou senha inválidos. Verifique os dados e tente novamente.'
-         }
-        toast({
-            variant: 'destructive',
-            title: `Erro no ${type === 'login' ? 'Cadastro' : 'Login'}`,
-            description,
-        });
+        handleAuthError(error, 'E-mail');
     } finally {
         setIsLoading(null);
-        // Limpa os campos após a tentativa
         setEmail('');
         setPassword('');
         setName('');
@@ -102,7 +128,6 @@ export default function AuthPage() {
 
   const onTabChange = (value: string) => {
     setActiveTab(value);
-    // Limpa os campos ao trocar de aba para evitar confusão
     setEmail('');
     setPassword('');
     setName('');

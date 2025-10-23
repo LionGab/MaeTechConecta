@@ -1,200 +1,209 @@
 /**
- * @file Firebase Security Rules for MãeTech Conecta
+ * @file Firestore Security Rules for MãeTech Conecta
  *
- * @corePhilosophy This ruleset enforces a user-ownership model for personal data (profiles, subscriptions, chats),
- * grants public read access to marketplace items and content, and restricts write access to owners or authorized users.
+ * @Core Philosophy:
+ * This ruleset enforces a user-ownership model for user profiles and their associated data (chats, subscriptions).
+ * Marketplace items and content are publicly readable, with owner-only restrictions on modification.
+ * Administrative privileges are managed through a dedicated collection.
  *
- * @dataStructure
- * - `/users/{userId}`: User profile data, owned by the user.
- * - `/marketplace_items/{marketplaceItemId}`: Marketplace items, publicly readable, but writable only by the seller.
- * - `/content/{contentId}`: Content such as videos or posts, publicly readable, but writable only by the author.
- * - `/matches/{matchId}`: Match data between two users; access is open.
- * - `/users/{userId}/chats/{chatId}/messages/{messageId}`: Chat messages, only accessible to the participating users.
- * - `/users/{userId}/subscriptions/{subscriptionId}`: User subscriptions, owned by the user.
- * - `/roles_admin/{userId}`: Indicates whether a user has administrative privileges.
+ * @Data Structure:
+ * - /users/{userId}: User profiles, owned by the user with matching UID.
+ * - /marketplace_items/{marketplaceItemId}: Marketplace items, publicly readable, owned by the user specified in the 'sellerId' field.
+ * - /content/{contentId}: Content items (videos, Q&A, forum posts), publicly readable, owned by the user specified in the 'authorId' field.
+ * - /matches/{matchId}: Match information between two users, readable by either user.
+ * - /users/{userId}/chats/{chatId}/messages/{messageId}: Chat messages, owned by the users participating in the chat.
+ * - /users/{userId}/subscriptions/{subscriptionId}: Subscription information, owned by the user.
+ * - /roles_admin/{userId}: Administrative roles; existence of a document grants admin privileges.
  *
- * @keySecurityDecisions
- * - Public read access is granted for `marketplace_items` and `content`. Writes are restricted to owners.
- * - User listing is not explicitly denied.
- * - Relational integrity checks are performed on `create` and `update` operations to ensure data consistency.
- * - The `roles_admin` collection uses an existence-based check to grant admin privileges.
+ * @Key Security Decisions:
+ * - Users can only read and write their own profiles and related data.
+ * - Marketplace items and content are publicly readable, but only the owner can modify them.
+ * - Administrative privileges are granted by the presence of a document in the `/roles_admin` collection.
+ * - User listing is disabled for privacy.
  *
- * @denormalizationForAuthorization
- * - Marketplace items denormalize `sellerId` to enable owner-based write rules.
- * - Content items denormalize `authorId` to enable owner-based write rules.
+ * @Denormalization for Authorization:
+ * - MarketplaceItem documents have 'sellerId' to enable owner-only writes.
+ * - Content documents have 'authorId' to enable owner-only writes.
  *
- * @structuralSegregation
- * - Private user data is stored under `/users/{userId}`, while public content and marketplace items are stored in top-level collections.
+ * @Structural Segregation:
+ * - User-specific data (chats, subscriptions) is stored under the /users/{userId} path to enforce ownership.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Controls access to user profiles.
+     * @description Controls access to user profile documents.
      * @path /users/{userId}
-     * @allow (create) User with ID 'user123' can create their profile.
-     * @allow (get, update, delete) User with ID 'user123' can access their profile.
-     * @deny (create) User with ID 'user456' cannot create a profile for 'user123'.
-     * @deny (update, delete) User with ID 'user456' cannot modify or delete 'user123' profile.
-     * @principle Enforces document ownership for all operations.
+     * @allow (create) User with UID 'user123' can create their own profile.
+     * @allow (get) User with UID 'user123' can read their own profile.
+     * @allow (update) User with UID 'user123' can update their own profile.
+     * @allow (delete) User with UID 'user123' can delete their own profile.
+     * @deny (create) User with UID 'user456' cannot create a profile for 'user123'.
+     * @deny (update) User with UID 'user456' cannot update profile 'user123'.
+     * @principle Enforces document ownership for writes.
      */
     match /users/{userId} {
       function isOwner(userId) {
         return request.auth != null && request.auth.uid == userId;
       }
-
-      function isExistingOwner(userId) {
-          return isOwner(userId) && resource != null;
+      function isSignedIn() {
+        return request.auth != null;
       }
-
-      allow get: if true;
-      allow list: if true;
-      allow create: if isOwner(userId) && request.resource.data.id == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
-      allow delete: if isExistingOwner(userId);
+      allow get: if isSignedIn() && isOwner(userId);
+      allow list: if false;
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isSignedIn() && isOwner(userId) && resource.data.id == userId;
+      allow delete: if isSignedIn() && isOwner(userId) && resource.data.id == userId;
     }
 
     /**
-     * @description Controls access to marketplace items.
+     * @description Controls access to marketplace items. Publicly readable, owner-only modification.
      * @path /marketplace_items/{marketplaceItemId}
-     * @allow (get, list) Any user can read marketplace items.
-     * @allow (create) User with ID 'user123' can create marketplace items with `sellerId` matching their ID.
-     * @allow (update, delete) User with ID 'user123' can modify or delete their marketplace items.
-     * @deny (create) User with ID 'user456' cannot create marketplace items for 'user123'.
-     * @deny (update, delete) User with ID 'user456' cannot modify or delete marketplace items owned by 'user123'.
-     * @principle Allows public read access but restricts write access to the item's seller.
+     * @allow (get) Any user can read a marketplace item.
+     * @allow (list) Any user can list marketplace items.
+     * @allow (create) User with UID 'user123' can create a marketplace item with sellerId 'user123'.
+     * @allow (update) User with UID 'user123' can update a marketplace item they own (sellerId is 'user123').
+     * @allow (delete) User with UID 'user123' can delete a marketplace item they own (sellerId is 'user123').
+     * @deny (create) User with UID 'user456' cannot create a marketplace item with sellerId 'user123'.
+     * @deny (update) User with UID 'user456' cannot update a marketplace item owned by 'user123'.
+     * @principle Public read, owner-only writes, validates sellerId on create.
      */
     match /marketplace_items/{marketplaceItemId} {
       function isOwner(sellerId) {
         return request.auth != null && request.auth.uid == sellerId;
       }
-
+      function isSignedIn() {
+        return request.auth != null;
+      }
       function isExistingOwner(sellerId) {
           return isOwner(sellerId) && resource != null;
       }
-
-      allow get: if true;
-      allow list: if true;
-      allow create: if isOwner(request.resource.data.sellerId);
+      allow get, list: if true;
+      allow create: if isSignedIn() && isOwner(request.resource.data.sellerId);
       allow update: if isExistingOwner(resource.data.sellerId);
       allow delete: if isExistingOwner(resource.data.sellerId);
     }
 
     /**
-     * @description Controls access to content.
+     * @description Controls access to content items (videos, Q&A, forum posts). Publicly readable, owner-only modification.
      * @path /content/{contentId}
-     * @allow (get, list) Any user can read content.
-     * @allow (create) User with ID 'user123' can create content with `authorId` matching their ID.
-     * @allow (update, delete) User with ID 'user123' can modify or delete their content.
-     * @deny (create) User with ID 'user456' cannot create content for 'user123'.
-     * @deny (update, delete) User with ID 'user456' cannot modify or delete content owned by 'user123'.
-     * @principle Allows public read access but restricts write access to the content's author.
+     * @allow (get) Any user can read content.
+     * @allow (list) Any user can list content.
+     * @allow (create) User with UID 'user123' can create content with authorId 'user123'.
+     * @allow (update) User with UID 'user123' can update content they own (authorId is 'user123').
+     * @allow (delete) User with UID 'user123' can delete content they own (authorId is 'user123').
+     * @deny (create) User with UID 'user456' cannot create content with authorId 'user123'.
+     * @deny (update) User with UID 'user456' cannot update content owned by 'user123'.
+     * @principle Public read, owner-only writes, validates authorId on create.
      */
     match /content/{contentId} {
       function isOwner(authorId) {
         return request.auth != null && request.auth.uid == authorId;
       }
-
+      function isSignedIn() {
+        return request.auth != null;
+      }
       function isExistingOwner(authorId) {
           return isOwner(authorId) && resource != null;
       }
-
-      allow get: if true;
-      allow list: if true;
-      allow create: if isOwner(request.resource.data.authorId);
+      allow get, list: if true;
+      allow create: if isSignedIn() && isOwner(request.resource.data.authorId);
       allow update: if isExistingOwner(resource.data.authorId);
       allow delete: if isExistingOwner(resource.data.authorId);
     }
 
     /**
-     * @description Controls access to match data between users.
+     * @description Controls access to match information between two users.
      * @path /matches/{matchId}
-     * @allow (get, list) Any user can read match data.
-     * @allow create: if true;
-     * @allow update: if true;
-     * @allow delete: if true;
-     * @principle Allows public read access.
+     * @allow (get) Any authenticated user can read match data.
+     * @allow (list) No listing allowed to protect user privacy.
+     * @deny (create) No one can create a match, this is handled by server functions.
+     * @deny (update) No one can update a match, this is handled by server functions.
+     * @deny (delete) No one can delete a match, this is handled by server functions.
+     * @principle Restricts write access to server-side only.
      */
     match /matches/{matchId} {
-      allow get: if true;
-      allow list: if true;
-      allow create: if true;
-      allow update: if true;
-      allow delete: if true;
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      allow get: if isSignedIn();
+      allow list: if false;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
     }
 
     /**
-     * @description Controls access to chat messages within a user's chat.
+     * @description Controls access to chat messages between users.
      * @path /users/{userId}/chats/{chatId}/messages/{messageId}
-     * @allow (get, list) The owner of the chat can access the messages.
-     * @allow (create) The owner of the chat can create new messages.
-     * @allow (update, delete) The owner of the chat can update or delete existing messages.
-     * @deny (create) User with ID 'user456' cannot create a chat message for 'user123'.
-     * @deny (update, delete) User with ID 'user456' cannot modify or delete chat messages owned by 'user123'.
-     * @principle Enforces document ownership for chat messages.
+     * @allow (get) User can read messages in chats they participate in.
+     * @allow (list) User can list messages in chats they participate in.
+     * @allow (create) User can create messages in chats they participate in.
+     * @allow (update) User cannot update messages.
+     * @allow (delete) User cannot delete messages.
+     * @deny (create) User cannot create messages in other user's chats.
+     * @principle Enforces ownership for writes and restricts listing and reading to chat participants.
      */
     match /users/{userId}/chats/{chatId}/messages/{messageId} {
       function isOwner(userId) {
         return request.auth != null && request.auth.uid == userId;
       }
-
-        function isExistingOwner(userId) {
-            return isOwner(userId) && resource != null;
-        }
-
-      allow get: if isOwner(userId);
-      allow list: if isOwner(userId);
-      allow create: if isOwner(userId);
-      allow update: if isExistingOwner(userId);
-      allow delete: if isExistingOwner(userId);
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      allow get, list, create: if isSignedIn() && isOwner(userId);
+      allow update: if false;
+      allow delete: if false;
     }
 
     /**
-     * @description Controls access to subscription data for a user.
+     * @description Controls access to subscription information for a user.
      * @path /users/{userId}/subscriptions/{subscriptionId}
-     * @allow (get, list) The owner of the subscription can access it.
-     * @allow (create) The owner of the subscription can create a new subscription.
-     * @allow (update, delete) The owner of the subscription can update or delete their subscription.
-     * @deny (create) User with ID 'user456' cannot create a subscription for 'user123'.
-     * @deny (update, delete) User with ID 'user456' cannot modify or delete subscription of 'user123'.
-     * @principle Enforces document ownership for subscriptions.
+     * @allow (get) User can read their own subscription data.
+     * @allow (list) User can list their own subscription data.
+     * @allow (create) User with UID 'user123' can create their own subscription with userId 'user123'.
+     * @allow (update) User cannot update subscription, this is handled by server functions.
+     * @allow (delete) User cannot delete subscription, this is handled by server functions.
+     * @deny (create) User with UID 'user456' cannot create subscription data for 'user123'.
+     * @principle Enforces document ownership for writes and restricts modification to server-side.
      */
     match /users/{userId}/subscriptions/{subscriptionId} {
       function isOwner(userId) {
         return request.auth != null && request.auth.uid == userId;
       }
-
-        function isExistingOwner(userId) {
-            return isOwner(userId) && resource != null;
-        }
-
-      allow get: if isOwner(userId);
-      allow list: if isOwner(userId);
-      allow create: if isOwner(userId);
-      allow update: if isExistingOwner(userId);
-      allow delete: if isExistingOwner(userId);
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      allow get, list: if isSignedIn() && isOwner(userId);
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if false;
+      allow delete: if false;
     }
 
     /**
-     * @description Controls access to admin roles. The existence of a document grants admin privileges.
+     * @description Grants admin privileges based on the existence of a document in this collection.
      * @path /roles_admin/{userId}
-     * @allow (get) Any authenticated user can check if a user is an admin.
-     * @allow (create) Only authenticated users can grant admin privileges.
-     * @allow (update, delete) Only authenticated users can revoke admin privileges.
-     * @deny (create) Non-authenticated users cannot create admin roles.
-     *
-     * @principle Uses existence-based rules to grant admin privileges.
+     * @allow (get) Any user can attempt to get admin role, for now.
+     * @allow (list) No listing of admin roles allowed.
+     * @allow (create) Only an existing admin can grant new admin roles.
+     * @allow (update) Only an existing admin can update admin roles.
+     * @allow (delete) Only an existing admin can delete admin roles.
+     * @deny (create) Non-admins cannot grant new admin roles.
+     * @principle Existence-based admin privileges, restricts listing.
      */
-     match /roles_admin/{userId} {
-        function isSignedIn() {
-            return request.auth != null;
-        }
-        allow get: if isSignedIn();
-        allow list: if false;
-        allow create: if isSignedIn();
-        allow update: if false;
-        allow delete: if isSignedIn();
-     }
+    match /roles_admin/{userId} {
+      function isAdmin() {
+        return exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+      }
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      allow get: if isSignedIn();
+      allow list: if false;
+      allow create: if isSignedIn() && isAdmin();
+      allow update: if isSignedIn() && isAdmin();
+      allow delete: if isSignedIn() && isAdmin();
+    }
   }
 }
