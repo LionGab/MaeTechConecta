@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Bell,
 } from 'lucide-react';
@@ -14,7 +15,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { Icons } from '@/components/icons';
 import imageData from '@/lib/placeholder-images.json';
 
 const pageTitles: { [key: string]: string } = {
@@ -29,12 +29,13 @@ const pageTitles: { [key: string]: string } = {
 
 export function Header() {
   const userAvatar = imageData.placeholderImages.find(p => p.id === 'avatar-1');
+  const logo = imageData.placeholderImages.find(p => p.id === 'logo-nath');
 
   return (
     <header className="flex h-16 items-center gap-4 border-b bg-card px-4 lg:px-6 sticky top-0 z-40">
        <div className="w-full flex-1">
         <Link href="/dashboard" className="flex items-center gap-2">
-            <Icons.logo className="h-7 w-7 text-primary" />
+            {logo && <Image src={logo.imageUrl} alt={logo.description} width={32} height={32} className="h-8 w-8 rounded-full" />}
             <span className="font-headline text-xl font-bold">ClubNath</span>
         </Link>
       </div>
@@ -72,3 +73,5 @@ export function Header() {
     </header>
   );
 }
+
+    

@@ -1,16 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
+import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import imageData from '@/lib/placeholder-images.json';
 
 export default function SignUpPage() {
+  const logo = imageData.placeholderImages.find(p => p.id === 'logo-nath');
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="w-full max-w-md p-8 space-y-8">
         <div className="text-center">
-          <Icons.logo className="h-12 w-12 mx-auto text-primary" />
+          {logo && <Image src={logo.imageUrl} alt={logo.description} width={80} height={80} className="h-20 w-20 mx-auto rounded-full" />}
           <h1 className="font-headline text-3xl font-bold mt-4">Crie sua conta</h1>
           <p className="text-muted-foreground mt-2">Junte-se à nossa comunidade de mães.</p>
         </div>
@@ -58,3 +61,5 @@ export default function SignUpPage() {
     </div>
   );
 }
+
+    
