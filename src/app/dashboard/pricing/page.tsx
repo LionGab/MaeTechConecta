@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, Star, Heart, Award } from 'lucide-react';
+import Link from 'next/link';
 
 
 export default function PricingPage() {
@@ -53,12 +54,20 @@ export default function PricingPage() {
                   </li>
               </ul>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex-col gap-4">
               <Button
                 className="w-full"
                 size="lg"
               >
                 Assinar o Plano Premium
+              </Button>
+               <Button
+                variant="ghost"
+                className="w-full"
+                size="lg"
+                asChild
+              >
+                <Link href="/dashboard">Voltar</Link>
               </Button>
             </CardFooter>
           </Card>
