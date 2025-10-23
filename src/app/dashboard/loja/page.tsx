@@ -58,72 +58,67 @@ export default function LojaPage() {
     }
 
   return (
-    <div className="space-y-8">
-        <div className="space-y-4">
-             <Card className="bg-gradient-to-r from-primary/10 to-primary/20 overflow-hidden">
-                <div className="grid md:grid-cols-2 items-center">
-                     <div className="relative h-64 md:h-full min-h-[250px] order-last md:order-first">
-                         {navaImage && <Image
-                            src={navaImage.imageUrl}
-                            alt={navaImage.description}
-                            data-ai-hint={navaImage.imageHint}
-                            fill
-                            className="object-cover"
-                         />}
-                    </div>
-                    <div className="p-8">
-                        <CardHeader className="p-0">
-                            <CardTitle className="font-headline text-3xl flex items-center gap-2">
-                                <Sparkles className="text-primary"/> Nava Looks
-                            </CardTitle>
-                            <CardDescription className="text-muted-foreground mt-2">
-                                Experimente os biquínis da Nava no seu corpo com nosso provador virtual com IA.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="p-0 mt-6">
-                            <Button size="lg" onClick={handleAction}>
-                                <PersonStanding className="mr-2"/> Acessar Provador Virtual
-                            </Button>
-                        </CardContent>
-                    </div>
-                </div>
-              </Card>
-              <Card className="bg-gradient-to-r from-secondary/10 to-secondary/20 overflow-hidden">
-                <div className="grid md:grid-cols-2 items-center">
-                    <div className="p-8">
-                        <CardHeader className="p-0">
-                            <CardTitle className="font-headline text-3xl flex items-center gap-2">
-                                <TestTube2 className="text-secondary-foreground"/> Babytest by OLLIN
-                            </CardTitle>
-                            <CardDescription className="text-muted-foreground mt-2">
-                                O teste pode ser feito a qualquer momento após o nascimento do bebê. Quanto mais cedo, maiores os benefícios!
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="p-0 mt-6">
-                            <Button variant="secondary" size="lg" onClick={handleAction}>
-                               Saiba mais e compre
-                            </Button>
-                        </CardContent>
-                    </div>
-                     <div className="relative h-64 md:h-full min-h-[250px]">
-                         {babyTestImage && <Image
-                            src={babyTestImage.imageUrl}
-                            alt={babyTestImage.description}
-                            data-ai-hint={babyTestImage.imageHint}
-                            fill
-                            className="object-cover"
-                         />}
-                    </div>
-                </div>
-              </Card>
+    <div className="space-y-12">
+        {/* Nava Beachwear Hero Section */}
+        <div className="relative w-full h-[60vh] md:h-[70vh] rounded-xl overflow-hidden text-white flex items-center justify-center">
+            {navaImage && (
+                <Image
+                    src={navaImage.imageUrl}
+                    alt={navaImage.description}
+                    data-ai-hint={navaImage.imageHint}
+                    fill
+                    className="object-cover"
+                />
+            )}
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="relative z-10 text-center p-4">
+                <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tight text-shadow-lg">NAVA LOOKS</h1>
+                <p className="mt-2 text-lg md:text-xl text-shadow">Vista-se de você</p>
+                <Button size="lg" onClick={handleAction} className="mt-6 bg-white text-black hover:bg-white/90">
+                    <PersonStanding className="mr-2"/> Acessar Provador Virtual
+                </Button>
+            </div>
         </div>
 
+        {/* Babytest Section */}
+        <Card className="bg-gradient-to-r from-background to-muted/50 overflow-hidden border-2">
+            <div className="grid md:grid-cols-2 items-center">
+                <div className="p-8 md:p-12">
+                    <CardHeader className="p-0">
+                        <div className="flex items-center gap-3">
+                             <TestTube2 className="h-8 w-8 text-primary"/>
+                            <CardTitle className="font-headline text-3xl">
+                                Babytest
+                            </CardTitle>
+                        </div>
+                        <CardDescription className="text-muted-foreground mt-2 text-base">
+                            O teste que revela o futuro do seu bebê está no DNA. Entenda predisposições genéticas e cuide da saúde desde os primeiros dias.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-0 mt-6">
+                        <Button variant="default" size="lg" onClick={handleAction}>
+                           Saiba mais e compre
+                        </Button>
+                    </CardContent>
+                </div>
+                 <div className="relative h-64 md:h-full min-h-[300px]">
+                     {babyTestImage && <Image
+                        src={babyTestImage.imageUrl}
+                        alt={babyTestImage.description}
+                        data-ai-hint={babyTestImage.imageHint}
+                        fill
+                        className="object-cover"
+                     />}
+                </div>
+            </div>
+        </Card>
 
+        {/* Brechó Section */}
         <div>
-            <h2 className="font-headline text-2xl font-bold">Brechó da Comunidade</h2>
-            <p className="text-muted-foreground">Compre e venda itens com outras mães.</p>
+            <h2 className="font-headline text-3xl font-bold">Brechó da Comunidade</h2>
+            <p className="text-muted-foreground mt-1">Compre e venda itens com outras mães da nossa rede de apoio.</p>
 
-            <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="relative w-full sm:max-w-xs">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Procurar por item..." className="pl-8" />
