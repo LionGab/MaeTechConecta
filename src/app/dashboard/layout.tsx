@@ -2,7 +2,7 @@
 
 import { useUser } from '@/firebase';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
 export default function DashboardLayout({
@@ -13,27 +13,30 @@ export default function DashboardLayout({
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const pathname = usePathname();
+  const [hasVisitedPricing, setHasVisitedPricing] = useState(false);
 
   useEffect(() => {
-    // Se o carregamento do usuário terminar e não houver usuário, redirecione para o login.
+    // If user loading is finished and there's no user, redirect to login.
     if (!isUserLoading && !user) {
       router.replace('/');
       return;
     }
 
-    // Após o login, força o redirecionamento para a página de preços se o usuário não estiver nela.
-    // Esta é uma lógica simplificada para um modelo "pago no início".
-    // Em um app real, verificaríamos o status da assinatura do usuário.
-    if (!isUserLoading && user) {
-        if (pathname !== '/dashboard/pricing') {
-            router.replace('/dashboard/pricing');
-        }
+    // After login, if the user hasn't been to the pricing page yet, redirect them there.
+    // This logic simulates a "paywall" that is shown only once after login.
+    // In a real app, we would check the user's subscription status from a database.
+    if (!isUserLoading && user && !hasVisitedPricing) {
+      if (pathname !== '/dashboard/pricing') {
+        router.replace('/dashboard/pricing');
+      } else {
+        // Once the user lands on the pricing page, we mark it as visited.
+        setHasVisitedPricing(true);
+      }
     }
+  }, [user, isUserLoading, router, pathname, hasVisitedPricing]);
 
-  }, [user, isUserLoading, router, pathname]);
-
-  // Enquanto verifica o estado de autenticação, mostra um loader.
-  if (isUserLoading) {
+  // While checking authentication state, show a loader.
+  if (isUserLoading || (!isUserLoading && user && !hasVisitedPricing && pathname !== '/dashboard/pricing')) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -41,12 +44,12 @@ export default function DashboardLayout({
     );
   }
 
-  // Se houver um usuário, renderiza o conteúdo (que será a página de preços ou o children se a lógica for expandida).
+  // If there's a user and they've been through the pricing flow, render the content.
   if (user) {
     return <>{children}</>;
   }
 
-  // Se não houver usuário e não estiver carregando, isso será visível momentaneamente antes do redirecionamento.
+  // This is a fallback loader, visible momentarily before the initial redirect to login.
   return (
     <div className="flex h-screen items-center justify-center">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />
