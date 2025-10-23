@@ -17,9 +17,9 @@ interface ArticleCardProps {
 
 export function ArticleCard({ item }: ArticleCardProps) {
   return (
-    <Card className="overflow-hidden transition-shadow hover:shadow-lg flex flex-col">
-      <CardContent className="p-0">
-        <div className="relative aspect-video">
+    <Card className="overflow-hidden transition-shadow hover:shadow-lg flex flex-col md:flex-row">
+      <div className="md:w-1/3">
+        <div className="relative aspect-video md:aspect-square h-full">
           <Image
             src={item.image.imageUrl}
             alt={item.image.description}
@@ -27,22 +27,24 @@ export function ArticleCard({ item }: ArticleCardProps) {
             fill
             className="object-cover"
           />
-           <div className="absolute top-2 left-2 bg-accent text-accent-foreground text-xs font-semibold px-2 py-1 rounded-full">
+        </div>
+      </div>
+      <div className="md:w-2/3 flex flex-col">
+        <CardContent className="p-6 flex-grow">
+          <div className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
             {item.category}
           </div>
-        </div>
-        <div className="p-4 flex-grow">
-          <h3 className="font-headline text-lg font-semibold leading-tight">{item.title}</h3>
-          <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
-        </div>
-         <div className="p-4 pt-0">
+          <h3 className="font-headline text-2xl font-semibold leading-tight">{item.title}</h3>
+          <p className="mt-3 text-base text-muted-foreground">{item.description}</p>
+        </CardContent>
+         <div className="p-6 pt-0">
           <Button variant="link" className="p-0 h-auto text-primary" asChild>
             <Link href="#">
               Ler mais <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 }
