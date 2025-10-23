@@ -9,7 +9,6 @@ import { Loader2, Mail, Eye, EyeOff } from 'lucide-react';
 import { Icons } from '@/components/icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { FirebaseError } from 'firebase/app';
 
 export default function AuthPage() {
@@ -27,7 +26,7 @@ export default function AuthPage() {
   const handleAuthSuccess = (provider: string) => {
     toast({
       title: "Login bem-sucedido!",
-      description: `Autenticada com ${provider}. Redirecionando...`,
+      description: `Você foi autenticada com ${provider}. Redirecionando...`,
     });
     router.push('/dashboard');
   }
@@ -40,22 +39,24 @@ export default function AuthPage() {
     if (error instanceof FirebaseError) {
         switch (error.code) {
             case 'auth/popup-closed-by-user':
+            case 'auth/cancelled-popup-request':
                 title = 'Login cancelado';
                 description = 'A janela de login foi fechada antes da conclusão.';
                 break;
             case 'auth/account-exists-with-different-credential':
                 title = 'Conta já existe';
-                description = 'Já existe uma conta com este e-mail, mas com um método de login diferente.';
+                description = 'Já existe uma conta com este e-mail, mas usando um método de login diferente.';
                 break;
             case 'auth/unauthorized-domain':
                 title = 'Domínio não autorizado';
-                description = 'Este domínio não está autorizado para operações de autenticação. Verifique a configuração no seu painel Firebase.';
+                description = 'Este domínio não está autorizado para login. Verifique a configuração no painel do Firebase.';
                 break;
             case 'auth/email-already-in-use':
                 title = 'E-mail já cadastrado';
                 description = 'Este e-mail já está em uso. Por favor, faça login ou use um e-mail diferente.';
                 break;
             case 'auth/user-not-found':
+            case 'auth/invalid-email':
                  title = 'Usuário não encontrado';
                 description = 'Não encontramos uma conta com este e-mail. Verifique os dados ou crie uma conta.';
                 break;
@@ -69,7 +70,15 @@ export default function AuthPage() {
                 break;
             case 'auth/network-request-failed':
                 title = 'Erro de rede';
-                description = 'Não foi possível conectar ao Firebase. Verifique sua conexão com a internet.';
+                description = 'Não foi possível conectar. Verifique sua conexão com a internet.';
+                break;
+            case 'auth/weak-password':
+                title = 'Senha fraca';
+                description = 'Sua senha deve ter pelo menos 6 caracteres.';
+                break;
+             default:
+                title = 'Erro de Autenticação';
+                description = error.message || 'Ocorreu um erro. Por favor, tente novamente.';
                 break;
         }
     }
@@ -99,7 +108,7 @@ export default function AuthPage() {
       }
       
       await signInFunction(auth);
-      handleAuthSuccess(provider);
+      handleAuthSuccess(provider.charAt(0).toUpperCase() + provider.slice(1));
 
     } catch (error: any) {
         handleAuthError(error, provider);
@@ -110,8 +119,7 @@ export default function AuthPage() {
 
   const handleEmailSubmit = async (e: React.FormEvent, type: 'login' | 'signup') => {
     e.preventDefault();
-    if (isLoading) return; // Prevent double-submit
-    if (!email || !password || (type === 'signup' && !name)) return;
+    if (isLoading === 'email') return;
     
     setIsLoading('email');
 
@@ -120,7 +128,7 @@ export default function AuthPage() {
             await initiateEmailSignIn(auth, email, password);
         } else {
             await initiateEmailSignUp(auth, email, password);
-            // In a real app, you'd update the user's profile with the name here.
+            // In a real app, you would update the user's profile with the name here.
         }
         handleAuthSuccess('E-mail');
     } catch (error: any) {
@@ -133,10 +141,7 @@ export default function AuthPage() {
 
   const onTabChange = (value: string) => {
     setActiveTab(value);
-    setEmail('');
-    setPassword('');
-    setName('');
-    setShowPassword(false);
+    // Não limpa os campos ao trocar de aba, para uma melhor UX
   }
 
   return (
@@ -149,8 +154,8 @@ export default function AuthPage() {
         
         <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-muted rounded-full">
-                <TabsTrigger value="login" className="rounded-full">Entrar</TabsTrigger>
-                <TabsTrigger value="signup" className="rounded-full">Criar Conta</TabsTrigger>
+                <TabsTrigger value="login" className="rounded-full" disabled={!!isLoading}>Entrar</TabsTrigger>
+                <TabsTrigger value="signup" className="rounded-full" disabled={!!isLoading}>Criar Conta</TabsTrigger>
             </TabsList>
 
             <div className="space-y-4 mt-6">
@@ -191,7 +196,7 @@ export default function AuthPage() {
                             {showPassword ? <EyeOff /> : <Eye />}
                         </button>
                     </div>
-                    <Button type="submit" className="w-full text-white gradient-primary" disabled={!!isLoading}>
+                    <Button type="submit" className="w-full text-white gradient-primary" disabled={!!isLoading || !email || !password}>
                         {isLoading === 'email' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Entrar'}
                     </Button>
                 </form>
@@ -212,7 +217,7 @@ export default function AuthPage() {
                             {showPassword ? <EyeOff /> : <Eye />}
                         </button>
                     </div>
-                    <Button type="submit" className="w-full text-white gradient-primary" disabled={!!isLoading}>
+                    <Button type="submit" className="w-full text-white gradient-primary" disabled={!!isLoading || !name || !email || password.length < 6}>
                         {isLoading === 'email' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Criar Conta'}
                     </Button>
                 </form>
