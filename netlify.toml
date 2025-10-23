@@ -1,0 +1,12 @@
+# Settings for Netlify builds
+# https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  # Command to build the Next.js app
+  command = "npm run build"
+  # Directory that contains the built assets
+  publish = ".next"
+
+# Netlify plugin for Next.js to enable all features
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

@@ -63,13 +63,13 @@ export default function LojaPage() {
              <Card className="bg-gradient-to-r from-primary/10 to-primary/20 overflow-hidden">
                 <div className="grid md:grid-cols-2 items-center">
                      <div className="relative h-64 md:h-full min-h-[250px] order-last md:order-first">
-                         <Image
+                         {navaImage && <Image
                             src={navaImage.imageUrl}
                             alt={navaImage.description}
                             data-ai-hint={navaImage.imageHint}
                             fill
                             className="object-cover"
-                         />
+                         />}
                     </div>
                     <div className="p-8">
                         <CardHeader className="p-0">
@@ -106,13 +106,13 @@ export default function LojaPage() {
                         </CardContent>
                     </div>
                      <div className="relative h-64 md:h-full min-h-[250px]">
-                         <Image
+                         {babyTestImage && <Image
                             src={babyTestImage.imageUrl}
                             alt={babyTestImage.description}
                             data-ai-hint={babyTestImage.imageHint}
                             fill
                             className="object-cover"
-                         />
+                         />}
                     </div>
                 </div>
               </Card>
