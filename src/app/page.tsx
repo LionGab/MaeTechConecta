@@ -21,6 +21,8 @@ export default function AuthPage() {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [activeTab, setActiveTab] = useState('login');
+
 
   const handleSocialLogin = async (provider: 'google' | 'apple' | 'instagram') => {
     setIsLoading(provider);
@@ -45,12 +47,14 @@ export default function AuthPage() {
       });
       router.push('/dashboard/pricing');
     } catch (error: any) {
+      // Don't show an error toast if the user closes the third-party sign-in popup.
       if (error.code !== 'auth/popup-closed-by-user') {
           toast({
             variant: "destructive",
             title: `Erro no login com ${provider}`,
-            description: "Não foi possível fazer o login. Verifique as configurações do seu projeto Firebase ou tente novamente.",
+            description: `Não foi possível fazer o login. Verifique se o provedor ${provider} está habilitado e configurado corretamente no seu projeto Firebase.`,
         });
+        console.error(`Error with ${provider} login:`, error);
       }
     } finally {
         setIsLoading(null);
@@ -59,12 +63,16 @@ export default function AuthPage() {
 
   const handleEmailSubmit = async (e: React.FormEvent, type: 'login' | 'signup') => {
     e.preventDefault();
+    if (!email || !password || (type === 'signup' && !name)) return;
     setIsLoading('email');
+
     try {
         if (type === 'login') {
             await initiateEmailSignIn(auth, email, password);
         } else {
             await initiateEmailSignUp(auth, email, password);
+            // Idealmente, aqui você também atualizaria o perfil do usuário com o nome.
+            // Ex: await updateProfile(auth.currentUser, { displayName: name });
         }
         toast({
             title: `${type === 'login' ? 'Login' : 'Cadastro'} bem-sucedido!`,
@@ -74,18 +82,31 @@ export default function AuthPage() {
     } catch (error: any) {
          let description = "Ocorreu um erro. Verifique suas credenciais e tente novamente.";
          if (error.code === 'auth/email-already-in-use') {
-            description = 'Este endereço de e-mail já está em uso por outra conta.'
+            description = 'Este e-mail já está cadastrado. Por favor, faça login ou use outro e-mail.'
          } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
-            description = 'E-mail ou senha inválidos.'
+            description = 'E-mail ou senha inválidos. Verifique os dados e tente novamente.'
          }
         toast({
             variant: 'destructive',
-            title: `Erro no ${type === 'login' ? 'login' : 'cadastro'}`,
+            title: `Erro no ${type === 'login' ? 'Cadastro' : 'Login'}`,
             description,
         });
     } finally {
         setIsLoading(null);
+        // Limpa os campos após a tentativa
+        setEmail('');
+        setPassword('');
+        setName('');
     }
+  }
+
+  const onTabChange = (value: string) => {
+    setActiveTab(value);
+    // Limpa os campos ao trocar de aba para evitar confusão
+    setEmail('');
+    setPassword('');
+    setName('');
+    setShowPassword(false);
   }
 
   return (
@@ -96,7 +117,7 @@ export default function AuthPage() {
           <p className="text-muted-foreground">Sua comunidade exclusiva</p>
         </div>
         
-        <Tabs defaultValue="login" className="w-full">
+        <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-muted rounded-full">
                 <TabsTrigger value="login" className="rounded-full">Entrar</TabsTrigger>
                 <TabsTrigger value="signup" className="rounded-full">Criar Conta</TabsTrigger>
@@ -108,7 +129,7 @@ export default function AuthPage() {
                     Continuar com Google
                 </Button>
                 <Button variant="outline" className="w-full bg-black text-white hover:bg-black/80 hover:text-white" onClick={() => handleSocialLogin('apple')} disabled={!!isLoading}>
-                    {isLoading === 'apple' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Icons.apple className="mr-2 h-5 w-5" />}
+                    {isLoading === 'apple' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Icons.apple className="mr-2 h-5 w-5 fill-white" />}
                     Continuar com Apple
                 </Button>
                 <Button className="w-full text-white gradient-instagram" onClick={() => handleSocialLogin('instagram')} disabled={!!isLoading}>
