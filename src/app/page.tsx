@@ -35,10 +35,9 @@ export default function LoginPage() {
     }
     setIsLoading(true);
     try {
-      initiateEmailSignIn(auth, email, password);
+      await initiateEmailSignIn(auth, email, password);
       // The onAuthStateChanged listener in FirebaseProvider will handle the redirect
       // For now, we can optimistically redirect or wait for the user object to be updated.
-      // A common pattern is to have a hook that returns the user, and useEffect redirects.
       // Let's assume for now the user will be redirected by a listener.
       toast({
         title: "Login bem-sucedido!",
@@ -49,7 +48,7 @@ export default function LoginPage() {
       toast({
         variant: "destructive",
         title: "Erro no login",
-        description: error.message || "Ocorreu um erro ao tentar fazer login.",
+        description: "E-mail ou senha inválidos. Verifique suas credenciais e tente novamente.",
       });
     } finally {
         setIsLoading(false);

@@ -37,7 +37,7 @@ export default function SignUpPage() {
     }
     setIsLoading(true);
     try {
-      initiateEmailSignUp(auth, email, password);
+      await initiateEmailSignUp(auth, email, password);
       // We are not setting the displayName here, this should be done
       // after creation, perhaps on a profile setup page.
       
@@ -47,10 +47,14 @@ export default function SignUpPage() {
       });
       router.push('/dashboard');
     } catch (error: any) {
+      let description = "Ocorreu um erro ao tentar criar a conta.";
+      if (error.code === 'auth/email-already-in-use') {
+        description = 'Este endereço de e-mail já está em uso por outra conta.'
+      }
       toast({
         variant: "destructive",
         title: "Erro no cadastro",
-        description: error.message || "Ocorreu um erro ao tentar criar a conta.",
+        description: description,
       });
     } finally {
       setIsLoading(false);
