@@ -1,0 +1,46 @@
+{
+  "mcpServers": {
+    "firebase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "firebase-tools@latest",
+        "mcp"
+      ]
+    },
+    "github": {
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer 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"
+      }
+    },
+    "dart": {
+      "command": "dart",
+      "args": [
+        "mcp"
+      ]
+    },
+    "cli": {
+      "command": "/caminho/para/gemini-cli-mcp-server",
+      "args": [
+        "stdio"
+      ]
+    },
+    "perplexity": {
+      "url": "https://api.perplexity.ai/mcp/",
+      "headers": {
+        "Authorization": "Bearer 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"
+      }
+    },
+    "claude": {
+      "url": "https://api.claude.ai/mcp/",
+      "headers": {
+        "Authorization": "Bearer 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"
+      }
+    },
+    "mcp server": {
+      "command": "",
+      "args": []
+    }
+  }
+}

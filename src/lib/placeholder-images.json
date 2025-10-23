@@ -131,6 +131,18 @@
       "description": "Close up on a baby's feet",
       "imageUrl": "https://images.unsplash.com/photo-1604868423989-74d92471a5d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxiYWJ5JTIwZmVldHxlbnwwfHx8fDE3NjEzMTE5NDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "baby feet"
+    },
+    {
+      "id": "pwa-icon-192",
+      "description": "ClubNath App Icon 192x192",
+      "imageUrl": "https://storage.googleapis.com/stabl-aec92.appspot.com/google-project-template/render_d622a59a-5b4d-44a6-9f4a-9b4e605d8f63.jpg?w=192&h=192",
+      "imageHint": "logo illustration"
+    },
+    {
+      "id": "pwa-icon-512",
+      "description": "ClubNath App Icon 512x512",
+      "imageUrl": "https://storage.googleapis.com/stabl-aec92.appspot.com/google-project-template/render_d622a59a-5b4d-44a6-9f4a-9b4e605d8f63.jpg?w=512&h=512",
+      "imageHint": "logo illustration"
     }
   ]
 }

@@ -6,6 +6,7 @@ import { RootLayoutClient } from './root-layout-client';
 export const metadata: Metadata = {
   title: 'ClubNath',
   description: 'A comunidade de fé e acolhimento que toda mãe precisa.',
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
@@ -16,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        <meta name="theme-color" content="#E9A891" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
