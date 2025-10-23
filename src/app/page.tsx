@@ -1,13 +1,68 @@
-import { Button } from "@/components/ui/button";
+'use client';
+
+import { useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth, initiateEmailSignIn } from '@/firebase';
+import { Loader2 } from 'lucide-react';
 import imageData from '@/lib/placeholder-images.json';
+
 
 export default function LoginPage() {
   const logo = imageData.placeholderImages.find(p => p.id === 'logo-nath');
+  const auth = useAuth();
+  const router = useRouter();
+  const { toast } = useToast();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) {
+        toast({
+            variant: "destructive",
+            title: "Campos obrigatórios",
+            description: "Por favor, preencha o e-mail e a senha.",
+        });
+        return;
+    }
+    setIsLoading(true);
+    try {
+      initiateEmailSignIn(auth, email, password);
+      // The onAuthStateChanged listener in FirebaseProvider will handle the redirect
+      // For now, we can optimistically redirect or wait for the user object to be updated.
+      // A common pattern is to have a hook that returns the user, and useEffect redirects.
+      // Let's assume for now the user will be redirected by a listener.
+      toast({
+        title: "Login bem-sucedido!",
+        description: "Redirecionando para o dashboard...",
+      });
+       router.push('/dashboard');
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Erro no login",
+        description: error.message || "Ocorreu um erro ao tentar fazer login.",
+      });
+    } finally {
+        setIsLoading(false);
+    }
+  };
+  
+    const handleGoogleSignIn = () => {
+    toast({
+      title: 'Em desenvolvimento',
+      description: 'O login com Google estará disponível em breve!',
+    });
+  };
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
@@ -22,16 +77,21 @@ export default function LoginPage() {
             <CardTitle>Entrar</CardTitle>
             <CardDescription>Acesse sua conta para continuar.</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="seu@email.com" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
-              <Input id="password" type="password" required />
-            </div>
-             <Button type="submit" className="w-full">Entrar</Button>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" placeholder="seu@email.com" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={isLoading} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Senha</Label>
+                <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} disabled={isLoading} />
+              </div>
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Entrar
+              </Button>
+            </form>
             <div className="relative my-4">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -42,7 +102,7 @@ export default function LoginPage() {
                 </span>
               </div>
             </div>
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
               Entrar com Google
             </Button>
           </CardContent>
@@ -57,5 +117,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-    
