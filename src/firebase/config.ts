@@ -1,8 +1,13 @@
+// Este arquivo contém a configuração do seu projeto Firebase.
+// É crucial que você substitua os valores de placeholder abaixo pelos valores reais do seu projeto.
+// Você pode encontrar esses valores no console do Firebase, nas configurações do seu projeto web.
+
 export const firebaseConfig = {
-  "projectId": "studio-1781279445-a66f7",
-  "appId": "1:739802775325:web:47a05d59d22721e6e2abf4",
-  "apiKey": "AIzaSyCBp3XJkLAVUbJ3zPbgKG_WJdeTHK0LaOY",
-  "authDomain": "studio-1781279445-a66f7.firebaseapp.com",
-  "measurementId": "",
-  "messagingSenderId": "739802775325"
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_PROJECT_ID.firebaseapp.com",
+  projectId: "SEU_PROJECT_ID",
+  storageBucket: "SEU_PROJECT_ID.appspot.com",
+  messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+  appId: "SEU_APP_ID",
+  measurementId: "SEU_MEASUREMENT_ID" // Opcional
 };
