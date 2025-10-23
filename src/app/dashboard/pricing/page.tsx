@@ -56,10 +56,11 @@ export default function PricingPage() {
             </CardContent>
             <CardFooter className="flex-col gap-4">
               <Button
+                asChild
                 className="w-full"
                 size="lg"
               >
-                Assinar o Plano Premium
+                <Link href="/dashboard">Assinar o Plano Premium</Link>
               </Button>
             </CardFooter>
           </Card>

@@ -1,8 +1,21 @@
 import type { Metadata } from 'next';
+import { Poppins, Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import { RootLayoutClient } from './root-layout-client';
 import { FirebaseClientProvider } from '@/firebase';
+import { cn } from '@/lib/utils';
+
+const fontBody = Inter({
+  subsets: ['latin'],
+  variable: '--font-body',
+});
+
+const fontHeadline = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-headline',
+});
 
 export const metadata: Metadata = {
   title: 'ClubNath',
@@ -19,12 +32,8 @@ export default function RootLayout({
     <html lang="pt-BR">
       <head>
         <meta name="theme-color" content="#E9A891" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased">
+      <body className={cn('antialiased', fontBody.variable, fontHeadline.variable)}>
         <FirebaseClientProvider>
           <RootLayoutClient>
             {children}
