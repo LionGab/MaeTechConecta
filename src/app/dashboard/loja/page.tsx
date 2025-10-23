@@ -93,7 +93,7 @@ export default function LojaPage() {
                     <div className="p-8">
                         <CardHeader className="p-0">
                             <CardTitle className="font-headline text-3xl flex items-center gap-2">
-                                <TestTube2 className="text-secondary"/> Babytest by OLLIN
+                                <TestTube2 className="text-secondary-foreground"/> Babytest by OLLIN
                             </CardTitle>
                             <CardDescription className="text-muted-foreground mt-2">
                                 O teste pode ser feito a qualquer momento após o nascimento do bebê. Quanto mais cedo, maiores os benefícios!
