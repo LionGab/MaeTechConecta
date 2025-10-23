@@ -61,14 +61,6 @@ export default function PricingPage() {
               >
                 Assinar o Plano Premium
               </Button>
-               <Button
-                variant="link"
-                className="w-full text-muted-foreground"
-                size="lg"
-                asChild
-              >
-                <Link href="#">Sair</Link>
-              </Button>
             </CardFooter>
           </Card>
       </div>
