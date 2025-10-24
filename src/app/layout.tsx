@@ -20,7 +20,6 @@ const fontHeadline = Poppins({
 export const metadata: Metadata = {
   title: 'ClubNath',
   description: 'A comunidade de fé e acolhimento que toda mãe precisa.',
-  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
@@ -31,7 +30,6 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
-        <meta name="theme-color" content="#E9A891" />
       </head>
       <body className={cn('antialiased', fontBody.variable, fontHeadline.variable)}>
         <FirebaseClientProvider>
