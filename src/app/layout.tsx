@@ -21,6 +21,18 @@ export const metadata: Metadata = {
   title: 'ClubNath',
   description: 'A comunidade de fé e acolhimento que toda mãe precisa.',
   manifest: '/manifest.json',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
+  themeColor: '#E9A891',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'ClubNath',
+  },
 };
 
 export default function RootLayout({

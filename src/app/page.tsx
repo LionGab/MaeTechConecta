@@ -149,29 +149,29 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background p-4">
+    <div className="flex items-center justify-center min-h-screen bg-background p-4 sm:p-6">
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="font-headline text-4xl font-bold text-pink-500">ClubNath</h1>
-          <p className="text-muted-foreground">Sua comunidade exclusiva</p>
+          <h1 className="font-headline text-3xl sm:text-4xl font-bold text-pink-500">ClubNath</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">Sua comunidade exclusiva</p>
         </div>
         
         <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-muted rounded-full">
+            <TabsList className="grid w-full grid-cols-2 bg-muted rounded-full h-11">
                 <TabsTrigger value="login" className="rounded-full" disabled={!!isLoading}>Entrar</TabsTrigger>
                 <TabsTrigger value="signup" className="rounded-full" disabled={!!isLoading}>Criar Conta</TabsTrigger>
             </TabsList>
 
-            <div className="space-y-4 mt-6">
-                <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('google')} disabled={!!isLoading}>
+            <div className="space-y-3 mt-6">
+                <Button variant="outline" className="w-full h-11 text-sm" onClick={() => handleSocialLogin('google')} disabled={!!isLoading}>
                     {isLoading === 'google' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Icons.google className="mr-2 h-5 w-5" />}
                     Continuar com Google
                 </Button>
-                <Button variant="outline" className="w-full bg-black text-white hover:bg-black/80 hover:text-white" onClick={() => handleSocialLogin('apple')} disabled={!!isLoading}>
+                <Button variant="outline" className="w-full h-11 text-sm bg-black text-white hover:bg-black/80 hover:text-white" onClick={() => handleSocialLogin('apple')} disabled={!!isLoading}>
                     {isLoading === 'apple' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Icons.apple className="mr-2 h-5 w-5 fill-white" />}
                     Continuar com Apple
                 </Button>
-                <Button className="w-full text-white gradient-instagram" onClick={() => handleSocialLogin('instagram')} disabled={!!isLoading}>
+                <Button className="w-full h-11 text-sm text-white gradient-instagram" onClick={() => handleSocialLogin('instagram')} disabled={!!isLoading}>
                     {isLoading === 'instagram' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Icons.instagram className="mr-2 h-5 w-5" />}
                     Continuar com Instagram
                 </Button>
@@ -189,39 +189,39 @@ export default function AuthPage() {
             </div>
 
             <TabsContent value="login">
-                <form onSubmit={(e) => handleEmailSubmit(e, 'login')} className="space-y-4">
+                <form onSubmit={(e) => handleEmailSubmit(e, 'login')} className="space-y-3">
                     <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                        <Input id="login-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={!!isLoading} className="pl-10"/>
+                        <Input id="login-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={!!isLoading} className="pl-10 h-11"/>
                     </div>
                      <div className="relative">
-                        <Input id="login-password" type={showPassword ? "text" : "password"} placeholder="Senha" required value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="pr-10"/>
+                        <Input id="login-password" type={showPassword ? "text" : "password"} placeholder="Senha" required value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="pr-10 h-11"/>
                         <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground">
                             {showPassword ? <EyeOff /> : <Eye />}
                         </button>
                     </div>
-                    <Button type="submit" className="w-full text-white gradient-primary" disabled={!!isLoading || !email || !password}>
+                    <Button type="submit" className="w-full h-11 text-white gradient-primary" disabled={!!isLoading || !email || !password}>
                         {isLoading === 'email' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Entrar'}
                     </Button>
                 </form>
             </TabsContent>
 
             <TabsContent value="signup">
-                <form onSubmit={(e) => handleEmailSubmit(e, 'signup')} className="space-y-4">
+                <form onSubmit={(e) => handleEmailSubmit(e, 'signup')} className="space-y-3">
                     <div className="relative">
-                        <Input id="signup-name" type="text" placeholder="Nome" required value={name} onChange={(e) => setName(e.target.value)} disabled={!!isLoading} />
+                        <Input id="signup-name" type="text" placeholder="Nome" required value={name} onChange={(e) => setName(e.target.value)} disabled={!!isLoading} className="h-11" />
                     </div>
                      <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                        <Input id="signup-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.targe.value)} disabled={!!isLoading} className="pl-10" />
+                        <Input id="signup-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={!!isLoading} className="pl-10 h-11" />
                     </div>
                      <div className="relative">
-                        <Input id="signup-password" type={showPassword ? "text" : "password"} placeholder="Senha (mínimo 6 caracteres)" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="pr-10" />
+                        <Input id="signup-password" type={showPassword ? "text" : "password"} placeholder="Senha (mínimo 6 caracteres)" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="pr-10 h-11" />
                          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground">
                             {showPassword ? <EyeOff /> : <Eye />}
                         </button>
                     </div>
-                    <Button type="submit" className="w-full text-white gradient-primary" disabled={!!isLoading || !name || !email || password.length < 6}>
+                    <Button type="submit" className="w-full h-11 text-white gradient-primary" disabled={!!isLoading || !name || !email || password.length < 6}>
                         {isLoading === 'email' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Criar Conta'}
                     </Button>
                 </form>

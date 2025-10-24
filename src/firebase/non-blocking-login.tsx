@@ -12,7 +12,7 @@ import {
 } from 'firebase/auth';
 
 /** Initiate anonymous sign-in (non-blocking). */
-export function initiateAnonymousSignIn(authInstance: Auth): Promise<void> {
+export function initiateAnonymousSignIn(authInstance: Auth): Promise<any> {
   return signInAnonymously(authInstance);
 }
 

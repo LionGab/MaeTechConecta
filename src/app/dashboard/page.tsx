@@ -28,30 +28,30 @@ const featuredArticle = {
 
 export default function Dashboard() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
       <div className="text-center">
-        <h1 className="font-headline text-3xl font-bold tracking-tight">
+        <h1 className="font-headline text-2xl md:text-3xl font-bold tracking-tight">
           Bem-vinda, Nathália!
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-sm md:text-base text-muted-foreground">
           Sua comunidade de fé e acolhimento.
         </p>
       </div>
 
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="md:col-span-2">
-            <h2 className="font-headline text-2xl font-bold mb-4">Converse com a NathIA</h2>
+       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+        <div className="lg:col-span-2">
+            <h2 className="font-headline text-xl md:text-2xl font-bold mb-4">Converse com a NathIA</h2>
             <Chatbot />
         </div>
 
-        <div className="space-y-6">
-            <h2 className="font-headline text-2xl font-bold">Sua Jornada</h2>
+        <div className="space-y-4 md:space-y-6">
+            <h2 className="font-headline text-xl md:text-2xl font-bold">Sua Jornada</h2>
              <Card className="flex flex-col">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Heart className="text-primary"/> Conexões de Fé
+                    <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+                        <Heart className="text-primary h-5 w-5"/> Conexões de Fé
                     </CardTitle>
-                    <CardDescription>Encontramos um novo perfil para você.</CardDescription>
+                    <CardDescription className="text-sm">Encontramos um novo perfil para você.</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">
                     <ProfileCard match={featuredMatch} />
@@ -59,20 +59,20 @@ export default function Dashboard() {
              </Card>
         </div>
 
-        <div className="space-y-6">
-            <h2 className="font-headline text-2xl font-bold">Destaques</h2>
+        <div className="space-y-4 md:space-y-6">
+            <h2 className="font-headline text-xl md:text-2xl font-bold">Destaques</h2>
              <Card>
                 <CardHeader>
-                     <CardTitle className="flex items-center gap-2">
-                        <ShoppingBag className="text-primary"/> Brechó da Comunidade
+                     <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+                        <ShoppingBag className="text-primary h-5 w-5"/> Brechó da Comunidade
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                      <div className="relative aspect-video rounded-lg overflow-hidden">
                         <Image src={featuredProduct.image.imageUrl} alt={featuredProduct.image.description} fill className="object-cover" />
                     </div>
-                    <h3 className="font-semibold">{featuredProduct.title}</h3>
-                     <Button asChild className="w-full">
+                    <h3 className="font-semibold text-base">{featuredProduct.title}</h3>
+                     <Button asChild className="w-full min-h-[44px]">
                         <Link href="/dashboard/loja">
                             Ver na Loja <ArrowRight className="ml-2" />
                         </Link>
@@ -82,16 +82,16 @@ export default function Dashboard() {
 
              <Card>
                 <CardHeader>
-                     <CardTitle className="flex items-center gap-2">
-                        <Clapperboard className="text-primary"/> Conteúdo Exclusivo
+                     <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+                        <Clapperboard className="text-primary h-5 w-5"/> Conteúdo Exclusivo
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                      <div className="relative aspect-video rounded-lg overflow-hidden">
                         <Image src={featuredArticle.image.imageUrl} alt={featuredArticle.image.description} fill className="object-cover" />
                     </div>
-                    <h3 className="font-semibold">{featuredArticle.title}</h3>
-                     <Button asChild className="w-full">
+                    <h3 className="font-semibold text-base">{featuredArticle.title}</h3>
+                     <Button asChild className="w-full min-h-[44px]">
                         <Link href="/dashboard/content">
                            Ler Artigo <ArrowRight className="ml-2" />
                         </Link>

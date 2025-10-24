@@ -32,16 +32,16 @@ export function Header() {
   const logo = imageData.placeholderImages.find(p => p.id === 'logo-nath');
 
   return (
-    <header className="flex h-16 items-center gap-4 border-b bg-card px-4 lg:px-6 sticky top-0 z-40">
+    <header className="flex h-14 md:h-16 items-center gap-2 md:gap-4 border-b bg-card px-3 md:px-4 lg:px-6 sticky top-0 z-40 backdrop-blur-sm bg-card/95">
        <div className="w-full flex-1">
         <Link href="/dashboard" className="flex items-center gap-2">
-            {logo && <Image src={logo.imageUrl} alt={logo.description} width={32} height={32} className="h-8 w-8 rounded-full" />}
-            <span className="font-headline text-xl font-bold">ClubNath</span>
+            {logo && <Image src={logo.imageUrl} alt={logo.description} width={32} height={32} className="h-7 w-7 md:h-8 md:w-8 rounded-full" />}
+            <span className="font-headline text-lg md:text-xl font-bold">ClubNath</span>
         </Link>
       </div>
 
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" className="relative">
+      <div className="flex items-center gap-1 md:gap-2">
+        <Button variant="ghost" size="icon" className="relative h-9 w-9 md:h-10 md:w-10">
           <Bell className="h-5 w-5" />
           <span className="absolute -top-1 -right-1 flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -51,8 +51,8 @@ export function Header() {
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="secondary" size="icon" className="rounded-full">
-              <Avatar>
+            <Button variant="secondary" size="icon" className="rounded-full h-9 w-9 md:h-10 md:w-10">
+              <Avatar className="h-8 w-8 md:h-9 md:w-9">
                 {userAvatar && <AvatarImage src={userAvatar.imageUrl} alt="Avatar do usuário" />}
                 <AvatarFallback>NV</AvatarFallback>
               </Avatar>
