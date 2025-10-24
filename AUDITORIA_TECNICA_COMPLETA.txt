@@ -1,0 +1,1112 @@
+================================================================================
+  AUDITORIA TÉCNICA COMPLETA - MaeTechConecta (ClubNath)
+================================================================================
+
+================================================================================
+RESUMO EXECUTIVO
+================================================================================
+
+Tipo de projeto: Next.js 15 PWA com Firebase
+Stack principal: Next.js 15.3.3, Firebase 11.9.1, TypeScript 5, Tailwind CSS, Radix UI, Genkit AI
+Linhas de código: ~6.153 linhas (TypeScript/TSX)
+Status geral: 6.5/10
+
+--------------------------------------------------------------------------------
+5 PROBLEMAS CRÍTICOS PRINCIPAIS
+--------------------------------------------------------------------------------
+
+1. Build ignorando erros de TypeScript e ESLint (next.config.ts:11-14) - BLOQUEADOR
+2. Typo crítico na página de signup (src/app/page.tsx:216) - BUG DE PRODUÇÃO
+3. Zero cobertura de testes - ALTA PRIORIDADE
+4. Vulnerabilidades de segurança em dependências (Next.js 15.3.3, @babel/runtime, brace-expansion) - SEGURANÇA
+5. Proteção de rotas apenas client-side - SEGURANÇA
+
+--------------------------------------------------------------------------------
+5 OPORTUNIDADES DE MELHORIA PRINCIPAIS
+--------------------------------------------------------------------------------
+
+1. Implementar middleware para proteção de rotas server-side
+2. Adicionar validação de inputs nos Server Actions com Zod
+3. Implementar estratégia de testes (Jest + React Testing Library + Playwright)
+4. Otimizar performance com ISR/SSG onde aplicável
+5. Adicionar SEO metadata completo e estruturado
+
+================================================================================
+PONTOS FORTES
+================================================================================
+
+Arquitetura e Estrutura
+------------------------
+✅ Excelente organização de diretórios: Separação clara entre app, components, firebase, hooks, lib, ai
+✅ App Router do Next.js 15: Uso correto da arquitetura moderna
+✅ Componentes UI reutilizáveis: Uso de shadcn/ui com Radix UI
+✅ TypeScript configurado: Modo strict habilitado no tsconfig.json
+
+Firebase e Segurança
+--------------------
+✅ Firestore Security Rules excepcionais: Regras bem documentadas, específicas e seguras em firestore.rules
+✅ Autenticação multi-provider: Suporte para Google, Apple, Instagram/Facebook e Email
+✅ Context API bem implementada: FirebaseProvider com gerenciamento de estado adequado
+✅ Hooks customizados: useFirebase(), useAuth(), useUser() bem tipados
+
+AI e Moderação
+--------------
+✅ Server Actions com Genkit: Implementação correta de 'use server'
+✅ Validação com Zod: Schemas bem definidos para inputs/outputs de AI
+✅ Moderação de conteúdo: Flow para moderar posts do fórum
+
+PWA
+---
+✅ PWA configurado: @ducanh2912/next-pwa integrado
+✅ Manifest.json: Configuração adequada para instalação
+✅ Theme color: Definido para mobile
+
+Código
+------
+✅ Nomenclatura clara: Variáveis, funções e componentes bem nomeados
+✅ Uso de CSS Variables: Tema configurável com variáveis CSS
+✅ Error handling: Tratamento de erros Firebase bem detalhado (src/app/page.tsx:34-96)
+
+================================================================================
+PROBLEMAS CRÍTICOS (HIGH PRIORITY)
+================================================================================
+
+--------------------------------------------------------------------------------
+1. Build ignorando erros (BLOQUEADOR)
+--------------------------------------------------------------------------------
+Arquivo: next.config.ts:11-14
+
+Problema:
+---------
+typescript: {
+  ignoreBuildErrors: true,  // ❌ CRÍTICO!
+},
+eslint: {
+  ignoreDuringBuilds: true,  // ❌ CRÍTICO!
+},
+
+Erros de TypeScript e ESLint são silenciados no build de produção, permitindo bugs em produção.
+
+Solução:
+--------
+typescript: {
+  ignoreBuildErrors: false, // ✅ Corrigir
+},
+eslint: {
+  ignoreDuringBuilds: false, // ✅ Corrigir
+},
+
+Impacto: CRÍTICO - Pode permitir bugs de produção sérios.
+
+--------------------------------------------------------------------------------
+2. BUG: Typo na página de signup
+--------------------------------------------------------------------------------
+Arquivo: src/app/page.tsx:216
+
+Problema:
+---------
+// ❌ ERRADO (linha 216)
+onChange={(e) => setEmail(e.targe.value)}
+
+// ✅ CORRETO
+onChange={(e) => setEmail(e.target.value)}
+
+Typo "e.targe.value" em vez de "e.target.value" quebra o signup por email.
+
+Impacto: CRÍTICO - Funcionalidade de signup quebrada.
+
+--------------------------------------------------------------------------------
+3. Proteção de rotas apenas client-side
+--------------------------------------------------------------------------------
+Arquivo: src/app/dashboard/layout.tsx:18-36
+
+Problema:
+---------
+Proteção de rotas feita apenas com useEffect no cliente. Usuário não autenticado
+pode acessar dados antes do redirect.
+
+Solução: Criar middleware para proteção server-side:
+-------------------------------------------------------
+
+// middleware.ts (criar na raiz)
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  // Verificar autenticação via cookies/headers
+  const isAuthenticated = request.cookies.get('auth-token');
+
+  if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (!isAuthenticated) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/dashboard/:path*'],
+};
+
+Impacto: ALTO - Potencial exposição de dados antes do redirect.
+
+--------------------------------------------------------------------------------
+4. Server Actions sem validação de inputs
+--------------------------------------------------------------------------------
+Arquivos:
+- src/ai/flows/moderate-forum-content.ts:27
+- src/ai/flows/answer-common-questions.ts:25
+
+Problema:
+---------
+Server Actions não re-validam inputs nem re-autenticam usuários.
+
+Solução:
+--------
+// moderate-forum-content.ts
+'use server';
+
+import { cookies } from 'next/headers';
+
+export async function moderateForumContent(input: ModerateForumContentInput): Promise<ModerateForumContentOutput> {
+  // ✅ 1. Re-validar input
+  const validatedInput = ModerateForumContentInputSchema.parse(input);
+
+  // ✅ 2. Re-autenticar usuário
+  const authCookie = cookies().get('auth-token');
+  if (!authCookie) {
+    throw new Error('Unauthorized');
+  }
+
+  // ✅ 3. Verificar permissões
+  // ... verificar se usuário pode moderar
+
+  return moderateForumContentFlow(validatedInput);
+}
+
+Impacto: ALTO - Potencial abuso de AI endpoints.
+
+--------------------------------------------------------------------------------
+5. Vulnerabilidades de Dependências
+--------------------------------------------------------------------------------
+Descoberto: npm audit
+
+Vulnerabilidades encontradas:
+------------------------------
+❌ Next.js 15.3.3: Cache Key Confusion (GHSA-g5qg-72qw-gw5v) - Severity: MODERATE
+❌ @babel/runtime < 7.26.10: RegExp complexity (GHSA-968p-4wvh-cqc8) - Severity: MODERATE
+❌ brace-expansion: ReDoS (GHSA-v6h2-p8h4-qcjw) - Severity: LOW
+
+Solução:
+--------
+# Atualizar Next.js
+npm install next@latest
+
+# Atualizar outras dependências
+npm update
+npm audit fix
+
+Impacto: MÉDIO - Potencial exploração de vulnerabilidades conhecidas.
+
+--------------------------------------------------------------------------------
+6. Zero Testes Implementados
+--------------------------------------------------------------------------------
+
+Problema:
+---------
+Nenhum teste encontrado (0 arquivos .test.ts/.spec.ts).
+
+Solução: Configurar Jest + React Testing Library + Playwright
+--------------------------------------------------------------
+
+npm install -D jest @testing-library/react @testing-library/jest-dom jest-environment-jsdom
+npm install -D @playwright/test
+
+// jest.config.js (criar)
+const nextJest = require('next/jest');
+
+const createJestConfig = nextJest({
+  dir: './',
+});
+
+const customJestConfig = {
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testEnvironment: 'jest-environment-jsdom',
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
+};
+
+module.exports = createJestConfig(customJestConfig);
+
+// __tests__/auth.test.tsx (exemplo)
+import { render, screen, fireEvent } from '@testing-library/react';
+import AuthPage from '@/app/page';
+
+describe('AuthPage', () => {
+  it('should render login and signup tabs', () => {
+    render(<AuthPage />);
+    expect(screen.getByText('Entrar')).toBeInTheDocument();
+    expect(screen.getByText('Criar Conta')).toBeInTheDocument();
+  });
+
+  it('should not submit with invalid email', async () => {
+    render(<AuthPage />);
+    const emailInput = screen.getByPlaceholderText('Email');
+    fireEvent.change(emailInput, { target: { value: 'invalid' } });
+    // ... mais testes
+  });
+});
+
+Áreas críticas para testar:
+----------------------------
+1. Autenticação (login, signup, logout)
+2. Proteção de rotas
+3. Firestore rules (emulador)
+4. AI flows (mocks)
+5. Componentes UI
+
+Impacto: ALTO - Sem testes, mudanças podem quebrar funcionalidades existentes.
+
+--------------------------------------------------------------------------------
+7. Uso excessivo de tipo 'any'
+--------------------------------------------------------------------------------
+
+Encontrado: 24 usos de 'any' no código
+
+Exemplos problemáticos:
+-----------------------
+- src/app/page.tsx:34: handleAuthError = (error: any, provider: string)
+- src/app/page.tsx:118: catch (error: any)
+- src/firebase/non-blocking-login.tsx:20,25,30,36,42: Retorno Promise<any>
+
+Solução:
+--------
+// ❌ Antes
+export function initiateEmailSignUp(authInstance: Auth, email: string, password: string): Promise<any> {
+  return createUserWithEmailAndPassword(authInstance, email, password);
+}
+
+// ✅ Depois
+import { UserCredential } from 'firebase/auth';
+
+export function initiateEmailSignUp(
+  authInstance: Auth,
+  email: string,
+  password: string
+): Promise<UserCredential> {
+  return createUserWithEmailAndPassword(authInstance, email, password);
+}
+
+Impacto: MÉDIO - Perde benefícios do TypeScript.
+
+================================================================================
+MELHORIAS RECOMENDADAS (MEDIUM PRIORITY)
+================================================================================
+
+--------------------------------------------------------------------------------
+1. Performance - Otimização de Imagens
+--------------------------------------------------------------------------------
+
+Problema: Imagens externas sem otimização automática.
+
+Arquivo: public/manifest.json:6-15
+
+{
+  "src": "https://storage.googleapis.com/stabl-aec92.appspot.com/...",
+  "sizes": "192x192"
+}
+
+Solução: Hospedar ícones localmente e usar next/image
+------------------------------------------------------
+{
+  "src": "/icons/icon-192x192.png",
+  "sizes": "192x192",
+  "type": "image/png"
+}
+
+--------------------------------------------------------------------------------
+2. PWA - Service Worker offline fallback
+--------------------------------------------------------------------------------
+
+Problema: Não há estratégia clara de offline fallback.
+
+Solução: Configurar workbox no next.config.ts
+----------------------------------------------
+const withPWA = require("@ducanh2912/next-pwa").default({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+  runtimeCaching: [
+    {
+      urlPattern: /^https:\/\/storage\.googleapis\.com\/.*/i,
+      handler: 'CacheFirst',
+      options: {
+        cacheName: 'firebase-storage-cache',
+        expiration: {
+          maxEntries: 50,
+          maxAgeSeconds: 30 * 24 * 60 * 60, // 30 dias
+        },
+      },
+    },
+  ],
+});
+
+--------------------------------------------------------------------------------
+3. SEO - Metadata ausente
+--------------------------------------------------------------------------------
+
+Problema: Falta metadata em páginas individuais.
+
+Arquivos sem metadata:
+- src/app/dashboard/*/page.tsx (todas as subpáginas)
+
+Solução:
+--------
+// src/app/dashboard/content/page.tsx
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Conteúdo Exclusivo | ClubNath',
+  description: 'Artigos, vídeos e conteúdo exclusivo para mães.',
+  openGraph: {
+    title: 'Conteúdo Exclusivo | ClubNath',
+    description: 'Artigos, vídeos e conteúdo exclusivo para mães.',
+    images: ['/og-image-content.jpg'],
+  },
+};
+
+--------------------------------------------------------------------------------
+4. SEO - Sitemap e Robots
+--------------------------------------------------------------------------------
+
+Problema: Não há sitemap.xml nem robots.txt.
+
+Solução:
+--------
+// src/app/sitemap.ts (criar)
+import { MetadataRoute } from 'next';
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    {
+      url: 'https://clubnath.com',
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 1,
+    },
+    {
+      url: 'https://clubnath.com/dashboard',
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    // ... outras páginas
+  ];
+}
+
+// src/app/robots.ts (criar)
+import { MetadataRoute } from 'next';
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: {
+      userAgent: '*',
+      allow: '/',
+      disallow: '/dashboard/',
+    },
+    sitemap: 'https://clubnath.com/sitemap.xml',
+  };
+}
+
+--------------------------------------------------------------------------------
+5. Acessibilidade
+--------------------------------------------------------------------------------
+
+Problemas encontrados:
+- Falta de aria-label em botões de ícone (src/app/page.tsx:199-201)
+- Falta de landmarks semânticos
+
+Solução:
+--------
+// ❌ Antes
+<button type="button" onClick={() => setShowPassword(!showPassword)}>
+  {showPassword ? <EyeOff /> : <Eye />}
+</button>
+
+// ✅ Depois
+<button
+  type="button"
+  onClick={() => setShowPassword(!showPassword)}
+  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+>
+  {showPassword ? <EyeOff /> : <Eye />}
+</button>
+
+--------------------------------------------------------------------------------
+6. Data Access Layer
+--------------------------------------------------------------------------------
+
+Problema: Acesso direto ao Firestore espalhado pelos componentes.
+
+Solução: Criar camada de abstração
+-----------------------------------
+// src/lib/db/users.ts (criar)
+import { Firestore, doc, getDoc, setDoc } from 'firebase/firestore';
+
+export class UsersRepository {
+  constructor(private firestore: Firestore) {}
+
+  async getUserById(userId: string) {
+    const docRef = doc(this.firestore, 'users', userId);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      throw new Error('User not found');
+    }
+
+    return docSnap.data() as UserProfile;
+  }
+
+  async createUser(userId: string, data: Partial<UserProfile>) {
+    const docRef = doc(this.firestore, 'users', userId);
+    await setDoc(docRef, { ...data, id: userId });
+  }
+}
+
+--------------------------------------------------------------------------------
+7. Monitoring e Analytics
+--------------------------------------------------------------------------------
+
+Problema: Não há monitoramento de erros ou analytics.
+
+Solução: Implementar Sentry + Google Analytics
+-----------------------------------------------
+npm install @sentry/nextjs @next/third-parties
+
+// sentry.client.config.ts (criar)
+import * as Sentry from "@sentry/nextjs";
+
+Sentry.init({
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  tracesSampleRate: 1.0,
+  environment: process.env.NODE_ENV,
+});
+
+--------------------------------------------------------------------------------
+8. CI/CD
+--------------------------------------------------------------------------------
+
+Problema: Não há pipeline CI/CD configurado.
+
+Solução: Criar GitHub Actions
+------------------------------
+# .github/workflows/ci.yml (criar)
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test
+      - run: npm run build
+
+================================================================================
+SUGESTÕES OPCIONAIS (LOW PRIORITY)
+================================================================================
+
+1. Documentação
+---------------
+Criar:
+- README.md completo com instruções de setup
+- CONTRIBUTING.md com guidelines de contribuição
+- docs/ARCHITECTURE.md com diagrama da arquitetura
+- Storybook para componentes UI
+
+2. Otimização de CSS
+--------------------
+Problema: Possível CSS não utilizado.
+
+Solução:
+npm install -D @fullhuman/postcss-purgecss
+
+3. Validação de formulários com React Hook Form
+------------------------------------------------
+Problema: Validação HTML básica.
+
+Melhoria: Já usa react-hook-form (package.json:53), mas não está sendo usado
+na página de auth.
+
+Solução:
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+const loginSchema = z.object({
+  email: z.string().email('Email inválido'),
+  password: z.string().min(6, 'Senha deve ter pelo menos 6 caracteres'),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
+
+// No componente
+const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+  resolver: zodResolver(loginSchema),
+});
+
+4. Internacionalização (i18n)
+------------------------------
+Para futuro: Suporte para múltiplos idiomas.
+
+5. Bundle Size Analysis
+-----------------------
+Solução:
+npm install -D @next/bundle-analyzer
+
+// next.config.ts
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+module.exports = withBundleAnalyzer(withPWA(nextConfig));
+
+================================================================================
+ROADMAP DE IMPLEMENTAÇÃO
+================================================================================
+
+--------------------------------------------------------------------------------
+SEMANA 1 - CRÍTICO (Bloqueadores)
+--------------------------------------------------------------------------------
+
+Dia 1-2:
+[ ] Corrigir typo em src/app/page.tsx:216
+[ ] Remover ignoreBuildErrors e ignoreDuringBuilds
+[ ] Corrigir erros de build que aparecerem
+
+Dia 3-4:
+[ ] Atualizar dependências vulneráveis (Next.js, @babel/runtime)
+[ ] Executar npm audit fix
+[ ] Testar aplicação após updates
+
+Dia 5:
+[ ] Criar middleware para proteção de rotas server-side
+[ ] Adicionar validação em Server Actions
+
+--------------------------------------------------------------------------------
+SEMANA 2 - ALTA PRIORIDADE
+--------------------------------------------------------------------------------
+
+Dia 1-3:
+[ ] Configurar Jest + React Testing Library
+[ ] Escrever testes para autenticação
+[ ] Escrever testes para componentes críticos
+
+Dia 4-5:
+[ ] Substituir todos os 'any' por tipos corretos
+[ ] Adicionar aria-labels e melhorias de acessibilidade
+
+--------------------------------------------------------------------------------
+SEMANA 3 - MÉDIA PRIORIDADE
+--------------------------------------------------------------------------------
+
+Dia 1-2:
+[ ] Adicionar metadata SEO em todas as páginas
+[ ] Criar sitemap.ts e robots.ts
+
+Dia 3-4:
+[ ] Configurar Sentry para monitoramento
+[ ] Adicionar Google Analytics
+
+Dia 5:
+[ ] Otimizar PWA com estratégias de cache
+[ ] Hospedar ícones localmente
+
+--------------------------------------------------------------------------------
+SEMANA 4 - MELHORIAS
+--------------------------------------------------------------------------------
+
+Dia 1-2:
+[ ] Criar Data Access Layer
+[ ] Refatorar componentes para usar DAL
+
+Dia 3-4:
+[ ] Configurar CI/CD com GitHub Actions
+[ ] Adicionar testes E2E com Playwright
+
+Dia 5:
+[ ] Documentação completa (README, CONTRIBUTING, ARCHITECTURE)
+
+================================================================================
+FERRAMENTAS RECOMENDADAS
+================================================================================
+
+Desenvolvimento
+---------------
+ESLint Plugins:
+- eslint-plugin-jsx-a11y (acessibilidade)
+- eslint-plugin-security (segurança)
+- @typescript-eslint/eslint-plugin
+
+Testes
+------
+- Jest: Testes unitários
+- React Testing Library: Testes de componentes
+- Playwright: Testes E2E
+- Firebase Emulator Suite: Testar Firestore rules
+
+Performance
+-----------
+- Lighthouse CI: Auditoria automatizada
+- @next/bundle-analyzer: Análise de bundle
+- web-vitals: Monitorar Core Web Vitals
+
+Segurança
+---------
+- Snyk: Scan de vulnerabilidades
+- OWASP ZAP: Testes de segurança
+- npm audit: Auditoria de dependências
+
+Monitoramento
+-------------
+- Sentry: Error tracking
+- Google Analytics 4: Analytics
+- Firebase Performance Monitoring: Performance mobile
+
+CI/CD
+-----
+- GitHub Actions: Automação
+- Netlify: Deploy (já configurado)
+- Vercel: Alternativa de deploy
+
+================================================================================
+CÓDIGO DE EXEMPLO - CORREÇÕES PRINCIPAIS
+================================================================================
+
+--------------------------------------------------------------------------------
+1. Middleware para proteção de rotas
+--------------------------------------------------------------------------------
+
+// middleware.ts (criar na raiz)
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  const authToken = request.cookies.get('auth-token')?.value;
+  const { pathname } = request.nextUrl;
+
+  // Proteger rotas /dashboard/*
+  if (pathname.startsWith('/dashboard')) {
+    if (!authToken) {
+      const url = new URL('/', request.url);
+      return NextResponse.redirect(url);
+    }
+  }
+
+  // Redirecionar usuários autenticados da home para dashboard
+  if (pathname === '/' && authToken) {
+    const url = new URL('/dashboard', request.url);
+    return NextResponse.redirect(url);
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: [
+    '/',
+    '/dashboard/:path*',
+  ],
+};
+
+--------------------------------------------------------------------------------
+2. Server Action com validação completa
+--------------------------------------------------------------------------------
+
+// src/ai/flows/moderate-forum-content.ts
+'use server';
+
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
+import { cookies } from 'next/headers';
+import { verifyIdToken } from '@/lib/firebase-admin'; // Firebase Admin SDK
+
+const ModerateForumContentInputSchema = z.object({
+  text: z.string()
+    .min(1, 'Texto não pode estar vazio')
+    .max(5000, 'Texto muito longo')
+    .describe('The forum post content to be moderated.'),
+});
+
+export type ModerateForumContentInput = z.infer<typeof ModerateForumContentInputSchema>;
+
+const ModerateForumContentOutputSchema = z.object({
+  isFlagged: z.boolean().describe('Whether the content is flagged as inappropriate.'),
+  reason: z.string().describe('The reason for flagging the content, if applicable.'),
+});
+
+export type ModerateForumContentOutput = z.infer<typeof ModerateForumContentOutputSchema>;
+
+export async function moderateForumContent(
+  input: ModerateForumContentInput
+): Promise<ModerateForumContentOutput> {
+  // 1. Re-validar input (NUNCA confie no cliente)
+  const validatedInput = ModerateForumContentInputSchema.parse(input);
+
+  // 2. Re-autenticar usuário
+  const cookieStore = cookies();
+  const authToken = cookieStore.get('auth-token')?.value;
+
+  if (!authToken) {
+    throw new Error('Unauthorized: No auth token provided');
+  }
+
+  // 3. Verificar token (usando Firebase Admin)
+  let decodedToken;
+  try {
+    decodedToken = await verifyIdToken(authToken);
+  } catch (error) {
+    throw new Error('Unauthorized: Invalid token');
+  }
+
+  // 4. Verificar permissões (exemplo: apenas usuários verificados)
+  if (!decodedToken.email_verified) {
+    throw new Error('Forbidden: Email not verified');
+  }
+
+  // 5. Rate limiting (exemplo simples - em produção use Redis)
+  // ... implementar rate limiting
+
+  // 6. Executar flow
+  try {
+    return await moderateForumContentFlow(validatedInput);
+  } catch (error) {
+    console.error('Error moderating content:', error);
+    throw new Error('Failed to moderate content');
+  }
+}
+
+// ... resto do código
+
+--------------------------------------------------------------------------------
+3. Configuração de testes
+--------------------------------------------------------------------------------
+
+// jest.config.js
+const nextJest = require('next/jest');
+
+const createJestConfig = nextJest({
+  dir: './',
+});
+
+const customJestConfig = {
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testEnvironment: 'jest-environment-jsdom',
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx,ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/**/*.stories.tsx',
+    '!src/app/layout.tsx',
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 70,
+      functions: 70,
+      lines: 70,
+      statements: 70,
+    },
+  },
+};
+
+module.exports = createJestConfig(customJestConfig);
+
+// jest.setup.js
+import '@testing-library/jest-dom';
+
+// Mock Firebase
+jest.mock('firebase/app', () => ({
+  initializeApp: jest.fn(),
+  getApps: jest.fn(() => []),
+  getApp: jest.fn(),
+}));
+
+jest.mock('firebase/auth', () => ({
+  getAuth: jest.fn(),
+  onAuthStateChanged: jest.fn(),
+  signInWithEmailAndPassword: jest.fn(),
+  createUserWithEmailAndPassword: jest.fn(),
+  signInWithPopup: jest.fn(),
+  GoogleAuthProvider: jest.fn(),
+  OAuthProvider: jest.fn(),
+  FacebookAuthProvider: jest.fn(),
+}));
+
+jest.mock('firebase/firestore', () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  doc: jest.fn(),
+  getDoc: jest.fn(),
+  setDoc: jest.fn(),
+  query: jest.fn(),
+  where: jest.fn(),
+}));
+
+--------------------------------------------------------------------------------
+4. Exemplo de teste
+--------------------------------------------------------------------------------
+
+// __tests__/components/auth.test.tsx
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import AuthPage from '@/app/page';
+import { initiateEmailSignIn, initiateEmailSignUp } from '@/firebase';
+import { useRouter } from 'next/navigation';
+
+jest.mock('@/firebase', () => ({
+  useAuth: jest.fn(() => ({})),
+  initiateEmailSignIn: jest.fn(),
+  initiateEmailSignUp: jest.fn(),
+  initiateGoogleSignIn: jest.fn(),
+  initiateAppleSignIn: jest.fn(),
+  initiateInstagramSignIn: jest.fn(),
+}));
+
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+}));
+
+jest.mock('@/hooks/use-toast', () => ({
+  useToast: jest.fn(() => ({
+    toast: jest.fn(),
+  })),
+}));
+
+describe('AuthPage', () => {
+  const mockPush = jest.fn();
+
+  beforeEach(() => {
+    (useRouter as jest.Mock).mockReturnValue({
+      push: mockPush,
+    });
+    jest.clearAllMocks();
+  });
+
+  it('should render login and signup tabs', () => {
+    render(<AuthPage />);
+    expect(screen.getByText('Entrar')).toBeInTheDocument();
+    expect(screen.getByText('Criar Conta')).toBeInTheDocument();
+  });
+
+  it('should handle email login successfully', async () => {
+    (initiateEmailSignIn as jest.Mock).mockResolvedValue({});
+
+    render(<AuthPage />);
+
+    const emailInput = screen.getAllByPlaceholderText('Email')[0];
+    const passwordInput = screen.getAllByPlaceholderText('Senha')[0];
+    const submitButton = screen.getByRole('button', { name: /entrar/i });
+
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(initiateEmailSignIn).toHaveBeenCalledWith(
+        {},
+        'test@example.com',
+        'password123'
+      );
+      expect(mockPush).toHaveBeenCalledWith('/dashboard');
+    });
+  });
+
+  it('should display error message on login failure', async () => {
+    const mockError = {
+      code: 'auth/invalid-credential',
+      message: 'Invalid credentials',
+    };
+    (initiateEmailSignIn as jest.Mock).mockRejectedValue(mockError);
+
+    render(<AuthPage />);
+
+    const emailInput = screen.getAllByPlaceholderText('Email')[0];
+    const passwordInput = screen.getAllByPlaceholderText('Senha')[0];
+    const submitButton = screen.getByRole('button', { name: /entrar/i });
+
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'wrongpassword' } });
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(initiateEmailSignIn).toHaveBeenCalled();
+      // Toast de erro seria chamado aqui
+    });
+  });
+
+  it('should not submit with empty email', () => {
+    render(<AuthPage />);
+
+    const submitButton = screen.getByRole('button', { name: /entrar/i });
+    expect(submitButton).toBeDisabled();
+  });
+});
+
+--------------------------------------------------------------------------------
+5. Next.config.ts corrigido
+--------------------------------------------------------------------------------
+
+/** @type {import('next').NextConfig} */
+const withPWA = require("@ducanh2912/next-pwa").default({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === 'development', // Desabilitar PWA em dev
+  runtimeCaching: [
+    {
+      urlPattern: /^https:\/\/storage\.googleapis\.com\/.*/i,
+      handler: 'CacheFirst',
+      options: {
+        cacheName: 'firebase-storage-cache',
+        expiration: {
+          maxEntries: 50,
+          maxAgeSeconds: 30 * 24 * 60 * 60,
+        },
+      },
+    },
+  ],
+});
+
+const nextConfig = {
+  // ✅ CORRIGIDO: Não ignorar erros
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+      },
+    ],
+    // Otimizações adicionais
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
+
+  // Headers de segurança
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'origin-when-cross-origin',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+    ];
+  },
+
+  // Compressão
+  compress: true,
+
+  // Performance
+  swcMinify: true,
+
+  // Experimental (Next.js 15)
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+  },
+};
+
+module.exports = withPWA(nextConfig);
+
+================================================================================
+CONCLUSÃO
+================================================================================
+
+O projeto MaeTechConecta (ClubNath) tem uma ARQUITETURA SÓLIDA com boas práticas
+em Firebase Security Rules, componentes reutilizáveis e integração de AI.
+No entanto, há PROBLEMAS CRÍTICOS que precisam ser corrigidos imediatamente:
+
+Prioridade Máxima (Esta Semana):
+---------------------------------
+1. ✅ Corrigir typo em signup (linha 216)
+2. ✅ Remover flags de ignorar erros no build
+3. ✅ Atualizar dependências vulneráveis
+4. ✅ Implementar proteção de rotas server-side
+
+Após correções críticas:
+------------------------
+- Implementar testes (zero cobertura atual é preocupante)
+- Melhorar type safety (eliminar 'any')
+- Adicionar SEO completo
+- Configurar CI/CD
+
+Nota final: Com as correções propostas, o projeto pode facilmente subir de
+6.5/10 para 9/10 em qualidade e segurança.
+
+================================================================================
+FIM DA AUDITORIA
+================================================================================
