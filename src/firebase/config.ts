@@ -1,4 +1,3 @@
-
 // Este arquivo contém a configuração do Firebase para o aplicativo.
 // Os valores abaixo foram atualizados com as credenciais do seu projeto.
 
