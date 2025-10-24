@@ -23,7 +23,10 @@ const AnswerCommonQuestionsOutputSchema = z.object({
 export type AnswerCommonQuestionsOutput = z.infer<typeof AnswerCommonQuestionsOutputSchema>;
 
 export async function answerCommonQuestions(input: AnswerCommonQuestionsInput): Promise<AnswerCommonQuestionsOutput> {
-  return answerCommonQuestionsFlow(input);
+  // Validate input with Zod schema
+  const validatedInput = AnswerCommonQuestionsInputSchema.parse(input);
+  
+  return answerCommonQuestionsFlow(validatedInput);
 }
 
 const prompt = ai.definePrompt({

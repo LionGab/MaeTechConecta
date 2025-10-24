@@ -25,7 +25,10 @@ const ModerateForumContentOutputSchema = z.object({
 export type ModerateForumContentOutput = z.infer<typeof ModerateForumContentOutputSchema>;
 
 export async function moderateForumContent(input: ModerateForumContentInput): Promise<ModerateForumContentOutput> {
-  return moderateForumContentFlow(input);
+  // Validate input with Zod schema
+  const validatedInput = ModerateForumContentInputSchema.parse(input);
+  
+  return moderateForumContentFlow(validatedInput);
 }
 
 const moderateForumContentPrompt = ai.definePrompt({

@@ -34,7 +34,10 @@ export type RelevantMatchesOutput = z.infer<typeof RelevantMatchesOutputSchema>;
 export async function suggestRelevantMatches(
   input: RelevantMatchesInput
 ): Promise<RelevantMatchesOutput> {
-  return suggestRelevantMatchesFlow(input);
+  // Validate input with Zod schema
+  const validatedInput = RelevantMatchesInputSchema.parse(input);
+  
+  return suggestRelevantMatchesFlow(validatedInput);
 }
 
 const prompt = ai.definePrompt({
