@@ -6,7 +6,56 @@
   command = "npm run build"
   # Directory that contains the built assets
   publish = ".next"
+  # Funções
+  functions = ".netlify/functions"
 
 # Netlify plugin for Next.js to enable all features
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# Headers para segurança e cache
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Cache de assets estáticos
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Redirects
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Configurações de ambiente (use o painel do Netlify para valores sensíveis)
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_VERSION = "10"
+
+# Configurações de deploy
+[context.production.environment]
+  NODE_ENV = "production"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "production"
+
+[context.branch-deploy.environment]
+  NODE_ENV = "production"

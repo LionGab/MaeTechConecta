@@ -1,18 +1,43 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth, initiateGoogleSignIn, initiateAppleSignIn, initiateEmailSignIn, initiateEmailSignUp, initiateInstagramSignIn } from '@/firebase';
-import { Loader2, Mail, Eye, EyeOff } from 'lucide-react';
+import { useAuth, initiateGoogleSignIn, initiateAppleSignIn, initiateEmailSignIn, initiateEmailSignUp, initiateInstagramSignIn, isFirebaseReady } from '@/firebase';
+import { Loader2, Mail, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { Icons } from '@/components/icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { FirebaseError } from 'firebase/app';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export default function AuthPage() {
-  const auth = useAuth();
+  const [firebaseStatus, setFirebaseStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [firebaseError, setFirebaseError] = useState<string | null>(null);
+
+  // Verifica o status do Firebase no mount
+  useEffect(() => {
+    try {
+      const isReady = isFirebaseReady();
+      if (isReady) {
+        setFirebaseStatus('ready');
+      } else {
+        setFirebaseStatus('error');
+        setFirebaseError('Firebase não está configurado corretamente. Verifique as variáveis de ambiente.');
+      }
+    } catch (error) {
+      setFirebaseStatus('error');
+      setFirebaseError(error instanceof Error ? error.message : 'Erro desconhecido ao inicializar Firebase');
+    }
+  }, []);
+
+  let auth;
+  try {
+    auth = useAuth();
+  } catch (error) {
+    console.error('Erro ao obter instância Auth:', error);
+  }
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<null | 'google' | 'apple' | 'instagram' | 'email'>(null);
@@ -146,6 +171,64 @@ export default function AuthPage() {
 
   const onTabChange = (value: string) => {
     setActiveTab(value);
+  }
+
+  // Loading state
+  if (firebaseStatus === 'loading') {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-muted-foreground">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (firebaseStatus === 'error') {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background p-4">
+        <div className="w-full max-w-md space-y-4">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Erro de Configuração</AlertTitle>
+            <AlertDescription>
+              {firebaseError || 'Não foi possível inicializar o Firebase.'}
+            </AlertDescription>
+          </Alert>
+          <div className="bg-card p-4 rounded-lg border">
+            <h3 className="font-semibold mb-2">Como corrigir:</h3>
+            <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+              <li>Verifique se as variáveis NEXT_PUBLIC_FIREBASE_* estão configuradas</li>
+              <li>No Netlify: Configure as variáveis de ambiente no painel</li>
+              <li>Localmente: Crie um arquivo .env.local com as credenciais</li>
+            </ul>
+          </div>
+          <Button
+            onClick={() => window.location.reload()}
+            className="w-full"
+          >
+            Tentar Novamente
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Auth não disponível
+  if (!auth) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background p-4">
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Erro</AlertTitle>
+          <AlertDescription>
+            Serviço de autenticação não disponível. Tente novamente mais tarde.
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
   }
 
   return (
