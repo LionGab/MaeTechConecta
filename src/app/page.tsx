@@ -38,6 +38,10 @@ export default function AuthPage() {
 
     if (error instanceof FirebaseError) {
         switch (error.code) {
+            case 'auth/operation-not-allowed':
+                title = 'Método de Login Desabilitado';
+                description = `O login com ${provider} não está habilitado no seu projeto Firebase. Vá em Authentication > Sign-in method e ative-o.`;
+                break;
             case 'auth/popup-closed-by-user':
             case 'auth/cancelled-popup-request':
                 title = 'Login cancelado';
@@ -49,7 +53,7 @@ export default function AuthPage() {
                 break;
             case 'auth/unauthorized-domain':
                 title = 'Domínio não autorizado';
-                description = 'Este domínio não está autorizado para login. Verifique a configuração no painel do Firebase.';
+                description = 'Este domínio não está autorizado. Verifique a configuração no painel do Firebase.';
                 break;
             case 'auth/email-already-in-use':
                 title = 'E-mail já cadastrado';
@@ -87,6 +91,7 @@ export default function AuthPage() {
         variant: "destructive",
         title: title,
         description: description,
+        duration: 9000,
     });
   }
 
@@ -111,7 +116,7 @@ export default function AuthPage() {
       handleAuthSuccess(provider.charAt(0).toUpperCase() + provider.slice(1));
 
     } catch (error: any) {
-        handleAuthError(error, provider);
+        handleAuthError(error, provider.charAt(0).toUpperCase() + provider.slice(1));
     } finally {
         setIsLoading(null);
     }
@@ -141,7 +146,6 @@ export default function AuthPage() {
 
   const onTabChange = (value: string) => {
     setActiveTab(value);
-    // Não limpa os campos ao trocar de aba, para uma melhor UX
   }
 
   return (
@@ -209,7 +213,7 @@ export default function AuthPage() {
                     </div>
                      <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                        <Input id="signup-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={!!isLoading} className="pl-10" />
+                        <Input id="signup-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.targe.value)} disabled={!!isLoading} className="pl-10" />
                     </div>
                      <div className="relative">
                         <Input id="signup-password" type={showPassword ? "text" : "password"} placeholder="Senha (mínimo 6 caracteres)" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="pr-10" />
