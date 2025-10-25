@@ -6,25 +6,25 @@ import { useToast } from '@/hooks/use-toast';
 
 const articles = [
   {
-    title: "Saúde mental da mulher: como a sobrecarga afeta o bem-estar feminino",
-    description: "Uma análise aprofundada sobre os desafios da mulher moderna e o impacto na saúde mental, com dicas de especialistas para encontrar o equilíbrio.",
+    title: "A exaustão invisível: como a carga mental afeta a saúde da mãe",
+    description: "Uma análise aprofundada sobre o peso do gerenciamento do lar e da família e o impacto na saúde mental feminina, com dicas de especialistas para reencontrar o equilíbrio.",
     image: PlaceHolderImages.find(p => p.id === 'hero')!,
     category: "Bem-estar",
-    source: "Revista Elle"
+    source: "Mente & Maternidade"
   },
   {
-    title: "Empreendedorismo feminino cresce e inspira novas gerações",
-    description: "Conheça histórias de mulheres que transformaram suas paixões em negócios de sucesso e estão abrindo caminho para outras.",
+    title: "Mãe e empreendedora: os desafios e as delícias de ter um negócio",
+    description: "Conheça histórias de mulheres que transformaram suas paixões em negócios de sucesso enquanto navegavam pela maternidade, e inspire-se para começar o seu.",
     image: PlaceHolderImages.find(p => p.id === 'avatar-2')!,
     category: "Carreira",
-    source: "Forbes Mulher"
+    source: "Elas Empreendem"
   },
   {
-    title: "Os segredos da longevidade feminina: o que a ciência diz",
-    description: "Estudos recentes revelam hábitos e fatores que contribuem para uma vida mais longa e saudável para as mulheres.",
+    title: "A ciência da longevidade feminina: o que realmente funciona?",
+    description: "Estudos recentes revelam como hábitos de sono, alimentação e, principalmente, a força dos laços comunitários podem contribuir para uma vida mais longa e saudável.",
     image: PlaceHolderImages.find(p => p.id === 'content-1')!,
     category: "Saúde",
-    source: "National Geographic"
+    source: "Ciência & Vida"
   },
 ];
 

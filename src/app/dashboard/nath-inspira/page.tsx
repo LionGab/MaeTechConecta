@@ -5,32 +5,32 @@ import { InspiraCard } from './_components/inspira-card';
 
 const articles = [
   {
-    title: "Encontrando força na fé durante a maternidade",
-    description: "Uma reflexão profunda sobre como a espiritualidade pode ser o alicerce para os desafios e as alegrias de ser mãe, inspirada em falas de Nathália Valente.",
+    title: "A oração que acalma o coração na madrugada",
+    description: "Uma reflexão sobre como um simples momento de conversa com Deus pode transformar a ansiedade das noites insones em um abraço de paz e confiança.",
     image: PlaceHolderImages.find(p => p.id === 'hero')!,
     category: "Fé e Espiritualidade"
   },
   {
-    title: "Autocuidado não é egoísmo: é necessidade",
-    description: "Nathália nos lembra que, para cuidar bem dos nossos filhos, precisamos primeiro cuidar de nós mesmas. Descubra dicas práticas para incluir o autocuidado na sua rotina.",
+    title: "Autocuidado em 5 minutos: o ritual que salva o seu dia",
+    description: "Nathália nos lembra que cuidar de si não exige horas. Descubra um ritual prático para renovar suas energias, mesmo na rotina mais corrida.",
     image: PlaceHolderImages.find(p => p.id === 'avatar-2')!,
     category: "Bem-estar"
   },
   {
-    title: "Lidando com a culpa materna: você está fazendo o seu melhor",
-    description: "Uma conversa sincera para desmistificar a culpa que muitas mães sentem, com conselhos para abraçar a imperfeição e celebrar cada passo da jornada.",
+    title: "Você não falhou: uma carta sobre a culpa materna",
+    description: "Uma conversa sincera para acolher seu coração e te lembrar que você está fazendo o seu melhor, mesmo nos dias em que tudo parece dar errado.",
     image: PlaceHolderImages.find(p => p.id === 'content-1')!,
     category: "Maternidade Real"
   },
   {
-    title: "A importância da rede de apoio: ninguém precisa estar sozinha",
-    description: "Entenda por que construir e nutrir uma rede de apoio é vital no pós-parto e na criação dos filhos. Juntas somos mais fortes.",
+    title: "A força da amiga-mãe: por que ninguém deve caminhar sozinha",
+    description: "Entenda por que a amizade e a vulnerabilidade entre mães são a base para uma jornada mais leve e feliz. Juntas, florescemos.",
     image: PlaceHolderImages.find(p => p.id === 'feature-matches')!,
     category: "Comunidade"
   },
   {
-    title: "Sono do bebê: estratégias para noites mais tranquilas",
-    description: "Estratégias e dicas valiosas para ajudar seu bebê (e você) a ter um sono de mais qualidade, estabelecendo rotinas saudáveis e com muito afeto.",
+    title: "Sono do bebê: mais do que técnica, é conexão",
+    description: "Estratégias para ensinar seu bebê a dormir com afeto, entendendo que a segurança emocional é a chave para noites mais tranquilas para toda a família.",
     image: PlaceHolderImages.find(p => p.id === 'content-2')!,
     category: "Criação de Filhos"
   }
