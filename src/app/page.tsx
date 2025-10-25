@@ -5,11 +5,12 @@ import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth, initiateGoogleSignIn, initiateAppleSignIn, initiateEmailSignIn, initiateEmailSignUp, initiateInstagramSignIn } from '@/firebase';
-import { Loader2, Mail, Eye, EyeOff } from 'lucide-react';
+import { Loader2, Mail, Eye, EyeOff, AlertTriangle } from 'lucide-react';
 import { Icons } from '@/components/icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { FirebaseError } from 'firebase/app';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export default function AuthPage() {
   const auth = useAuth();
@@ -146,6 +147,9 @@ export default function AuthPage() {
 
   const onTabChange = (value: string) => {
     setActiveTab(value);
+    setEmail('');
+    setPassword('');
+    setName('');
   }
 
   return (
@@ -155,6 +159,14 @@ export default function AuthPage() {
           <h1 className="font-headline text-4xl font-bold text-primary">ClubNath</h1>
           <p className="text-muted-foreground">Sua comunidade exclusiva</p>
         </div>
+
+        <Alert variant="destructive" className="bg-blue-50 border-blue-200 text-blue-800">
+            <AlertTriangle className="h-4 w-4 !text-blue-600" />
+            <AlertTitle className="font-semibold !text-blue-900">Ação Necessária</AlertTitle>
+            <AlertDescription>
+                Para que o login funcione, você precisa habilitar os métodos (Google, Apple, E-mail) no seu <strong>Firebase Console</strong> em <strong>Authentication &gt; Sign-in method</strong>.
+            </AlertDescription>
+        </Alert>
         
         <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-muted rounded-full">
