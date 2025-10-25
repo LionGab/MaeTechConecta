@@ -40,7 +40,7 @@ export default function AuthPage() {
         switch (error.code) {
             case 'auth/operation-not-allowed':
                 title = 'Método de Login Desabilitado';
-                description = `O login com ${provider} não está habilitado no seu projeto Firebase. Vá em Authentication > Sign-in method e ative-o.`;
+                description = `O login com ${provider} não está habilitado. Por favor, habilite este método no seu painel do Firebase em Authentication > Sign-in method.`;
                 break;
             case 'auth/popup-closed-by-user':
             case 'auth/cancelled-popup-request':
@@ -213,7 +213,7 @@ export default function AuthPage() {
                     </div>
                      <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                        <Input id="signup-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.targe.value)} disabled={!!isLoading} className="pl-10" />
+                        <Input id="signup-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={!!isLoading} className="pl-10" />
                     </div>
                      <div className="relative">
                         <Input id="signup-password" type={showPassword ? "text" : "password"} placeholder="Senha (mínimo 6 caracteres)" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="pr-10" />

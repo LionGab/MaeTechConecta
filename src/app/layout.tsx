@@ -20,6 +20,7 @@ const fontHeadline = Poppins({
 export const metadata: Metadata = {
   title: 'ClubNath',
   description: 'A comunidade de fé e acolhimento que toda mãe precisa.',
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
