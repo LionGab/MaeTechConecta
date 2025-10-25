@@ -2,20 +2,20 @@
   "name": "ClubNath",
   "short_name": "ClubNath",
   "description": "A comunidade de fé e acolhimento que toda mãe precisa.",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#E75A9C",
   "icons": [
     {
       "src": "https://storage.googleapis.com/stabl-aec92.appspot.com/google-project-template/render_d622a59a-5b4d-44a6-9f4a-9b4e605d8f63.jpg?w=192&h=192",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/jpeg"
     },
     {
       "src": "https://storage.googleapis.com/stabl-aec92.appspot.com/google-project-template/render_d622a59a-5b4d-44a6-9f4a-9b4e605d8f63.jpg?w=512&h=512",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/jpeg"
     }
-  ]
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f472b6"
 }

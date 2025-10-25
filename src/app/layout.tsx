@@ -31,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+       <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={cn('antialiased', fontBody.variable, fontHeadline.variable)}>
         <FirebaseClientProvider>

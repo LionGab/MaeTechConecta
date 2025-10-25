@@ -152,7 +152,7 @@ export default function AuthPage() {
     <div className="flex items-center justify-center min-h-screen bg-background p-4">
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="font-headline text-4xl font-bold text-pink-500">ClubNath</h1>
+          <h1 className="font-headline text-4xl font-bold text-primary">ClubNath</h1>
           <p className="text-muted-foreground">Sua comunidade exclusiva</p>
         </div>
         
