@@ -41,9 +41,7 @@ export default function Dashboard() {
         </p>
       </div>
 
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-        <div className="space-y-6 md:col-span-2">
+       <div className="space-y-6 md:col-span-2">
             <h2 className="font-headline text-2xl font-bold">Navegação Rápida</h2>
              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <Button variant="outline" className="h-24 flex-col gap-2" asChild>
@@ -64,61 +62,43 @@ export default function Dashboard() {
              </div>
         </div>
 
-        <div className="space-y-6">
-            <h2 className="font-headline text-2xl font-bold">Para você</h2>
-             <Card className="flex flex-col">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Heart className="text-primary"/> Conexão em Destaque
-                    </CardTitle>
-                    <CardDescription>Encontramos um novo perfil para você se conectar.</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                    <ProfileCard match={featuredMatch} />
-                </CardContent>
-             </Card>
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-6">
+                <h2 className="font-headline text-2xl font-bold">Para você</h2>
+                <Card className="flex flex-col">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <Heart className="text-primary"/> Conexão em Destaque
+                        </CardTitle>
+                        <CardDescription>Encontramos um novo perfil para você se conectar.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-grow">
+                        <ProfileCard match={featuredMatch} />
+                    </CardContent>
+                </Card>
+            </div>
 
-        <div className="space-y-6">
-            <h2 className="font-headline text-2xl font-bold">Destaques</h2>
-             <Card>
-                <CardHeader>
-                     <CardTitle className="flex items-center gap-2">
-                        <ShoppingBag className="text-primary"/> Brechó da Comunidade
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                     <div className="relative aspect-video rounded-lg overflow-hidden">
-                        <Image src={featuredProduct.image.imageUrl} alt={featuredProduct.image.description} fill className="object-cover" />
-                    </div>
-                    <h3 className="font-semibold">{featuredProduct.title}</h3>
-                     <Button asChild className="w-full">
-                        <Link href="/dashboard/loja">
-                            Ver na Loja <ArrowRight className="ml-2" />
-                        </Link>
-                    </Button>
-                </CardContent>
-            </Card>
-
-             <Card>
-                <CardHeader>
-                     <CardTitle className="flex items-center gap-2">
-                        <BookOpen className="text-primary"/> Jornada da Maternidade
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                     <div className="relative aspect-video rounded-lg overflow-hidden">
-                        <Image src={featuredArticle.image.imageUrl} alt={featuredArticle.image.description} fill className="object-cover" />
-                    </div>
-                    <h3 className="font-semibold">{featuredArticle.title}</h3>
-                     <Button asChild className="w-full">
-                        <Link href="/dashboard/jornada">
-                           Ver na Jornada <ArrowRight className="ml-2" />
-                        </Link>
-                    </Button>
-                </CardContent>
-            </Card>
-        </div>
+            <div className="space-y-6">
+                <h2 className="font-headline text-2xl font-bold">Destaques</h2>
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <ShoppingBag className="text-primary"/> Brechó da Comunidade
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="relative aspect-video rounded-lg overflow-hidden">
+                            <Image src={featuredProduct.image.imageUrl} alt={featuredProduct.image.description} fill className="object-cover" />
+                        </div>
+                        <h3 className="font-semibold">{featuredProduct.title}</h3>
+                        <Button asChild className="w-full">
+                            <Link href="/dashboard/loja">
+                                Ver na Loja <ArrowRight className="ml-2" />
+                            </Link>
+                        </Button>
+                    </CardContent>
+                </Card>
+            </div>
       </div>
     </div>
   );
