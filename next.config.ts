@@ -14,6 +14,7 @@ const nextConfig = {
         hostname: 'placehold.co',
         port: '',
         pathname: '/**',
+        dangerouslyAllowSVG: true,
       },
       {
         protocol: 'https',
@@ -23,8 +24,6 @@ const nextConfig = {
       }
     ],
   },
-  // allowedDevOrigins was here, but it's not an experimental feature in this version.
-  // Move allowedDevOrigins to the top level of the config
   allowedDevOrigins: ["https://*.cloudworkstations.dev"],
 };
 
