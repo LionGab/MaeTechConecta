@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/accordion"
 import { CheckCircle2, Lock, Newspaper, BookHeart, Milestone } from "lucide-react";
 import Link from "next/link";
-import { ArticleCard } from "@/app/dashboard/content/_components/article-card";
+import { ArticleCard } from "@/app/dashboard/jornada/_components/article-card";
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const journeyModules = [
