@@ -5,23 +5,22 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import { ArrowRight, BookOpen, Heart, ShoppingBag, MessagesSquare, UserCircle } from 'lucide-react';
 import { useUser } from '@/firebase';
-
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import imageData from '@/lib/placeholder-images.json';
 import { ProfileCard } from './matches/_components/profile-card';
 
-const featuredMatch = { name: "Juliana S.", location: "São Paulo, SP", interests: ["Yoga", "Culinária"], babyAge: "8 meses", avatar: PlaceHolderImages.find(p => p.id === 'avatar-2')!.imageUrl };
+const featuredMatch = { name: "Juliana S.", location: "São Paulo, SP", interests: ["Yoga", "Culinária"], babyAge: "8 meses", avatar: imageData.placeholderImages.find(p => p.id === 'avatar-2')!.imageUrl };
 
 const featuredProduct = {
     title: "Carrinho de bebê semi-novo",
     price: 450.00,
-    image: PlaceHolderImages.find(p => p.id === 'product-1')!,
-    seller: { name: "Ana P.", avatar: PlaceHolderImages.find(p => p.id === 'avatar-2')! }
+    image: imageData.placeholderImages.find(p => p.id === 'product-1')!,
+    seller: { name: "Ana P.", avatar: imageData.placeholderImages.find(p => p.id === 'avatar-2')! }
 };
 
 const featuredArticle = {
     title: "Como lidar com a culpa materna: 5 dicas práticas",
     description: "Aprenda a reconhecer e a lidar com um dos sentimentos mais comuns na maternidade.",
-    image: PlaceHolderImages.find(p => p.id === 'content-1')!,
+    image: imageData.placeholderImages.find(p => p.id === 'content-1')!,
     category: "Autoajuda"
 };
 
@@ -33,45 +32,39 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       <div className="text-left">
-        <h1 className="font-headline text-3xl font-bold tracking-tight">
+        <h1 className="font-headline text-4xl font-bold tracking-tight">
           {welcomeMessage}
         </h1>
-        <p className="text-muted-foreground mt-1">
+        <p className="text-muted-foreground mt-2">
           Explore sua comunidade de fé e acolhimento.
         </p>
       </div>
 
        <div className="space-y-6">
             <h2 className="font-headline text-2xl font-bold">Navegação Rápida</h2>
-             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+             <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
                 <Link href="/dashboard/matches" className="block">
-                    <Card className="flex flex-col items-center justify-center text-center p-4 h-32 hover:bg-accent transition-colors">
-                        <Heart className="h-8 w-8 text-primary mb-2" />
+                    <Card className="flex flex-col items-center justify-center text-center p-6 h-36 hover:bg-accent transition-colors">
+                        <Heart className="h-10 w-10 text-primary mb-2" />
                         <span className="font-semibold">Conexões</span>
                     </Card>
                 </Link>
                 <Link href="/dashboard/jornada" className="block">
-                    <Card className="flex flex-col items-center justify-center text-center p-4 h-32 hover:bg-accent transition-colors">
-                        <BookOpen className="h-8 w-8 text-primary mb-2" />
+                    <Card className="flex flex-col items-center justify-center text-center p-6 h-36 hover:bg-accent transition-colors">
+                        <BookOpen className="h-10 w-10 text-primary mb-2" />
                         <span className="font-semibold">Jornada</span>
                     </Card>
                 </Link>
                  <Link href="/dashboard/forum" className="block">
-                    <Card className="flex flex-col items-center justify-center text-center p-4 h-32 hover:bg-accent transition-colors">
-                        <MessagesSquare className="h-8 w-8 text-primary mb-2" />
+                    <Card className="flex flex-col items-center justify-center text-center p-6 h-36 hover:bg-accent transition-colors">
+                        <MessagesSquare className="h-10 w-10 text-primary mb-2" />
                         <span className="font-semibold">Comunidade</span>
                     </Card>
                 </Link>
                  <Link href="/dashboard/loja" className="block">
-                    <Card className="flex flex-col items-center justify-center text-center p-4 h-32 hover:bg-accent transition-colors">
-                        <ShoppingBag className="h-8 w-8 text-primary mb-2" />
+                    <Card className="flex flex-col items-center justify-center text-center p-6 h-36 hover:bg-accent transition-colors">
+                        <ShoppingBag className="h-10 w-10 text-primary mb-2" />
                         <span className="font-semibold">Loja</span>
-                    </Card>
-                </Link>
-                 <Link href="/dashboard/meu-espaco" className="block">
-                    <Card className="flex flex-col items-center justify-center text-center p-4 h-32 hover:bg-accent transition-colors">
-                        <UserCircle className="h-8 w-8 text-primary mb-2" />
-                        <span className="font-semibold">Meu Espaço</span>
                     </Card>
                 </Link>
              </div>
@@ -98,7 +91,7 @@ export default function Dashboard() {
                     <CardFooter>
                          <Button asChild variant="outline">
                             <Link href="/dashboard/jornada">
-                                Ler artigo <ArrowRight className="ml-2" />
+                                Ler artigo <ArrowRight className="ml-2 h-4 w-4" />
                             </Link>
                         </Button>
                     </CardFooter>
@@ -119,7 +112,7 @@ export default function Dashboard() {
                      <CardFooter>
                         <Button asChild className="w-full">
                             <Link href="/dashboard/matches">
-                                Ver mais conexões <ArrowRight className="ml-2" />
+                                Ver mais conexões <ArrowRight className="ml-2 h-4 w-4" />
                             </Link>
                         </Button>
                     </CardFooter>

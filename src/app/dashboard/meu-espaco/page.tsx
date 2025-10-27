@@ -9,12 +9,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChevronRight, Bell, Heart, Shield, LogOut } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import imageData from '@/lib/placeholder-images.json';
 
 export default function MeuEspacoPage() {
   const { user, isUserLoading } = useUser();
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+
+  const userAvatar = imageData.placeholderImages.find(p => p.id === 'logo-nath');
 
   const handleSignOut = async () => {
     try {
@@ -52,7 +55,7 @@ export default function MeuEspacoPage() {
         <CardContent className="p-6 pt-0 text-center">
           <div className="relative -mt-12 mx-auto h-24 w-24">
             <Avatar className="h-full w-full border-4 border-card">
-              <AvatarImage src={user?.photoURL || ''} alt="Avatar do usuário" />
+              <AvatarImage src={userAvatar?.imageUrl || user?.photoURL || ''} alt="Avatar do usuário" />
               <AvatarFallback className="text-3xl">{getInitials(user?.displayName)}</AvatarFallback>
             </Avatar>
           </div>
