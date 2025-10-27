@@ -159,14 +159,6 @@ export default function AuthPage() {
           <h1 className="font-headline text-4xl font-bold text-primary">Nossa Maternidade</h1>
           <p className="text-muted-foreground">Encontre sua tribo: uma comunidade de fé e acolhimento para mães.</p>
         </div>
-
-        <Alert variant="destructive" className="bg-blue-50 border-blue-200 text-blue-800">
-            <AlertTriangle className="h-4 w-4 !text-blue-600" />
-            <AlertTitle className="font-semibold !text-blue-900">Ação Necessária</AlertTitle>
-            <AlertDescription>
-                Para que o login funcione, você precisa habilitar os métodos (Google, Apple, E-mail) no seu <strong>Firebase Console</strong> em <strong>Authentication &gt; Sign-in method</strong>.
-            </AlertDescription>
-        </Alert>
         
         <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-muted rounded-full">
