@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Clapperboard, Heart, ShoppingBag } from 'lucide-react';
+import { useUser } from '@/firebase';
 
 import { Chatbot } from './forum/_components/chatbot';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -27,11 +28,14 @@ const featuredArticle = {
 
 
 export default function Dashboard() {
+  const { user } = useUser();
+  const welcomeMessage = user?.displayName ? `Bem-vinda, ${user.displayName.split(' ')[0]}!` : 'Bem-vinda!';
+
   return (
     <div className="space-y-8">
       <div className="text-center">
         <h1 className="font-headline text-3xl font-bold tracking-tight">
-          Bem-vinda, Nathália!
+          {welcomeMessage}
         </h1>
         <p className="text-muted-foreground">
           Sua comunidade de fé e acolhimento.
@@ -40,7 +44,7 @@ export default function Dashboard() {
 
        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="md:col-span-2">
-            <h2 className="font-headline text-2xl font-bold mb-4">Converse com a NathIA</h2>
+            <h2 className="font-headline text-2xl font-bold mb-4">Converse com a MãeIA</h2>
             <Chatbot />
         </div>
 

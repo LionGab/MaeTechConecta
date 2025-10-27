@@ -1,8 +1,11 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  Bell,
-} from 'lucide-react';
+import { Bell } from 'lucide-react';
+import { useUser, useAuth } from '@/firebase';
+import { useRouter } from 'next/navigation';
+import { signOut } from 'firebase/auth';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -17,26 +20,32 @@ import {
 
 import imageData from '@/lib/placeholder-images.json';
 
-const pageTitles: { [key: string]: string } = {
-  '/dashboard': 'Assistente',
-  '/dashboard/matches': 'Conexões de Fé',
-  '/dashboard/loja': 'Nossa Loja',
-  '/dashboard/content': 'Conteúdo Exclusivo',
-  '/dashboard/forum': 'Fórum de Apoio',
-  '/dashboard/pricing': 'Nosso Plano',
-};
-
-
 export function Header() {
-  const userAvatar = imageData.placeholderImages.find(p => p.id === 'avatar-1');
+  const { user } = useUser();
+  const auth = useAuth();
+  const router = useRouter();
   const logo = imageData.placeholderImages.find(p => p.id === 'logo-nath');
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      router.push('/');
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    }
+  };
+
+  const getInitials = (name: string | null | undefined) => {
+    if (!name) return 'U';
+    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  };
 
   return (
     <header className="flex h-16 items-center gap-4 border-b bg-card px-4 lg:px-6 sticky top-0 z-40">
-       <div className="w-full flex-1">
+      <div className="w-full flex-1">
         <Link href="/dashboard" className="flex items-center gap-2">
-            {logo && <Image src={logo.imageUrl} alt={logo.description} width={32} height={32} className="h-8 w-8 rounded-full" />}
-            <span className="font-headline text-xl font-bold">Nossa Maternidade</span>
+          {logo && <Image src={logo.imageUrl} alt="Logo Nossa Maternidade" width={32} height={32} className="h-8 w-8 rounded-full" />}
+          <span className="font-headline text-xl font-bold">Nossa Maternidade</span>
         </Link>
       </div>
 
@@ -53,20 +62,19 @@ export function Header() {
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
               <Avatar>
-                {userAvatar && <AvatarImage src={userAvatar.imageUrl} alt="Avatar do usuário" />}
-                <AvatarFallback>NV</AvatarFallback>
+                <AvatarImage src={user?.photoURL || ''} alt="Avatar do usuário" />
+                <AvatarFallback>{getInitials(user?.displayName)}</AvatarFallback>
               </Avatar>
               <span className="sr-only">Toggle user menu</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+            <DropdownMenuLabel>{user?.displayName || 'Minha Conta'}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Perfil</DropdownMenuItem>
-            <DropdownMenuItem asChild><Link href="/dashboard/pricing">Assinatura</Link></DropdownMenuItem>
             <DropdownMenuItem>Configurações</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Sair</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleSignOut}>Sair</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

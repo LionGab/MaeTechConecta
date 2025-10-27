@@ -156,8 +156,8 @@ export default function AuthPage() {
     <div className="flex items-center justify-center min-h-screen bg-background p-4">
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="font-headline text-4xl font-bold text-primary">ClubNath</h1>
-          <p className="text-muted-foreground">Sua comunidade exclusiva</p>
+          <h1 className="font-headline text-4xl font-bold text-primary">Nossa Maternidade</h1>
+          <p className="text-muted-foreground">Encontre sua tribo: uma comunidade de fé e acolhimento para mães.</p>
         </div>
 
         <Alert variant="destructive" className="bg-blue-50 border-blue-200 text-blue-800">
