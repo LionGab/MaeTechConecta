@@ -3,145 +3,145 @@
     {
       "id": "logo-nath",
       "description": "Logo do ClubNath com a ilustração da Nathália Valente",
-      "imageUrl": "/images/logo-nath.png",
+      "imageUrl": "https://placehold.co/100x100/EAD9F2/AF47D2?text=Logo",
       "imageHint": "woman illustration"
     },
     {
       "id": "hero",
       "description": "Mother holding her baby",
-      "imageUrl": "/images/hero.jpg",
+      "imageUrl": "https://placehold.co/1200x800/FFF0F5/AF47D2?text=Hero",
       "imageHint": "mother baby"
     },
     {
       "id": "feature-matches",
       "description": "Two mothers smiling",
-      "imageUrl": "/images/feature-matches.jpg",
+      "imageUrl": "https://placehold.co/600x400/EAD9F2/AF47D2?text=Matches",
       "imageHint": "friends smiling"
     },
     {
       "id": "feature-market",
       "description": "Baby clothes and toys",
-      "imageUrl": "/images/feature-market.jpg",
+      "imageUrl": "https://placehold.co/600x400/FFF0F5/AF47D2?text=Market",
       "imageHint": "baby clothes"
     },
     {
       "id": "feature-content",
       "description": "Woman talking to camera for a vlog",
-      "imageUrl": "/images/feature-content.jpg",
+      "imageUrl": "https://placehold.co/600x400/EAD9F2/AF47D2?text=Content",
       "imageHint": "woman vlogging"
     },
     {
       "id": "avatar-1",
       "description": "Smiling woman's portrait",
-      "imageUrl": "/images/avatar-1.jpg",
+      "imageUrl": "https://placehold.co/150x150/FFF0F5/AF47D2?text=User",
       "imageHint": "woman illustration"
     },
     {
       "id": "avatar-2",
       "description": "Smiling woman's portrait",
-      "imageUrl": "/images/avatar-2.jpg",
+      "imageUrl": "https://placehold.co/150x150/EAD9F2/AF47D2?text=User",
       "imageHint": "woman smiling"
     },
     {
       "id": "avatar-3",
       "description": "Woman's portrait",
-      "imageUrl": "/images/avatar-3.jpg",
+      "imageUrl": "https://placehold.co/150x150/FFF0F5/AF47D2?text=User",
       "imageHint": "woman face"
     },
     {
       "id": "avatar-4",
       "description": "Woman's portrait",
-      "imageUrl": "/images/avatar-4.jpg",
+      "imageUrl": "https://placehold.co/150x150/EAD9F2/AF47D2?text=User",
       "imageHint": "person portrait"
     },
     {
       "id": "avatar-5",
       "description": "Woman's portrait",
-      "imageUrl": "/images/avatar-5.jpg",
+      "imageUrl": "https://placehold.co/150x150/FFF0F5/AF47D2?text=User",
       "imageHint": "smiling person"
     },
     {
       "id": "product-1",
       "description": "A baby stroller",
-      "imageUrl": "/images/product-1.jpg",
+      "imageUrl": "https://placehold.co/400x300/EAD9F2/AF47D2?text=Stroller",
       "imageHint": "baby stroller"
     },
     {
       "id": "product-2",
       "description": "A baby crib",
-      "imageUrl": "/images/product-2.jpg",
+      "imageUrl": "https://placehold.co/400x300/FFF0F5/AF47D2?text=Crib",
       "imageHint": "baby crib"
     },
     {
       "id": "product-3",
       "description": "A set of baby bottles",
-      "imageUrl": "/images/product-3.jpg",
+      "imageUrl": "https://placehold.co/400x300/EAD9F2/AF47D2?text=Bottles",
       "imageHint": "baby bottles"
     },
     {
       "id": "product-4",
       "description": "A pile of baby toys",
-      "imageUrl": "/images/product-4.jpg",
+      "imageUrl": "https://placehold.co/400x300/FFF0F5/AF47D2?text=Toys",
       "imageHint": "baby toys"
     },
     {
       "id": "product-5",
       "description": "A baby high chair",
-      "imageUrl": "/images/product-5.jpg",
+      "imageUrl": "https://placehold.co/400x300/EAD9F2/AF47D2?text=Chair",
       "imageHint": "high chair"
     },
     {
       "id": "content-1",
       "description": "Video about baby sleep",
-      "imageUrl": "/images/content-1.jpg",
+      "imageUrl": "https://placehold.co/800x450/FFF0F5/AF47D2?text=Sleep",
       "imageHint": "sleeping baby"
     },
     {
       "id": "content-2",
       "description": "Video about postpartum nutrition",
-      "imageUrl": "/images/content-2.jpg",
+      "imageUrl": "https://placehold.co/800x450/EAD9F2/AF47D2?text=Nutrition",
       "imageHint": "healthy food"
     },
     {
       "id": "content-3",
       "description": "Video about baby's first foods",
-      "imageUrl": "/images/content-3.jpg",
+      "imageUrl": "https://placehold.co/800x450/FFF0F5/AF47D2?text=Food",
       "imageHint": "baby eating"
     },
     {
       "id": "content-4",
       "description": "Live Q&A session",
-      "imageUrl": "/images/content-4.jpg",
+      "imageUrl": "https://placehold.co/800x450/EAD9F2/AF47D2?text=Live+Q&A",
       "imageHint": "live stream"
     },
     {
       "id": "vip-content",
       "description": "Exclusive interview with Nathália Valente",
-      "imageUrl": "/images/vip-content.jpg",
+      "imageUrl": "https://placehold.co/800x450/AF47D2/FFFFFF?text=VIP",
       "imageHint": "woman illustration"
     },
     {
       "id": "nava-banner",
       "description": "Woman in a bikini on a beach",
-      "imageUrl": "/images/nava-banner.jpg",
+      "imageUrl": "https://placehold.co/1200x800/EAD9F2/333333?text=NAVA",
       "imageHint": "bikini beach"
     },
     {
       "id": "babytest-banner",
       "description": "Close up on a baby's feet",
-      "imageUrl": "/images/babytest-banner.jpg",
+      "imageUrl": "https://placehold.co/800x600/FFF0F5/333333?text=Babytest",
       "imageHint": "baby feet"
     },
     {
       "id": "pwa-icon-192",
       "description": "ClubNath App Icon 192x192",
-      "imageUrl": "/images/logo-nath-192.png",
+      "imageUrl": "https://placehold.co/192x192/EAD9F2/AF47D2?text=Logo",
       "imageHint": "logo illustration"
     },
     {
       "id": "pwa-icon-512",
       "description": "ClubNath App Icon 512x512",
-      "imageUrl": "/images/logo-nath-512.png",
+      "imageUrl": "https://placehold.co/512x512/EAD9F2/AF47D2?text=Logo",
       "imageHint": "logo illustration"
     }
   ]
