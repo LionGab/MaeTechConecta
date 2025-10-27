@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, BookOpen, Heart, ShoppingBag, MessagesSquare, UserCircle } from 'lucide-react';
 import { useUser } from '@/firebase';
@@ -28,7 +28,7 @@ const featuredArticle = {
 
 export default function Dashboard() {
   const { user } = useUser();
-  const welcomeMessage = user?.displayName ? `Bem-vinda, ${user.displayName.split(' ')[0]}!` : 'Bem-vinda!';
+  const welcomeMessage = user?.displayName ? `Bem-vinda de volta, ${user.displayName.split(' ')[0]}!` : 'Bem-vinda!';
 
   return (
     <div className="space-y-8">
@@ -36,67 +36,93 @@ export default function Dashboard() {
         <h1 className="font-headline text-3xl font-bold tracking-tight">
           {welcomeMessage}
         </h1>
-        <p className="text-muted-foreground">
-          Sua comunidade de fé e acolhimento.
+        <p className="text-muted-foreground mt-1">
+          Explore sua comunidade de fé e acolhimento.
         </p>
       </div>
 
-       <div className="space-y-6 md:col-span-2">
+       <div className="space-y-6">
             <h2 className="font-headline text-2xl font-bold">Navegação Rápida</h2>
              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                <Button variant="outline" className="h-24 flex-col gap-2" asChild>
-                    <Link href="/dashboard/matches"><Heart /> Conexões</Link>
-                </Button>
-                <Button variant="outline" className="h-24 flex-col gap-2" asChild>
-                    <Link href="/dashboard/jornada"><BookOpen /> Jornada</Link>
-                </Button>
-                <Button variant="outline" className="h-24 flex-col gap-2" asChild>
-                    <Link href="/dashboard/forum"><MessagesSquare /> Comunidade</Link>
-                </Button>
-                <Button variant="outline" className="h-24 flex-col gap-2" asChild>
-                    <Link href="/dashboard/loja"><ShoppingBag /> Loja</Link>
-                </Button>
-                <Button variant="outline" className="h-24 flex-col gap-2" asChild>
-                    <Link href="/dashboard/meu-espaco"><UserCircle /> Meu Espaço</Link>
-                </Button>
+                <Link href="/dashboard/matches" className="block">
+                    <Card className="flex flex-col items-center justify-center text-center p-4 h-32 hover:bg-accent transition-colors">
+                        <Heart className="h-8 w-8 text-primary mb-2" />
+                        <span className="font-semibold">Conexões</span>
+                    </Card>
+                </Link>
+                <Link href="/dashboard/jornada" className="block">
+                    <Card className="flex flex-col items-center justify-center text-center p-4 h-32 hover:bg-accent transition-colors">
+                        <BookOpen className="h-8 w-8 text-primary mb-2" />
+                        <span className="font-semibold">Jornada</span>
+                    </Card>
+                </Link>
+                 <Link href="/dashboard/forum" className="block">
+                    <Card className="flex flex-col items-center justify-center text-center p-4 h-32 hover:bg-accent transition-colors">
+                        <MessagesSquare className="h-8 w-8 text-primary mb-2" />
+                        <span className="font-semibold">Comunidade</span>
+                    </Card>
+                </Link>
+                 <Link href="/dashboard/loja" className="block">
+                    <Card className="flex flex-col items-center justify-center text-center p-4 h-32 hover:bg-accent transition-colors">
+                        <ShoppingBag className="h-8 w-8 text-primary mb-2" />
+                        <span className="font-semibold">Loja</span>
+                    </Card>
+                </Link>
+                 <Link href="/dashboard/meu-espaco" className="block">
+                    <Card className="flex flex-col items-center justify-center text-center p-4 h-32 hover:bg-accent transition-colors">
+                        <UserCircle className="h-8 w-8 text-primary mb-2" />
+                        <span className="font-semibold">Meu Espaço</span>
+                    </Card>
+                </Link>
              </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-6">
                 <h2 className="font-headline text-2xl font-bold">Para você</h2>
-                <Card className="flex flex-col">
+                <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                            <Heart className="text-primary"/> Conexão em Destaque
+                            <BookOpen className="text-primary"/> Artigo em Destaque
                         </CardTitle>
-                        <CardDescription>Encontramos um novo perfil para você se conectar.</CardDescription>
                     </CardHeader>
-                    <CardContent className="flex-grow">
-                        <ProfileCard match={featuredMatch} />
+                    <CardContent className="flex flex-col md:flex-row gap-6 items-center">
+                        <div className="relative w-full md:w-1/3 aspect-video rounded-lg overflow-hidden">
+                             <Image src={featuredArticle.image.imageUrl} alt={featuredArticle.image.description} fill className="object-cover" />
+                        </div>
+                        <div className="flex-1">
+                             <h3 className="font-bold text-lg">{featuredArticle.title}</h3>
+                            <p className="text-muted-foreground text-sm mt-1">{featuredArticle.description}</p>
+                        </div>
                     </CardContent>
+                    <CardFooter>
+                         <Button asChild variant="outline">
+                            <Link href="/dashboard/jornada">
+                                Ler artigo <ArrowRight className="ml-2" />
+                            </Link>
+                        </Button>
+                    </CardFooter>
                 </Card>
             </div>
 
             <div className="space-y-6">
                 <h2 className="font-headline text-2xl font-bold">Destaques</h2>
-                <Card>
+                <Card className="flex flex-col h-full">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                            <ShoppingBag className="text-primary"/> Brechó da Comunidade
+                           <Heart className="text-primary"/> Conexão Sugerida
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="relative aspect-video rounded-lg overflow-hidden">
-                            <Image src={featuredProduct.image.imageUrl} alt={featuredProduct.image.description} fill className="object-cover" />
-                        </div>
-                        <h3 className="font-semibold">{featuredProduct.title}</h3>
+                    <CardContent className="flex-grow">
+                        <ProfileCard match={featuredMatch} />
+                    </CardContent>
+                     <CardFooter>
                         <Button asChild className="w-full">
-                            <Link href="/dashboard/loja">
-                                Ver na Loja <ArrowRight className="ml-2" />
+                            <Link href="/dashboard/matches">
+                                Ver mais conexões <ArrowRight className="ml-2" />
                             </Link>
                         </Button>
-                    </CardContent>
+                    </CardFooter>
                 </Card>
             </div>
       </div>

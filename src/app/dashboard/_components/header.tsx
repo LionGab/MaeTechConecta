@@ -41,27 +41,25 @@ export function Header() {
   };
 
   return (
-    <header className="flex h-16 items-center gap-4 border-b bg-card px-4 lg:px-6 sticky top-0 z-40">
-      <div className="w-full flex-1">
-        <Link href="/dashboard" className="flex items-center gap-2">
-          {logo && <Image src={logo.imageUrl} alt="Logo Nossa Maternidade" width={32} height={32} className="h-8 w-8 rounded-full" />}
-          <span className="font-headline text-xl font-bold">Nossa Maternidade</span>
-        </Link>
-      </div>
+    <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+      <Link href="/dashboard" className="flex items-center gap-3">
+        {logo && <Image src={logo.imageUrl} alt="Logo Nossa Maternidade" width={32} height={32} className="h-8 w-8 rounded-full" />}
+        <span className="font-headline text-xl font-bold tracking-tighter text-primary">Nossa Maternidade</span>
+      </Link>
 
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" className="relative">
+      <div className="ml-auto flex items-center gap-2">
+        <Button variant="ghost" size="icon" className="relative rounded-full">
           <Bell className="h-5 w-5" />
-          <span className="absolute -top-1 -right-1 flex h-3 w-3">
+          <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-primary/90"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary/90"></span>
           </span>
           <span className="sr-only">Ver notificações</span>
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="secondary" size="icon" className="rounded-full">
-              <Avatar>
+            <Button variant="ghost" size="icon" className="rounded-full">
+              <Avatar className="h-8 w-8">
                 <AvatarImage src={user?.photoURL || ''} alt="Avatar do usuário" />
                 <AvatarFallback>{getInitials(user?.displayName)}</AvatarFallback>
               </Avatar>
@@ -71,7 +69,7 @@ export function Header() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>{user?.displayName || 'Minha Conta'}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Perfil</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/dashboard/meu-espaco')}>Perfil</DropdownMenuItem>
             <DropdownMenuItem>Configurações</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut}>Sair</DropdownMenuItem>

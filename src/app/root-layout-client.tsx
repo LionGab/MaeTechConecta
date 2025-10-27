@@ -16,7 +16,7 @@ export function RootLayoutClient({
     return (
         <div className="flex min-h-screen w-full flex-col bg-background">
           <Header />
-          <main className="flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 mb-20">
+          <main className="flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 md:mb-0 mb-20">
             {children}
           </main>
           <BottomNav />
