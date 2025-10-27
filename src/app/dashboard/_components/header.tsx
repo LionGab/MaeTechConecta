@@ -18,9 +18,9 @@ import {
 import imageData from '@/lib/placeholder-images.json';
 
 const pageTitles: { [key: string]: string } = {
-  '/dashboard': 'NathIA',
+  '/dashboard': 'Assistente',
   '/dashboard/matches': 'Conexões de Fé',
-  '/dashboard/loja': 'Loja ClubNath',
+  '/dashboard/loja': 'Nossa Loja',
   '/dashboard/content': 'Conteúdo Exclusivo',
   '/dashboard/forum': 'Fórum de Apoio',
   '/dashboard/pricing': 'Nosso Plano',
@@ -36,7 +36,7 @@ export function Header() {
        <div className="w-full flex-1">
         <Link href="/dashboard" className="flex items-center gap-2">
             {logo && <Image src={logo.imageUrl} alt={logo.description} width={32} height={32} className="h-8 w-8 rounded-full" />}
-            <span className="font-headline text-xl font-bold">ClubNath</span>
+            <span className="font-headline text-xl font-bold">Nossa Maternidade</span>
         </Link>
       </div>
 
@@ -73,5 +73,3 @@ export function Header() {
     </header>
   );
 }
-
-    

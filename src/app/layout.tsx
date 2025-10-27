@@ -18,8 +18,8 @@ const fontHeadline = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'ClubNath',
-  description: 'A comunidade de fé e acolhimento que toda mãe precisa.',
+  title: 'Nossa Maternidade',
+  description: 'Encontre sua tribo: uma comunidade de fé e acolhimento para mães.',
   manifest: '/manifest.json',
 };
 
