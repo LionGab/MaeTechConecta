@@ -3,13 +3,13 @@
     {
       "id": "logo-nath",
       "description": "Ilustração do rosto de uma mulher sorrindo",
-      "imageUrl": "https://placehold.co/100x100/EAD9F2/AF47D2?text=Logo",
+      "imageUrl": "https://storage.googleapis.com/aai-web-samples/apps/club-nath/crop-1.jpg",
       "imageHint": "woman illustration"
     },
     {
       "id": "hero",
       "description": "Ilustração de uma mãe segurando seu bebê",
-      "imageUrl": "https://placehold.co/1200x800/FFF0F5/AF47D2?text=Hero",
+      "imageUrl": "https://placehold.co/1200x800/FFF0F5/E5A2A2?text=Hero",
       "imageHint": "mother baby illustration"
     },
     {
@@ -33,7 +33,7 @@
     {
       "id": "avatar-1",
       "description": "Smiling woman's portrait",
-      "imageUrl": "https://placehold.co/150x150/EAD9F2/AF47D2?text=User",
+      "imageUrl": "https://storage.googleapis.com/aai-web-samples/apps/club-nath/crop-1.jpg",
       "imageHint": "woman illustration"
     },
     {
