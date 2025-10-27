@@ -3,10 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Clapperboard, Heart, ShoppingBag } from 'lucide-react';
+import { ArrowRight, BookOpen, Heart, ShoppingBag, MessagesSquare, UserCircle } from 'lucide-react';
 import { useUser } from '@/firebase';
 
-import { Chatbot } from './forum/_components/chatbot';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { ProfileCard } from './matches/_components/profile-card';
 
@@ -33,7 +32,7 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
-      <div className="text-center">
+      <div className="text-left">
         <h1 className="font-headline text-3xl font-bold tracking-tight">
           {welcomeMessage}
         </h1>
@@ -43,19 +42,36 @@ export default function Dashboard() {
       </div>
 
        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="md:col-span-2">
-            <h2 className="font-headline text-2xl font-bold mb-4">Converse com a MãeIA</h2>
-            <Chatbot />
+
+        <div className="space-y-6 md:col-span-2">
+            <h2 className="font-headline text-2xl font-bold">Navegação Rápida</h2>
+             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <Button variant="outline" className="h-24 flex-col gap-2" asChild>
+                    <Link href="/dashboard/matches"><Heart /> Conexões</Link>
+                </Button>
+                <Button variant="outline" className="h-24 flex-col gap-2" asChild>
+                    <Link href="/dashboard/jornada"><BookOpen /> Jornada</Link>
+                </Button>
+                <Button variant="outline" className="h-24 flex-col gap-2" asChild>
+                    <Link href="/dashboard/forum"><MessagesSquare /> Comunidade</Link>
+                </Button>
+                <Button variant="outline" className="h-24 flex-col gap-2" asChild>
+                    <Link href="/dashboard/loja"><ShoppingBag /> Loja</Link>
+                </Button>
+                <Button variant="outline" className="h-24 flex-col gap-2" asChild>
+                    <Link href="/dashboard/meu-espaco"><UserCircle /> Meu Espaço</Link>
+                </Button>
+             </div>
         </div>
 
         <div className="space-y-6">
-            <h2 className="font-headline text-2xl font-bold">Sua Jornada</h2>
+            <h2 className="font-headline text-2xl font-bold">Para você</h2>
              <Card className="flex flex-col">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                        <Heart className="text-primary"/> Conexões de Fé
+                        <Heart className="text-primary"/> Conexão em Destaque
                     </CardTitle>
-                    <CardDescription>Encontramos um novo perfil para você.</CardDescription>
+                    <CardDescription>Encontramos um novo perfil para você se conectar.</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">
                     <ProfileCard match={featuredMatch} />
@@ -87,7 +103,7 @@ export default function Dashboard() {
              <Card>
                 <CardHeader>
                      <CardTitle className="flex items-center gap-2">
-                        <Clapperboard className="text-primary"/> Conteúdo Exclusivo
+                        <BookOpen className="text-primary"/> Jornada da Maternidade
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -96,14 +112,13 @@ export default function Dashboard() {
                     </div>
                     <h3 className="font-semibold">{featuredArticle.title}</h3>
                      <Button asChild className="w-full">
-                        <Link href="/dashboard/content">
-                           Ler Artigo <ArrowRight className="ml-2" />
+                        <Link href="/dashboard/jornada">
+                           Ver na Jornada <ArrowRight className="ml-2" />
                         </Link>
                     </Button>
                 </CardContent>
             </Card>
         </div>
-
       </div>
     </div>
   );

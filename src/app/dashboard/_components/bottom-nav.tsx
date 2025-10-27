@@ -2,15 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BotMessageSquare, Users, Clapperboard, MessagesSquare, ShoppingBag, BookOpen } from 'lucide-react';
+import { Users, BookOpen, MessagesSquare, ShoppingBag, UserCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/dashboard/matches', icon: Users, label: 'Conexões' },
   { href: '/dashboard/jornada', icon: BookOpen, label: 'Jornada' },
-  { href: '/dashboard', icon: BotMessageSquare, label: 'NathIA' },
+  { href: '/dashboard/forum', icon: MessagesSquare, label: 'Comunidade' },
   { href: '/dashboard/loja', icon: ShoppingBag, label: 'Loja' },
-  { href: '/dashboard/forum', icon: MessagesSquare, label: 'Fórum' },
+  { href: '/dashboard/meu-espaco', icon: UserCircle, label: 'Meu Espaço' },
 ];
 
 export function BottomNav() {
@@ -20,7 +20,7 @@ export function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-card/95 backdrop-blur-sm">
       <div className="container mx-auto grid h-16 max-w-md grid-cols-5 items-center px-2">
         {navItems.map((item) => {
-          const isActive = item.href === '/dashboard' ? pathname === item.href : pathname.startsWith(item.href);
+          const isActive = pathname.startsWith(item.href);
           const Icon = item.icon;
           return (
             <Link
