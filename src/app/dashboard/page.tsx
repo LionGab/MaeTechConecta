@@ -3,10 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, Heart, ShoppingBag, MessagesSquare, UserCircle } from 'lucide-react';
+import { ArrowRight, BookOpen, Heart, ShoppingBag, MessagesSquare } from 'lucide-react';
 import { useUser } from '@/firebase';
 import imageData from '@/lib/placeholder-images.json';
-import { ProfileCard } from './matches/_components/profile-card';
 
 const featuredMatch = { name: "Juliana S.", location: "São Paulo, SP", interests: ["Yoga", "Culinária"], babyAge: "8 meses", avatar: imageData.placeholderImages.find(p => p.id === 'avatar-2')!.imageUrl };
 
@@ -71,7 +70,7 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-3 space-y-6">
                 <h2 className="font-headline text-2xl font-bold">Para você</h2>
                 <Card>
                     <CardHeader>
@@ -92,27 +91,6 @@ export default function Dashboard() {
                          <Button asChild variant="outline">
                             <Link href="/dashboard/jornada">
                                 Ler artigo <ArrowRight className="ml-2 h-4 w-4" />
-                            </Link>
-                        </Button>
-                    </CardFooter>
-                </Card>
-            </div>
-
-            <div className="space-y-6">
-                <h2 className="font-headline text-2xl font-bold">Destaques</h2>
-                <Card className="flex flex-col h-full">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                           <Heart className="text-primary"/> Conexão Sugerida
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                        <ProfileCard match={featuredMatch} />
-                    </CardContent>
-                     <CardFooter>
-                        <Button asChild className="w-full">
-                            <Link href="/dashboard/matches">
-                                Ver mais conexões <ArrowRight className="ml-2 h-4 w-4" />
                             </Link>
                         </Button>
                     </CardFooter>

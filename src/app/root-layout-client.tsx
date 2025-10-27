@@ -11,7 +11,6 @@ export function RootLayoutClient({
   const pathname = usePathname();
   const isDashboard = pathname.startsWith('/dashboard');
 
-  // Render the dashboard layout only for dashboard routes
   if (isDashboard) {
     return (
         <div className="flex min-h-screen w-full flex-col bg-background">
