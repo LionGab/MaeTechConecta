@@ -7,9 +7,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  experimental: {
-    allowedDevOrigins: ["https://*.cloudworkstations.dev"],
-  },
   images: {
     remotePatterns: [
       {
@@ -20,6 +17,11 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    // allowedDevOrigins was here, but it's not an experimental feature in this version.
+  },
+  // Move allowedDevOrigins to the top level of the config
+  allowedDevOrigins: ["https://*.cloudworkstations.dev"],
 };
 
 module.exports = nextConfig;
