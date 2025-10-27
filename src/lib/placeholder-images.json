@@ -2,15 +2,15 @@
   "placeholderImages": [
     {
       "id": "logo-nath",
-      "description": "Logo do ClubNath com a ilustração da Nathália Valente",
-      "imageUrl": "https://placehold.co/100x100/EAD9F2/AF47D2?text=Logo",
+      "description": "Ilustração do rosto de uma mulher sorrindo",
+      "imageUrl": "https://storage.googleapis.com/aai-web-samples/apps/club-nath/crop-1.jpg",
       "imageHint": "woman illustration"
     },
     {
       "id": "hero",
-      "description": "Mother holding her baby",
-      "imageUrl": "https://placehold.co/1200x800/FFF0F5/AF47D2?text=Hero",
-      "imageHint": "mother baby"
+      "description": "Ilustração de uma mãe segurando seu bebê",
+      "imageUrl": "https://storage.googleapis.com/aai-web-samples/apps/club-nath/original.jpg",
+      "imageHint": "mother baby illustration"
     },
     {
       "id": "feature-matches",
@@ -33,7 +33,7 @@
     {
       "id": "avatar-1",
       "description": "Smiling woman's portrait",
-      "imageUrl": "https://placehold.co/150x150/FFF0F5/AF47D2?text=User",
+      "imageUrl": "https://storage.googleapis.com/aai-web-samples/apps/club-nath/crop-1.jpg",
       "imageHint": "woman illustration"
     },
     {
@@ -135,13 +135,13 @@
     {
       "id": "pwa-icon-192",
       "description": "ClubNath App Icon 192x192",
-      "imageUrl": "https://placehold.co/192x192/EAD9F2/AF47D2?text=Logo",
+      "imageUrl": "https://storage.googleapis.com/aai-web-samples/apps/club-nath/crop-1.jpg",
       "imageHint": "logo illustration"
     },
     {
       "id": "pwa-icon-512",
       "description": "ClubNath App Icon 512x512",
-      "imageUrl": "https://placehold.co/512x512/EAD9F2/AF47D2?text=Logo",
+      "imageUrl": "https://storage.googleapis.com/aai-web-samples/apps/club-nath/crop-1.jpg",
       "imageHint": "logo illustration"
     }
   ]
