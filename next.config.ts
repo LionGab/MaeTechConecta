@@ -12,6 +12,7 @@ const nextConfig = {
     domains: [
       'placehold.co',
       'storage.googleapis.com',
+      'i.imgur.com'
     ],
   },
   allowedDevOrigins: ["https://*.cloudworkstations.dev"],
