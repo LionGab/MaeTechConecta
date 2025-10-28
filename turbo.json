@@ -20,7 +20,7 @@
         "^lint"
       ]
     },
-    "dev": {
+    "start": {
       "cache": false,
       "persistent": true
     }
