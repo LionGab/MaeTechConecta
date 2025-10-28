@@ -1,3 +1,26 @@
-# ClubNath by MaeTech
+# ClubNath por MaeTech - Arquitetura Monorepo
 
-This is a NextJS starter in Firebase Studio, customized for the ClubNath application.
+Este é um monorepo Turborepo para o aplicativo "Nossa Maternidade", com foco em uma experiência mobile-first usando React Native (Expo).
+
+## Estrutura
+
+- `apps/mobile`: O aplicativo principal em React Native + Expo.
+- `apps/web`: Futuro CMS ou landing page.
+- `packages/shared`: Lógica de negócios compartilhada (hooks, serviços, tipos).
+- `packages/api`: Clientes de API (Firebase, etc).
+- `packages/ui`: Componentes de UI React Native compartilhados.
+
+## Começando
+
+1. **Instale as dependências:**
+   ```bash
+   pnpm install
+   ```
+
+2. **Rode o aplicativo mobile:**
+   ```bash
+   pnpm dev
+   ```
+   Isso iniciará o processo do Turborepo. Selecione para rodar a tarefa `dev` para o app `mobile`.
+   
+   Em seguida, escaneie o QR code com o app Expo Go no
