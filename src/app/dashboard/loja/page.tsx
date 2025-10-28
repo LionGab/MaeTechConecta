@@ -59,63 +59,9 @@ export default function LojaPage() {
 
   return (
     <div className="space-y-12">
-        {/* Nava Beachwear Hero Section */}
-        <div className="relative w-full h-[60vh] md:h-[70vh] rounded-xl overflow-hidden text-white flex items-center justify-center">
-            {navaImage && (
-                <Image
-                    src={navaImage.imageUrl}
-                    alt={navaImage.description}
-                    data-ai-hint={navaImage.imageHint}
-                    fill
-                    className="object-cover"
-                />
-            )}
-            <div className="absolute inset-0 bg-black/40" />
-            <div className="relative z-10 text-center p-4">
-                <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tight text-shadow-lg">NAVA LOOKS</h1>
-                <p className="mt-2 text-lg md:text-xl text-shadow">Vista-se de você</p>
-                <Button size="lg" onClick={handleAction} className="mt-6 bg-white text-black hover:bg-white/90">
-                    <PersonStanding className="mr-2"/> Acessar Provador Virtual
-                </Button>
-            </div>
-        </div>
-
-        {/* Babytest Section */}
-        <Card className="bg-gradient-to-r from-background to-muted/50 overflow-hidden border-2">
-            <div className="grid md:grid-cols-2 items-center">
-                <div className="p-8 md:p-12">
-                    <CardHeader className="p-0">
-                        <div className="flex items-center gap-3">
-                             <TestTube2 className="h-8 w-8 text-primary"/>
-                            <CardTitle className="font-headline text-3xl">
-                                Babytest
-                            </CardTitle>
-                        </div>
-                        <CardDescription className="text-muted-foreground mt-2 text-base">
-                            O teste que revela o futuro do seu bebê está no DNA. Entenda predisposições genéticas e cuide da saúde desde os primeiros dias.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="p-0 mt-6">
-                        <Button variant="default" size="lg" onClick={handleAction}>
-                           Saiba mais e compre
-                        </Button>
-                    </CardContent>
-                </div>
-                 <div className="relative h-64 md:h-full min-h-[300px]">
-                     {babyTestImage && <Image
-                        src={babyTestImage.imageUrl}
-                        alt={babyTestImage.description}
-                        data-ai-hint={babyTestImage.imageHint}
-                        fill
-                        className="object-cover"
-                     />}
-                </div>
-            </div>
-        </Card>
-
-        {/* Brechó Section */}
+        {/* Brechó Section - Promoted to top */}
         <div>
-            <h2 className="font-headline text-3xl font-bold">Brechó da Comunidade</h2>
+            <h1 className="font-headline text-3xl font-bold">Brechó da Comunidade</h1>
             <p className="text-muted-foreground mt-1">Compre e venda itens com outras mães da nossa rede de apoio.</p>
 
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -145,6 +91,79 @@ export default function LojaPage() {
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {products.map(p => <ProductCard key={p.title} item={p} onBuyClick={handleAction} />)}
             </div>
+        </div>
+
+        {/* Partner Offers - Less prominent */}
+        <div className="pt-8 border-t">
+            <h2 className="font-headline text-2xl font-bold mb-6">Ofertas de Parceiros</h2>
+            
+            {/* Babytest Section - Compact */}
+            <Card className="mb-6 overflow-hidden border-2">
+                <div className="grid md:grid-cols-2 items-center">
+                    <div className="p-6 md:p-8">
+                        <CardHeader className="p-0">
+                            <div className="flex items-center gap-3">
+                                 <TestTube2 className="h-6 w-6 text-primary"/>
+                                <CardTitle className="font-headline text-2xl">
+                                    Babytest
+                                </CardTitle>
+                            </div>
+                            <CardDescription className="text-muted-foreground mt-2">
+                                Teste genético para entender predisposições do seu bebê.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="p-0 mt-4">
+                            <Button variant="default" onClick={handleAction}>
+                               Saiba mais
+                            </Button>
+                        </CardContent>
+                    </div>
+                     <div className="relative h-48 md:h-full min-h-[200px]">
+                         {babyTestImage && <Image
+                            src={babyTestImage.imageUrl}
+                            alt={babyTestImage.description}
+                            data-ai-hint={babyTestImage.imageHint}
+                            fill
+                            className="object-cover"
+                         />}
+                    </div>
+                </div>
+            </Card>
+
+            {/* Nava Beachwear - Compact */}
+            <Card className="overflow-hidden">
+                <div className="grid md:grid-cols-2 items-center">
+                    <div className="relative h-48 md:h-full min-h-[200px] order-2 md:order-1">
+                        {navaImage && (
+                            <Image
+                                src={navaImage.imageUrl}
+                                alt={navaImage.description}
+                                data-ai-hint={navaImage.imageHint}
+                                fill
+                                className="object-cover"
+                            />
+                        )}
+                    </div>
+                    <div className="p-6 md:p-8 order-1 md:order-2">
+                        <CardHeader className="p-0">
+                            <div className="flex items-center gap-3">
+                                 <PersonStanding className="h-6 w-6 text-primary"/>
+                                <CardTitle className="font-headline text-2xl">
+                                    NAVA Looks
+                                </CardTitle>
+                            </div>
+                            <CardDescription className="text-muted-foreground mt-2">
+                                Moda praia e fitness para gestantes e mamães.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="p-0 mt-4">
+                            <Button variant="default" onClick={handleAction}>
+                                Explorar coleção
+                            </Button>
+                        </CardContent>
+                    </div>
+                </div>
+            </Card>
         </div>
     </div>
   );

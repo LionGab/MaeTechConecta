@@ -9,19 +9,25 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { answerCommonQuestions } from '@/ai/flows/answer-common-questions';
 import { cn } from '@/lib/utils';
 import imageData from '@/lib/placeholder-images.json';
+import { getChatbotQuestionsByTrimester } from '@/lib/types/user-profile';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
 
+interface ChatbotProps {
+  trimester?: 1 | 2 | 3;
+}
+
 const assistantAvatar = imageData.placeholderImages.find(p => p.id === 'avatar-1');
 
-export function Chatbot() {
+export function Chatbot({ trimester = 1 }: ChatbotProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isPending, startTransition] = useTransition();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const suggestedQuestions = getChatbotQuestionsByTrimester(trimester);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,15 +86,37 @@ export function Chatbot() {
       <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
         <div className="space-y-4">
           {messages.length === 0 && (
-             <div className="flex items-start gap-4 text-sm">
+            <>
+              <div className="flex items-start gap-4 text-sm">
                 <Avatar className="h-8 w-8 border-2 border-primary">
                     {assistantAvatar && <AvatarImage src={assistantAvatar.imageUrl} />}
                     <AvatarFallback><Bot size={16} /></AvatarFallback>
                 </Avatar>
-                <div className="grid gap-1 rounded-lg bg-background p-3">
+                <div className="grid gap-2 rounded-lg bg-background p-3">
                     <p>Olá, querida! Sou a NathIA, sua amiga e mentora. Estou aqui para te ouvir, apoiar e caminharmos juntas. Como você está se sentindo hoje?</p>
+                    <p className="text-xs text-muted-foreground mt-2">Você pode me perguntar sobre:</p>
                 </div>
-            </div>
+              </div>
+              <div className="grid gap-2 ml-12">
+                {suggestedQuestions.map((question, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    className="justify-start text-left h-auto py-2 px-3 text-sm"
+                    onClick={() => {
+                      setInput(question);
+                      // Simulate form submission
+                      const form = new Event('submit', { bubbles: true, cancelable: true });
+                      document.querySelector('form')?.dispatchEvent(form);
+                    }}
+                  >
+                    <Sparkles className="h-3 w-3 mr-2 shrink-0 text-primary" />
+                    <span className="line-clamp-2">{question}</span>
+                  </Button>
+                ))}
+              </div>
+            </>
           )}
           {messages.map((message, index) => (
             <div
