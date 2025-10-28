@@ -12,8 +12,8 @@ import {
 } from 'firebase/auth';
 
 /** Initiate anonymous sign-in (non-blocking). */
-export function initiateAnonymousSignIn(authInstance: Auth): Promise<void> {
-  return signInAnonymously(authInstance);
+export async function initiateAnonymousSignIn(authInstance: Auth): Promise<void> {
+  await signInAnonymously(authInstance);
 }
 
 /** Initiate email/password sign-up (non-blocking). */

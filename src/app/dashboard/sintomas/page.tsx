@@ -62,14 +62,14 @@ export default function SintomasPage() {
     alert('Sintomas salvos com sucesso!');
   };
 
-  const urgencyColors = {
+  const urgencyColors: Record<string, string> = {
     normal: 'bg-green-100 text-green-800',
     monitor: 'bg-yellow-100 text-yellow-800',
     'consult-doctor': 'bg-orange-100 text-orange-800',
     urgent: 'bg-red-100 text-red-800',
   };
 
-  const urgencyLabels = {
+  const urgencyLabels: Record<string, string> = {
     normal: 'Normal',
     monitor: 'Monitorar',
     'consult-doctor': 'Consultar médico',
