@@ -8,10 +8,12 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 const nextConfig = {
   /* config options here */
   typescript: {
-    ignoreBuildErrors: true,
+    // Enable TypeScript checks during builds for production safety
+    ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    // Enable ESLint checks during builds for code quality
+    ignoreDuringBuilds: false,
   },
   images: {
     remotePatterns: [
