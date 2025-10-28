@@ -1,22 +1,25 @@
 
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { ForumClient } from './_components/forum-client';
+import { Chatbot } from './_components/chatbot';
 
 export default function ForumPage() {
   return (
-    <div>
-      <h1 className="font-headline text-3xl font-bold">Comunidade</h1>
-      <p className="text-muted-foreground mt-1">
-        Compartilhe suas dúvidas, vitórias e encontre apoio.
-      </p>
+    <div className="space-y-6">
+      <div>
+        <h1 className="font-headline text-3xl font-bold">Comunidade</h1>
+        <p className="text-muted-foreground mt-1">
+          Compartilhe suas dúvidas, vitórias e encontre apoio.
+        </p>
+      </div>
 
-      <Card className="mt-8">
-        <CardHeader>
-          <CardTitle>Em breve</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>A área da comunidade está sendo preparada com muito carinho para você. Volte em breve!</p>
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <div className="lg:col-span-2">
+            <ForumClient />
+        </div>
+        <div className="lg:col-span-1 lg:sticky top-6">
+            <Chatbot />
+        </div>
+      </div>
     </div>
   );
 }
