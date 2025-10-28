@@ -31,10 +31,10 @@ export default function Dashboard() {
     <div className="space-y-8">
       <div className="text-center">
         <h1 className="font-headline text-3xl font-bold tracking-tight">
-          Bem-vinda, Nathália!
+          Bem-vinda ao Nossa Maternidade!
         </h1>
         <p className="text-muted-foreground">
-          Sua comunidade de fé e acolhimento.
+          Sua comunidade de apoio, educação e conexões autênticas.
         </p>
       </div>
 

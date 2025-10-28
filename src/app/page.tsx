@@ -152,8 +152,8 @@ export default function AuthPage() {
     <div className="flex items-center justify-center min-h-screen bg-background p-4">
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="font-headline text-4xl font-bold text-pink-500">ClubNath</h1>
-          <p className="text-muted-foreground">Sua comunidade exclusiva</p>
+          <h1 className="font-headline text-4xl font-bold text-primary">Nossa Maternidade</h1>
+          <p className="text-muted-foreground">Sua jornada da maternidade com apoio e acolhimento</p>
         </div>
         
         <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
@@ -213,7 +213,7 @@ export default function AuthPage() {
                     </div>
                      <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                        <Input id="signup-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.targe.value)} disabled={!!isLoading} className="pl-10" />
+                        <Input id="signup-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={!!isLoading} className="pl-10" />
                     </div>
                      <div className="relative">
                         <Input id="signup-password" type={showPassword ? "text" : "password"} placeholder="Senha (mínimo 6 caracteres)" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="pr-10" />
