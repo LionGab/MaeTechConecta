@@ -1,148 +1,64 @@
 {
   "placeholderImages": [
     {
-      "id": "logo-nath",
-      "description": "Ilustração do rosto de uma mulher sorrindo",
-      "imageUrl": "https://placehold.co/100x100/EAD9F2/AF47D2?text=Logo",
-      "imageHint": "woman illustration"
-    },
-    {
-      "id": "hero",
-      "description": "Ilustração de uma mãe segurando seu bebê",
-      "imageUrl": "https://placehold.co/1200x800/FFF0F5/AF47D2?text=Hero",
-      "imageHint": "mother baby illustration"
-    },
-    {
-      "id": "feature-matches",
-      "description": "Two mothers smiling",
-      "imageUrl": "https://placehold.co/600x400/EAD9F2/AF47D2?text=Matches",
-      "imageHint": "friends smiling"
-    },
-    {
-      "id": "feature-market",
-      "description": "Baby clothes and toys",
-      "imageUrl": "https://placehold.co/600x400/FFF0F5/AF47D2?text=Market",
-      "imageHint": "baby clothes"
-    },
-    {
-      "id": "feature-content",
-      "description": "Woman talking to camera for a vlog",
-      "imageUrl": "https://placehold.co/600x400/EAD9F2/AF47D2?text=Content",
-      "imageHint": "woman vlogging"
-    },
-    {
-      "id": "avatar-1",
-      "description": "Smiling woman's portrait",
-      "imageUrl": "https://storage.googleapis.com/aai-web-samples/apps/club-nath/crop-1.jpg",
-      "imageHint": "woman illustration"
-    },
-    {
-      "id": "avatar-2",
-      "description": "Smiling woman's portrait",
-      "imageUrl": "https://placehold.co/150x150/EAD9F2/AF47D2?text=User",
-      "imageHint": "woman smiling"
-    },
-    {
-      "id": "avatar-3",
-      "description": "Woman's portrait",
-      "imageUrl": "https://placehold.co/150x150/FFF0F5/AF47D2?text=User",
-      "imageHint": "woman face"
-    },
-    {
-      "id": "avatar-4",
-      "description": "Woman's portrait",
-      "imageUrl": "https://placehold.co/150x150/EAD9F2/AF47D2?text=User",
-      "imageHint": "person portrait"
-    },
-    {
-      "id": "avatar-5",
-      "description": "Woman's portrait",
-      "imageUrl": "https://placehold.co/150x150/FFF0F5/AF47D2?text=User",
-      "imageHint": "smiling person"
-    },
-    {
-      "id": "product-1",
-      "description": "A baby stroller",
-      "imageUrl": "https://placehold.co/400x300/EAD9F2/AF47D2?text=Stroller",
-      "imageHint": "baby stroller"
-    },
-    {
-      "id": "product-2",
-      "description": "A baby crib",
-      "imageUrl": "https://placehold.co/400x300/FFF0F5/AF47D2?text=Crib",
-      "imageHint": "baby crib"
-    },
-    {
-      "id": "product-3",
-      "description": "A set of baby bottles",
-      "imageUrl": "https://placehold.co/400x300/EAD9F2/AF47D2?text=Bottles",
-      "imageHint": "baby bottles"
-    },
-    {
-      "id": "product-4",
-      "description": "A pile of baby toys",
-      "imageUrl": "https://placehold.co/400x300/FFF0F5/AF47D2?text=Toys",
-      "imageHint": "baby toys"
-    },
-    {
-      "id": "product-5",
-      "description": "A baby high chair",
-      "imageUrl": "https://placehold.co/400x300/EAD9F2/AF47D2?text=Chair",
-      "imageHint": "high chair"
+      "id": "nathia-logo",
+      "description": "Logo da Nossa Maternidade",
+      "imageUrl": "https://i.imgur.com/p3oGtrp.jpg"
     },
     {
       "id": "content-1",
-      "description": "Video about baby sleep",
-      "imageUrl": "https://placehold.co/800x450/FFF0F5/AF47D2?text=Sleep",
-      "imageHint": "sleeping baby"
+      "description": "Uma mãe segurando os pés de seu bebê recém-nascido.",
+      "imageUrl": "https://i.imgur.com/76haTca.jpg"
     },
     {
       "id": "content-2",
-      "description": "Video about postpartum nutrition",
-      "imageUrl": "https://placehold.co/800x450/EAD9F2/AF47D2?text=Nutrition",
-      "imageHint": "healthy food"
+      "description": "Banner com uma mãe segurando seu bebê no ar.",
+      "imageUrl": "https://i.imgur.com/uDeWCHL.jpg"
     },
     {
-      "id": "content-3",
-      "description": "Video about baby's first foods",
-      "imageUrl": "https://placehold.co/800x450/FFF0F5/AF47D2?text=Food",
-      "imageHint": "baby eating"
+      "id": "avatar-1",
+      "description": "Avatar de uma mulher com cabelo castanho e blusa vermelha.",
+      "imageUrl": "https://i.imgur.com/XvueTEk.jpg"
     },
     {
-      "id": "content-4",
-      "description": "Live Q&A session",
-      "imageUrl": "https://placehold.co/800x450/EAD9F2/AF47D2?text=Live+Q&A",
-      "imageHint": "live stream"
+      "id": "avatar-2",
+      "description": "Ilustração de uma mãe com seu bebê e um cachorro.",
+      "imageUrl": "https://i.imgur.com/JoxFimc.jpg"
     },
     {
-      "id": "vip-content",
-      "description": "Exclusive interview with Nathália Valente",
-      "imageUrl": "https://placehold.co/800x450/AF47D2/FFFFFF?text=VIP",
-      "imageHint": "woman illustration"
+      "id": "avatar-3",
+      "description": "Ilustração de uma mãe abraçando seu bebê.",
+      "imageUrl": "https://i.imgur.com/tf0GHwz.jpg"
     },
     {
-      "id": "nava-banner",
-      "description": "Woman in a bikini on a beach",
-      "imageUrl": "https://placehold.co/1200x800/EAD9F2/333333?text=NAVA",
-      "imageHint": "bikini beach"
+      "id": "avatar-4",
+      "description": "Ilustração de uma mãe segurando seu bebê, com balões e presentes ao redor.",
+      "imageUrl": "https://i.imgur.com/jzb0IgO.jpg"
     },
     {
-      "id": "babytest-banner",
-      "description": "Close up on a baby's feet",
-      "imageUrl": "https://placehold.co/800x600/FFF0F5/333333?text=Babytest",
-      "imageHint": "baby feet"
+      "id": "product-1",
+      "description": "Carrinho de bebê preto.",
+      "imageUrl": "https://i.imgur.com/6AOi9vY.jpg"
     },
     {
-      "id": "pwa-icon-192",
-      "description": "ClubNath App Icon 192x192",
-      "imageUrl": "https://storage.googleapis.com/aai-web-samples/apps/club-nath/crop-1.jpg",
-      "imageHint": "logo illustration"
+      "id": "product-2",
+      "description": "Bebê conforto da marca Maxi-Cosi.",
+      "imageUrl": "https://i.imgur.com/pElL8zD.jpg"
     },
     {
-      "id": "pwa-icon-512",
-      "description": "ClubNath App Icon 512x512",
-      "imageUrl": "https://storage.googleapis.com/aai-web-samples/apps/club-nath/crop-1.jpg",
-      "imageHint": "logo illustration"
+      "id": "product-3",
+      "description": "Canguru para bebê da marca Ergobaby.",
+      "imageUrl": "https://i.imgur.com/gxOThQR.jpg"
+    },
+    {
+      "id": "product-4",
+      "description": "Cadeira de alimentação para bebê da marca Chicco.",
+      "imageUrl": "https://i.imgur.com/DLPkytI.jpg"
+    },
+    {
+      "id": "product-5",
+      "description": "Berço de madeira com um cobertor dentro.",
+      "imageUrl": "https://i.imgur.com/DLPkytI.jpg"
     }
   ]
 }

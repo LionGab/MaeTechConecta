@@ -24,7 +24,7 @@ export function Header() {
   const { user } = useUser();
   const auth = useAuth();
   const router = useRouter();
-  const logo = imageData.placeholderImages.find(p => p.id === 'logo-nath');
+  const logo = imageData.placeholderImages.find(p => p.id === 'nathia-logo');
 
   const handleSignOut = async () => {
     try {
