@@ -1,106 +1,183 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Clapperboard, Heart, ShoppingBag } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { 
+  ArrowRight, 
+  Baby, 
+  Activity, 
+  Calendar,
+  Clock,
+  Sparkles,
+  Heart,
+  BookOpen,
+  TrendingUp
+} from 'lucide-react';
 
 import { Chatbot } from './forum/_components/chatbot';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { ProfileCard } from './matches/_components/profile-card';
-
-const featuredMatch = { name: "Juliana S.", location: "São Paulo, SP", interests: ["Yoga", "Culinária"], babyAge: "8 meses", avatar: PlaceHolderImages.find(p => p.id === 'avatar-2')!.imageUrl };
-
-const featuredProduct = {
-    title: "Carrinho de bebê semi-novo",
-    price: 450.00,
-    image: PlaceHolderImages.find(p => p.id === 'product-1')!,
-    seller: { name: "Ana P.", avatar: PlaceHolderImages.find(p => p.id === 'avatar-2')! }
-};
-
-const featuredArticle = {
-    title: "Como lidar com a culpa materna: 5 dicas práticas",
-    description: "Aprenda a reconhecer e a lidar com um dos sentimentos mais comuns na maternidade.",
-    image: PlaceHolderImages.find(p => p.id === 'content-1')!,
-    category: "Autoajuda"
-};
-
 
 export default function Dashboard() {
+  // Mock data - would come from user profile in production
+  const currentWeek = 7;
+  const trimester = 'Primeiro';
+  const daysUntilDue = 229;
+  const todayProgress = 40; // percentage of daily tasks completed
+
+  const quickStats = [
+    { label: 'Semana', value: currentWeek, icon: Baby, color: 'text-pink-600' },
+    { label: 'Dias até parto', value: daysUntilDue, icon: Calendar, color: 'text-purple-600' },
+    { label: 'Tarefas hoje', value: `${todayProgress}%`, icon: TrendingUp, color: 'text-blue-600' },
+  ];
+
+  const quickActions = [
+    {
+      title: 'Registrar Sintomas',
+      description: 'Como você está se sentindo hoje?',
+      icon: Activity,
+      href: '/dashboard/sintomas',
+      color: 'bg-green-100 text-green-700',
+    },
+    {
+      title: 'Ver Jornada Completa',
+      description: 'Acompanhe seu progresso semanal',
+      icon: Baby,
+      href: '/dashboard/jornada',
+      color: 'bg-pink-100 text-pink-700',
+    },
+    {
+      title: 'Conteúdo Educativo',
+      description: 'Artigos e vídeos para você',
+      icon: BookOpen,
+      href: '/dashboard/content',
+      color: 'bg-purple-100 text-purple-700',
+    },
+  ];
+
+  const todayInsights = [
+    {
+      title: 'Dica do Dia',
+      content: 'Beba pelo menos 2 litros de água hoje. A hidratação é essencial no primeiro trimestre!',
+      icon: '💧',
+    },
+    {
+      title: 'Marco da Semana 7',
+      content: 'Seu bebê agora tem o tamanho de um mirtilo e está desenvolvendo características faciais.',
+      icon: '🫐',
+    },
+  ];
+
   return (
-    <div className="space-y-8">
-      <div className="text-center">
+    <div className="space-y-8 pb-20">
+      {/* Welcome Header */}
+      <div className="text-center space-y-2">
         <h1 className="font-headline text-3xl font-bold tracking-tight">
-          Bem-vinda, Nathália!
+          Bem-vinda, Mamãe! 💝
         </h1>
         <p className="text-muted-foreground">
-          Sua comunidade de fé e acolhimento.
+          Semana {currentWeek} • {trimester} Trimestre
         </p>
       </div>
 
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="md:col-span-2">
-            <h2 className="font-headline text-2xl font-bold mb-4">Converse com a NathIA</h2>
-            <Chatbot />
-        </div>
-
-        <div className="space-y-6">
-            <h2 className="font-headline text-2xl font-bold">Sua Jornada</h2>
-             <Card className="flex flex-col">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Heart className="text-primary"/> Conexões de Fé
-                    </CardTitle>
-                    <CardDescription>Encontramos um novo perfil para você.</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                    <ProfileCard match={featuredMatch} />
-                </CardContent>
-             </Card>
-        </div>
-
-        <div className="space-y-6">
-            <h2 className="font-headline text-2xl font-bold">Destaques</h2>
-             <Card>
-                <CardHeader>
-                     <CardTitle className="flex items-center gap-2">
-                        <ShoppingBag className="text-primary"/> Brechó da Comunidade
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                     <div className="relative aspect-video rounded-lg overflow-hidden">
-                        <Image src={featuredProduct.image.imageUrl} alt={featuredProduct.image.description} fill className="object-cover" />
-                    </div>
-                    <h3 className="font-semibold">{featuredProduct.title}</h3>
-                     <Button asChild className="w-full">
-                        <Link href="/dashboard/loja">
-                            Ver na Loja <ArrowRight className="ml-2" />
-                        </Link>
-                    </Button>
-                </CardContent>
+      {/* Quick Stats */}
+      <div className="grid grid-cols-3 gap-3">
+        {quickStats.map((stat, idx) => {
+          const Icon = stat.icon;
+          return (
+            <Card key={idx} className="text-center">
+              <CardContent className="pt-4 pb-3 px-2">
+                <Icon className={`h-6 w-6 mx-auto mb-2 ${stat.color}`} />
+                <div className="text-xl font-bold">{stat.value}</div>
+                <div className="text-xs text-muted-foreground">{stat.label}</div>
+              </CardContent>
             </Card>
-
-             <Card>
-                <CardHeader>
-                     <CardTitle className="flex items-center gap-2">
-                        <Clapperboard className="text-primary"/> Conteúdo Exclusivo
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                     <div className="relative aspect-video rounded-lg overflow-hidden">
-                        <Image src={featuredArticle.image.imageUrl} alt={featuredArticle.image.description} fill className="object-cover" />
-                    </div>
-                    <h3 className="font-semibold">{featuredArticle.title}</h3>
-                     <Button asChild className="w-full">
-                        <Link href="/dashboard/content">
-                           Ler Artigo <ArrowRight className="ml-2" />
-                        </Link>
-                    </Button>
-                </CardContent>
-            </Card>
-        </div>
-
+          );
+        })}
       </div>
+
+      {/* Today's Insights */}
+      <div className="space-y-3">
+        {todayInsights.map((insight, idx) => (
+          <Card key={idx} className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+            <CardContent className="p-4">
+              <div className="flex gap-3">
+                <div className="text-3xl">{insight.icon}</div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-sm mb-1">{insight.title}</h3>
+                  <p className="text-sm text-muted-foreground">{insight.content}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Quick Actions */}
+      <div className="space-y-3">
+        <h2 className="font-headline text-xl font-bold">Ações Rápidas</h2>
+        <div className="grid gap-3">
+          {quickActions.map((action, idx) => {
+            const Icon = action.icon;
+            return (
+              <Link key={idx} href={action.href}>
+                <Card className="transition-all hover:border-primary hover:shadow-md">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className={`p-3 rounded-lg ${action.color}`}>
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-sm">{action.title}</h3>
+                        <p className="text-xs text-muted-foreground">{action.description}</p>
+                      </div>
+                      <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* NathIA Chatbot */}
+      <div>
+        <h2 className="font-headline text-xl font-bold mb-3 flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-primary" />
+          Converse com a NathIA
+        </h2>
+        <Chatbot />
+      </div>
+
+      {/* Additional Resources */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Heart className="h-5 w-5 text-primary" />
+            Mais Recursos
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <Link href="/dashboard/contracoes">
+            <Button variant="outline" className="w-full justify-between">
+              <span className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                Cronômetro de Contrações
+              </span>
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
+          <Link href="/dashboard/forum">
+            <Button variant="outline" className="w-full justify-between">
+              <span className="flex items-center gap-2">
+                <Heart className="h-4 w-4" />
+                Comunidade de Mães
+              </span>
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
+        </CardContent>
+      </Card>
     </div>
   );
 }

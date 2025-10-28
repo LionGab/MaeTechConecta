@@ -2,15 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BotMessageSquare, Users, Clapperboard, MessagesSquare, ShoppingBag, BookOpen } from 'lucide-react';
+import { BotMessageSquare, Baby, Activity, BookOpen, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { href: '/dashboard/matches', icon: Users, label: 'Conexões' },
-  { href: '/dashboard/jornada', icon: BookOpen, label: 'Jornada' },
+  { href: '/dashboard/jornada', icon: Baby, label: 'Jornada' },
+  { href: '/dashboard/sintomas', icon: Activity, label: 'Sintomas' },
   { href: '/dashboard', icon: BotMessageSquare, label: 'NathIA' },
-  { href: '/dashboard/loja', icon: ShoppingBag, label: 'Loja' },
-  { href: '/dashboard/forum', icon: MessagesSquare, label: 'Fórum' },
+  { href: '/dashboard/content', icon: BookOpen, label: 'Conteúdo' },
+  { href: '/dashboard/matches', icon: Users, label: 'Conexões' },
 ];
 
 export function BottomNav() {
