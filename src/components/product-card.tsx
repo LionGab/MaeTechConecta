@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -19,15 +20,15 @@ interface ProductCardProps {
 
 export function ProductCard({ item, onBuyClick }: ProductCardProps) {
   return (
-    <Card className="overflow-hidden transition-shadow hover:shadow-lg">
+    <Card className="overflow-hidden transition-shadow hover:shadow-lg group">
       <CardContent className="p-0">
-        <div className="relative aspect-4/3">
+        <div className="relative aspect-[4/3]">
           <Image
             src={item.image.imageUrl}
             alt={item.image.description}
             data-ai-hint={item.image.imageHint}
             fill
-            className="object-cover"
+            className="object-cover transition-transform group-hover:scale-105"
           />
         </div>
         <div className="p-4">

@@ -19,22 +19,22 @@ interface ArticleCardProps {
 
 export function ArticleCard({ item }: ArticleCardProps) {
   return (
-    <Link href="#">
-        <Card className="grid grid-cols-1 md:grid-cols-3 items-center overflow-hidden transition-shadow hover:shadow-lg h-full">
-        <div className="md:col-span-1 relative w-full h-48 md:h-full">
-            <Image
-            src={item.image.imageUrl}
-            alt={item.image.description}
-            data-ai-hint={item.image.imageHint}
-            fill
-            className="object-cover"
-            />
-        </div>
-        <div className="md:col-span-2 p-6">
-            <Badge variant="secondary">{item.source}</Badge>
-            <h3 className="font-headline text-lg font-bold mt-2">{item.title}</h3>
-            <p className="text-sm text-muted-foreground mt-2">{item.description}</p>
-        </div>
+    <Link href="#" className="block group">
+        <Card className="overflow-hidden transition-shadow hover:shadow-lg h-full">
+            <div className="relative w-full aspect-video">
+                <Image
+                src={item.image.imageUrl}
+                alt={item.image.description}
+                data-ai-hint={item.image.imageHint}
+                fill
+                className="object-cover transition-transform group-hover:scale-105"
+                />
+            </div>
+            <div className="p-6">
+                <Badge variant="secondary">{item.source}</Badge>
+                <h3 className="font-headline text-lg font-bold mt-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{item.description}</p>
+            </div>
         </Card>
     </Link>
   );

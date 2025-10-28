@@ -6,14 +6,39 @@
       "imageUrl": "https://i.imgur.com/p3oGtrp.jpg"
     },
     {
+      "id": "logo-nath",
+      "description": "Logo da Nossa Maternidade",
+      "imageUrl": "https://i.imgur.com/p3oGtrp.jpg"
+    },
+    {
+      "id": "hero",
+      "description": "Uma mãe sorrindo com seu bebê no colo",
+      "imageUrl": "https://i.imgur.com/G5a0z8r.jpg",
+      "imageHint": "mother baby"
+    },
+    {
       "id": "content-1",
       "description": "Uma mãe segurando os pés de seu bebê recém-nascido.",
-      "imageUrl": "https://i.imgur.com/76haTca.jpg"
+      "imageUrl": "https://i.imgur.com/76haTca.jpg",
+      "imageHint": "mother newborn"
     },
     {
       "id": "content-2",
       "description": "Banner com uma mãe segurando seu bebê no ar.",
-      "imageUrl": "https://i.imgur.com/uDeWCHL.jpg"
+      "imageUrl": "https://i.imgur.com/uDeWCHL.jpg",
+      "imageHint": "mother baby play"
+    },
+    {
+      "id": "content-3",
+      "description": "Mãe amamentando seu bebê.",
+      "imageUrl": "https://i.imgur.com/47pL1bH.jpg",
+      "imageHint": "mother breastfeeding"
+    },
+    {
+      "id": "content-4",
+      "description": "Bebê comendo um pedaço de brócolis.",
+      "imageUrl": "https://i.imgur.com/N7fje5C.jpg",
+      "imageHint": "baby eating"
     },
     {
       "id": "avatar-1",
@@ -36,29 +61,39 @@
       "imageUrl": "https://i.imgur.com/jzb0IgO.jpg"
     },
     {
+      "id": "avatar-5",
+      "description": "Avatar de uma mulher negra sorrindo",
+      "imageUrl": "https://i.imgur.com/X2I3g5v.jpg"
+    },
+    {
       "id": "product-1",
       "description": "Carrinho de bebê preto.",
-      "imageUrl": "https://i.imgur.com/6AOi9vY.jpg"
+      "imageUrl": "https://i.imgur.com/6AOi9vY.jpg",
+      "imageHint": "baby stroller"
     },
     {
       "id": "product-2",
-      "description": "Bebê conforto da marca Maxi-Cosi.",
-      "imageUrl": "https://i.imgur.com/pElL8zD.jpg"
+      "description": "Cadeira de alimentação para bebê da marca Chicco.",
+      "imageUrl": "https://i.imgur.com/pElL8zD.jpg",
+      "imageHint": "baby high-chair"
     },
     {
       "id": "product-3",
-      "description": "Canguru para bebê da marca Ergobaby.",
-      "imageUrl": "https://i.imgur.com/gxOThQR.jpg"
+      "description": "Kit de mamadeiras para bebê.",
+      "imageUrl": "https://i.imgur.com/gxOThQR.jpg",
+      "imageHint": "baby bottles"
     },
     {
       "id": "product-4",
-      "description": "Cadeira de alimentação para bebê da marca Chicco.",
-      "imageUrl": "https://i.imgur.com/DLPkytI.jpg"
+      "description": "Brinquedos de madeira educativos e coloridos.",
+      "imageUrl": "https://i.imgur.com/DLPkytI.jpg",
+      "imageHint": "wooden toys"
     },
     {
       "id": "product-5",
       "description": "Berço de madeira com um cobertor dentro.",
-      "imageUrl": "https://i.imgur.com/DLPkytI.jpg"
+      "imageUrl": "https://i.imgur.com/OqVf2hV.jpg",
+      "imageHint": "baby crib"
     }
   ]
 }
