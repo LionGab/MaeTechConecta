@@ -23,6 +23,10 @@ Make sure you have installed:
 git clone https://github.com/LionGab/MaeTechConecta.git
 cd MaeTechConecta
 
+# Note: The repository is named 'MaeTechConecta' (original name)
+# but the app is branded as 'Nossa Maternidade' (new branding).
+# This is intentional to maintain Git history and avoid breaking existing links.
+
 # Install dependencies
 npm install
 ```
@@ -86,6 +90,8 @@ npm run dev
 ```
 
 Open [http://localhost:9002](http://localhost:9002) in your browser.
+
+**Note**: The dev server runs on port 9002 (not the default 3000) to avoid conflicts with other development projects. This is configured in `package.json` with the `-p 9002` flag.
 
 You should see the Nossa Maternidade login page with:
 - Ocean blue branding
@@ -203,7 +209,7 @@ npm run genkit:watch     # Start Genkit with watch mode
 **Solution**: This is expected for MVP. See API Integration Guide to connect real Instagram
 
 ### Issue: TypeScript errors on build
-**Solution**: The project has `ignoreBuildErrors: true` in `next.config.ts` for rapid development. These will be addressed in testing phase.
+**Solution**: The project currently has `ignoreBuildErrors: true` in `next.config.ts` for rapid prototyping. This is a temporary setting that should be removed before production deployment. TypeScript errors should be addressed incrementally during Week 4 (Testing & Refinement phase) of the launch timeline. For now, use `npm run typecheck` to see all TypeScript issues without blocking development.
 
 ---
 
