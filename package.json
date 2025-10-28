@@ -2,7 +2,7 @@
   "name": "nossa-maternidade-monorepo",
   "private": true,
   "scripts": {
-    "start": "turbo start --",
+    "dev": "turbo start --",
     "build": "turbo build",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\""
