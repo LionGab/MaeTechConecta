@@ -1,9 +1,21 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Clapperboard, Sparkles } from 'lucide-react';
+import { ArrowRight, Clapperboard, Sparkles, Activity, ListChecks } from 'lucide-react';
 import Link from 'next/link';
 
 const journeyLinks = [
+    {
+        href: '/dashboard/jornada/rotina',
+        icon: ListChecks,
+        title: 'Minha Rotina',
+        description: 'Tarefas diárias personalizadas para sua gestação.'
+    },
+    {
+        href: '/dashboard/jornada/sintomas',
+        icon: Activity,
+        title: 'Tracker de Sintomas',
+        description: 'Registre e acompanhe como você está se sentindo.'
+    },
     {
         href: '/dashboard/content',
         icon: Clapperboard,
@@ -23,7 +35,7 @@ export default function JourneyPage() {
     <div className="space-y-8">
       <div>
         <h1 className="font-headline text-3xl font-bold">Sua Jornada</h1>
-        <p className="text-muted-foreground mt-1">Explore os conteúdos que preparamos para você.</p>
+        <p className="text-muted-foreground mt-1">Explore os conteúdos e ferramentas que preparamos para você.</p>
       </div>
 
         <div className="grid gap-6">
