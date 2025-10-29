@@ -6,6 +6,8 @@
   "scripts": {
     "start": "expo start",
     "dev": "expo start",
+    "android": "expo start",
+    "ios": "expo start",
     "web": "expo start --web"
   },
   "dependencies": {
