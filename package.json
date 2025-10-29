@@ -1,7 +1,8 @@
+
 {
   "name": "maetech-conecta-monorepo",
   "private": true,
-  "packageManager": "npm@10.8.2",
+  "packageManager": "pnpm@9.0.0",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",

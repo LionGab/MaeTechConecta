@@ -1,3 +1,4 @@
+
 {
   "name": "web",
   "version": "1.0.0",
@@ -9,9 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nossamaternidade/api": "0.0.0",
-    "@nossamaternidade/shared": "0.0.0",
-    "@nossamaternidade/ui": "1.0.0"
+    "@nossamaternidade/api": "workspace:*",
+    "@nossamaternidade/shared": "workspace:*",
+    "@nossamaternidade/ui": "workspace:*"
   },
   "devDependencies": {}
 }
