@@ -1,148 +1,99 @@
 {
   "placeholderImages": [
     {
+      "id": "nathia-logo",
+      "description": "Logo da Nossa Maternidade",
+      "imageUrl": "https://i.imgur.com/p3oGtrp.jpg"
+    },
+    {
       "id": "logo-nath",
-      "description": "Logo do ClubNath com a ilustração da Nathália Valente",
-      "imageUrl": "https://storage.googleapis.com/stabl-aec92.appspot.com/google-project-template/render_d622a59a-5b4d-44a6-9f4a-9b4e605d8f63.jpg",
-      "imageHint": "woman illustration"
+      "description": "Logo da Nossa Maternidade",
+      "imageUrl": "https://i.imgur.com/p3oGtrp.jpg"
     },
     {
       "id": "hero",
-      "description": "Mother holding her baby",
-      "imageUrl": "https://images.unsplash.com/photo-1570657891791-e39a9d185540?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtb3RoZXIlMjBiYWJ5fGVufDB8fHx8MTc2MTEyNzc5N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Uma mãe sorrindo com seu bebê no colo",
+      "imageUrl": "https://i.imgur.com/G5a0z8r.jpg",
       "imageHint": "mother baby"
     },
     {
-      "id": "feature-matches",
-      "description": "Two mothers smiling",
-      "imageUrl": "https://images.unsplash.com/photo-1557336863-b97994102380?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmcmllbmRzJTIwc21pbGluZ3xlbnwwfHx8fDE3NjEyMzM5MDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "friends smiling"
+      "id": "content-1",
+      "description": "Uma mãe segurando os pés de seu bebê recém-nascido.",
+      "imageUrl": "https://i.imgur.com/76haTca.jpg",
+      "imageHint": "mother newborn"
     },
     {
-      "id": "feature-market",
-      "description": "Baby clothes and toys",
-      "imageUrl": "https://images.unsplash.com/photo-1622290291165-d341f1938b8a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxiYWJ5JTIwY2xvdGhlc3xlbnwwfHx8fDE3NjExODE3MTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "baby clothes"
+      "id": "content-2",
+      "description": "Banner com uma mãe segurando seu bebê no ar.",
+      "imageUrl": "https://i.imgur.com/uDeWCHL.jpg",
+      "imageHint": "mother baby play"
     },
     {
-      "id": "feature-content",
-      "description": "Woman talking to camera for a vlog",
-      "imageUrl": "https://images.unsplash.com/photo-1753162661640-f52723dde6a6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b21hbiUyMHZsb2dnaW5nfGVufDB8fHx8MTc2MTIzMzkwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "woman vlogging"
+      "id": "content-3",
+      "description": "Mãe amamentando seu bebê.",
+      "imageUrl": "https://i.imgur.com/47pL1bH.jpg",
+      "imageHint": "mother breastfeeding"
+    },
+    {
+      "id": "content-4",
+      "description": "Bebê comendo um pedaço de brócolis.",
+      "imageUrl": "https://i.imgur.com/N7fje5C.jpg",
+      "imageHint": "baby eating"
     },
     {
       "id": "avatar-1",
-      "description": "Smiling woman's portrait",
-      "imageUrl": "https://storage.googleapis.com/stabl-aec92.appspot.com/google-project-template/render_d622a59a-5b4d-44a6-9f4a-9b4e605d8f63.jpg",
-      "imageHint": "woman illustration"
+      "description": "Avatar de uma mulher com cabelo castanho e blusa vermelha.",
+      "imageUrl": "https://i.imgur.com/XvueTEk.jpg"
     },
     {
       "id": "avatar-2",
-      "description": "Smiling woman's portrait",
-      "imageUrl": "https://images.unsplash.com/photo-1580489944761-15a19d654956?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3b21hbiUyMHNtaWxpbmd8ZW58MHx8fHwxNzYxMTQ2NDMyfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "woman smiling"
+      "description": "Ilustração de uma mãe com seu bebê e um cachorro.",
+      "imageUrl": "https://i.imgur.com/JoxFimc.jpg"
     },
     {
       "id": "avatar-3",
-      "description": "Woman's portrait",
-      "imageUrl": "https://images.unsplash.com/photo-1567227278042-f78c52fafae7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d29tYW4lMjBmYWNlfGVufDB8fHx8MTc2MTE0NTkyN3ww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "woman face"
+      "description": "Ilustração de uma mãe abraçando seu bebê.",
+      "imageUrl": "https://i.imgur.com/tf0GHwz.jpg"
     },
     {
       "id": "avatar-4",
-      "description": "Woman's portrait",
-      "imageUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjEyMjc5NjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "person portrait"
+      "description": "Ilustração de uma mãe segurando seu bebê, com balões e presentes ao redor.",
+      "imageUrl": "https://i.imgur.com/jzb0IgO.jpg"
     },
     {
       "id": "avatar-5",
-      "description": "Woman's portrait",
-      "imageUrl": "https://images.unsplash.com/photo-1580489944761-15a19d654956?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzbWlsaW5nJTIwcGVyc29ufGVufDB8fHx8MTc2MTE2NjY1Nnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "smiling person"
+      "description": "Avatar de uma mulher negra sorrindo",
+      "imageUrl": "https://i.imgur.com/X2I3g5v.jpg"
     },
     {
       "id": "product-1",
-      "description": "A baby stroller",
-      "imageUrl": "https://images.unsplash.com/photo-1670872623744-b37e0474e3d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxiYWJ5JTIwc3Ryb2xsZXJ8ZW58MHx8fHwxNzYxMjMzOTAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Carrinho de bebê preto.",
+      "imageUrl": "https://i.imgur.com/6AOi9vY.jpg",
       "imageHint": "baby stroller"
     },
     {
       "id": "product-2",
-      "description": "A baby crib",
-      "imageUrl": "https://images.unsplash.com/photo-1543346242-2b8e41fb91ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YmFieSUyMGNyaWJ8ZW58MHx8fHwxNzYxMjMzOTAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "baby crib"
+      "description": "Cadeira de alimentação para bebê da marca Chicco.",
+      "imageUrl": "https://i.imgur.com/pElL8zD.jpg",
+      "imageHint": "baby high-chair"
     },
     {
       "id": "product-3",
-      "description": "A set of baby bottles",
-      "imageUrl": "https://images.unsplash.com/photo-1758575514409-cb650ba2f4df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YmFieSUyMGJvdHRsZXN8ZW58MHx8fHwxNzYxMjMzOTAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Kit de mamadeiras para bebê.",
+      "imageUrl": "https://i.imgur.com/gxOThQR.jpg",
       "imageHint": "baby bottles"
     },
     {
       "id": "product-4",
-      "description": "A pile of baby toys",
-      "imageUrl": "https://images.unsplash.com/photo-1618842676088-c4d48a6a7c9d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxiYWJ5JTIwdG95c3xlbnwwfHx8fDE3NjExOTIyMDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "baby toys"
+      "description": "Brinquedos de madeira educativos e coloridos.",
+      "imageUrl": "https://i.imgur.com/DLPkytI.jpg",
+      "imageHint": "wooden toys"
     },
     {
       "id": "product-5",
-      "description": "A baby high chair",
-      "imageUrl": "https://images.unsplash.com/photo-1625181067043-42eff3270801?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxoaWdoJTIwY2hhaXJ8ZW58MHx8fHwxNzYxMjMzOTAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "high chair"
-    },
-    {
-      "id": "content-1",
-      "description": "Video about baby sleep",
-      "imageUrl": "https://images.unsplash.com/photo-1496174742515-d2146dcf8e80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbGVlcGluZyUyMGJhYnl8ZW58MHx8fHwxNzYxMjMzOTAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "sleeping baby"
-    },
-    {
-      "id": "content-2",
-      "description": "Video about postpartum nutrition",
-      "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxoZWFsdGh5JTIwZm9vZHxlbnwwfHx8fDE3NjExMzM2Nzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "healthy food"
-    },
-    {
-      "id": "content-3",
-      "description": "Video about baby's first foods",
-      "imageUrl": "https://images.unsplash.com/photo-1646314951096-ed41d80638b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxiYWJ5JTIwZWF0aW5nfGVufDB8fHx8MTc2MTE5ODg2OHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "baby eating"
-    },
-    {
-      "id": "content-4",
-      "description": "Live Q&A session",
-      "imageUrl": "https://images.unsplash.com/photo-1604941878418-b0fbf8e3590?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxsaXZlJTIwc3RyZWFtfGVufDB8fHx8MTc2MTE1MTY1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "live stream"
-    },
-    {
-      "id": "vip-content",
-      "description": "Exclusive interview with Nathália Valente",
-      "imageUrl": "https://storage.googleapis.com/stabl-aec92.appspot.com/google-project-template/render_d622a59a-5b4d-44a6-9f4a-9b4e605d8f63.jpg",
-      "imageHint": "woman illustration"
-    },
-    {
-      "id": "nava-banner",
-      "description": "Woman in a bikini on a beach",
-      "imageUrl": "https://images.unsplash.com/photo-1573855619003-97b47d6d4e53?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxiaWtpbmklMjBiZWFjaHxlbnwwfHx8fDE3NjEzMTE4ODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "bikini beach"
-    },
-    {
-      "id": "babytest-banner",
-      "description": "Close up on a baby's feet",
-      "imageUrl": "https://images.unsplash.com/photo-1604868423989-74d92471a5d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxiYWJ5JTIwZmVldHxlbnwwfHx8fDE3NjEzMTE5NDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "baby feet"
-    },
-    {
-      "id": "pwa-icon-192",
-      "description": "ClubNath App Icon 192x192",
-      "imageUrl": "https://storage.googleapis.com/stabl-aec92.appspot.com/google-project-template/render_d622a59a-5b4d-44a6-9f4a-9b4e605d8f63.jpg?w=192&h=192",
-      "imageHint": "logo illustration"
-    },
-    {
-      "id": "pwa-icon-512",
-      "description": "ClubNath App Icon 512x512",
-      "imageUrl": "https://storage.googleapis.com/stabl-aec92.appspot.com/google-project-template/render_d622a59a-5b4d-44a6-9f4a-9b4e605d8f63.jpg?w=512&h=512",
-      "imageHint": "logo illustration"
+      "description": "Berço de madeira com um cobertor dentro.",
+      "imageUrl": "https://i.imgur.com/OqVf2hV.jpg",
+      "imageHint": "baby crib"
     }
   ]
 }

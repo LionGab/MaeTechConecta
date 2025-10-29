@@ -1,7 +1,7 @@
 {
-  "name": "ClubNath",
-  "short_name": "ClubNath",
-  "description": "A comunidade de fé e acolhimento que toda mãe precisa.",
+  "name": "Nossa Maternidade",
+  "short_name": "Nossa Maternidade",
+  "description": "Encontre sua tribo: uma comunidade de fé e acolhimento para mães.",
   "icons": [
     {
       "src": "https://storage.googleapis.com/stabl-aec92.appspot.com/google-project-template/render_d622a59a-5b4d-44a6-9f4a-9b4e605d8f63.jpg?w=192&h=192",
@@ -14,9 +14,8 @@
       "type": "image/jpeg"
     }
   ],
-  "theme_color": "#E9A891",
-  "background_color": "#FCF5F3",
-  "start_url": "/dashboard",
+  "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait"
+  "background_color": "#ffffff",
+  "theme_color": "#f472b6"
 }

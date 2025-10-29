@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -10,6 +11,8 @@ import { Icons } from '@/components/icons';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { FirebaseError } from 'firebase/app';
+import imageData from '@/lib/placeholder-images.json';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function AuthPage() {
   const auth = useAuth();
@@ -22,6 +25,9 @@ export default function AuthPage() {
   const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
+
+  const logo = imageData.placeholderImages.find(p => p.id === 'logo-nath');
+  const heroImage = imageData.placeholderImages.find(p => p.id === 'hero');
 
   const handleAuthSuccess = (provider: string) => {
     toast({
@@ -40,7 +46,7 @@ export default function AuthPage() {
         switch (error.code) {
             case 'auth/operation-not-allowed':
                 title = 'Método de Login Desabilitado';
-                description = `O login com ${provider} não está habilitado no seu projeto Firebase. Vá em Authentication > Sign-in method e ative-o.`;
+                description = `O login com ${provider} não está habilitado. Por favor, habilite este método no seu painel do Firebase em Authentication > Sign-in method.`;
                 break;
             case 'auth/popup-closed-by-user':
             case 'auth/cancelled-popup-request':
@@ -146,46 +152,49 @@ export default function AuthPage() {
 
   const onTabChange = (value: string) => {
     setActiveTab(value);
+    setEmail('');
+    setPassword('');
+    setName('');
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background p-4">
-      <div className="w-full max-w-sm space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="font-headline text-4xl font-bold text-pink-500">ClubNath</h1>
-          <p className="text-muted-foreground">Sua comunidade exclusiva</p>
-        </div>
-        
-        <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-muted rounded-full">
-                <TabsTrigger value="login" className="rounded-full" disabled={!!isLoading}>Entrar</TabsTrigger>
-                <TabsTrigger value="signup" className="rounded-full" disabled={!!isLoading}>Criar Conta</TabsTrigger>
-            </TabsList>
+    <div className="w-full min-h-screen lg:grid lg:grid-cols-2">
+      <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md space-y-8">
+           <div className="text-center space-y-2">
+            {logo && <Image src={logo.imageUrl} alt="Logo" width={64} height={64} className="mx-auto rounded-full" />}
+            <h1 className="font-headline text-3xl font-bold text-primary tracking-tighter">Nossa Maternidade</h1>
+            <p className="text-muted-foreground">Encontre sua tribo: uma comunidade de fé e acolhimento para mães.</p>
+          </div>
+          
+          <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
+              <TabsList className="grid w-full grid-cols-2 bg-muted p-1 h-auto rounded-full">
+                  <TabsTrigger value="login" className="rounded-full py-2" disabled={!!isLoading}>Entrar</TabsTrigger>
+                  <TabsTrigger value="signup" className="rounded-full py-2" disabled={!!isLoading}>Criar Conta</TabsTrigger>
+              </TabsList>
 
-            <div className="space-y-4 mt-6">
-                <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('google')} disabled={!!isLoading}>
-                    {isLoading === 'google' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Icons.google className="mr-2 h-5 w-5" />}
-                    Continuar com Google
-                </Button>
-                <Button variant="outline" className="w-full bg-black text-white hover:bg-black/80 hover:text-white" onClick={() => handleSocialLogin('apple')} disabled={!!isLoading}>
-                    {isLoading === 'apple' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Icons.apple className="mr-2 h-5 w-5 fill-white" />}
-                    Continuar com Apple
-                </Button>
-                <Button className="w-full text-white gradient-instagram" onClick={() => handleSocialLogin('instagram')} disabled={!!isLoading}>
-                    {isLoading === 'instagram' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Icons.instagram className="mr-2 h-5 w-5" />}
-                    Continuar com Instagram
-                </Button>
-            </div>
-            
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
+              <div className="mt-6 space-y-3">
+                  <Button variant="outline" className="w-full h-12" onClick={() => handleSocialLogin('google')} disabled={!!isLoading}>
+                      {isLoading === 'google' ? <Loader2 className="mr-2 animate-spin" /> : <Icons.google className="mr-2 h-5 w-5" />}
+                      Continuar com Google
+                  </Button>
+                  <Button variant="outline" className="w-full h-12 bg-foreground text-background hover:bg-foreground/90 hover:text-background" onClick={() => handleSocialLogin('apple')} disabled={!!isLoading}>
+                      {isLoading === 'apple' ? <Loader2 className="mr-2 animate-spin" /> : <Icons.apple className="mr-2 h-5 w-5 fill-background" />}
+                      Continuar com Apple
+                  </Button>
               </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  ou
-                </span>
+              
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    ou continue com
+                  </span>
+                </div>
               </div>
+ copilot/structure-nossa-maternidade-app
             </div>
 
             <TabsContent value="login">
@@ -226,7 +235,59 @@ export default function AuthPage() {
                     </Button>
                 </form>
             </TabsContent>
-        </Tabs>
+       </Tabs>
+
+
+              <TabsContent value="login">
+                  <form onSubmit={(e) => handleEmailSubmit(e, 'login')} className="space-y-4">
+                      <div className="space-y-2">
+                          <Input id="login-email" type="email" placeholder="seu@email.com" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={!!isLoading} className="h-12"/>
+                      </div>
+                       <div className="relative space-y-2">
+                          <Input id="login-password" type={showPassword ? "text" : "password"} placeholder="Sua senha" required value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="h-12 pr-10"/>
+                          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3.5 h-5 w-5 text-muted-foreground">
+                              {showPassword ? <EyeOff /> : <Eye />}
+                          </button>
+                      </div>
+                      <Button type="submit" className="w-full h-12 text-base font-semibold" disabled={!!isLoading || !email || !password}>
+                          {isLoading === 'email' ? <Loader2 className="mr-2 animate-spin" /> : 'Entrar'}
+                      </Button>
+                  </form>
+              </TabsContent>
+
+              <TabsContent value="signup">
+                  <form onSubmit={(e) => handleEmailSubmit(e, 'signup')} className="space-y-4">
+                      <div className="space-y-2">
+                          <Input id="signup-name" type="text" placeholder="Seu nome completo" required value={name} onChange={(e) => setName(e.target.value)} disabled={!!isLoading} className="h-12"/>
+                      </div>
+                       <div className="space-y-2">
+                          <Input id="signup-email" type="email" placeholder="seu@email.com" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={!!isLoading} className="h-12" />
+                      </div>
+                       <div className="relative space-y-2">
+                          <Input id="signup-password" type={showPassword ? "text" : "password"} placeholder="Crie uma senha (mínimo 6 caracteres)" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="h-12 pr-10" />
+                           <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3.5 h-5 w-5 text-muted-foreground">
+                              {showPassword ? <EyeOff /> : <Eye />}
+                          </button>
+                      </div>
+                      <Button type="submit" className="w-full h-12 text-base font-semibold" disabled={!!isLoading || !name || !email || password.length < 6}>
+                          {isLoading === 'email' ? <Loader2 className="mr-2 animate-spin" /> : 'Criar Conta Grátis'}
+                      </Button>
+                  </form>
+              </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+       <div className="hidden bg-muted lg:block relative">
+        {heroImage && <Image
+          src={heroImage.imageUrl}
+          alt="Uma mãe sorrindo com seu bebê no colo"
+          data-ai-hint={heroImage.imageHint}
+          width="1920"
+          height="1080"
+          className="h-full w-full object-cover"
+        />}
+        <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
+      main
       </div>
     </div>
   );

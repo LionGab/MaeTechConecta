@@ -18,8 +18,8 @@ const fontHeadline = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'ClubNath',
-  description: 'A comunidade de fé e acolhimento que toda mãe precisa.',
+  title: 'Nossa Maternidade',
+  description: 'Encontre sua tribo: uma comunidade de fé e acolhimento para mães.',
   manifest: '/manifest.json',
 };
 
@@ -29,9 +29,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
-        <meta name="theme-color" content="#E9A891" />
+       <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={cn('antialiased', fontBody.variable, fontHeadline.variable)}>
         <FirebaseClientProvider>
