@@ -3,6 +3,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+ copilot/structure-nossa-maternidade-app
+import { BotMessageSquare, Baby, Activity, BookOpen, Users } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+const navItems = [
+  { href: '/dashboard/jornada', icon: Baby, label: 'Jornada' },
+  { href: '/dashboard/sintomas', icon: Activity, label: 'Sintomas' },
+  { href: '/dashboard', icon: BotMessageSquare, label: 'NathIA' },
+  { href: '/dashboard/content', icon: BookOpen, label: 'Conteúdo' },
+  { href: '/dashboard/matches', icon: Users, label: 'Conexões' },
+=======
 import { Users, BookOpen, MessagesSquare, ShoppingBag, UserCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -12,6 +23,7 @@ const navItems = [
   { href: '/dashboard/forum', icon: MessagesSquare, label: 'Comunidade' },
   { href: '/dashboard/loja', icon: ShoppingBag, label: 'Loja' },
   { href: '/dashboard/meu-espaco', icon: UserCircle, label: 'Meu Espaço' },
+main
 ];
 
 export function BottomNav() {

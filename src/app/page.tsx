@@ -194,6 +194,49 @@ export default function AuthPage() {
                   </span>
                 </div>
               </div>
+ copilot/structure-nossa-maternidade-app
+            </div>
+
+            <TabsContent value="login">
+                <form onSubmit={(e) => handleEmailSubmit(e, 'login')} className="space-y-4">
+                    <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <Input id="login-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={!!isLoading} className="pl-10"/>
+                    </div>
+                     <div className="relative">
+                        <Input id="login-password" type={showPassword ? "text" : "password"} placeholder="Senha" required value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="pr-10"/>
+                        <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground">
+                            {showPassword ? <EyeOff /> : <Eye />}
+                        </button>
+                    </div>
+                    <Button type="submit" className="w-full text-white gradient-primary" disabled={!!isLoading || !email || !password}>
+                        {isLoading === 'email' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Entrar'}
+                    </Button>
+                </form>
+            </TabsContent>
+
+            <TabsContent value="signup">
+                <form onSubmit={(e) => handleEmailSubmit(e, 'signup')} className="space-y-4">
+                    <div className="relative">
+                        <Input id="signup-name" type="text" placeholder="Nome" required value={name} onChange={(e) => setName(e.target.value)} disabled={!!isLoading} />
+                    </div>
+                     <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <Input id="signup-email" type="email" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} disabled={!!isLoading} className="pl-10" />
+                    </div>
+                     <div className="relative">
+                        <Input id="signup-password" type={showPassword ? "text" : "password"} placeholder="Senha (mínimo 6 caracteres)" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} disabled={!!isLoading} className="pr-10" />
+                         <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground">
+                            {showPassword ? <EyeOff /> : <Eye />}
+                        </button>
+                    </div>
+                    <Button type="submit" className="w-full text-white gradient-primary" disabled={!!isLoading || !name || !email || password.length < 6}>
+                        {isLoading === 'email' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Criar Conta'}
+                    </Button>
+                </form>
+            </TabsContent>
+       </Tabs>
+
 
               <TabsContent value="login">
                   <form onSubmit={(e) => handleEmailSubmit(e, 'login')} className="space-y-4">
@@ -244,6 +287,7 @@ export default function AuthPage() {
           className="h-full w-full object-cover"
         />}
         <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
+      main
       </div>
     </div>
   );
