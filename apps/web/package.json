@@ -1,0 +1,17 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@nossamaternidade/api": "0.0.0",
+    "@nossamaternidade/shared": "0.0.0",
+    "@nossamaternidade/ui": "1.0.0"
+  },
+  "devDependencies": {}
+}

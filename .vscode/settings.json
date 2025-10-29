@@ -1,0 +1,6 @@
+{
+    "githubIssues.createInsertFormat": "url",
+    "terminal.integrated.suggest.enabled": false,
+    "claudeCode.allowDangerouslySkipPermissions": true,
+    "git.ignoreLimitWarning": true
+}
