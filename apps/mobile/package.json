@@ -7,12 +7,13 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "dev": "expo start"
   },
   "dependencies": {
-    "@nossamaternidade/api": "workspace:*",
-    "@nossamaternidade/shared": "workspace:*",
-    "@nossamaternidade/ui": "workspace:*"
+    "@nossamaternidade/api": "0.0.0",
+    "@nossamaternidade/shared": "0.0.0",
+    "@nossamaternidade/ui": "1.0.0"
   },
   "devDependencies": {},
   "private": true

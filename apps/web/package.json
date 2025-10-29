@@ -10,9 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nossamaternidade/api": "workspace:*",
-    "@nossamaternidade/shared": "workspace:*",
-    "@nossamaternidade/ui": "workspace:*"
+    "@nossamaternidade/api": "0.0.0",
+    "@nossamaternidade/shared": "0.0.0",
+    "@nossamaternidade/ui": "1.0.0"
   },
   "devDependencies": {}
 }
