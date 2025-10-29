@@ -2,10 +2,9 @@
 {
   "name": "maetech-conecta-monorepo",
   "private": true,
-  "packageManager": "npm@10.8.2",
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev --",
+    "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\""
   },
@@ -36,5 +35,6 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "packageManager": "npm@10.8.2"
 }
