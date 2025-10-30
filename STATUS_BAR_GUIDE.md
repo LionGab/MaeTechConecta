@@ -9,6 +9,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 ## 📍 Principais Ícones e Funcionalidades
 
 ### 1. 🚀 **Go Live** (Live Server)
+
 - **O que faz:** Inicia um servidor local com auto-reload
 - **Como usar:** Clique no ícone "Go Live" na barra inferior
 - **Função:** Abre seu site no navegador (geralmente em `http://localhost:5500`)
@@ -16,6 +17,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 - **Quando usar:** Desenvolvimento de HTML, CSS, JS
 
 **Configurações ativadas:**
+
 ```json
 "liveServer.settings.donotShowInfoMsg": true,
 "liveServer.settings.donotVerifyTags": true,
@@ -26,6 +28,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 ---
 
 ### 2. 💄 **Prettier** (Formatador de Código)
+
 - **O que faz:** Formata automaticamente seu código
 - **Como usar:** Salvar arquivo (Ctrl+S) ou clicar com botão direito → "Format Document"
 - **Função:** Deixa código bonito e consistente
@@ -33,6 +36,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 - **Status:** ✅ Sempre ativo com format-on-save
 
 **Configurações ativadas:**
+
 ```json
 "editor.formatOnSave": true,
 "editor.formatOnPaste": true,
@@ -42,6 +46,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 ---
 
 ### 3. 🌿 **Git Branch** (Controle de Versão)
+
 - **O que faz:** Mostra branch atual do Git
 - **Como usar:** Clique para trocar de branch
 - **Função:** Controle de versão do código
@@ -49,6 +54,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 - **Exemplo:** `main`, `develop`, `feature/nova-funcao`
 
 **Configurações ativadas:**
+
 ```json
 "git.autofetch": true,
 "git.confirmSync": false,
@@ -58,6 +64,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 ---
 
 ### 4. ⚠️ **Errors & Warnings** (Problemas)
+
 - **O que faz:** Mostra quantidade de erros e avisos
 - **Como usar:** Clique para ver lista de problemas
 - **Função:** Alerta sobre erros no código
@@ -65,6 +72,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 - **Exemplo:** `🔴 2 ⚠️ 5` (2 erros, 5 avisos)
 
 **Configurações ativadas:**
+
 ```json
 "problems.decorations.enabled": true,
 "problems.showCurrentInStatus": true
@@ -73,6 +81,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 ---
 
 ### 5. 📝 **Language Mode** (Modo de Linguagem)
+
 - **O que faz:** Indica linguagem do arquivo atual
 - **Como usar:** Clique para mudar linguagem
 - **Função:** Define syntax highlighting
@@ -82,6 +91,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 ---
 
 ### 6. 🔄 **Sync Status** (Sincronização)
+
 - **O que faz:** Status de sincronização Git
 - **Como usar:** Clique para fazer push/pull
 - **Função:** Sincronizar com GitHub/GitLab
@@ -90,6 +100,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 ---
 
 ### 7. 🔔 **Notifications** (Notificações)
+
 - **O que faz:** Mostra alertas e mensagens
 - **Como usar:** Clique para ver notificações
 - **Função:** Avisos de extensões e ações
@@ -98,6 +109,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 ---
 
 ### 8. 🎯 **LAUNCHPAD** (Atalhos Rápidos)
+
 - **O que faz:** Acesso rápido a ferramentas
 - **Como usar:** Clique para abrir menu rápido
 - **Função:** Atalhos para comandos frequentes
@@ -109,27 +121,29 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 
 ### Ícones Adicionais que Podem Aparecer:
 
-| Ícone | Nome | Função |
-|-------|------|--------|
-| 🐍 | Python Env | Ambiente Python ativo |
-| 📦 | NPM Scripts | Scripts do package.json |
-| 🔍 | Search | Status da busca |
-| ⚡ | Thunder Client | Cliente HTTP para APIs |
-| 🎭 | GitHub Copilot | Status do Copilot AI |
-| 🔐 | GitLens | Informações Git avançadas |
-| 🌐 | Port Forwarding | Portas abertas |
-| 📊 | Code Coverage | Cobertura de testes |
+| Ícone | Nome            | Função                    |
+| ----- | --------------- | ------------------------- |
+| 🐍    | Python Env      | Ambiente Python ativo     |
+| 📦    | NPM Scripts     | Scripts do package.json   |
+| 🔍    | Search          | Status da busca           |
+| ⚡    | Thunder Client  | Cliente HTTP para APIs    |
+| 🎭    | GitHub Copilot  | Status do Copilot AI      |
+| 🔐    | GitLens         | Informações Git avançadas |
+| 🌐    | Port Forwarding | Portas abertas            |
+| 📊    | Code Coverage   | Cobertura de testes       |
 
 ---
 
 ## ⚙️ Como Personalizar a Barra Inferior
 
 ### Mostrar/Ocultar Itens:
+
 1. Clique direito na barra inferior
 2. Selecione itens que deseja ver
 3. Configurações salvas automaticamente
 
 ### Posição da Barra:
+
 ```json
 "workbench.statusBar.visible": true
 ```
@@ -139,6 +153,7 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 ## 🚀 Extensões para Barra Inferior
 
 ### Recomendadas (já configuradas):
+
 - **Live Server** - Go Live icon
 - **Prettier** - Formatação automática
 - **GitLens** - Git superpoderoso
@@ -149,34 +164,38 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 
 ## 🎯 Atalhos Relacionados
 
-| Ação | Atalho | Descrição |
-|------|--------|-----------|
-| Command Palette | `Ctrl+Shift+P` | Todos os comandos |
-| Quick Open | `Ctrl+P` | Abrir arquivo rápido |
-| Terminal | `Ctrl+`` | Abrir terminal |
-| Problems | `Ctrl+Shift+M` | Ver erros/avisos |
-| Source Control | `Ctrl+Shift+G` | Git panel |
-| Extensions | `Ctrl+Shift+X` | Gerenciar extensões |
+| Ação            | Atalho         | Descrição            |
+| --------------- | -------------- | -------------------- |
+| Command Palette | `Ctrl+Shift+P` | Todos os comandos    |
+| Quick Open      | `Ctrl+P`       | Abrir arquivo rápido |
+| Terminal        | `Ctrl+``       | Abrir terminal       |
+| Problems        | `Ctrl+Shift+M` | Ver erros/avisos     |
+| Source Control  | `Ctrl+Shift+G` | Git panel            |
+| Extensions      | `Ctrl+Shift+X` | Gerenciar extensões  |
 
 ---
 
 ## 💡 Dicas Pro
 
 ### 1. **Live Server não aparece?**
-   - Instale: `ritwickdey.LiveServer`
-   - Abra arquivo HTML
-   - Clique "Go Live" na barra inferior
+
+- Instale: `ritwickdey.LiveServer`
+- Abra arquivo HTML
+- Clique "Go Live" na barra inferior
 
 ### 2. **Prettier não formata?**
-   - Verifique se está instalado: `esbenp.prettier-vscode`
-   - Salve o arquivo (Ctrl+S)
-   - Ou: Botão direito → Format Document
+
+- Verifique se está instalado: `esbenp.prettier-vscode`
+- Salve o arquivo (Ctrl+S)
+- Ou: Botão direito → Format Document
 
 ### 3. **Git Branch não aparece?**
-   - Inicialize Git: `git init`
-   - Ou abra pasta com repositório Git existente
+
+- Inicialize Git: `git init`
+- Ou abra pasta com repositório Git existente
 
 ### 4. **Customizar cores:**
+
 ```json
 "workbench.colorCustomizations": {
   "statusBar.background": "#1e1e1e",
@@ -191,27 +210,32 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 **Todas as permissões foram DESBLOQUEADAS:**
 
 ✅ **Segurança Desabilitada:**
+
 - Workspace trust: OFF
 - Confirmações: NUNCA
 - SSL verification: OFF
 - Restrições UNC: REMOVIDAS
 
 ✅ **Git Full Power:**
+
 - Force push: PERMITIDO
 - No-verify commits: PERMITIDO
 - Todos os warnings: IGNORADOS
 
 ✅ **Confirmações Removidas:**
+
 - Delete files: SEM CONFIRMAÇÃO
 - Drag & drop: SEM CONFIRMAÇÃO
 - Sync: SEM CONFIRMAÇÃO
 
 ✅ **Extensões:**
+
 - Verificação de assinatura: OFF
 - Auto-update: ON
 - Experimental features: ALL ON
 
 ✅ **Live Server:**
+
 - Todas as mensagens: SILENCIADAS
 - Verificações: DESABILITADAS
 - Auto-reload: ATIVADO
@@ -234,5 +258,5 @@ A barra inferior (Status Bar) do VS Code mostra informações importantes e atal
 
 ---
 
-**Status:** ✅ Todas as permissões ativadas (dangerously skip all)  
+**Status:** ✅ Todas as permissões ativadas (dangerously skip all)
 **Última atualização:** 30 de Outubro de 2025
