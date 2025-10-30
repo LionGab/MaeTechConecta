@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { chatWithAI, detectUrgency, validateWithGPT, ChatContext } from '../services/ai';
 import { saveChatMessage, getChatHistory, createTemporaryUser } from '../services/supabase';
+import { colors, spacing, borderRadius, typography } from '../theme/colors';
 
 export default function ChatScreen() {
   const navigation = useNavigation();
@@ -146,15 +147,15 @@ export default function ChatScreen() {
       {...props}
       wrapperStyle={{
         right: {
-          backgroundColor: '#E91E63',
+          backgroundColor: colors.primary,
         },
         left: {
-          backgroundColor: '#FFE5F1',
+          backgroundColor: colors.card,
         },
       }}
       textStyle={{
-        right: { color: '#fff' },
-        left: { color: '#333' },
+        right: { color: colors.primaryForeground },
+        left: { color: colors.cardForeground },
       }}
     />
   );
@@ -201,48 +202,48 @@ export default function ChatScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#FFE5F1',
+    padding: spacing.base,
+    backgroundColor: colors.background,
     borderBottomWidth: 1,
-    borderBottomColor: '#FFB6D4',
+    borderBottomColor: colors.border,
   },
   headerBack: {
-    fontSize: 16,
-    color: '#E91E63',
+    fontSize: typography.sizes.base,
+    color: colors.primary,
   },
   headerTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: typography.sizes.lg,
+    fontWeight: typography.weights.bold as any,
+    color: colors.foreground,
   },
   headerEmergency: {
-    fontSize: 16,
-    color: '#e74c3c',
-    fontWeight: 'bold',
+    fontSize: typography.sizes.base,
+    color: colors.destructive,
+    fontWeight: typography.weights.bold as any,
   },
   quickReplies: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    padding: 10,
-    backgroundColor: '#f9f9f9',
+    padding: spacing.sm,
+    backgroundColor: colors.muted,
   },
   quickReplyButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: '#fff',
-    borderRadius: 20,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    backgroundColor: colors.card,
+    borderRadius: borderRadius.full,
     borderWidth: 1,
-    borderColor: '#FFB6D4',
+    borderColor: colors.primary,
   },
   quickReplyText: {
-    fontSize: 12,
-    color: '#E91E63',
+    fontSize: typography.sizes.xs,
+    color: colors.primary,
   },
 });
 
