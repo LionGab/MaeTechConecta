@@ -1,0 +1,283 @@
+{
+  "current_sprint": "Sprint 0 - Foundation & Design System",
+  "sprint_start_date": "2025-10-29",
+  "sprint_end_date": "2025-11-05",
+
+  "active_todos": [
+    {
+      "id": "T001",
+      "title": "Refatorar OnboardingScreen com 4-5 perguntas inteligentes",
+      "description": "Substituir formulário multi-step por questionário estratégico que captura perfil psicológico + médico",
+      "status": "pending",
+      "priority": "critical",
+      "sprint": "Sprint 1",
+      "estimated_hours": 8,
+      "dependencies": [],
+      "assignee": "Design Agent",
+      "questions": [
+        "Nome + momento de vida (gestante/mãe/tentante)",
+        "Estado emocional atual",
+        "Prioridades e desafios (selecionar até 3)",
+        "Nível de conhecimento + rede de apoio",
+        "Preferências de conteúdo (opcional)"
+      ]
+    },
+    {
+      "id": "T002",
+      "title": "Migrar de Claude para Gemini 1.5 Pro (NathIA)",
+      "description": "Substituir Claude Sonnet por Gemini 1.5 Pro como motor de IA do app",
+      "status": "pending",
+      "priority": "critical",
+      "sprint": "Sprint 1",
+      "estimated_hours": 12,
+      "dependencies": [],
+      "subtasks": [
+        "Configurar API do Gemini",
+        "Criar service layer para Gemini",
+        "Migrar generateDailyPlan para Gemini",
+        "Migrar chat para Gemini",
+        "Testar equivalência de respostas"
+      ]
+    },
+    {
+      "id": "T003",
+      "title": "Implementar sistema de memória vetorial (30 dias)",
+      "description": "Criar sistema de armazenamento e retrieval de conversas usando Supabase Vector",
+      "status": "pending",
+      "priority": "critical",
+      "sprint": "Sprint 1",
+      "estimated_hours": 16,
+      "dependencies": ["T002"],
+      "subtasks": [
+        "Criar schema Supabase para embeddings",
+        "Implementar geração de embeddings (text-embedding-004)",
+        "Criar função de armazenamento de conversas",
+        "Implementar vector search para retrieval",
+        "Criar política de retenção (30 dias)"
+      ]
+    },
+    {
+      "id": "T004",
+      "title": "Criar nova navegação (5 bottom tabs)",
+      "description": "Implementar Bottom Tab Navigator com 5 tabs principais",
+      "status": "pending",
+      "priority": "high",
+      "sprint": "Sprint 1",
+      "estimated_hours": 6,
+      "dependencies": [],
+      "tabs": [
+        "Início (Dashboard)",
+        "NathIA (Chat IA)",
+        "Comunidade (Fórum)",
+        "Conteúdos Nath (Exclusivos)",
+        "Perfil (Configurações)"
+      ]
+    },
+    {
+      "id": "T005",
+      "title": "Implementar sistema de moderação (3 camadas)",
+      "description": "Criar sistema ultra-rigoroso de moderação de conteúdo",
+      "status": "pending",
+      "priority": "critical",
+      "sprint": "Sprint 2",
+      "estimated_hours": 20,
+      "dependencies": ["T002"],
+      "layers": [
+        "Camada 1: Filtro de palavras proibidas (client-side)",
+        "Camada 2: Análise por IA (Gemini Moderation)",
+        "Camada 3: Dashboard de revisão humana"
+      ]
+    },
+    {
+      "id": "T006",
+      "title": "Refatorar tela Início (ultra-personalizada)",
+      "description": "Transformar HomeScreen em dashboard adaptativo com IA",
+      "status": "pending",
+      "priority": "high",
+      "sprint": "Sprint 2",
+      "estimated_hours": 10,
+      "dependencies": ["T002", "T003"],
+      "features": [
+        "Plano diário gerado por IA",
+        "Quick access personalizado",
+        "Notificações inteligentes",
+        "Cards dinâmicos baseados em perfil"
+      ]
+    },
+    {
+      "id": "T007",
+      "title": "Criar tela Comunidade com moderação",
+      "description": "Implementar fórum moderado com sub-tabs",
+      "status": "pending",
+      "priority": "high",
+      "sprint": "Sprint 2",
+      "estimated_hours": 16,
+      "dependencies": ["T005"],
+      "subtabs": [
+        "Perguntas",
+        "Depoimentos",
+        "Grupos"
+      ]
+    },
+    {
+      "id": "T008",
+      "title": "Criar tela Conteúdos Nath",
+      "description": "Implementar hub de conteúdo exclusivo de Nathália Valente",
+      "status": "pending",
+      "priority": "medium",
+      "sprint": "Sprint 3",
+      "estimated_hours": 12,
+      "dependencies": [],
+      "content_types": [
+        "Vídeos",
+        "Artigos",
+        "Áudios",
+        "Lives exclusivas"
+      ]
+    },
+    {
+      "id": "T009",
+      "title": "Implementar personalização adaptativa",
+      "description": "Sistema de adaptação de tom, conteúdo e timing baseado em perfil",
+      "status": "pending",
+      "priority": "medium",
+      "sprint": "Sprint 3",
+      "estimated_hours": 14,
+      "dependencies": ["T002", "T003"],
+      "aspects": [
+        "Tom de voz adaptativo",
+        "Tipo de conteúdo personalizado",
+        "Horários de notificação inteligentes"
+      ]
+    },
+    {
+      "id": "T010",
+      "title": "Migrar ChatScreen para novos componentes",
+      "description": "Refatorar ChatScreen com Button/Card + integrar NathIA",
+      "status": "pending",
+      "priority": "medium",
+      "sprint": "Sprint 2",
+      "estimated_hours": 6,
+      "dependencies": ["T002"]
+    },
+    {
+      "id": "T011",
+      "title": "Migrar DailyPlanScreen para novos componentes",
+      "description": "Refatorar DailyPlanScreen com Card component",
+      "status": "pending",
+      "priority": "low",
+      "sprint": "Sprint 3",
+      "estimated_hours": 4,
+      "dependencies": []
+    },
+    {
+      "id": "T012",
+      "title": "Migrar ProfileScreen para novos componentes",
+      "description": "Refatorar ProfileScreen com Card/Button/Input",
+      "status": "pending",
+      "priority": "low",
+      "sprint": "Sprint 3",
+      "estimated_hours": 6,
+      "dependencies": []
+    }
+  ],
+
+  "completed_todos": [
+    {
+      "id": "C001",
+      "title": "Criar componente Button",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    },
+    {
+      "id": "C002",
+      "title": "Criar componente Card",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    },
+    {
+      "id": "C003",
+      "title": "Criar componente Input",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    },
+    {
+      "id": "C004",
+      "title": "Criar componente Badge",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    },
+    {
+      "id": "C005",
+      "title": "Refatorar Logo.tsx (remover hardcoded colors)",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    },
+    {
+      "id": "C006",
+      "title": "Refatorar WelcomeHeader.tsx",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    },
+    {
+      "id": "C007",
+      "title": "Migrar OnboardingScreen para novos componentes",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    },
+    {
+      "id": "C008",
+      "title": "Migrar HomeScreen para novos componentes",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    },
+    {
+      "id": "C009",
+      "title": "Criar DESIGN_AGENT_GUIDE.md",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    },
+    {
+      "id": "C010",
+      "title": "Criar COMPONENT_LIBRARY.md",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    },
+    {
+      "id": "C011",
+      "title": "Criar MIGRATION_GUIDE.md",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    },
+    {
+      "id": "C012",
+      "title": "Criar comando slash /design-review",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    },
+    {
+      "id": "C013",
+      "title": "Implementar agente Memória Universal",
+      "completed_date": "2025-10-29",
+      "sprint": "Sprint 0"
+    }
+  ],
+
+  "sprint_summary": {
+    "sprint_0_completed": 13,
+    "sprint_1_pending": 4,
+    "sprint_2_pending": 4,
+    "sprint_3_pending": 4,
+    "total_pending": 12,
+    "total_estimated_hours": 134
+  },
+
+  "blockers": [],
+
+  "notes": [
+    "Sprint 1 é crítico - foca em fundação técnica (Gemini + Memória)",
+    "Moderação é prioridade crítica para lançamento",
+    "Testes com usuárias reais devem começar no Sprint 2",
+    "Conteúdos Nath podem ser desenvolvidos em paralelo"
+  ]
+}

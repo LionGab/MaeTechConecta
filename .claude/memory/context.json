@@ -1,0 +1,261 @@
+{
+  "project_name": "Nossa Maternidade",
+  "version": "1.0.0",
+  "last_updated": "2025-10-29",
+  "session_id": "001",
+
+  "project_overview": {
+    "description": "Aplicativo mobile para mães, gestantes e tentantes brasileiras (público classe C-D)",
+    "target_audience": "Mães, gestantes e tentantes no Brasil",
+    "social_class": "C-D",
+    "primary_goal": "Ser um dos apps mais vendidos do Brasil para maternidade",
+    "platforms": ["iOS", "Android"],
+    "key_stakeholder": "Nathália Valente"
+  },
+
+  "technology_stack": {
+    "framework": "React Native 0.74.5",
+    "runtime": "Expo ~51.0.0",
+    "language": "TypeScript 5.3.3",
+    "backend": "Supabase",
+    "ai_current": "Claude 3.5 Sonnet",
+    "ai_planned": "Google Gemini 1.5 Pro",
+    "payment": "Stripe",
+    "icons": "react-native-vector-icons/MaterialCommunityIcons",
+    "chat_ui": "react-native-gifted-chat",
+    "storage": "AsyncStorage + Supabase",
+    "vector_search": "Supabase Vector (planned)"
+  },
+
+  "design_system": {
+    "name": "Bubblegum",
+    "color_space": "OKLCH",
+    "theme_file": "src/theme/colors.ts",
+    "accessibility_standard": "WCAG 2.1 AA",
+    "minimum_touch_area": "44x44px",
+    "font_family": "System Sans-Serif",
+    "primary_color": "#DD5B9A (Rosa vibrante)",
+    "secondary_color": "#C1E1F8 (Azul pastel)",
+    "accent_color": "#E8D19E (Amarelo pastel)",
+    "background_color": "#FEFBF7 (Bege muito claro)",
+    "card_color": "#F2F1E8 (Cinza bege)"
+  },
+
+  "current_state": {
+    "screens": {
+      "OnboardingScreen": {
+        "status": "refactored",
+        "percentage": 100,
+        "components_used": ["Button", "Input", "Logo", "Icon"],
+        "features": ["4-step form", "User type selection", "Preferences selection"],
+        "next_action": "Replace with intelligent 4-5 questions"
+      },
+      "HomeScreen": {
+        "status": "refactored",
+        "percentage": 100,
+        "components_used": ["Button", "Card", "Logo", "Icon"],
+        "features": ["Daily plan", "Quick actions", "FAQ", "Emergency button (functional)"],
+        "next_action": "Ultra-personalize with AI-generated content"
+      },
+      "ChatScreen": {
+        "status": "pending_migration",
+        "percentage": 0,
+        "next_action": "Migrate to Button/Card components + implement NathIA"
+      },
+      "DailyPlanScreen": {
+        "status": "pending_migration",
+        "percentage": 0,
+        "next_action": "Migrate to Card component"
+      },
+      "ProfileScreen": {
+        "status": "pending_migration",
+        "percentage": 0,
+        "next_action": "Migrate to Card/Button/Input components"
+      }
+    },
+
+    "components": {
+      "Button": {
+        "status": "created",
+        "file": "src/components/Button.tsx",
+        "variants": ["primary", "secondary", "outline", "ghost", "destructive"],
+        "sizes": ["sm", "md", "lg"],
+        "features": ["icons", "loading", "accessibility", "fullWidth"]
+      },
+      "Card": {
+        "status": "created",
+        "file": "src/components/Card.tsx",
+        "variants": ["elevated", "outlined", "flat"],
+        "features": ["title", "subtitle", "icon", "onPress"]
+      },
+      "Input": {
+        "status": "created",
+        "file": "src/components/Input.tsx",
+        "features": ["label", "error", "helperText", "icon", "validation"]
+      },
+      "Badge": {
+        "status": "created",
+        "file": "src/components/Badge.tsx",
+        "variants": ["info", "warning", "error", "success"],
+        "sizes": ["sm", "md"]
+      },
+      "Logo": {
+        "status": "refactored",
+        "file": "src/components/Logo.tsx",
+        "changes": ["Removed 7 hardcoded colors", "Added theme variables"]
+      },
+      "WelcomeHeader": {
+        "status": "refactored",
+        "file": "src/components/WelcomeHeader.tsx",
+        "changes": ["Removed hardcoded styles", "Added icons", "Enhanced accessibility"]
+      },
+      "ThemeShowcase": {
+        "status": "existing",
+        "file": "src/components/ThemeShowcase.tsx",
+        "purpose": "Visual demonstration of design system"
+      }
+    },
+
+    "documentation": {
+      "DESIGN_AGENT_GUIDE.md": {
+        "created": true,
+        "lines": 350,
+        "purpose": "Complete workflow for Design Agent"
+      },
+      "COMPONENT_LIBRARY.md": {
+        "created": true,
+        "lines": 500,
+        "purpose": "Catalog of all components with examples"
+      },
+      "MIGRATION_GUIDE.md": {
+        "created": true,
+        "lines": 700,
+        "purpose": "Before/after migration examples and checklist"
+      }
+    },
+
+    "git": {
+      "current_branch": "main",
+      "last_commit": "3bd89a9",
+      "last_commit_message": "docs: Adicionar arquivo de conclusão da integração do tema Bubblegum",
+      "status": "clean"
+    }
+  },
+
+  "navigation": {
+    "current": {
+      "type": "Stack Navigator",
+      "screens": ["Onboarding", "Home", "Chat", "DailyPlan", "Profile"]
+    },
+    "planned": {
+      "type": "Bottom Tab Navigator (5 tabs)",
+      "tabs": [
+        {
+          "name": "Início",
+          "icon": "home",
+          "description": "Dashboard personalizado com plano diário gerado por IA"
+        },
+        {
+          "name": "NathIA",
+          "icon": "robot",
+          "description": "Chat com IA ultra-treinada, memória de 30 dias"
+        },
+        {
+          "name": "Comunidade",
+          "icon": "account-group",
+          "description": "Fórum moderado com sub-tabs (Perguntas, Depoimentos, Grupos)"
+        },
+        {
+          "name": "Conteúdos Nath",
+          "icon": "play-circle",
+          "description": "Vídeos, artigos, áudios, conteúdo exclusivo de Nathália Valente"
+        },
+        {
+          "name": "Perfil",
+          "icon": "account-circle",
+          "description": "Dados do usuário, configurações, assinatura"
+        }
+      ]
+    }
+  },
+
+  "ai_features": {
+    "current_ai": {
+      "provider": "Claude (Anthropic)",
+      "model": "claude-3-5-sonnet-20241022",
+      "context_window": "200k tokens",
+      "features": ["Daily plan generation", "Chat support"],
+      "limitations": ["No persistent memory", "Session-based only"]
+    },
+    "planned_ai": {
+      "provider": "Google Gemini",
+      "model": "Gemini 1.5 Pro",
+      "context_window": "1M tokens",
+      "features": [
+        "30-day conversation memory",
+        "Multimodal (text, image, audio)",
+        "Better Portuguese understanding",
+        "Adaptive personality",
+        "Context-aware responses"
+      ],
+      "memory_system": {
+        "storage": "Supabase Vector Store",
+        "embedding_model": "text-embedding-004",
+        "retention": "30 days",
+        "retrieval": "Vector search for relevant past conversations"
+      }
+    }
+  },
+
+  "moderation": {
+    "status": "not_implemented",
+    "requirements": "Ultra-rigorous, zero tolerance for inappropriate content",
+    "planned_system": {
+      "layer_1": {
+        "name": "Word Filter",
+        "type": "Real-time client-side",
+        "implementation": "Banned words list + regex patterns",
+        "action": "Block before sending"
+      },
+      "layer_2": {
+        "name": "AI Moderation",
+        "type": "Server-side analysis",
+        "implementation": "Gemini Moderation API",
+        "action": "Flag suspicious content"
+      },
+      "layer_3": {
+        "name": "Human Review",
+        "type": "Manual review for flagged content",
+        "implementation": "Admin dashboard",
+        "action": "Final decision + user warning/ban"
+      }
+    }
+  },
+
+  "migration_progress": {
+    "total_screens": 5,
+    "migrated_screens": 2,
+    "percentage": 40,
+    "details": [
+      {
+        "screen": "OnboardingScreen",
+        "status": "complete",
+        "components_migrated": ["TextInput → Input", "TouchableOpacity → Button"],
+        "improvements": ["Icons instead of emojis", "Full accessibility"]
+      },
+      {
+        "screen": "HomeScreen",
+        "status": "complete",
+        "components_migrated": ["View → Card", "TouchableOpacity → Button"],
+        "improvements": ["Functional emergency button", "Icons", "Accessibility"]
+      }
+    ]
+  },
+
+  "environment": {
+    "working_directory": "C:\\Users\\User\\Desktop\\Projetos\\Correto",
+    "platform": "win32",
+    "git_repo": true,
+    "additional_dirs": ["C:\\Users\\User\\Desktop\\Projetos\\Correto\\.claude"]
+  }
+}

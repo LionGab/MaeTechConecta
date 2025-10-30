@@ -1,0 +1,75 @@
+{
+  "user_preferences": {
+    "language": "pt-BR",
+    "communication_style": "professional_yet_warm",
+    "detail_level": "comprehensive",
+    "code_style": "typescript_strict",
+    "documentation_preference": "extensive_with_examples"
+  },
+
+  "project_priorities": {
+    "priority_1": "Ser um dos apps mais vendidos do Brasil",
+    "priority_2": "Experiência excepcional para mães/gestantes classe C-D",
+    "priority_3": "Ultra-rigoroso em segurança e moderação",
+    "priority_4": "IA extremamente treinada e adaptativa",
+    "priority_5": "Design acessível e profissional"
+  },
+
+  "stakeholder_preferences": {
+    "name": "Nathália Valente",
+    "role": "Key Stakeholder / Content Creator",
+    "preferences": [
+      "Onboarding rápido e inteligente (4-5 perguntas)",
+      "IA com memória de 30 dias (como Gemini)",
+      "Moderação ultra-rigorosa (zero tolerância)",
+      "IA extremamente treinada e adaptativa",
+      "Navegação com 5 tabs principais"
+    ]
+  },
+
+  "technical_preferences": {
+    "component_library": "custom_bubblegum_design_system",
+    "icon_library": "MaterialCommunityIcons",
+    "ai_provider_preferred": "Google Gemini 1.5 Pro",
+    "backend": "Supabase",
+    "payment": "Stripe",
+    "testing": "user_testing_with_real_mothers",
+    "deployment": "iOS + Android simultaneous"
+  },
+
+  "design_preferences": {
+    "color_scheme": "bubblegum_pastels",
+    "accessibility": "WCAG_2.1_AA_minimum",
+    "minimum_touch_area": "44x44px",
+    "font_family": "system_sans_serif",
+    "emoji_usage": "replace_with_professional_icons",
+    "shadow_style": "light_elevation"
+  },
+
+  "workflow_preferences": {
+    "commit_style": "conventional_commits",
+    "commit_frequency": "after_major_milestones",
+    "documentation": "inline_comments + separate_markdown_files",
+    "testing_approach": "real_user_testing",
+    "sprint_length": "1-2_weeks",
+    "code_review": "thorough_with_accessibility_focus"
+  },
+
+  "ai_assistant_preferences": {
+    "response_style": "detailed_with_context",
+    "code_examples": "always_include",
+    "explain_rationale": true,
+    "suggest_improvements": true,
+    "flag_accessibility_issues": true,
+    "use_emojis_in_responses": false,
+    "ultrathink_mode": true
+  },
+
+  "memory_system_preferences": {
+    "retention_period": "indefinite",
+    "sync_method": "git_based",
+    "backup_frequency": "after_each_session",
+    "privacy_level": "high",
+    "require_authorization_for_sensitive_data": true
+  }
+}

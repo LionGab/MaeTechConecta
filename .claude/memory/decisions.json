@@ -1,0 +1,121 @@
+{
+  "decisions": [
+    {
+      "id": "001",
+      "date": "2025-10-29",
+      "category": "Architecture",
+      "decision": "Migrar de Claude para Gemini 1.5 Pro como motor de IA",
+      "rationale": "Gemini oferece 1M tokens de contexto (vs 200k do Claude), melhor compreensão de português, e capacidades multimodais",
+      "status": "approved",
+      "impact": "high",
+      "stakeholder": "Nathália Valente"
+    },
+    {
+      "id": "002",
+      "date": "2025-10-29",
+      "category": "UX",
+      "decision": "Implementar onboarding inteligente com 4-5 perguntas estratégicas",
+      "rationale": "Reduzir fricção no cadastro enquanto captura perfil psicológico e médico completo",
+      "status": "approved",
+      "impact": "high",
+      "questions": [
+        "Nome + momento de vida (gestante/mãe/tentante)",
+        "Estado emocional atual",
+        "Prioridades e desafios (selecionar até 3)",
+        "Nível de conhecimento + rede de apoio",
+        "Preferências de conteúdo (opcional)"
+      ]
+    },
+    {
+      "id": "003",
+      "date": "2025-10-29",
+      "category": "Navigation",
+      "decision": "Implementar navegação por bottom tabs com 5 abas principais",
+      "rationale": "Melhor UX para público-alvo, acesso rápido às funcionalidades principais",
+      "status": "approved",
+      "impact": "high",
+      "tabs": [
+        "Início (Dashboard personalizado)",
+        "NathIA (Chat com IA)",
+        "Comunidade (Fórum moderado)",
+        "Conteúdos Nath (Vídeos/artigos exclusivos)",
+        "Perfil (Configurações)"
+      ]
+    },
+    {
+      "id": "004",
+      "date": "2025-10-29",
+      "category": "Features",
+      "decision": "Implementar sistema de memória de 30 dias para conversas com IA",
+      "rationale": "Criar experiência personalizada e continuidade nas conversas, entendendo contexto histórico",
+      "status": "approved",
+      "impact": "high",
+      "implementation": "Supabase Vector Store + embeddings"
+    },
+    {
+      "id": "005",
+      "date": "2025-10-29",
+      "category": "Safety",
+      "decision": "Implementar sistema de moderação em 3 camadas ultra-rigoroso",
+      "rationale": "Proteger comunidade de conteúdo inapropriado, obsceno ou prejudicial",
+      "status": "approved",
+      "impact": "critical",
+      "layers": [
+        "Filtro de palavras proibidas (client-side)",
+        "Análise por IA (server-side)",
+        "Revisão humana (admin dashboard)"
+      ]
+    },
+    {
+      "id": "006",
+      "date": "2025-10-29",
+      "category": "Design",
+      "decision": "Adotar Design System Bubblegum com componentes reutilizáveis",
+      "rationale": "Consistência visual, acessibilidade WCAG 2.1 AA, otimizado para classe C-D",
+      "status": "implemented",
+      "impact": "high",
+      "components_created": ["Button", "Card", "Input", "Badge"]
+    },
+    {
+      "id": "007",
+      "date": "2025-10-29",
+      "category": "Design",
+      "decision": "Substituir emojis por ícones vetoriais (MaterialCommunityIcons)",
+      "rationale": "Melhor acessibilidade para leitores de tela, aparência profissional, escalabilidade",
+      "status": "implemented",
+      "impact": "medium"
+    },
+    {
+      "id": "008",
+      "date": "2025-10-29",
+      "category": "Features",
+      "decision": "Botão de emergência funcional com ligação direta para SAMU 192",
+      "rationale": "Segurança em situações críticas de saúde durante gravidez",
+      "status": "implemented",
+      "impact": "critical"
+    },
+    {
+      "id": "009",
+      "date": "2025-10-29",
+      "category": "Personalization",
+      "decision": "Implementar personalização adaptativa (tom, conteúdo, horários)",
+      "rationale": "IA deve se adaptar ao perfil emocional e necessidades de cada usuária",
+      "status": "approved",
+      "impact": "high",
+      "aspects": [
+        "Tom de voz (maternal, técnico, amigável)",
+        "Tipo de conteúdo (científico vs. experiencial)",
+        "Horários de notificação baseados em rotina"
+      ]
+    }
+  ],
+  "statistics": {
+    "total_decisions": 9,
+    "approved": 7,
+    "implemented": 3,
+    "pending_implementation": 4,
+    "critical_impact": 2,
+    "high_impact": 6,
+    "medium_impact": 1
+  }
+}
