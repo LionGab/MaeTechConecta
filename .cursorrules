@@ -1,0 +1,97 @@
+# Cursor.ai Rules for LionNath Project
+
+## Project Context
+
+This is a React Native application with TypeScript, focused on personal development and daily interactions.
+
+## Code Style & Standards
+
+- Use TypeScript for all new files
+- Follow ESLint and Prettier configurations
+- Prefer functional components with hooks over class components
+- Use explicit typing, avoid `any` types
+- Maximum line length: 120 characters
+- Use 2 spaces for indentation
+
+## File Structure
+
+- Components in `src/components/`
+- Screens in `src/screens/`
+- Services in `src/services/`
+- Utilities in `src/utils/`
+- Theme configuration in `src/theme/`
+- Custom hooks in `src/hooks/`
+
+## Best Practices
+
+1. Always add proper error handling
+2. Use async/await instead of promises when possible
+3. Add JSDoc comments for complex functions
+4. Keep components small and focused (Single Responsibility)
+5. Use custom hooks to extract reusable logic
+6. Implement proper TypeScript types and interfaces
+7. Follow React Native best practices for performance
+8. Use memoization (useMemo, useCallback) when appropriate
+
+## Import Order
+
+1. React & React Native imports
+2. Third-party libraries
+3. Local components
+4. Utilities & helpers
+5. Types & interfaces
+6. Styles & assets
+
+## Naming Conventions
+
+- Components: PascalCase (e.g., `UserProfile.tsx`)
+- Files: camelCase for utilities (e.g., `helpers.ts`)
+- Constants: UPPER_SNAKE_CASE
+- Functions: camelCase
+- Interfaces/Types: PascalCase with `I` prefix for interfaces
+
+## Testing
+
+- Write unit tests for utilities and hooks
+- Add integration tests for critical flows
+- Use meaningful test descriptions
+- Mock external dependencies
+
+## Git Commit Messages
+
+Follow conventional commits:
+
+- feat: New feature
+- fix: Bug fix
+- docs: Documentation changes
+- style: Code style changes (formatting)
+- refactor: Code refactoring
+- test: Adding or updating tests
+- chore: Maintenance tasks
+
+## Security
+
+- Never commit sensitive data (.env files)
+- Use environment variables for API keys
+- Validate all user inputs
+- Sanitize data before rendering
+- Follow LGPD/GDPR guidelines for user data
+
+## Performance
+
+- Lazy load components when possible
+- Optimize images and assets
+- Use FlatList for long lists (not ScrollView)
+- Avoid unnecessary re-renders
+- Profile performance regularly
+
+## AI Assistant Guidelines
+
+- Suggest TypeScript solutions
+- Provide complete, working code examples
+- Include error handling
+- Add helpful comments
+- Follow project structure
+- Consider React Native specifics
+- Suggest performance optimizations
+- Maintain consistency with existing code

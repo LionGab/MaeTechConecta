@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.pnpm/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+coverage/
+
+# Cache
+.cache/
+.turbo/
+.eslintcache
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*
+
+# Generated files
+*.generated.*
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Documentation that shouldn't be reformatted
+CHANGELOG.md
+LICENSE
