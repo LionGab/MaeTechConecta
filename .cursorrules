@@ -1,8 +1,40 @@
-# Cursor.ai Rules for LionNath Project
+# Cursor 2.0 Rules for LionNath Project
+
+## 🆕 Cursor 2.0 Specific Instructions
+
+### Agent Mode Guidelines
+
+- When using Agent Mode, always show planned steps before execution
+- Ask for confirmation before deleting files
+- Provide clear summaries of terminal commands before running
+- Validate changes before applying
+- Use incremental approach for complex tasks
+
+### Multi-file Operations
+
+- When editing multiple files, show preview of all changes
+- Group related changes together
+- Explain the relationship between file modifications
+- Ensure consistency across all edited files
+
+### Context Awareness
+
+- Always consider the full project structure
+- Reference existing patterns and conventions
+- Maintain consistency with established codebase
+- Use Shadow Workspace for better understanding
 
 ## Project Context
 
 This is a React Native application with TypeScript, focused on personal development and daily interactions.
+
+**Tech Stack:**
+
+- React Native 0.73+
+- TypeScript 5.x
+- Supabase (Backend)
+- React Navigation
+- Custom theme system (Bubblegum Design)
 
 ## Code Style & Standards
 
@@ -12,6 +44,9 @@ This is a React Native application with TypeScript, focused on personal developm
 - Use explicit typing, avoid `any` types
 - Maximum line length: 120 characters
 - Use 2 spaces for indentation
+- Always use semicolons
+- Single quotes for strings
+- Trailing commas in ES5 style
 
 ## File Structure
 

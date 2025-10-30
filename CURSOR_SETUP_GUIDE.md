@@ -1,8 +1,43 @@
-# 🎯 Guia Completo de Configuração do Cursor.ai
+# 🎯 Guia Completo de Configuração do Cursor 2.0
 
-## O que é o Cursor?
+## 🆕 NOVO! Cursor 2.0 (Lançado em 29/10/2025)
 
-Cursor é um editor de código baseado no VS Code, mas com IA nativa integrada. Usa as mesmas configurações do VS Code, mas adiciona recursos poderosos de IA.
+### Principais Novidades do Cursor 2.0:
+
+✨ **Agent Mode** - IA autônoma que pode:
+
+- Executar comandos no terminal
+- Criar e modificar múltiplos arquivos
+- Navegar pelo código automaticamente
+- Aplicar mudanças sem intervenção manual
+
+🎯 **Improved Context Window** - Contexto expandido:
+
+- Entende projetos inteiros (não apenas arquivos abertos)
+- Melhor compreensão de dependências
+- Cache inteligente de contexto
+
+🚀 **Cursor Rules (.cursorrules)** - Regras customizadas:
+
+- Define padrões de código do projeto
+- Especifica convenções e best practices
+- IA segue suas regras automaticamente
+
+💡 **Multi-file Edit** - Edição avançada:
+
+- Edita vários arquivos simultaneamente
+- Refatoração em todo o codebase
+- Apply All com um clique
+
+🔥 **Faster Autocomplete** - Performance melhorada:
+
+- 2x mais rápido que versão anterior
+- Sugestões mais precisas
+- Menor latência
+
+## O que é o Cursor 2.0?
+
+Cursor é um editor de código baseado no VS Code, mas com IA nativa de próxima geração. Usa as mesmas configurações do VS Code, mas adiciona recursos revolucionários de IA com o novo Agent Mode.
 
 ---
 
