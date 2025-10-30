@@ -1,19 +1,38 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Logo } from './Logo';
+import { colors, spacing, typography } from '../theme/colors';
 
 interface WelcomeHeaderProps {
   name: string;
   pregnancyWeek?: number;
 }
 
+/**
+ * WelcomeHeader Component - Sistema de Design Bubblegum
+ *
+ * Cabeçalho de boas-vindas personalizado com logo, nome e semana de gestação.
+ * Otimizado para acessibilidade com roles semânticos.
+ */
 export const WelcomeHeader: React.FC<WelcomeHeaderProps> = ({ name, pregnancyWeek }) => {
   return (
     <View style={styles.container}>
       <Logo size={80} />
-      <Text style={styles.greeting}>Olá, {name}! 👋</Text>
+      <Text
+        style={styles.greeting}
+        accessibilityRole="header"
+        accessibilityLabel={`Olá, ${name}`}
+      >
+        Olá, {name}! 👋
+      </Text>
       {pregnancyWeek && (
-        <Text style={styles.subGreeting}>Semana {pregnancyWeek} de gestação 💕</Text>
+        <Text
+          style={styles.subGreeting}
+          accessibilityRole="text"
+          accessibilityLabel={`Você está na semana ${pregnancyWeek} de gestação`}
+        >
+          Semana {pregnancyWeek} de gestação 💕
+        </Text>
       )}
     </View>
   );
@@ -22,18 +41,20 @@ export const WelcomeHeader: React.FC<WelcomeHeaderProps> = ({ name, pregnancyWee
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    paddingVertical: 20,
+    paddingVertical: spacing.lg,
   },
   greeting: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#E91E63',
-    marginTop: 10,
+    fontSize: typography.sizes['2xl'], // 24px
+    fontWeight: typography.weights.bold as any,
+    color: colors.primary,
+    marginTop: spacing.md,
+    fontFamily: typography.fontFamily.sans,
   },
   subGreeting: {
-    fontSize: 16,
-    color: '#666',
-    marginTop: 5,
+    fontSize: typography.sizes.base, // 16px
+    color: colors.mutedForeground,
+    marginTop: spacing.xs,
+    fontFamily: typography.fontFamily.sans,
   },
 });
 

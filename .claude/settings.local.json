@@ -3,7 +3,11 @@
     "allow": [
       "Bash(tree:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npm install:*)",
+      "Bash(python -m http.server:*)",
+      "Bash(npx http-server:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

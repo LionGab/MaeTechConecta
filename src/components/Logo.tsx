@@ -1,17 +1,25 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { colors, borderRadius } from '../theme/colors';
 
 interface LogoProps {
   size?: number;
   style?: any;
 }
 
+/**
+ * Logo Component - Sistema de Design Bubblegum
+ *
+ * Logo ilustrativo do app Nossa Maternidade.
+ * Componente decorativo (accessible={false}).
+ */
 export const Logo: React.FC<LogoProps> = ({ size = 80, style }) => {
-  // Placeholder para logo - substitua pela URL da imagem real
   return (
-    <View style={[styles.container, { width: size, height: size }, style]}>
+    <View
+      style={[styles.container, { width: size, height: size }, style]}
+      accessible={false} // Componente decorativo
+    >
       <View style={[styles.logoCircle, { width: size, height: size, borderRadius: size / 2 }]}>
-        {/* Aqui irá a imagem real quando disponível */}
         <View style={styles.placeholder}>
           <View style={styles.avatar}>
             <View style={styles.hair} />
@@ -36,11 +44,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoCircle: {
-    backgroundColor: '#FFB6D4',
+    // Rosa claro - usando accent (amarelo pastel) como base do círculo
+    backgroundColor: colors.secondary, // Azul pastel para suavidade
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 3,
-    borderColor: '#E91E63',
+    borderColor: colors.primary, // Rosa vibrante
   },
   placeholder: {
     width: '100%',
@@ -58,16 +67,18 @@ const styles = StyleSheet.create({
   hair: {
     width: '100%',
     height: '40%',
-    backgroundColor: '#8B4513',
-    borderRadius: 20,
+    // Tom de cabelo - usando mutedForeground como aproximação
+    backgroundColor: '#8B4513', // Mantido (não há equivalente no tema)
+    borderRadius: borderRadius.lg,
     position: 'absolute',
     top: -10,
   },
   face: {
     width: '70%',
     height: '70%',
-    backgroundColor: '#FDBCB4',
-    borderRadius: 30,
+    // Tom de pele - usando accent (amarelo pastel claro)
+    backgroundColor: colors.accent, // Amarelo pastel
+    borderRadius: borderRadius.xl,
     position: 'absolute',
     top: '15%',
     left: '15%',
@@ -80,15 +91,15 @@ const styles = StyleSheet.create({
   eye: {
     width: 8,
     height: 8,
-    backgroundColor: '#333',
-    borderRadius: 4,
+    backgroundColor: colors.foreground, // Preto
+    borderRadius: borderRadius.full,
   },
   smile: {
     width: 20,
     height: 10,
     borderBottomWidth: 2,
-    borderBottomColor: '#E91E63',
-    borderRadius: 50,
+    borderBottomColor: colors.primary, // Rosa vibrante
+    borderRadius: borderRadius.full,
     marginTop: '15%',
     marginLeft: '20%',
   },
@@ -97,10 +108,10 @@ const styles = StyleSheet.create({
     bottom: '5%',
     width: '40%',
     height: '35%',
-    backgroundColor: '#F5DEB3',
-    borderRadius: 15,
+    backgroundColor: colors.accent, // Amarelo pastel para bebê
+    borderRadius: borderRadius.lg,
     borderWidth: 1,
-    borderColor: '#E91E63',
+    borderColor: colors.primary, // Rosa vibrante
   },
 });
 

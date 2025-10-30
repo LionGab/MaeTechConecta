@@ -2,17 +2,21 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
   Alert,
+  SafeAreaView,
+  StatusBar,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase, UserProfile } from '../services/supabase';
 import { Logo } from '../components/Logo';
-import { colors, spacing, borderRadius, typography } from '../theme/colors';
+import { Button } from '../components/Button';
+import { Input } from '../components/Input';
+import { colors, spacing, borderRadius, typography, shadows } from '../theme/colors';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface OnboardingScreenProps {
   route: {
@@ -35,13 +39,13 @@ export default function OnboardingScreen({ route }: OnboardingScreenProps) {
   const [loading, setLoading] = useState(false);
 
   const preferencesOptions = [
-    'Alimentação saudável 🥗',
-    'Exercícios físicos 🏃',
-    'Bem-estar mental 🧘',
-    'Preparação para o parto 👶',
-    'Amamentação 🤱',
-    'Sono do bebê 😴',
-    'Relacionamento 💑',
+    { label: 'Alimentação saudável', icon: 'food-apple' },
+    { label: 'Exercícios físicos', icon: 'run' },
+    { label: 'Bem-estar mental', icon: 'meditation' },
+    { label: 'Preparação para o parto', icon: 'baby-carriage' },
+    { label: 'Amamentação', icon: 'mother-nurse' },
+    { label: 'Sono do bebê', icon: 'sleep' },
+    { label: 'Relacionamento', icon: 'heart-multiple' },
   ];
 
   const togglePreference = (pref: string) => {
@@ -117,27 +121,34 @@ export default function OnboardingScreen({ route }: OnboardingScreenProps) {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.logoContainer}>
-          <Logo size={120} />
-        </View>
-        <Text style={styles.title}>Bem-vinda ao Nossa Maternidade! 👶💕</Text>
-        <Text style={styles.subtitle}>
-          Vou te conhecer melhor para poder te ajudar da melhor forma
-        </Text>
-
-        {step === 1 && (
-          <View style={styles.stepContainer}>
-            <Text style={styles.stepTitle}>Qual é o seu nome?</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite seu nome"
-              value={name}
-              onChangeText={setName}
-            />
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar barStyle="dark-content" backgroundColor={colors.background} />
+      <ScrollView style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.logoContainer}>
+            <Logo size={120} />
           </View>
-        )}
+          <View style={styles.titleContainer}>
+            <Icon name="mother-heart" size={32} color={colors.primary} />
+            <Text style={styles.title}>Bem-vinda ao Nossa Maternidade!</Text>
+          </View>
+          <Text style={styles.subtitle}>
+            Vou te conhecer melhor para poder te ajudar da melhor forma
+          </Text>
+
+          {step === 1 && (
+            <View style={styles.stepContainer}>
+              <Text style={styles.stepTitle}>Qual é o seu nome?</Text>
+              <Input
+                label="Nome completo"
+                value={name}
+                onChangeText={setName}
+                placeholder="Digite seu nome"
+                icon="account"
+                required
+              />
+            </View>
+          )}
 
         {step === 2 && (
           <View style={styles.stepContainer}>
@@ -145,20 +156,47 @@ export default function OnboardingScreen({ route }: OnboardingScreenProps) {
             <TouchableOpacity
               style={[styles.option, type === 'gestante' && styles.optionSelected]}
               onPress={() => setType('gestante')}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Gestante"
+              accessibilityState={{ selected: type === 'gestante' }}
             >
-              <Text style={styles.optionText}>👶 Gestante</Text>
+              <Icon
+                name="baby-carriage"
+                size={32}
+                color={type === 'gestante' ? colors.primary : colors.mutedForeground}
+              />
+              <Text style={styles.optionText}>Gestante</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.option, type === 'mae' && styles.optionSelected]}
               onPress={() => setType('mae')}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Mãe"
+              accessibilityState={{ selected: type === 'mae' }}
             >
-              <Text style={styles.optionText}>🤱 Mãe</Text>
+              <Icon
+                name="mother-nurse"
+                size={32}
+                color={type === 'mae' ? colors.primary : colors.mutedForeground}
+              />
+              <Text style={styles.optionText}>Mãe</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.option, type === 'tentante' && styles.optionSelected]}
               onPress={() => setType('tentante')}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Tentante"
+              accessibilityState={{ selected: type === 'tentante' }}
             >
-              <Text style={styles.optionText}>💕 Tentante</Text>
+              <Icon
+                name="heart-multiple"
+                size={32}
+                color={type === 'tentante' ? colors.primary : colors.mutedForeground}
+              />
+              <Text style={styles.optionText}>Tentante</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -166,27 +204,28 @@ export default function OnboardingScreen({ route }: OnboardingScreenProps) {
         {step === 3 && type === 'gestante' && (
           <View style={styles.stepContainer}>
             <Text style={styles.stepTitle}>Em que semana de gestação você está?</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Ex: 28"
-              keyboardType="number-pad"
+            <Input
+              label="Semana de gestação"
               value={pregnancyWeek}
               onChangeText={setPregnancyWeek}
+              placeholder="Ex: 28"
+              keyboardType="number-pad"
+              icon="calendar-heart"
+              helperText={`Você está na semana ${pregnancyWeek || '0'}`}
+              required
             />
-            <Text style={styles.subtitle}>
-              Digite a semana: {pregnancyWeek || '0'}
-            </Text>
           </View>
         )}
 
         {step === 3 && (type === 'mae' || type === 'tentante') && (
           <View style={styles.stepContainer}>
             <Text style={styles.stepTitle}>Qual é o nome do seu bebê?</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Ou deixe em branco se preferir"
+            <Input
+              label="Nome do bebê"
               value={babyName}
               onChangeText={setBabyName}
+              placeholder="Ou deixe em branco se preferir"
+              icon="baby-face"
             />
           </View>
         )}
@@ -197,62 +236,100 @@ export default function OnboardingScreen({ route }: OnboardingScreenProps) {
             <Text style={styles.subtitle}>Selecione os que mais te interessam:</Text>
             {preferencesOptions.map(pref => (
               <TouchableOpacity
-                key={pref}
+                key={pref.label}
                 style={[
                   styles.preferenceOption,
-                  preferences.includes(pref) && styles.preferenceSelected,
+                  preferences.includes(pref.label) && styles.preferenceSelected,
                 ]}
-                onPress={() => togglePreference(pref)}
+                onPress={() => togglePreference(pref.label)}
+                accessible={true}
+                accessibilityRole="checkbox"
+                accessibilityLabel={pref.label}
+                accessibilityState={{ checked: preferences.includes(pref.label) }}
               >
-                <Text style={styles.preferenceText}>{pref}</Text>
+                <Icon
+                  name={pref.icon}
+                  size={24}
+                  color={preferences.includes(pref.label) ? colors.primary : colors.mutedForeground}
+                  style={styles.preferenceIcon}
+                />
+                <Text style={styles.preferenceText}>{pref.label}</Text>
               </TouchableOpacity>
             ))}
           </View>
         )}
 
-        <TouchableOpacity
-          style={[styles.button, loading && styles.buttonDisabled]}
+        <Button
+          variant="primary"
+          size="lg"
+          fullWidth
           onPress={handleNext}
+          loading={loading}
           disabled={loading}
+          icon={step < 4 ? "arrow-right" : "check-circle"}
+          iconPosition="right"
+          accessibilityLabel={step < 4 ? 'Ir para próximo passo' : 'Começar a usar o app'}
+          accessibilityHint={step < 4 ? `Avançar para o passo ${step + 1} de 4` : 'Finalizar cadastro e começar'}
         >
-          <Text style={styles.buttonText}>
-            {step < 4 ? 'Próximo' : 'Começar agora!'}
-          </Text>
-        </TouchableOpacity>
+          {step < 4 ? 'Próximo' : 'Começar agora!'}
+        </Button>
 
-        <TouchableOpacity onPress={() => setStep(Math.max(1, step - 1))}>
-          <Text style={styles.backButton}>{step > 1 ? 'Voltar' : ''}</Text>
-        </TouchableOpacity>
+        {step > 1 && (
+          <Button
+            variant="ghost"
+            size="md"
+            fullWidth
+            onPress={() => setStep(Math.max(1, step - 1))}
+            icon="arrow-left"
+            accessibilityLabel="Voltar para passo anterior"
+            style={styles.backButton}
+          >
+            Voltar
+          </Button>
+        )}
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
   container: {
     flex: 1,
     backgroundColor: colors.background,
   },
   content: {
     padding: spacing.lg,
-    paddingTop: 60,
+    paddingTop: spacing.xl,
   },
   logoContainer: {
     alignItems: 'center',
     marginBottom: spacing.lg,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    marginBottom: spacing.sm,
   },
   title: {
     fontSize: typography.sizes['2xl'],
     fontWeight: typography.weights.bold as any,
     color: colors.primary,
     textAlign: 'center',
-    marginBottom: spacing.sm,
+    fontFamily: typography.fontFamily.sans,
   },
   subtitle: {
     fontSize: typography.sizes.base,
     color: colors.mutedForeground,
     textAlign: 'center',
     marginBottom: spacing['2xl'],
+    fontFamily: typography.fontFamily.sans,
   },
   stepContainer: {
     marginBottom: spacing['2xl'],
@@ -263,70 +340,61 @@ const styles = StyleSheet.create({
     color: colors.foreground,
     marginBottom: spacing.lg,
     textAlign: 'center',
-  },
-  input: {
-    backgroundColor: colors.card,
-    borderRadius: borderRadius.lg,
-    padding: spacing.base,
-    fontSize: typography.sizes.base,
-    marginBottom: spacing.lg,
-    color: colors.foreground,
-    borderWidth: 1,
-    borderColor: colors.border,
+    fontFamily: typography.fontFamily.sans,
   },
   option: {
     backgroundColor: colors.card,
     borderRadius: borderRadius.lg,
     padding: spacing.lg,
     marginBottom: spacing.md,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.md,
     borderWidth: 2,
     borderColor: colors.border,
+    minHeight: 60,
+    ...shadows.light.sm,
   },
   optionSelected: {
     backgroundColor: colors.secondary,
     borderColor: colors.primary,
+    ...shadows.light.md,
   },
   optionText: {
     fontSize: typography.sizes.lg,
     color: colors.foreground,
+    fontWeight: typography.weights.medium as any,
+    fontFamily: typography.fontFamily.sans,
   },
   preferenceOption: {
     backgroundColor: colors.card,
     borderRadius: borderRadius.lg,
-    padding: spacing.base,
+    padding: spacing.md,
     marginBottom: spacing.sm,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
     borderWidth: 1,
     borderColor: colors.border,
+    minHeight: 52,
   },
   preferenceSelected: {
     backgroundColor: colors.secondary,
     borderColor: colors.primary,
+    borderWidth: 2,
+  },
+  preferenceIcon: {
+    marginRight: spacing.xs,
   },
   preferenceText: {
     fontSize: typography.sizes.base,
     color: colors.foreground,
-  },
-  button: {
-    backgroundColor: colors.primary,
-    borderRadius: borderRadius.lg,
-    padding: spacing.lg,
-    alignItems: 'center',
-    marginTop: spacing.lg,
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    color: colors.primaryForeground,
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold as any,
+    fontFamily: typography.fontFamily.sans,
+    flex: 1,
   },
   backButton: {
-    color: colors.mutedForeground,
-    textAlign: 'center',
-    marginTop: spacing.lg,
-    fontSize: typography.sizes.base,
+    marginTop: spacing.md,
   },
 });
 

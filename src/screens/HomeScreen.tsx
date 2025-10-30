@@ -6,6 +6,10 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  SafeAreaView,
+  StatusBar,
+  ActivityIndicator,
+  Linking,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,7 +17,10 @@ import { generateDailyPlan, ChatContext } from '../services/ai';
 import { getDailyPlan, saveDailyPlan } from '../services/supabase';
 import { format } from 'date-fns';
 import { Logo } from '../components/Logo';
+import { Button } from '../components/Button';
+import { Card } from '../components/Card';
 import { colors, shadows, spacing, borderRadius, typography } from '../theme/colors';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -80,276 +87,369 @@ export default function HomeScreen() {
     }
   };
 
-  const QuickActionButton = ({ icon, title, onPress }: any) => (
-    <TouchableOpacity style={styles.quickAction} onPress={onPress}>
-      <Text style={styles.quickActionIcon}>{icon}</Text>
+  const QuickActionButton = ({ iconName, title, onPress, accessibilityLabel }: any) => (
+    <TouchableOpacity
+      style={styles.quickAction}
+      onPress={onPress}
+      accessible={true}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityRole="button"
+      accessibilityHint={`Abre a tela de ${title.toLowerCase()}`}
+      activeOpacity={0.7}
+    >
+      <Icon name={iconName} size={32} color={colors.primary} />
       <Text style={styles.quickActionTitle}>{title}</Text>
     </TouchableOpacity>
   );
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.logoHeader}>
-          <Logo size={50} />
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor={colors.background}
+      />
+      <ScrollView style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.logoHeader}>
+            <Logo size={50} />
+          </View>
+          <View style={styles.greetingContainer}>
+            <Icon name="hand-wave" size={24} color={colors.primary} />
+            <Text style={styles.greeting}>Olá, {userName}!</Text>
+          </View>
+          {pregnancyWeek && (
+            <View style={styles.subGreetingContainer}>
+              <Icon name="heart-pulse" size={18} color={colors.destructive} />
+              <Text style={styles.subGreeting}>Semana {pregnancyWeek} de gestação</Text>
+            </View>
+          )}
         </View>
-        <Text style={styles.greeting}>Olá, {userName}! 👋</Text>
-        {pregnancyWeek && (
-          <Text style={styles.subGreeting}>Semana {pregnancyWeek} de gestação 💕</Text>
-        )}
-      </View>
 
-      {/* Botões de ação rápida */}
-      <View style={styles.quickActionsContainer}>
-        <QuickActionButton
-          icon="💬"
-          title="Conversar"
-          onPress={() => navigation.navigate('Chat' as never)}
-        />
-        <QuickActionButton
-          icon="📅"
-          title="Plano Diário"
-          onPress={() => navigation.navigate('DailyPlan' as never)}
-        />
-        <QuickActionButton
-          icon="📊"
-          title="Progresso"
-          onPress={() => Alert.alert('Em breve', 'Acompanhe seu progresso aqui!')}
-        />
-        <QuickActionButton
-          icon="⚙️"
-          title="Perfil"
-          onPress={() => navigation.navigate('Profile' as never)}
-        />
-      </View>
+        {/* Botões de ação rápida */}
+        <View style={styles.quickActionsContainer}>
+          <QuickActionButton
+            iconName="message-text-outline"
+            title="Conversar"
+            accessibilityLabel="Botão Conversar"
+            onPress={() => navigation.navigate('Chat' as never)}
+          />
+          <QuickActionButton
+            iconName="calendar-today"
+            title="Plano Diário"
+            accessibilityLabel="Botão Plano Diário"
+            onPress={() => navigation.navigate('DailyPlan' as never)}
+          />
+          <QuickActionButton
+            iconName="chart-line"
+            title="Progresso"
+            accessibilityLabel="Botão Progresso"
+            onPress={() => Alert.alert('Em breve', 'Acompanhe seu progresso aqui!')}
+          />
+          <QuickActionButton
+            iconName="account-cog-outline"
+            title="Perfil"
+            accessibilityLabel="Botão Perfil"
+            onPress={() => navigation.navigate('Profile' as never)}
+          />
+        </View>
 
       {/* Plano Diário */}
-      <View style={styles.dailyPlanCard}>
+      <Card
+        title="Seu Plano de Hoje"
+        icon="target"
+        variant="elevated"
+        style={styles.dailyPlanCard}
+      >
         <View style={styles.dailyPlanHeader}>
-          <Text style={styles.dailyPlanTitle}>🎯 Seu Plano de Hoje</Text>
-          <TouchableOpacity onPress={generateTodaysPlan} disabled={loading}>
-            <Text style={styles.refreshButton}>🔄</Text>
-          </TouchableOpacity>
+          <Button
+            variant="outline"
+            size="sm"
+            onPress={generateTodaysPlan}
+            loading={loading}
+            disabled={loading}
+            icon="refresh"
+            accessibilityLabel="Atualizar plano diário"
+            accessibilityHint="Gera um novo plano personalizado para hoje"
+          >
+            Atualizar
+          </Button>
         </View>
 
         {dailyPlan ? (
           <View>
-            <Text style={styles.sectionTitle}>Prioridades:</Text>
+            <View style={styles.sectionTitleContainer}>
+              <Icon name="checkbox-marked-circle-outline" size={20} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Prioridades:</Text>
+            </View>
             {dailyPlan.priorities?.map((priority: string, index: number) => (
-              <Text key={index} style={styles.priorityItem}>{priority}</Text>
+              <Text key={index} style={styles.priorityItem}>• {priority}</Text>
             ))}
 
-            <Text style={[styles.sectionTitle, { marginTop: 15 }]}>💡 Dica do Dia:</Text>
+            <View style={[styles.sectionTitleContainer, { marginTop: spacing.lg }]}>
+              <Icon name="lightbulb-outline" size={20} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Dica do Dia:</Text>
+            </View>
             <Text style={styles.tip}>{dailyPlan.tip}</Text>
 
-            <Text style={[styles.sectionTitle, { marginTop: 15 }]}>🍽️ Receita:</Text>
+            <View style={[styles.sectionTitleContainer, { marginTop: spacing.lg }]}>
+              <Icon name="food-variant" size={20} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Receita:</Text>
+            </View>
             <Text style={styles.recipe}>{dailyPlan.recipe}</Text>
           </View>
         ) : (
-          <View>
+          <View style={styles.emptyStateContainer}>
+            <Icon name="calendar-blank-outline" size={48} color={colors.muted} />
             <Text style={styles.emptyState}>Nenhum plano gerado ainda para hoje.</Text>
-            <TouchableOpacity
-              style={styles.generateButton}
+            <Button
+              variant="primary"
+              size="md"
+              fullWidth
               onPress={generateTodaysPlan}
+              loading={loading}
               disabled={loading}
+              icon="sparkles"
+              accessibilityLabel="Gerar plano diário"
+              accessibilityHint="Cria um plano personalizado baseado no seu perfil"
             >
-              <Text style={styles.generateButtonText}>
-                {loading ? 'Gerando...' : 'Gerar Plano Agora'}
-              </Text>
-            </TouchableOpacity>
+              {loading ? 'Gerando...' : 'Gerar Plano Agora'}
+            </Button>
           </View>
         )}
-      </View>
+      </Card>
 
       {/* Dicas Rápidas */}
-      <View style={styles.tipsCard}>
-        <Text style={styles.tipsTitle}>💭 Você sabia?</Text>
-        <Text style={styles.tipText}>
-          Durante a gravidez, é normal sentir cansaço. Ouça seu corpo e descanse sempre que possível! 😴
-        </Text>
-      </View>
+      <Card
+        title="Você sabia?"
+        icon="lightbulb-on"
+        variant="outlined"
+        style={styles.tipsCard}
+      >
+        <View style={styles.tipContainer}>
+          <Icon name="sleep" size={24} color={colors.accent} />
+          <Text style={styles.tipText}>
+            Durante a gravidez, é normal sentir cansaço. Ouça seu corpo e descanse sempre que possível!
+          </Text>
+        </View>
+      </Card>
 
       {/* FAQ Rápido */}
-      <View style={styles.faqCard}>
-        <Text style={styles.faqTitle}>❓ Perguntas Frequentes</Text>
+      <Card
+        title="Perguntas Frequentes"
+        icon="help-circle-outline"
+        variant="elevated"
+        style={styles.faqCard}
+      >
         <TouchableOpacity
           style={styles.faqItem}
           onPress={() => navigation.navigate('Chat' as never)}
+          accessible={true}
+          accessibilityLabel="Perguntar: Como aliviar enjoo matinal?"
+          accessibilityRole="button"
+          activeOpacity={0.7}
         >
-          <Text style={styles.faqQuestion}>Como aliviar enjoo matinal?</Text>
-          <Text style={styles.faqArrow}>→</Text>
+          <View style={styles.faqQuestionContainer}>
+            <Icon name="stomach" size={20} color={colors.primary} style={styles.faqIcon} />
+            <Text style={styles.faqQuestion}>Como aliviar enjoo matinal?</Text>
+          </View>
+          <Icon name="chevron-right" size={24} color={colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.faqItem}
           onPress={() => navigation.navigate('Chat' as never)}
+          accessible={true}
+          accessibilityLabel="Perguntar: Quais exercícios posso fazer?"
+          accessibilityRole="button"
+          activeOpacity={0.7}
         >
-          <Text style={styles.faqQuestion}>Quais exercícios posso fazer?</Text>
-          <Text style={styles.faqArrow}>→</Text>
+          <View style={styles.faqQuestionContainer}>
+            <Icon name="run" size={20} color={colors.primary} style={styles.faqIcon} />
+            <Text style={styles.faqQuestion}>Quais exercícios posso fazer?</Text>
+          </View>
+          <Icon name="chevron-right" size={24} color={colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.faqItem}
           onPress={() => navigation.navigate('Chat' as never)}
+          accessible={true}
+          accessibilityLabel="Perguntar: Quando devo ir ao médico?"
+          accessibilityRole="button"
+          activeOpacity={0.7}
         >
-          <Text style={styles.faqQuestion}>Quando devo ir ao médico?</Text>
-          <Text style={styles.faqArrow}>→</Text>
+          <View style={styles.faqQuestionContainer}>
+            <Icon name="stethoscope" size={20} color={colors.primary} style={styles.faqIcon} />
+            <Text style={styles.faqQuestion}>Quando devo ir ao médico?</Text>
+          </View>
+          <Icon name="chevron-right" size={24} color={colors.primary} />
         </TouchableOpacity>
-      </View>
+      </Card>
 
       {/* Emergency Button */}
-      <TouchableOpacity
-        style={styles.emergencyButton}
-        onPress={() =>
+      <Button
+        variant="destructive"
+        size="lg"
+        fullWidth
+        icon="phone-alert"
+        onPress={() => {
           Alert.alert(
             '🚨 Emergência',
-            'Se você está com sintomas graves, ligue para o SAMU: 192\n\nOu procure um hospital imediatamente!',
-            [{ text: 'Entendi', style: 'default' }]
-          )
-        }
+            'Você será direcionado para ligar para o SAMU (192).\n\nSe você está com sintomas graves, ligue imediatamente ou procure um hospital!',
+            [
+              { text: 'Cancelar', style: 'cancel' },
+              {
+                text: 'Ligar Agora',
+                style: 'destructive',
+                onPress: () => Linking.openURL('tel:192')
+              }
+            ]
+          );
+        }}
+        accessibilityLabel="Botão de emergência"
+        accessibilityHint="Ligar para SAMU 192 em caso de emergência médica"
+        style={styles.emergencyButton}
       >
-        <Text style={styles.emergencyButtonText}>🚨 Emergência</Text>
-      </TouchableOpacity>
+        Emergência - SAMU 192
+      </Button>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: colors.background,
   },
+  container: {
+    flex: 1,
+  },
   header: {
     padding: spacing.lg,
-    paddingTop: 60,
+    paddingTop: spacing.md,
   },
   logoHeader: {
     alignItems: 'center',
     marginBottom: spacing.md,
+  },
+  greetingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
   },
   greeting: {
     fontSize: typography.sizes['2xl'],
     fontWeight: typography.weights.bold as any,
     color: colors.primary,
     textAlign: 'center',
+    fontFamily: typography.fontFamily.sans,
+  },
+  subGreetingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    marginTop: spacing.sm,
   },
   subGreeting: {
     fontSize: typography.sizes.base,
     color: colors.mutedForeground,
-    marginTop: spacing.sm,
+    fontFamily: typography.fontFamily.sans,
   },
   quickActionsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xl,
+    gap: spacing.md,
   },
   quickAction: {
+    flex: 1,
     alignItems: 'center',
     backgroundColor: colors.card,
     padding: spacing.lg,
+    paddingVertical: spacing.xl,
     borderRadius: borderRadius.lg,
-    minWidth: 80,
+    minHeight: 100,
     ...shadows.light.sm,
   },
-  quickActionIcon: {
-    fontSize: 32,
-    marginBottom: spacing.sm,
-  },
   quickActionTitle: {
-    fontSize: typography.sizes.xs,
+    fontSize: typography.sizes.sm,  // 14px agora
     color: colors.foreground,
     textAlign: 'center',
+    marginTop: spacing.sm,
+    fontWeight: typography.weights.medium as any,
   },
   dailyPlanCard: {
-    backgroundColor: colors.card,
     marginHorizontal: spacing.lg,
     marginBottom: spacing.lg,
-    padding: spacing.lg,
-    borderRadius: borderRadius.lg,
-    ...shadows.light.md,
   },
   dailyPlanHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: spacing.lg,
+    marginBottom: spacing.md,
   },
-  dailyPlanTitle: {
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold as any,
-    color: colors.primary,
+  emptyStateContainer: {
+    alignItems: 'center',
+    gap: spacing.md,
+    paddingVertical: spacing.xl,
   },
-  refreshButton: {
-    fontSize: 20,
+  sectionTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
   },
   sectionTitle: {
     fontSize: typography.sizes.lg,
     fontWeight: typography.weights.bold as any,
     color: colors.foreground,
-    marginTop: spacing.md,
+    fontFamily: typography.fontFamily.sans,
+    marginBottom: spacing.xs,
   },
   priorityItem: {
-    fontSize: typography.sizes.sm,
+    fontSize: typography.sizes.base,
     color: colors.mutedForeground,
     marginTop: spacing.sm,
+    lineHeight: 24,
+    fontFamily: typography.fontFamily.sans,
   },
   tip: {
-    fontSize: typography.sizes.sm,
+    fontSize: typography.sizes.base,
     color: colors.mutedForeground,
-    fontStyle: 'italic',
+    lineHeight: 24,
+    fontFamily: typography.fontFamily.sans,
   },
   recipe: {
-    fontSize: typography.sizes.sm,
+    fontSize: typography.sizes.base,
     color: colors.mutedForeground,
+    lineHeight: 24,
+    fontFamily: typography.fontFamily.sans,
   },
   emptyState: {
-    fontSize: typography.sizes.sm,
-    color: colors.muted,
-    textAlign: 'center',
-    marginBottom: spacing.lg,
-  },
-  generateButton: {
-    backgroundColor: colors.primary,
-    padding: spacing.lg,
-    borderRadius: borderRadius.md,
-    alignItems: 'center',
-    ...shadows.light.md,
-  },
-  generateButtonText: {
-    color: colors.primaryForeground,
     fontSize: typography.sizes.base,
-    fontWeight: typography.weights.bold as any,
+    color: colors.mutedForeground,
+    textAlign: 'center',
+    fontFamily: typography.fontFamily.sans,
   },
   tipsCard: {
-    backgroundColor: colors.card,
     marginHorizontal: spacing.lg,
     marginBottom: spacing.lg,
-    padding: spacing.lg,
-    borderRadius: borderRadius.lg,
-    ...shadows.light.sm,
   },
-  tipsTitle: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold as any,
-    color: colors.primary,
-    marginBottom: spacing.md,
+  tipContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: spacing.md,
   },
   tipText: {
-    fontSize: typography.sizes.sm,
+    fontSize: typography.sizes.base,
     color: colors.mutedForeground,
-    lineHeight: 20,
+    lineHeight: 24,
+    fontFamily: typography.fontFamily.sans,
+    flex: 1,
   },
   faqCard: {
-    backgroundColor: colors.card,
     marginHorizontal: spacing.lg,
-    marginBottom: spacing.lg,
-    padding: spacing.lg,
-    borderRadius: borderRadius.lg,
-    ...shadows.light.sm,
-  },
-  faqTitle: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold as any,
-    color: colors.primary,
     marginBottom: spacing.lg,
   },
   faqItem: {
@@ -357,31 +457,31 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    paddingHorizontal: spacing.md,
+    borderRadius: borderRadius.md,
+    backgroundColor: colors.background,
+    marginBottom: spacing.sm,
+    minHeight: 52,
+  },
+  faqQuestionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    gap: spacing.sm,
+  },
+  faqIcon: {
+    marginRight: spacing.xs,
   },
   faqQuestion: {
-    fontSize: typography.sizes.sm,
+    fontSize: typography.sizes.base,
     color: colors.foreground,
     flex: 1,
-  },
-  faqArrow: {
-    fontSize: 18,
-    color: colors.primary,
+    lineHeight: 22,
+    fontFamily: typography.fontFamily.sans,
   },
   emergencyButton: {
-    backgroundColor: colors.destructive,
     marginHorizontal: spacing.lg,
-    marginBottom: 40,
-    padding: spacing.lg,
-    borderRadius: borderRadius.lg,
-    alignItems: 'center',
-    ...shadows.light.lg,
-  },
-  emergencyButtonText: {
-    color: colors.destructiveForeground,
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold as any,
+    marginBottom: spacing['3xl'],
   },
 });
 
