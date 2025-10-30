@@ -1,0 +1,17 @@
+{
+  "cursor.general.enableCommandK": true,
+  "cursor.general.enableChat": true,
+  "cursor.general.enableComposer": true,
+  "cursor.cpp.enableCodeActions": true,
+  "cursor.cpp.completionsEnabled": true,
+  "cursor.cpp.longCompletionsEnabled": true,
+  // Performance
+  "cursor.general.requestsPerSecond": 10,
+  "cursor.general.tokenLimit": 200000,
+  // Privacy
+  "cursor.privacy.enableTelemetry": false,
+  // Model preferences
+  "cursor.models.default": "claude-3.5-sonnet",
+  "cursor.models.long": "claude-3.5-sonnet"
+}
+

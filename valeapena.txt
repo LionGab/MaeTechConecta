@@ -1,0 +1,202 @@
+Plano Detalhado de Melhorias - Projeto "Nossa Maternidade"
+
+     📋 Resumo Executivo
+
+     Análise completa identificou 17 problemas distribuídos em 4 níveis de severidade, totalizando
+      56 horas de trabalho (~7 dias). Plano organizado em 5 sprints priorizados.
+
+     ---
+     🚨 SPRINT 1 - CRÍTICO (13h)
+
+     1.1 Validar Credenciais de API ⚠️ (1h)
+
+     Arquivo: src/config/api.ts
+     Problema: API keys podem estar vazias sem avisos
+     Ação:
+     - Adicionar validação obrigatória que lança erro se keys faltando
+     - Adicionar mensagens de erro claras
+
+     1.2 Corrigir Autenticação Temporária ⚠️ (2h)
+
+     Arquivo: src/screens/OnboardingScreen.tsx:84-87
+     Problema: Emails temporários violam LGPD, senhas fracas
+     Ação:
+     - Implementar autenticação anônima do Supabase
+     - Configurar migração de contas anônimas para reais (futuro)
+
+     1.3 Otimizar ChatScreen Re-renders ⚠️ (3h)
+
+     Arquivo: src/screens/ChatScreen.tsx:75-143
+     Problema: Re-renders desnecessários travam app com muitas mensagens
+     Ação:
+     - Usar useRef para messages
+     - Memoizar histórico de IA
+     - Otimizar callbacks
+
+     1.4 Implementar Sistema de Logging ⚠️ (3h)
+
+     Arquivos: 8 arquivos com console.log
+     Problema: 20+ console.logs em produção vazam dados e prejudicam performance
+     Ação:
+     - Criar src/utils/logger.ts
+     - Substituir todos console.log/error
+     - Preparar integração Sentry (opcional)
+
+     1.5 Criar Tipos Centralizados ⚠️ (4h)
+
+     Arquivos: 11 ocorrências de any em 8 arquivos
+     Problema: Falta type-safety, bugs em runtime
+     Ação:
+     - Criar src/types/index.ts com interfaces completas
+     - Remover todos any e substituir por tipos explícitos
+     - Criar src/types/navigation.ts para navegação type-safe
+
+     ---
+     🔴 SPRINT 2 - ALTO RISCO (14h)
+
+     2.1 Corrigir Tipagem de Navegação 🔴 (3h)
+
+     Problema: as never em todos os navigate()
+     Ação:
+     - Criar tipos de navegação corretos
+     - Atualizar todas as screens
+     - Remover type casting perigoso
+
+     2.2 Criar Hook useDailyPlan 🔴 (2h)
+
+     Problema: Código duplicado em HomeScreen e DailyPlanScreen
+     Ação:
+     - Criar src/hooks/useDailyPlan.ts
+     - Refatorar ambas as screens
+
+     2.3 Adicionar Acessibilidade Faltante 🔴 (2h)
+
+     Problema: Botões sem accessibilityLabel em 3 screens
+     Ação:
+     - Adicionar labels em ChatScreen, DailyPlanScreen, ProfileScreen
+     - Garantir WCAG 2.1 AA completo
+
+     2.4 Implementar Validações de Input 🔴 (2h)
+
+     Arquivo: src/screens/OnboardingScreen.tsx
+     Problema: Inputs aceitam dados inválidos
+     Ação:
+     - Criar src/utils/validation.ts
+     - Validar semana de gravidez (1-42)
+     - Validar nome não vazio
+
+     2.5 Separar Responsabilidades (Repositories) 🔴 (4h)
+
+     Problema: Lógica de negócio misturada com UI
+     Ação:
+     - Criar src/repositories/DailyPlanRepository.ts
+     - Criar src/repositories/UserRepository.ts
+     - Refatorar services
+
+     2.6 Adicionar Loading States 🔴 (1h)
+
+     Problema: Tela branca durante loading (ruim UX)
+     Ação:
+     - Criar src/components/LoadingScreen.tsx
+     - Substituir return null por loading bonito
+
+     ---
+     🟡 SPRINT 3 - MÉDIO (8h)
+
+     3.1 Corrigir Cores Hardcoded 🟡 (1h)
+
+     Arquivos: Badge.tsx, Logo.tsx, ChatScreen.tsx
+     Ação: Adicionar cores faltantes ao theme ou usar existentes
+
+     3.2 Memoizar Componentes 🟡 (1h)
+
+     Arquivo: src/screens/HomeScreen.tsx:90-103
+     Ação: Usar React.memo em QuickActionButton
+
+     3.3 Adicionar JSDoc 🟡 (2h)
+
+     Arquivos: Services e Hooks
+     Ação: Documentar todas as funções públicas
+
+     3.4 Padronizar Nomenclatura 🟡 (1h)
+
+     Ação:
+     - Padronizar nomes de screens
+     - Padronizar export (default vs named)
+     - Padronizar interface vs type
+
+     3.5 Extrair Magic Numbers 🟡 (1h)
+
+     Ação: Criar src/constants/index.ts com todas as constantes
+
+     3.6 Melhorar Estrutura de Pastas 🟡 (30min)
+
+     Ação: Criar pastas /types, /constants, /repositories
+
+     3.7 Refatorar useEffect com Cleanup 🟡 (1.5h)
+
+     Problema: useEffect async sem abort
+     Ação: Adicionar AbortController em todos os effects
+
+     ---
+     ✅ SPRINT 4 - TESTES (16h)
+
+     4.1 Configurar Ambiente de Testes (2h)
+
+     Ação:
+     - Instalar Jest + React Native Testing Library
+     - Configurar setup files
+     - Criar mocks básicos
+
+     4.2 Testes Unitários de Componentes (8h)
+
+     Ação: Criar testes para Button, Input, Card, Badge
+
+     4.3 Testes de Hooks (4h)
+
+     Ação: Testar useUserProfile, useDailyInteractions
+
+     4.4 Testes E2E Básicos (2h)
+
+     Ação: Fluxos críticos (onboarding, chat, daily plan)
+
+     ---
+     🟢 SPRINT 5 - REFINAMENTO (5h)
+
+     5.1 Configurar ESLint/Prettier (30min)
+
+     Ação: Setup completo com regras strict
+
+     5.2 Organizar Imports (30min)
+
+     Ação: Configurar import sorting automático
+
+     5.3 Melhorar TypeScript Strict (2h)
+
+     Ação: Ativar strict mode e corrigir erros
+
+     5.4 Code Review Final (2h)
+
+     Ação: Revisão completa do código refatorado
+
+     ---
+     📊 Métricas
+
+     - Problemas Críticos: 4 ⚠️
+     - Problemas Altos: 3 🔴
+     - Problemas Médios: 6 🟡
+     - Problemas Baixos: 4 🟢
+     - Total: 17 problemas
+     - Tempo Total: 56 horas (~7 dias)
+
+     ---
+     🎯 Resultado Esperado
+
+     Após execução completa:
+     - ✅ Type-safety 100%
+     - ✅ Cobertura de testes >80%
+     - ✅ Performance otimizada
+     - ✅ Segurança garantida
+     - ✅ Código pronto para produção
+
+     Status Final: ⭐⭐⭐⭐ (4/5 estrelas)
