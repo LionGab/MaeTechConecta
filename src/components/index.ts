@@ -1,26 +1,23 @@
 /**
- * Componentes UI - Sistema de Design Bubblegum
+ * Components - Export centralizado
  *
- * Exportação centralizada de todos os componentes reutilizáveis.
- *
- * @example
- * import { Button, Card, Input } from '../components';
+ * Exporta todos os componentes UI base
  */
 
-// Componentes Base
 export { Button } from './Button';
 export type { ButtonProps, ButtonVariant, ButtonSize } from './Button';
-
-export { Card } from './Card';
-export type { CardProps, CardVariant } from './Card';
 
 export { Input } from './Input';
 export type { InputProps } from './Input';
 
-export { Badge } from './Badge';
-export type { BadgeProps, BadgeVariant, BadgeSize } from './Badge';
+export { Card } from './Card';
+export type { CardProps, CardVariant } from './Card';
 
-// Componentes Específicos
+export { Badge } from './Badge';
+export type { BadgeProps } from './Badge';
+
+export { Text, H1, H2, H3, Body, Caption } from './Text';
+export type { TextProps, TextVariant } from './Text';
+
 export { Logo } from './Logo';
-export { WelcomeHeader } from './WelcomeHeader';
-export { ThemeShowcase } from './ThemeShowcase';
+export type { LogoProps } from './Logo';

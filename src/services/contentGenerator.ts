@@ -81,7 +81,7 @@ export const generateListContent = async (topic: string, context: string): Promi
 
     const content = response.data.choices[0].message.content;
     // Parse simples da lista
-    return content.split('\n').filter(item => item.trim() && item.match(/^[-•\d]/));
+    return content.split('\n').filter((item: string) => item.trim() && item.match(/^[-•\d]/));
   } catch (error) {
     console.error('Erro ao gerar lista:', error);
     return [];
@@ -156,4 +156,3 @@ const parseExercises = (text: string): any[] => {
   if (currentExercise) exercises.push(currentExercise);
   return exercises;
 };
-

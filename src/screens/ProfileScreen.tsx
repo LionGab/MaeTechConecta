@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Logo } from '../components/Logo';
-import { colors, shadows, spacing, borderRadius, typography } from '../theme/colors';
+import { borderRadius, colors, shadows, spacing, typography } from '../theme/colors';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -110,7 +110,7 @@ export default function ProfileScreen() {
         {/* Settings */}
         <View style={styles.sectionCard}>
           <Text style={styles.sectionTitle}>Configurações</Text>
-          
+
           <TouchableOpacity style={styles.settingItem}>
             <Text style={styles.settingText}>🔔 Notificações</Text>
             <Text style={styles.settingArrow}>→</Text>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: spacing.base,
+    padding: spacing.lg,
     backgroundColor: colors.card,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
@@ -292,4 +292,3 @@ const styles = StyleSheet.create({
     fontWeight: typography.weights.bold as any,
   },
 });
-

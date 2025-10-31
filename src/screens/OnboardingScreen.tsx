@@ -1,34 +1,30 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
   Alert,
   SafeAreaView,
+  ScrollView,
   StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { supabase, UserProfile } from '../services/supabase';
-import { Logo } from '../components/Logo';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
-import { colors, spacing, borderRadius, typography, shadows } from '../theme/colors';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Logo } from '../components/Logo';
+import { supabase, UserProfile } from '../services/supabase';
+import { borderRadius, colors, shadows, spacing, typography } from '../theme/colors';
 
 interface OnboardingScreenProps {
-  route: {
-    params: {
-      onComplete: () => void;
-    };
-  };
+  onComplete?: () => void;
+  route?: any;
 }
 
-export default function OnboardingScreen({ route }: OnboardingScreenProps) {
+export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
   const navigation = useNavigation();
-  const { onComplete } = route.params;
 
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
@@ -397,4 +393,3 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
 });
-

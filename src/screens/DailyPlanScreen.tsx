@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { generateDailyPlan, ChatContext } from '../services/ai';
-import { getDailyPlan, saveDailyPlan } from '../services/supabase';
+import { useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
-import { colors, shadows, spacing, borderRadius, typography } from '../theme/colors';
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { ChatContext, generateDailyPlan } from '../services/ai';
+import { getDailyPlan, saveDailyPlan } from '../services/supabase';
+import { borderRadius, colors, shadows, spacing, typography } from '../theme/colors';
 
 export default function DailyPlanScreen() {
   const navigation = useNavigation();
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: spacing.base,
+    padding: spacing.lg,
     backgroundColor: colors.card,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
@@ -284,4 +284,3 @@ const styles = StyleSheet.create({
     fontWeight: typography.weights.bold as any,
   },
 });
-

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test NathIA API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #E91E63;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        button {
+            background: #E91E63;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #C2185B;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            display: none;
+        }
+        .response.show {
+            display: block;
+        }
+        .response.success {
+            border-left: 4px solid #4CAF50;
+        }
+        .response.error {
+            border-left: 4px solid #f44336;
+        }
+        .loading {
+            display: none;
+            margin-top: 10px;
+            color: #E91E63;
+        }
+        .loading.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Test NathIA API</h1>
+
+        <form id="testForm">
+            <div class="form-group">
+                <label>User ID:</label>
+                <input type="text" id="userId" value="test123" required>
+            </div>
+
+            <div class="form-group">
+                <label>Message:</label>
+                <textarea id="message" required>Olá! Estou grávida de 12 semanas e estou com muitas dúvidas sobre alimentação.</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Tipo:</label>
+                <input type="text" id="type" value="gestante">
+            </div>
+
+            <div class="form-group">
+                <label>Semana:</label>
+                <input type="number" id="pregnancyWeek" value="12">
+            </div>
+
+            <button type="submit">Enviar para NathIA</button>
+        </form>
+
+        <div class="loading" id="loading">
+            ⏳ Processando...
+        </div>
+
+        <div class="response" id="response"></div>
+    </div>
+
+    <script>
+        document.getElementById('testForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const userId = document.getElementById('userId').value;
+            const message = document.getElementById('message').value;
+            const type = document.getElementById('type').value;
+            const pregnancyWeek = parseInt(document.getElementById('pregnancyWeek').value);
+
+            const responseDiv = document.getElementById('response');
+            const loading = document.getElementById('loading');
+
+            responseDiv.classList.remove('show', 'success', 'error');
+            loading.classList.add('show');
+
+            try {
+                const response = await fetch('https://bbcwitnbnosyfpfjtzkr.supabase.co/functions/v1/nathia-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJiY3dpdG5ibm9zeWZwZmp0emtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAyODI3NjgsImV4cCI6MjA3NTg1ODc2OH0.a9g_JqrWWnLli_PV0sPikz8KPAWiKY81mQ1hJAbNtCo'
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        message: message,
+                        context: {
+                            type: type,
+                            pregnancy_week: pregnancyWeek
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                loading.classList.remove('show');
+
+                if (response.ok) {
+                    responseDiv.innerHTML = `
+                        <h3>✅ Resposta:</h3>
+                        <p><strong>NathIA:</strong> ${data.response}</p>
+                        <p><strong>Rate Limit:</strong> ${data.rateLimit.remaining} requests remaining</p>
+                    `;
+                    responseDiv.classList.add('show', 'success');
+                } else {
+                    responseDiv.innerHTML = `
+                        <h3>❌ Erro:</h3>
+                        <p><strong>Status:</strong> ${response.status}</p>
+                        <p><strong>Mensagem:</strong> ${data.error || JSON.stringify(data)}</p>
+                    `;
+                    responseDiv.classList.add('show', 'error');
+                }
+            } catch (error) {
+                loading.classList.remove('show');
+                responseDiv.innerHTML = `
+                    <h3>❌ Erro de Conexão:</h3>
+                    <p>${error.message}</p>
+                    <p><strong>Possíveis causas:</strong></p>
+                    <ul>
+                        <li>Edge Function não foi deployada ainda</li>
+                        <li>Secrets não foram configurados</li>
+                        <li>URL está incorreta</li>
+                    </ul>
+                `;
+                responseDiv.classList.add('show', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

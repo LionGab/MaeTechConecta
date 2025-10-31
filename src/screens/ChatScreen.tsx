@@ -20,6 +20,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { MessageItem } from '../components/chat/MessageItem';
 import { Message, useChatOptimized } from '../hooks/useChatOptimized';
 import { borderRadius, colors, spacing, typography } from '../theme/colors';
+import { EmptyState } from '../shared/components/EmptyState';
+import { SkeletonPresets } from '../shared/components/Skeleton';
+import { useOptimizedFlatList, getOptimizedKeyExtractor } from '../hooks/useOptimizedFlatList';
 
 // Componente de indicador de digitação animado
 const TypingIndicator = React.memo(() => {
@@ -271,6 +274,14 @@ export default function ChatScreen() {
             <MessageSkeleton />
           </View>
         </View>
+      ) : messages.length === 0 ? (
+        <EmptyState
+          emoji="💬"
+          title="Nenhuma mensagem ainda"
+          description="Comece uma conversa com a NathIA! Ela está aqui para te ouvir e apoiar."
+          actionLabel="Enviar primeira mensagem"
+          onAction={() => inputRef.current?.focus()}
+        />
       ) : (
         <FlatList
           ref={flatListRef}
@@ -278,12 +289,20 @@ export default function ChatScreen() {
           renderItem={renderMessageItem}
           ListHeaderComponent={renderTypingIndicator}
           ListFooterComponent={renderError}
+          ListEmptyComponent={
+            <EmptyState
+              emoji="💬"
+              title="Nenhuma mensagem ainda"
+              description="Comece uma conversa com a NathIA!"
+            />
+          }
           keyExtractor={keyExtractor}
           inverted
-          initialNumToRender={20}
+          initialNumToRender={10}
           maxToRenderPerBatch={10}
-          windowSize={21}
-          removeClippedSubviews
+          windowSize={10}
+          removeClippedSubviews={true}
+          updateCellsBatchingPeriod={50}
           contentContainerStyle={styles.messageList}
           accessible={true}
           accessibilityLabel="Lista de mensagens"
@@ -297,6 +316,9 @@ export default function ChatScreen() {
               progressBackgroundColor={colors.background}
             />
           }
+          maintainVisibleContentPosition={{
+            minIndexForVisible: 0,
+          }}
         />
       )}
 

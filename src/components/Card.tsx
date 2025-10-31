@@ -98,8 +98,6 @@ export const Card: React.FC<CardProps> = ({
     style,
   ];
 
-  const CardContainer = onPress ? TouchableOpacity : View;
-
   const touchableProps: Partial<TouchableOpacityProps> = onPress
     ? {
         onPress,
@@ -111,8 +109,40 @@ export const Card: React.FC<CardProps> = ({
       }
     : {};
 
+  // Renderizar como TouchableOpacity ou View dependendo de onPress
+  if (onPress) {
+    return (
+      <TouchableOpacity style={containerStyle} {...touchableProps}>
+        {/* Header com título e ícone */}
+        {(title || icon) && (
+          <View style={styles.header}>
+            {icon && (
+              <Icon
+                name={icon}
+                size={24}
+                color={iconColor}
+                style={styles.headerIcon}
+              />
+            )}
+            <View style={styles.headerText}>
+              {title && (
+                <Text style={[styles.title, titleStyle]}>{title}</Text>
+              )}
+              {subtitle && (
+                <Text style={styles.subtitle}>{subtitle}</Text>
+              )}
+            </View>
+          </View>
+        )}
+
+        {/* Conteúdo */}
+        <View style={[styles.content, contentStyle]}>{children}</View>
+      </TouchableOpacity>
+    );
+  }
+
   return (
-    <CardContainer style={containerStyle} {...touchableProps}>
+    <View style={containerStyle}>
       {/* Header com título e ícone */}
       {(title || icon) && (
         <View style={styles.header}>
@@ -137,7 +167,7 @@ export const Card: React.FC<CardProps> = ({
 
       {/* Conteúdo */}
       <View style={[styles.content, contentStyle]}>{children}</View>
-    </CardContainer>
+    </View>
   );
 };
 

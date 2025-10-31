@@ -3,6 +3,9 @@ import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { Alert } from 'react-native';
 import { ChatContext, chatWithAI, detectUrgency } from '../services/ai';
 import { getChatHistory, saveChatMessage } from '../services/supabase';
+import { logger } from '../utils/logger';
+import { hasPendingMessages, saveOfflineMessage, syncPendingMessages } from '../utils/offlineStorage';
+import { isRecoverableError, smartRetry } from '../utils/retry';
 
 // Tipos
 export type Message = {
@@ -58,6 +61,49 @@ export function useChatOptimized() {
   useEffect(() => {
     loadUserProfileAndHistory();
   }, []);
+
+  // Configurar logger com userId quando disponível
+  useEffect(() => {
+    if (userId) {
+      logger.setUserId(userId);
+    }
+  }, [userId]);
+
+  // Sync pendente ao voltar online
+  useEffect(() => {
+    if (!userId) return;
+
+    const checkPendingSync = async () => {
+      try {
+        const hasPending = await hasPendingMessages();
+        if (hasPending) {
+          logger.info('Verificando mensagens pendentes para sincronização');
+
+          await syncPendingMessages(async (message) => {
+            if (message.role === 'user') {
+              await saveChatMessage({
+                user_id: userId,
+                message: message.content,
+                response: '',
+                context_data: {
+                  offline_message: true,
+                  timestamp: message.timestamp,
+                },
+              });
+            }
+          });
+        }
+      } catch (error) {
+        logger.error('Erro ao verificar mensagens pendentes', {}, error);
+      }
+    };
+
+    // Verificar a cada 30 segundos se há mensagens pendentes
+    const interval = setInterval(checkPendingSync, 30000);
+    checkPendingSync(); // Executar imediatamente
+
+    return () => clearInterval(interval);
+  }, [userId]);
 
   const loadUserProfileAndHistory = async () => {
     try {
@@ -143,8 +189,22 @@ export function useChatOptimized() {
         content: msg.content,
       }));
 
-      // Chamar API de IA
-      const aiResponse = await chatWithAI(content, context, aiMessages);
+      // Chamar API de IA com retry inteligente
+      logger.debug('Iniciando chamada de IA', { messageLength: content.length, historyLength: aiMessages.length });
+
+      const aiResponse = await smartRetry(
+        () => chatWithAI(content, context, aiMessages),
+        {
+          maxRetries: 3,
+          initialDelay: 1000,
+          onRetry: (attempt, error) => {
+            logger.warn(`Retry ${attempt} de IA falhou`, { attempt, isRecoverable: isRecoverableError(error) }, error);
+          }
+        },
+        logger
+      );
+
+      logger.info('Resposta da IA recebida com sucesso', { responseLength: aiResponse.length });
 
       const aiMessage: Message = {
         id: Date.now() + 1,
@@ -160,33 +220,63 @@ export function useChatOptimized() {
       // Salvar no Supabase se userId estiver disponível
       if (userId) {
         try {
-          await saveChatMessage({
-            user_id: userId,
-            message: content,
-            response: aiResponse,
-            context_data: {
-              is_urgent: isUrgent,
-              timestamp: new Date().toISOString(),
-            },
-          });
+          await smartRetry(
+            () => saveChatMessage({
+              user_id: userId,
+              message: content,
+              response: aiResponse,
+              context_data: {
+                is_urgent: isUrgent,
+                timestamp: new Date().toISOString(),
+              },
+            }),
+            { maxRetries: 2, initialDelay: 500 },
+            logger
+          );
+          logger.debug('Mensagem salva no Supabase', { userId: userId.substring(0, 8), isUrgent });
         } catch (dbError) {
-          console.error('Erro ao salvar mensagem no banco:', dbError);
-          // Não quebra o fluxo se falhar ao salvar
+          logger.error('Erro ao salvar mensagem no banco', { userId }, dbError);
+
+          // Fallback: salvar offline
+          try {
+            await saveOfflineMessage(content, 'user', { userId });
+            await saveOfflineMessage(aiResponse, 'assistant', { userId });
+            logger.info('Mensagens salvas offline como backup');
+          } catch (offlineError) {
+            logger.error('Falha ao salvar offline', {}, offlineError);
+          }
         }
       }
 
     } catch (error: any) {
-      console.error('Erro ao processar mensagem:', error);
+      logger.error('Erro ao processar mensagem completa', { userId, contentLength: content.length }, error);
+
       dispatch({ type: 'SET_LOADING', payload: false });
+
+      // Determinar mensagem de erro apropriada
+      let errorMessage = 'Desculpa, estou com um probleminha técnico. Pode tentar novamente? 💕';
+
+      if (isRecoverableError(error)) {
+        errorMessage = 'Sem conexão com a internet. Sua mensagem será enviada quando voltar online.';
+
+        // Salvar offline
+        try {
+          await saveOfflineMessage(content, 'user', { userId: userId || undefined });
+          logger.info('Mensagem salva offline devido a erro de rede');
+        } catch (offlineError) {
+          logger.error('Falha ao salvar offline após erro de rede', {}, offlineError);
+        }
+      }
+
       dispatch({
         type: 'SET_ERROR',
-        payload: 'Desculpa, estou com um probleminha técnico. Pode tentar novamente? 💕'
+        payload: errorMessage
       });
 
       // Mostrar mensagem de erro amigável para o usuário
       Alert.alert(
         'Ops!',
-        'Não consegui processar sua mensagem. Verifique sua conexão e tente novamente.',
+        errorMessage,
         [{ text: 'OK' }]
       );
     }

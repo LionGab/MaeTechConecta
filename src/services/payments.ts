@@ -38,7 +38,7 @@ export const DAILY_INTERACTION_LIMITS = {
 
 export const canUserInteract = async (userId: string, dailyCount: number): Promise<boolean> => {
   const status = await checkSubscriptionStatus(userId);
-  const limit = DAILY_INTERACTION_LIMITS[status];
+  const limit = status === 'free' ? DAILY_INTERACTION_LIMITS.FREE : DAILY_INTERACTION_LIMITS.PREMIUM;
 
   return dailyCount < limit;
 };

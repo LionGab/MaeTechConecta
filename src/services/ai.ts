@@ -1,5 +1,5 @@
-import { API_CONFIG, API_URLS } from '../config/api';
 import axios from 'axios';
+import { API_CONFIG, API_URLS } from '../config/api';
 
 const SYSTEM_PROMPT = `Você é a assistente virtual "Nossa Maternidade", inspirada na personalidade de uma influenciadora brasileira jovem e empática. Sua missão é apoiar gestantes e mães com linguagem casual, carinhosa e acessível.
 
@@ -28,7 +28,7 @@ export const chatWithAI = async (
   history: any[] = []
 ): Promise<string> => {
   try {
-    const contextString = context.type 
+    const contextString = context.type
       ? `Perfil: ${context.type}, Semana: ${context.pregnancy_week || 'N/A'}, Bebê: ${context.baby_name || 'Aguardando...'}`
       : 'Perfil em configuração';
 
@@ -60,8 +60,8 @@ export const chatWithAI = async (
 
     return response.data.content[0].text;
   } catch (error: any) {
-    console.error('Erro ao chamar Claude API:', error.response?.data || error.message);
-    return 'Desculpa, estou com um probleminha técnico. Pode tentar novamente? 💕';
+    // Re-throw para ser tratado pelo retry system
+    throw new Error(`Claude API error: ${error.response?.data?.error?.message || error.message}`);
   }
 };
 
@@ -126,7 +126,7 @@ export const generateDailyPlan = async (context: ChatContext): Promise<any> => {
     );
 
     const content = response.data.choices[0].message.content;
-    
+
     // Parse simples do conteúdo
     const priorities = content.match(/(?<=Prioridades:)(.*?)(?=Dica)/s)?.[0]?.split('\n').filter(Boolean) || [];
     const tip = content.match(/(?<=Dica do Dia:)(.*?)(?=Receita)/s)?.[0]?.trim() || '';
@@ -183,4 +183,3 @@ export const detectUrgency = (message: string): boolean => {
   const lowerMessage = message.toLowerCase();
   return urgencyKeywords.some(keyword => lowerMessage.includes(keyword));
 };
-

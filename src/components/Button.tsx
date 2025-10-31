@@ -1,16 +1,16 @@
 import React from 'react';
 import {
-  TouchableOpacity,
-  Text,
-  StyleSheet,
   ActivityIndicator,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  TouchableOpacityProps,
   View,
   ViewStyle,
-  TextStyle,
-  TouchableOpacityProps,
 } from 'react-native';
-import { colors, spacing, borderRadius, typography, shadows } from '../theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { borderRadius, colors, shadows, spacing, typography } from '../theme/colors';
 
 /**
  * Button Component - Sistema de Design Bubblegum
@@ -106,6 +106,23 @@ export const Button: React.FC<ButtonProps> = ({
   const iconColor = getIconColor(variant, disabled || loading);
   const iconSize = getIconSize(size);
 
+  const handlePress = (event: any) => {
+    // Haptic feedback (opcional - só se expo-haptics estiver disponível)
+    try {
+      if (require('expo-haptics').default) {
+        require('expo-haptics').default.impactAsync(
+          require('expo-haptics').ImpactFeedbackStyle.Light
+        );
+      }
+    } catch (e) {
+      // expo-haptics não disponível, ignorar
+    }
+
+    if (touchableProps.onPress) {
+      touchableProps.onPress(event);
+    }
+  };
+
   return (
     <TouchableOpacity
       style={containerStyle}
@@ -115,7 +132,8 @@ export const Button: React.FC<ButtonProps> = ({
       accessibilityLabel={accessibilityLabel}
       accessibilityHint={accessibilityHint}
       accessibilityState={{ disabled: disabled || loading }}
-      activeOpacity={0.7}
+      activeOpacity={0.85}
+      onPress={handlePress}
       {...touchableProps}
     >
       {loading ? (

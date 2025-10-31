@@ -1,0 +1,169 @@
+# Cursor Rules - Nossa Maternidade
+# Regras de revisão e padrões de código
+
+## Padrões de Código
+
+### TypeScript
+- Sempre usar tipos explícitos (evitar `any` quando possível)
+- Interfaces exportadas quando usadas externamente
+- Props tipadas com interfaces
+- Usar `React.FC` ou tipagem explícita para componentes
+
+### Nomenclatura
+- Componentes: PascalCase (`Button.tsx`, `ChatScreen.tsx`)
+- Arquivos de hooks: camelCase com prefixo `use` (`useChatOptimized.ts`)
+- Arquivos de serviços: camelCase (`supabase.ts`, `notifications.ts`)
+- Constantes: UPPER_SNAKE_CASE (`GEMINI_API_KEY`)
+- Variáveis e funções: camelCase (`handlePress`, `loadData`)
+
+### Estrutura de Arquivos
+- Componentes em `src/components/`
+- Shared components em `src/shared/components/`
+- Features em `src/features/`
+- Screens em `src/screens/`
+- Services em `src/services/`
+- Hooks em `src/hooks/`
+- Types em `src/types/`
+
+### React/React Native
+- Sempre usar `React.memo` em componentes puros
+- Usar `useCallback` para handlers passados como props
+- Usar `useMemo` para computações pesadas
+- Lazy loading de screens no TabNavigator
+- FlatList otimizada com `windowSize={10}`, `maxToRenderPerBatch={10}`
+
+### Acessibilidade (WCAG 2.1 AA)
+- Sempre incluir `accessibilityLabel` descritivo
+- Usar `accessibilityRole` correto
+- Adicionar `accessibilityHint` quando necessário
+- Área de toque mínima: 44x44px
+- Contraste de cores: 4.5:1+
+
+### Performance
+- Memoizar componentes pesados
+- Lazy load screens
+- Otimizar FlatList com configurações adequadas
+- Evitar re-renders desnecessários
+- Usar `useOptimizedFlatList` hook para listas
+
+### Imports
+- Ordem: React → React Native → Bibliotecas externas → Internos
+- Agrupar imports por categoria
+- Usar path aliases quando possível
+
+### Comentários
+- JSDoc para componentes públicos
+- Explicar lógica complexa
+- Manter comentários atualizados
+
+### Tratamento de Erros
+- Sempre usar try-catch em operações assíncronas
+- Logs descritivos para debug
+- Feedback visual para o usuário
+- ErrorBoundary para erros de renderização
+
+### Testes
+- Componentes críticos devem ter testes
+- Testes de integração para fluxos principais
+- Coverage mínimo: 70% (objetivo)
+
+## Regras de Revisão
+
+### Severidade de Bugs
+1. **Crítico (5)**: Quebra aplicação, segurança crítica
+2. **Alto (4)**: Funcionalidade quebrada, performance grave
+3. **Médio (3)**: Bug não crítico, code smell
+4. **Baixo (2)**: Melhoria sugerida, otimização
+5. **Info (1)**: Sugestão de estilo, documentação
+
+### O Que Revisar
+- Bugs de lógica
+- Práticas inseguras (segurança)
+- Code smells (complexidade, acoplamento)
+- Violações de estilo
+- Performance issues
+- Problemas de acessibilidade
+- Falta de documentação
+- Testes faltantes
+
+### Padrões Específicos do Projeto
+
+#### Tema
+- Sempre usar `colors` do tema (não cores hardcoded)
+- Usar `spacing`, `typography`, `borderRadius` do tema
+- Dark Mode: usar `useTheme()` hook
+
+#### Componentes
+- Sempre exportar tipos/interfaces quando necessário
+- Incluir JSDoc para props complexas
+- Acessibilidade obrigatória
+
+#### Supabase
+- Sempre verificar autenticação antes de queries
+- Usar RLS (Row Level Security)
+- Tratar erros de forma amigável
+
+#### NAT-AI
+- Guardrails obrigatórios em todas as respostas
+- Context Manager para contexto longo
+- Risk Analyzer para detecção de crise
+
+## Exemplo de Código Bom
+
+```typescript
+/**
+ * Button Component - Sistema de Design
+ *
+ * @example
+ * <Button variant="primary" onPress={handlePress}>
+ *   Enviar
+ * </Button>
+ */
+export interface ButtonProps {
+  /** Variante visual do botão */
+  variant?: 'primary' | 'secondary';
+  /** Handler do clique */
+  onPress: () => void;
+  /** Texto do botão */
+  children: React.ReactNode;
+}
+
+export const Button: React.FC<ButtonProps> = ({
+  variant = 'primary',
+  onPress,
+  children
+}) => {
+  const handlePress = useCallback(() => {
+    // Haptic feedback
+    try {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    } catch {}
+    onPress();
+  }, [onPress]);
+
+  return (
+    <TouchableOpacity
+      style={[styles.button, styles[variant]]}
+      onPress={handlePress}
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityLabel={typeof children === 'string' ? children : 'Botão'}
+    >
+      <Text style={styles.text}>{children}</Text>
+    </TouchableOpacity>
+  );
+};
+```
+
+## O Que Evitar
+
+- ❌ `any` desnecessário
+- ❌ Componentes sem memoização quando necessário
+- ❌ FlatList sem otimizações
+- ❌ Imports não organizados
+- ❌ Cores hardcoded
+- ❌ Falta de acessibilidade
+- ❌ Erros não tratados
+- ❌ Componentes sem documentação
+- ❌ Código duplicado
+- ❌ Funções muito complexas (>50 linhas)

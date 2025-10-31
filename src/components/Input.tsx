@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import {
-  View,
+  StyleSheet,
   Text,
   TextInput,
-  StyleSheet,
-  ViewStyle,
-  TextStyle,
   TextInputProps,
+  TextStyle,
+  View,
+  ViewStyle,
 } from 'react-native';
-import { colors, spacing, borderRadius, typography } from '../theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { borderRadius, colors, shadows, spacing, typography } from '../theme/colors';
 
 /**
  * Input Component - Sistema de Design Bubblegum
@@ -127,7 +127,7 @@ export const Input: React.FC<InputProps> = ({
         {icon && (
           <Icon
             name={icon}
-            size={20}
+            size={22}
             color={finalIconColor}
             style={styles.icon}
           />
@@ -205,6 +205,8 @@ const styles = StyleSheet.create({
   inputContainerFocused: {
     borderColor: colors.primary,
     backgroundColor: colors.background,
+    ...((shadows as any).light?.xs || {}),
+    borderWidth: 3,
   },
 
   inputContainerError: {
