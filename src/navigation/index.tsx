@@ -57,7 +57,7 @@ export function AppNavigator() {
           {!isOnboarded ? (
             <Stack.Screen
               name="Onboarding"
-              component={OnboardingScreen as any}
+              component={OnboardingScreen}
               initialParams={{ onComplete: () => setIsOnboarded(true) }}
             />
           ) : (

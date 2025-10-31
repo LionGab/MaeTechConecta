@@ -23,7 +23,7 @@ interface OnboardingScreenProps {
   route?: any;
 }
 
-export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
+const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete, route }) => {
   const navigation = useNavigation();
 
   const [step, setStep] = useState(1);
@@ -395,3 +395,5 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
 });
+
+export default OnboardingScreen;
