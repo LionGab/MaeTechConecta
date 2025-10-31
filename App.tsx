@@ -8,7 +8,7 @@
 import React from 'react';
 import { ErrorBoundary } from './src/shared/components/ErrorBoundary';
 import { ThemeProvider } from './src/contexts/ThemeContext';
-import { AppNavigator } from './src/navigation';
+import { AppNavigator } from './src/navigation/index';
 
 export default function App() {
   return (

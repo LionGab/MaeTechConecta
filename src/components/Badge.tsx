@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-import { colors, spacing, borderRadius, typography } from '../theme/colors';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { borderRadius, colors, spacing, typography } from '../theme/colors';
 
 /**
  * Badge Component - Sistema de Design Bubblegum
@@ -85,17 +85,19 @@ const styles = StyleSheet.create({
 
   warningContainer: {
     backgroundColor: colors.accent, // Amarelo pastel
-    borderColor: '#D4A574', // Tom mais escuro do amarelo
+    borderColor: colors.accent, // Usa variável do tema
+    opacity: 0.9, // Leve transparência para melhor contraste
   },
 
   errorContainer: {
-    backgroundColor: '#FFEBEE', // Vermelho muito claro
+    backgroundColor: colors.muted, // Usa variável do tema
     borderColor: colors.destructive,
   },
 
   successContainer: {
-    backgroundColor: '#E8F5E9', // Verde muito claro
-    borderColor: '#4CAF50', // Verde
+    backgroundColor: colors.accent, // Usa accent (amarelo/verde pastel do tema)
+    borderColor: colors.primary, // Usa primary para contraste
+    opacity: 0.8,
   },
 
   // Variantes de Texto
@@ -104,7 +106,7 @@ const styles = StyleSheet.create({
   },
 
   warningText: {
-    color: '#8B5E3C', // Marrom escuro para contraste
+    color: colors.foreground, // Usa foreground para contraste
   },
 
   errorText: {
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
   },
 
   successText: {
-    color: '#2E7D32', // Verde escuro
+    color: colors.primary, // Usa primary para contraste
   },
 
   // Tamanhos de Container

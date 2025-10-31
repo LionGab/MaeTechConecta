@@ -1,11 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SUPABASE_CONFIG } from '../config/api';
 
 // ⚠️ CONFIGURE SUAS CREDENCIAIS DO SUPABASE
-// Substitua pelos valores do seu projeto Supabase
+// Substitua pelos valores do seu projeto Supabase no arquivo .env.local
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabaseUrl = SUPABASE_CONFIG.URL || '';
+const supabaseAnonKey = SUPABASE_CONFIG.ANON_KEY || '';
+
+// Validação básica para evitar erros silenciosos
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn('⚠️ Supabase não configurado. Configure EXPO_PUBLIC_SUPABASE_URL e EXPO_PUBLIC_SUPABASE_ANON_KEY no arquivo .env.local');
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -64,7 +70,7 @@ export const saveUserProfile = async (profile: Partial<UserProfile>) => {
     .from('user_profiles')
     .upsert(profile)
     .select();
-  
+
   if (error) throw error;
   return data;
 };
@@ -75,7 +81,7 @@ export const saveChatMessage = async (message: Partial<ChatMessage>) => {
     .from('chat_messages')
     .insert(message)
     .select();
-  
+
   if (error) throw error;
   return data;
 };
@@ -88,7 +94,7 @@ export const getChatHistory = async (userId: string, limit: number = 50) => {
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
     .limit(limit);
-  
+
   if (error) throw error;
   return data?.reverse() || [];
 };
@@ -99,7 +105,7 @@ export const saveDailyPlan = async (plan: Partial<DailyPlan>) => {
     .from('daily_plans')
     .upsert(plan)
     .select();
-  
+
   if (error) throw error;
   return data;
 };
@@ -112,7 +118,7 @@ export const getDailyPlan = async (userId: string, date: string) => {
     .eq('user_id', userId)
     .eq('date', date)
     .single();
-  
+
   if (error && error.code !== 'PGRST116') throw error;
   return data;
 };

@@ -56,11 +56,14 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   style,
   borderRadius = 8,
 }) => {
+  const widthStyle = typeof width === 'string' ? { width: width as any } : { width };
+
   return (
     <View
       style={[
         styles.skeleton,
-        { width, height, borderRadius },
+        widthStyle,
+        { height, borderRadius },
         style,
       ]}
       accessible={false}

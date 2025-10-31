@@ -27,8 +27,25 @@
       "permissions": [
         "RECORD_AUDIO",
         "INTERNET"
+      ],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "nossa-maternidade",
+              "host": "auth"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
       ]
     },
+    "scheme": "nossa-maternidade",
     "web": {
       "favicon": "./assets/favicon.png"
     },
@@ -39,4 +56,3 @@
     ]
   }
 }
-

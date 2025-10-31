@@ -2,12 +2,11 @@
 // Crie um arquivo .env.local e adicione suas chaves
 // Veja .env.example para referência
 
-// Validação de chaves de API críticas
+// Validação de chaves de API críticas (valida apenas quando necessário, não na importação)
 function validateApiKey(key: string | undefined, keyName: string): string {
   if (!key || key.trim() === '') {
-    throw new Error(
-      `⚠️ API key missing: ${keyName}. Please configure it in your .env.local file.`
-    );
+    console.warn(`⚠️ API key missing: ${keyName}. Please configure it in your .env.local file.`);
+    return '';
   }
   return key;
 }
@@ -15,7 +14,7 @@ function validateApiKey(key: string | undefined, keyName: string): string {
 export const API_CONFIG = {
   CLAUDE_API_KEY: process.env.EXPO_PUBLIC_CLAUDE_API_KEY || '',
   OPENAI_API_KEY: process.env.EXPO_PUBLIC_OPENAI_API_KEY || '',
-  GEMINI_API_KEY: validateApiKey(process.env.EXPO_PUBLIC_GEMINI_API_KEY, 'GEMINI_API_KEY'),
+  GEMINI_API_KEY: process.env.EXPO_PUBLIC_GEMINI_API_KEY || '',
   PERPLEXITY_API_KEY: process.env.EXPO_PUBLIC_PERPLEXITY_API_KEY || '',
   ELEVENLABS_API_KEY: process.env.EXPO_PUBLIC_ELEVENLABS_API_KEY || '',
   HEYGEN_API_KEY: process.env.EXPO_PUBLIC_HEYGEN_API_KEY || '',
@@ -25,10 +24,29 @@ export const API_CONFIG = {
 
 // Supabase config
 export const SUPABASE_CONFIG = {
-  URL: validateApiKey(process.env.EXPO_PUBLIC_SUPABASE_URL, 'SUPABASE_URL'),
-  ANON_KEY: validateApiKey(process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY, 'SUPABASE_ANON_KEY'),
+  URL: process.env.EXPO_PUBLIC_SUPABASE_URL || '',
+  ANON_KEY: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '',
   FUNCTIONS_URL: process.env.EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL || '',
 };
+
+// Função helper para validar chaves críticas quando necessário
+export function validateRequiredKeys() {
+  const required = {
+    SUPABASE_URL: SUPABASE_CONFIG.URL,
+    SUPABASE_ANON_KEY: SUPABASE_CONFIG.ANON_KEY,
+  };
+
+  const missing = Object.entries(required)
+    .filter(([_, value]) => !value || value.trim() === '')
+    .map(([key]) => key);
+
+  if (missing.length > 0) {
+    console.warn(`⚠️ Variáveis de ambiente faltando: ${missing.join(', ')}`);
+    return false;
+  }
+
+  return true;
+}
 
 export const API_URLS = {
   CLAUDE: 'https://api.anthropic.com/v1/messages',

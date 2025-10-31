@@ -1,311 +1,388 @@
-// NathIA Chat - Edge Function com Gemini 2.0 Flash
-// Sistema de chat conversacional com memória, moderação e RAG
+/**
+ * NathIA Chat - Edge Function com Gemini 2.0 Flash
+ * Baseado no PROMPT 3: Setup Gemini 2.0 Flash
+ *
+ * Sistema de chat conversacional com acolhimento emocional
+ * para mães, gestantes e tentantes
+ */
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const SYSTEM_PROMPT = `Você é a NathIA, assistente virtual inspirada em Nathália Valente, especialista em maternidade e cuidados com gestantes.
+// =====================================================
+// PROMPT SYSTEM - NathIA
+// =====================================================
 
-INSTRUÇÕES CRÍTICAS:
-- Use PT-BR informal e empático (como uma amiga próxima)
-- NUNCA faça diagnósticos ou prescrições médicas
-- SEMPRE inclua disclaimer: "💡 Lembre-se: cada gestação é única. Consulte sempre seu médico para dúvidas importantes."
-- Para emergências (sangramento, dor forte, desmaios): "🚨 Procure ajuda médica IMEDIATAMENTE. Ligue para o SAMU: 192 ou CVV: 188"
-- Use emojis moderadamente para humanizar a conversa
-- Seja prática e ofereça soluções rápidas
-- Valide com base de dados médicos (OMS, SBP, SUS)
-- Temperatura: 0.3 para segurança máxima (evitar alucinações)
-- Seja empática, mas profissional`;
+const SYSTEM_PROMPT = `Você é a NathIA, assistente virtual criada por Natália Valente para oferecer acolhimento emocional e apoio a mães, gestantes e tentantes.
 
-interface RateLimiter {
-  requests: Map<string, { count: number; resetTime: number }>;
+SUA MISSÃO:
+- Escutar com empatia e validação emocional
+- Oferecer palavras de apoio e encorajamento
+- Criar senso de pertencimento e comunidade
+- NUNCA substituir profissionais de saúde mental ou física
+
+SEU TOM:
+- Empático, caloroso, genuíno
+- Linguagem coloquial brasileira (PT-BR)
+- Como uma amiga próxima e confiável
+- Sem julgamentos, sempre acolhedora
+
+RESTRIÇÕES CRÍTICAS:
+- NUNCA sugerir medicamentos, remédios ou tratamentos
+- NUNCA fazer diagnósticos médicos ou psicológicos
+- NUNCA avaliar sintomas físicos ou mentais
+- NUNCA recomendar procedimentos médicos
+- SEMPRE orientar a buscar ajuda profissional para questões médicas
+
+Para questões médicas, responda:
+"Entendo sua preocupação, e é válida! 💕 Infelizmente, não posso ajudar com questões médicas ou diagnósticos. Para isso, é fundamental consultar um médico, psicólogo ou profissional de saúde qualificado. O que posso fazer é te escutar e acolher emocionalmente. Você gostaria de compartilhar como está se sentindo?"
+
+Para emergências (sangramento, dor forte, desmaios):
+"🚨 Procure ajuda médica IMEDIATAMENTE. Ligue para o SAMU: 192 ou CVV: 188"
+
+Use emojis moderadamente para humanizar a conversa.
+Seja prática e ofereça soluções rápidas de acolhimento emocional.
+Mantenha respostas concisas e empáticas (máximo 300 palavras).`;
+
+// =====================================================
+// RATE LIMITING
+// =====================================================
+
+interface RateLimitData {
+  count: number;
+  resetTime: number;
 }
 
-const rateLimiter: RateLimiter = {
-  requests: new Map(),
-};
+const rateLimiter = new Map<string, RateLimitData>();
 
 function checkRateLimit(userId: string): { allowed: boolean; remaining: number } {
   const now = Date.now();
   const windowMs = 60000; // 1 minuto
-  const maxRequests = 100;
+  const maxRequests = 30; // 30 requisições por minuto por usuário
 
-  const userData = rateLimiter.requests.get(userId);
+  const userData = rateLimiter.get(userId);
 
+  // Reset ou criar novo registro
   if (!userData || now > userData.resetTime) {
-    rateLimiter.requests.set(userId, { count: 1, resetTime: now + windowMs });
+    rateLimiter.set(userId, { count: 1, resetTime: now + windowMs });
     return { allowed: true, remaining: maxRequests - 1 };
   }
 
+  // Verificar limite
   if (userData.count >= maxRequests) {
     return { allowed: false, remaining: 0 };
   }
 
+  // Incrementar contador
   userData.count++;
   return { allowed: true, remaining: maxRequests - userData.count };
 }
 
-async function moderateMessage(message: string): Promise<{ safe: boolean; action: string; reason?: string }> {
-  const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
-  if (!geminiApiKey) {
-    console.error('GEMINI_API_KEY not configured');
-    return { safe: true, action: 'allow' }; // Fail open
+// =====================================================
+// SUPABASE AUTH CHECK
+// =====================================================
+
+async function verifyAuth(req: Request, supabase: any): Promise<{ userId: string | null; error?: string }> {
+  const authHeader = req.headers.get('Authorization');
+
+  if (!authHeader) {
+    return { userId: null, error: 'Authorization header missing' };
   }
 
-  try {
-    const moderationResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${geminiApiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `Analise esta mensagem para moderação. Responda APENAS JSON:
-{
-  "safe": boolean,
-  "category": string,
-  "severity": 1-5,
-  "action": "allow" | "block" | "flag",
-  "reason": string
-}
+  const token = authHeader.replace('Bearer ', '');
 
-Mensagem: ${message}`
-            }]
-          }],
-          safetySettings: [
-            { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_LOW_AND_ABOVE' },
-            { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_LOW_AND_ABOVE' },
-            { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-            { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-          ],
-          generationConfig: {
-            temperature: 0.1,
-            maxOutputTokens: 200,
-          }
-        })
-      }
-    );
+  const { data: { user }, error } = await supabase.auth.getUser(token);
 
-    const data = await moderationResponse.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    const result = JSON.parse(text);
-
-    return {
-      safe: result.safe,
-      action: result.action || 'allow',
-      reason: result.reason
-    };
-  } catch (error) {
-    console.error('Moderation error:', error);
-    return { safe: true, action: 'allow' }; // Fail open
+  if (error || !user) {
+    return { userId: null, error: 'Invalid authentication token' };
   }
+
+  return { userId: user.id };
 }
 
-async function getConversationMemory(userId: string, supabase: any) {
-  const { data, error } = await supabase
-    .from('conversation_memory')
-    .select('*')
-    .eq('user_id', userId)
+// =====================================================
+// BUSCAR CONTEXTO (Últimas 20 mensagens + Perfil)
+// =====================================================
+
+async function getContext(userId: string, supabase: any) {
+  // Buscar perfil do usuário
+  const { data: profile, error: profileError } = await supabase
+    .from('user_profiles')
+    .select('name, type, pregnancy_week, baby_name, preferences, onboarding_data')
+    .eq('id', userId)
     .single();
 
-  if (error && error.code !== 'PGRST116') {
-    console.error('Error fetching memory:', error);
-    return null;
+  if (profileError) {
+    console.error('Error fetching profile:', profileError);
   }
 
-  return data;
-}
-
-async function getChatHistory(userId: string, limit: number, supabase: any) {
-  const { data, error } = await supabase
+  // Buscar últimas 20 mensagens
+  const { data: messages, error: messagesError } = await supabase
     .from('chat_messages')
-    .select('*')
+    .select('message, response, role, created_at')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
-    .limit(limit);
+    .limit(20);
 
-  if (error) {
-    console.error('Error fetching history:', error);
-    return [];
+  if (messagesError) {
+    console.error('Error fetching messages:', messagesError);
   }
 
-  return data?.reverse() || [];
+  // Formatar contexto
+  const context = {
+    profile: profile || {},
+    messages: (messages || []).reverse(), // Inverter para ordem cronológica
+  };
+
+  return context;
 }
 
-async function callGeminiFlash(message: string, context: any, history: any[]) {
-  const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
-  if (!geminiApiKey) {
-    throw new Error('GEMINI_API_KEY not configured');
+// =====================================================
+// FORMATAR PROMPT COM CONTEXTO
+// =====================================================
+
+function formatPromptWithContext(message: string, context: any): string {
+  const { profile, messages } = context;
+
+  // Informações do perfil
+  const profileInfo = profile.type
+    ? `Perfil: ${profile.name || 'Usuária'} - ${profile.type}${profile.pregnancy_week ? ` (${profile.pregnancy_week} semanas)` : ''}${profile.baby_name ? ` - Bebê: ${profile.baby_name}` : ''}`
+    : 'Perfil: Em configuração';
+
+  // Histórico de mensagens (formato conversacional)
+  let historyText = '';
+  if (messages && messages.length > 0) {
+    historyText = '\n\nHISTÓRICO DE CONVERSA:\n';
+    messages.forEach((msg: any) => {
+      if (msg.role === 'user') {
+        historyText += `Usuária: ${msg.message}\n`;
+      } else {
+        historyText += `NathIA: ${msg.response}\n`;
+      }
+    });
   }
 
-  const fullContext = context.type
-    ? `Perfil: ${context.type}, Semana: ${context.pregnancy_week || 'N/A'}, Bebê: ${context.baby_name || 'Aguardando...'}`
-    : 'Perfil em configuração';
+  // Construir prompt completo
+  const fullPrompt = `${SYSTEM_PROMPT}
 
-  const systemPromptWithContext = SYSTEM_PROMPT + `\n\nCONTEXTO DO USUÁRIO: ${fullContext}`;
+CONTEXTO DA USUÁRIA:
+${profileInfo}
+${historyText}
 
-  const conversationHistory = history.map(msg => ({
-    role: msg.role === 'user' ? 'user' : 'model',
-    parts: [{ text: msg.role === 'user' ? msg.message : msg.response }]
-  }));
+NOVA MENSAGEM DA USUÁRIA:
+${message}
 
-  conversationHistory.push({
-    role: 'user',
-    parts: [{ text: message }]
+Responda com acolhimento emocional, empatia e apoio. Mantenha a resposta concisa (máximo 300 palavras).`;
+
+  return fullPrompt;
+}
+
+// =====================================================
+// CHAMAR GEMINI 2.0 FLASH
+// =====================================================
+
+async function callGeminiFlash(prompt: string): Promise<string> {
+  const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
+
+  if (!geminiApiKey) {
+    throw new Error('GEMINI_API_KEY not configured. Configure no Supabase Dashboard > Edge Functions > Secrets');
+  }
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${geminiApiKey}`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      contents: [
+        {
+          parts: [{ text: prompt }]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 300,
+      },
+      safetySettings: [
+        {
+          category: 'HARM_CATEGORY_HARASSMENT',
+          threshold: 'BLOCK_LOW_AND_ABOVE'
+        },
+        {
+          category: 'HARM_CATEGORY_HATE_SPEECH',
+          threshold: 'BLOCK_LOW_AND_ABOVE'
+        },
+        {
+          category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+          threshold: 'BLOCK_MEDIUM_AND_ABOVE'
+        },
+        {
+          category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+          threshold: 'BLOCK_MEDIUM_AND_ABOVE'
+        }
+      ]
+    })
   });
 
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${geminiApiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [
-          {
-            role: 'model',
-            parts: [{ text: systemPromptWithContext }]
-          },
-          ...conversationHistory
-        ],
-        generationConfig: {
-          temperature: 0.3,
-          maxOutputTokens: 2048,
-        }
-      })
-    }
-  );
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(`Gemini API error: ${response.status} - ${JSON.stringify(errorData)}`);
+  }
 
   const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(`Gemini API error: ${JSON.stringify(data)}`);
+  // Extrair texto da resposta
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+  if (!text) {
+    throw new Error('No response text from Gemini API');
   }
 
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  return text;
 }
 
-serve(async (req) => {
+// =====================================================
+// SALVAR MENSAGEM E RESPOSTA NO SUPABASE
+// =====================================================
+
+async function saveMessage(
+  userId: string,
+  message: string,
+  response: string,
+  supabase: any
+): Promise<void> {
+  // Salvar uma única mensagem com user message e assistant response
+  const { error } = await supabase
+    .from('chat_messages')
+    .insert({
+      user_id: userId,
+      message: message,
+      response: response,
+      role: 'user',
+      context_data: {},
+      is_urgent: false,
+      created_at: new Date().toISOString()
+    });
+
+  if (error) {
+    console.error('Error saving message:', error);
+    // Não falhar a requisição se houver erro ao salvar
+  }
+}
+
+// =====================================================
+// EDGE FUNCTION HANDLER
+// =====================================================
+
+serve(async (req: Request) => {
+  // CORS headers
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  };
+
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
   try {
-    // CORS headers
-    if (req.method === 'OPTIONS') {
-      return new Response(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST',
-          'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-        },
-      });
+    // Inicializar Supabase client
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY');
+
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Supabase environment variables not configured');
     }
 
-    const { userId, message, context } = await req.json();
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-    if (!userId || !message) {
+    // Verificar autenticação
+    const authResult = await verifyAuth(req, supabase);
+
+    if (!authResult.userId) {
       return new Response(
-        JSON.stringify({ error: 'userId and message are required' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: authResult.error || 'Authentication failed' }),
+        {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
       );
     }
 
-    // Check rate limit
+    const userId = authResult.userId;
+
+    // Verificar rate limit
     const rateCheck = checkRateLimit(userId);
     if (!rateCheck.allowed) {
       return new Response(
-        JSON.stringify({ error: 'Rate limit exceeded', remaining: 0 }),
-        { status: 429, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Initialize Supabase
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // Moderate message
-    const moderationResult = await moderateMessage(message);
-
-    if (moderationResult.action === 'block') {
-      // Save to moderation_queue
-      await supabase.from('moderation_queue').insert({
-        user_id: userId,
-        message,
-        category: 'blocked',
-        severity: 5,
-        reviewed: false
-      });
-
-      return new Response(
         JSON.stringify({
-          response: 'Desculpa, não posso responder essa mensagem. Ela viola nossas diretrizes de uso.',
-          moderated: true
+          error: 'Rate limit exceeded',
+          message: 'Você fez muitas requisições. Aguarde um momento e tente novamente.',
+          remaining: 0
         }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
+        {
+          status: 429,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
       );
     }
 
-    if (moderationResult.action === 'flag') {
-      await supabase.from('moderation_queue').insert({
-        user_id: userId,
-        message,
-        category: 'flagged',
-        severity: 3,
-        reviewed: false
-      });
-      // Continue processing but flag
+    // Extrair mensagem do body
+    const { message } = await req.json();
+
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Message is required and must be a non-empty string' }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      );
     }
 
-    // Get conversation memory
-    const memory = await getConversationMemory(userId, supabase);
-    const history = await getChatHistory(userId, 30, supabase);
+    // Buscar contexto (perfil + últimas 20 mensagens)
+    const context = await getContext(userId, supabase);
 
-    // Call Gemini
-    const aiResponse = await callGeminiFlash(message, context || {}, history);
+    // Formatar prompt com contexto
+    const fullPrompt = formatPromptWithContext(message, context);
 
-    // Save message and response
-    await supabase.from('chat_messages').insert({
-      user_id: userId,
-      message,
-      response: aiResponse,
-      context_data: { moderated: moderationResult.action !== 'allow' }
-    });
+    // Chamar Gemini 2.0 Flash
+    const aiResponse = await callGeminiFlash(fullPrompt);
 
-    // Update or create memory
-    if (memory) {
-      await supabase
-        .from('conversation_memory')
-        .update({
-          updated_at: new Date().toISOString(),
-          last_30_messages: JSON.stringify(history.slice(-30))
-        })
-        .eq('id', memory.id);
-    } else {
-      await supabase.from('conversation_memory').insert({
-        user_id: userId,
-        last_30_messages: JSON.stringify(history.slice(-30)),
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      });
-    }
+    // Salvar mensagem e resposta no Supabase
+    await saveMessage(userId, message, aiResponse, supabase);
 
+    // Retornar resposta
     return new Response(
       JSON.stringify({
         response: aiResponse,
-        rateLimit: rateCheck
+        rateLimit: {
+          remaining: rateCheck.remaining
+        }
       }),
       {
         status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     );
 
-  } catch (error) {
-    console.error('Error:', error);
+  } catch (error: any) {
+    console.error('Error in nathia-chat function:', error);
+
     return new Response(
-      JSON.stringify({ error: error.message || 'Internal server error' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      JSON.stringify({
+        error: 'Internal server error',
+        message: error.message || 'An unexpected error occurred'
+      }),
+      {
+        status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json'
+        }
+      }
     );
   }
 });

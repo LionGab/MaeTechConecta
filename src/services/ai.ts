@@ -22,6 +22,45 @@ export interface ChatContext {
   preferences?: string[];
 }
 
+/**
+ * Chat com NAT-IA via Edge Function (Gemini 2.0 Flash)
+ * Usa nathia-chat Edge Function do Supabase
+ */
+export const chatWithNATIA = async (
+  message: string,
+  context: ChatContext,
+  userId: string
+): Promise<string> => {
+  try {
+    const { supabase } = await import('./supabase');
+
+    const { data, error } = await supabase.functions.invoke('nathia-chat', {
+      body: {
+        userId,
+        message,
+        context,
+      },
+    });
+
+    if (error) {
+      throw new Error(`Edge Function error: ${error.message}`);
+    }
+
+    if (!data?.response) {
+      throw new Error('Resposta vazia da Edge Function');
+    }
+
+    return data.response;
+  } catch (error: any) {
+    // Re-throw para ser tratado pelo retry system
+    throw new Error(`NAT-IA API error: ${error.message}`);
+  }
+};
+
+/**
+ * Chat com IA (Fallback para Claude se Edge Function falhar)
+ * @deprecated Use chatWithNATIA para produção
+ */
 export const chatWithAI = async (
   message: string,
   context: ChatContext,

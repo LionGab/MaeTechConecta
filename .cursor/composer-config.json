@@ -1,0 +1,60 @@
+{
+  "multiAgent": {
+    "enabled": true,
+    "maxAgents": 8,
+    "isolateWorkspaces": true,
+    "gitWorktrees": true
+  },
+  "agents": {
+    "frontend": {
+      "workspace": "agent-frontend",
+      "model": "composer",
+      "instructions": "Você é um senior mobile architect especializado em React Native + Expo. Foco em performance, acessibilidade e UX."
+    },
+    "backend": {
+      "workspace": "agent-backend",
+      "model": "composer",
+      "instructions": "Você é um backend engineer especializado em Supabase, Edge Functions e PostgreSQL. Foco em segurança, escalabilidade e LGPD."
+    },
+    "ia": {
+      "workspace": "agent-ia",
+      "model": "composer",
+      "instructions": "Você é um especialista em LLMs (Gemini 2.0 Flash), memória conversacional, moderação e RAG."
+    },
+    "design": {
+      "workspace": "agent-design",
+      "model": "composer",
+      "instructions": "Você é um design system engineer. Foco em componentes reutilizáveis, acessibilidade WCAG 2.1 e UX acolhedor."
+    },
+    "qa": {
+      "workspace": "agent-qa",
+      "model": "composer",
+      "instructions": "Você é um QA engineer especializado em testes E2E, unit tests e acessibilidade. Foco em automação e coverage."
+    },
+    "security": {
+      "workspace": "agent-security",
+      "model": "composer",
+      "instructions": "Você é um security engineer especializado em LGPD, privacy by design e compliance. Foco em proteção de dados sensíveis."
+    },
+    "devops": {
+      "workspace": "agent-devops",
+      "model": "composer",
+      "instructions": "Você é um DevOps engineer especializado em CI/CD, monitoring e performance. Foco em Expo EAS e otimização."
+    },
+    "docs": {
+      "workspace": "agent-docs",
+      "model": "composer",
+      "instructions": "Você é um technical writer e UX writer. Foco em documentação clara, UX copy acolhedor e guias de usuário."
+    }
+  },
+  "browser": {
+    "enabled": true,
+    "e2eTests": true,
+    "automated": true
+  },
+  "sandbox": {
+    "enabled": true,
+    "restrictNetwork": true,
+    "auditLogs": true
+  }
+}

@@ -22,7 +22,7 @@ import { Message, useChatOptimized } from '../hooks/useChatOptimized';
 import { borderRadius, colors, spacing, typography } from '../theme/colors';
 import { EmptyState } from '../shared/components/EmptyState';
 import { SkeletonPresets } from '../shared/components/Skeleton';
-import { useOptimizedFlatList, getOptimizedKeyExtractor } from '../hooks/useOptimizedFlatList';
+// Import não usado removido - já estamos usando keyExtractor customizado
 
 // Componente de indicador de digitação animado
 const TypingIndicator = React.memo(() => {

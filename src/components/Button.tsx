@@ -12,6 +12,14 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { borderRadius, colors, shadows, spacing, typography } from '../theme/colors';
 
+// Haptics é opcional - só funciona se expo-haptics estiver instalado
+let Haptics: any = null;
+try {
+  Haptics = require('expo-haptics');
+} catch (e) {
+  // expo-haptics não disponível, ignorar
+}
+
 /**
  * Button Component - Sistema de Design Bubblegum
  *
@@ -109,10 +117,8 @@ export const Button: React.FC<ButtonProps> = ({
   const handlePress = (event: any) => {
     // Haptic feedback (opcional - só se expo-haptics estiver disponível)
     try {
-      if (require('expo-haptics').default) {
-        require('expo-haptics').default.impactAsync(
-          require('expo-haptics').ImpactFeedbackStyle.Light
-        );
+      if (Haptics && Haptics.impactAsync) {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle?.Light || 1);
       }
     } catch (e) {
       // expo-haptics não disponível, ignorar

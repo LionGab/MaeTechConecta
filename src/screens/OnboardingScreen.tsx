@@ -106,7 +106,9 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
         await AsyncStorage.setItem('onboarded', 'true');
         await AsyncStorage.setItem('userProfile', JSON.stringify(profile));
 
-        onComplete();
+        if (onComplete) {
+          onComplete();
+        }
       }
     } catch (error: any) {
       console.error('Erro ao completar onboarding:', error);

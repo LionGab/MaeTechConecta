@@ -1,0 +1,14 @@
+node_modules/
+.expo/
+.expo-shared/
+dist/
+build/
+*.min.js
+*.min.css
+coverage/
+.env*
+.DS_Store
+android/
+ios/
+web-build/
+
