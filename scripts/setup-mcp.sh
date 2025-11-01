@@ -1,20 +1,48 @@
 #!/bin/bash
-# Script de Setup MCP para Linux/Mac (Bash)
-# Configura MCP tools no Cursor/VS Code
+# Script Bash para Configurar MCP no Cursor (Mac/Linux)
+# Execute: chmod +x scripts/setup-mcp.sh && ./scripts/setup-mcp.sh
 
-echo "🚀 Configurando MCP Tools para Cursor/VS Code..."
+echo "===================================="
+echo "Configurando MCP para Cursor"
+echo "===================================="
+echo ""
 
-VSCODE_DIR=".vscode"
-MCP_CONFIG_FILE="$VSCODE_DIR/mcp.json"
-
-# Criar diretório .vscode se não existir
-if [ ! -d "$VSCODE_DIR" ]; then
-    mkdir -p "$VSCODE_DIR"
-    echo "✅ Diretório .vscode criado"
+# Detectar sistema operacional
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    CURSOR_MCP_PATH="$HOME/Library/Application Support/Cursor/User"
+    OS_NAME="macOS"
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    CURSOR_MCP_PATH="$HOME/.config/Cursor/User"
+    OS_NAME="Linux"
+else
+    echo "❌ Sistema operacional não suportado: $OSTYPE"
+    exit 1
 fi
 
-# Criar arquivo mcp.json com configuração padrão
-cat > "$MCP_CONFIG_FILE" << 'EOF'
+echo "Sistema detectado: $OS_NAME"
+echo "Caminho do Cursor: $CURSOR_MCP_PATH"
+echo ""
+
+# Criar pasta se não existir
+if [ ! -d "$CURSOR_MCP_PATH" ]; then
+    echo "Criando pasta de configuração do Cursor..."
+    mkdir -p "$CURSOR_MCP_PATH"
+fi
+
+# Copiar configuração MCP do workspace para Cursor
+WORKSPACE_MCP_PATH=".vscode/mcp.json"
+CURSOR_MCP_FILE="$CURSOR_MCP_PATH/mcp.json"
+
+if [ -f "$WORKSPACE_MCP_PATH" ]; then
+    echo "Copiando configuração MCP..."
+    cp "$WORKSPACE_MCP_PATH" "$CURSOR_MCP_FILE"
+    echo "✅ Configuração MCP copiada para:"
+    echo "   $CURSOR_MCP_FILE"
+else
+    echo "⚠️ Arquivo .vscode/mcp.json não encontrado!"
+    echo "   Criando configuração básica..."
+    
+    cat > "$CURSOR_MCP_FILE" << EOF
 {
   "mcpServers": {
     "github": {
@@ -23,42 +51,44 @@ cat > "$MCP_CONFIG_FILE" << 'EOF'
       "tools": ["*"]
     },
     "filesystem": {
-      "type": "local",
+      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "$PWD"],
-      "tools": ["read_file", "list_directory", "search_files"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${workspaceFolder}"
+      ],
+      "env": {}
+    },
+    "brave-search": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": {
+        "BRAVE_API_KEY": ""
+      }
     }
   }
 }
 EOF
-
-# Substituir $PWD pelo diretório atual
-CURRENT_DIR=$(pwd)
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS
-    sed -i '' "s|\$PWD|$CURRENT_DIR|g" "$MCP_CONFIG_FILE"
-else
-    # Linux
-    sed -i "s|\$PWD|$CURRENT_DIR|g" "$MCP_CONFIG_FILE"
-fi
-
-echo "✅ Configuração MCP criada em $MCP_CONFIG_FILE"
-
-# Verificar se Cursor está instalado
-CURSOR_CONFIG="$HOME/.config/Cursor/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json"
-if [ -d "$HOME/.config/Cursor" ]; then
-    echo "📝 Cursor detectado - configuração adicional pode ser necessária"
-    echo "   Consulte: $CURSOR_CONFIG"
+    
+    echo "✅ Configuração básica criada!"
 fi
 
 echo ""
-echo "✨ Setup concluído!"
-echo "📋 Próximos passos:"
-echo "   1. Reinicie o Cursor/VS Code"
-echo "   2. Certifique-se de ter as variáveis de ambiente configuradas"
-echo "   3. Execute: npm run mcp:validate"
+echo "===================================="
+echo "✅ Configuração MCP concluída!"
+echo "===================================="
 echo ""
-echo "📖 Para mais informações, veja MCP_SETUP.md"
-
-# Tornar script executável
-chmod +x "$0"
+echo "⚠️ IMPORTANTE:"
+echo "   1. Reinicie o Cursor para aplicar as configurações"
+echo "   2. Verifique se os MCP servers estão funcionando"
+echo "   3. Configure as chaves de API necessárias"
+echo ""
+echo "📝 Próximos passos:"
+echo "   - Configure BRAVE_API_KEY no arquivo mcp.json se necessário"
+echo "   - Para GitHub MCP, não precisa de configuração adicional"
+echo ""

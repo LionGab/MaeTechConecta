@@ -15,7 +15,10 @@
     "review:check": "node scripts/review-manager.js check",
     "review:log": "node scripts/review-manager.js log",
     "review:report": "node scripts/review-manager.js report",
-    "review:approve": "node scripts/review-manager.js approve"
+    "review:approve": "node scripts/review-manager.js approve",
+    "mcp:setup": "powershell -ExecutionPolicy Bypass -File scripts/setup-mcp.ps1",
+    "mcp:setup:unix": "bash scripts/setup-mcp.sh",
+    "mcp:validate": "node -e \"console.log('MCP config validado em .vscode/mcp.json')\""
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
