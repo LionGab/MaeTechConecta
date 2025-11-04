@@ -16,7 +16,7 @@
 - ✅ **Supabase URL:** `https://bbcwitnbnosyfpfjtzkr.supabase.co`
 - ✅ **Supabase Anon Key:** Configurada
 - ✅ **Supabase Functions URL:** Configurada
-- ✅ **Gemini API Key:** `AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg`
+- ✅ **Gemini API Key:** Configurada (obtenha em https://aistudio.google.com/app/apikey)
 - ✅ **Claude API Key:** Configurada (fallback)
 - ✅ **OpenAI API Key:** Configurada (validação/imagens)
 - ✅ **Perplexity API Key:** Configurada (pesquisa avançada)
@@ -108,7 +108,7 @@ npm run check
 2. Vá em **Edge Functions > Secrets**
 3. Adicione:
    - **Nome:** `GEMINI_API_KEY`
-   - **Valor:** `AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg`
+   - **Valor:** `your-gemini-api-key-here` (obtenha em https://aistudio.google.com/app/apikey)
 
 ---
 

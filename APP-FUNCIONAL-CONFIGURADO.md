@@ -105,7 +105,7 @@ Isso verifica:
 2. Vá em **Edge Functions > Secrets**
 3. Adicione o secret:
    - **Nome:** `GEMINI_API_KEY`
-   - **Valor:** `AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg`
+   - **Valor:** `your-gemini-api-key-here` (obtenha em https://aistudio.google.com/app/apikey)
 
 **⚠️ IMPORTANTE:** Sem isso, a Edge Function `nathia-chat` não funcionará!
 
