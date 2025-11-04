@@ -133,10 +133,17 @@ switch ($method) {
                 
                 # Adicionar ao PATH (se não estiver)
                 $currentPath = [Environment]::GetEnvironmentVariable("Path", "User")
-                if ($currentPath -notlike "*$supabaseDir*") {
+                $pathArray = $currentPath -split ';' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+                
+                # Normalizar caminhos para comparação (remover trailing backslash)
+                $supabaseDirNormalized = $supabaseDir.TrimEnd('\')
+                
+                if ($pathArray -notcontains $supabaseDir -and $pathArray -notcontains $supabaseDirNormalized) {
                     [Environment]::SetEnvironmentVariable("Path", "$currentPath;$supabaseDir", "User")
                     Write-Host "✅ Adicionado ao PATH do usuário" -ForegroundColor Green
                     Write-Host "⚠️  Você precisa fechar e reabrir o terminal para usar o comando 'supabase'" -ForegroundColor Yellow
+                } else {
+                    Write-Host "ℹ️  Diretório já está no PATH" -ForegroundColor Cyan
                 }
             } else {
                 Write-Host "❌ Não foi possível encontrar o executável" -ForegroundColor Red
