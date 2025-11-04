@@ -1,23 +1,40 @@
 import { createClient } from '@supabase/supabase-js';
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SUPABASE_CONFIG } from '@/config/api';
 
 // ⚠️ CONFIGURE SUAS CREDENCIAIS DO SUPABASE
 // Substitua pelos valores do seu projeto Supabase no arquivo .env.local
 
-const supabaseUrl = SUPABASE_CONFIG.URL || '';
-const supabaseAnonKey = SUPABASE_CONFIG.ANON_KEY || '';
+// Obter valores das variáveis de ambiente (ou usar valores dummy)
+const rawUrl = SUPABASE_CONFIG.URL || '';
+const rawKey = SUPABASE_CONFIG.ANON_KEY || '';
 
-// Validação básica para evitar erros silenciosos
-if (!supabaseUrl || !supabaseAnonKey) {
+// Valores dummy válidos do Supabase (apenas para evitar erro de inicialização)
+// Em produção, essas variáveis DEVE estar configuradas no Netlify
+const dummyUrl = 'https://placeholder.supabase.co';
+const dummyKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0';
+
+// Garantir que sempre temos valores não-vazios (usar dummy se necessário)
+const supabaseUrl = rawUrl.trim() || dummyUrl;
+const supabaseAnonKey = rawKey.trim() || dummyKey;
+
+// Avisar se usando valores dummy
+if (!rawUrl || !rawKey) {
   console.warn(
-    '⚠️ Supabase não configurado. Configure EXPO_PUBLIC_SUPABASE_URL e EXPO_PUBLIC_SUPABASE_ANON_KEY no arquivo .env.local'
+    '⚠️ Supabase não configurado. Configure EXPO_PUBLIC_SUPABASE_URL e EXPO_PUBLIC_SUPABASE_ANON_KEY'
+  );
+  console.warn(
+    '⚠️ Usando valores dummy para evitar erro. Configure as variáveis de ambiente no Netlify para produção'
   );
 }
 
+// Criar cliente Supabase (sempre com valores válidos)
+// IMPORTANTE: Configure as variáveis de ambiente no Netlify para produção
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: AsyncStorage,
+    // Usar AsyncStorage apenas se não estiver no web (web usa localStorage automaticamente)
+    storage: Platform.OS === 'web' ? undefined : AsyncStorage,
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,

@@ -126,28 +126,45 @@ export default function ContentDetailScreen() {
     try {
       // Web: usar Web Share API se disponível, senão copiar para clipboard
       if (Platform.OS === 'web') {
-        if (navigator.share) {
-          await navigator.share({
-            title: content.title,
-            text: shareText,
-          });
-        } else {
+        // Verificar se navegador suporta Web Share API
+        if (typeof navigator !== 'undefined' && navigator.share) {
+          try {
+            await navigator.share({
+              title: content.title,
+              text: shareText,
+            });
+          } catch (shareError) {
+            // Se o usuário cancelar, não fazer nada
+            if ((shareError as Error).name === 'AbortError') {
+              return;
+            }
+            throw shareError;
+          }
+        } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
           // Fallback: copiar para clipboard
           await navigator.clipboard.writeText(shareText);
           Alert.alert('Copiado!', 'Conteúdo copiado para a área de transferência');
+        } else {
+          // Último fallback: mostrar texto para copiar manualmente
+          Alert.alert('Compartilhar', shareText);
         }
       } else {
         // Mobile: usar Share API do React Native
-        await Share.share({
-          message: shareText,
-          title: content.title,
-        });
+        try {
+          await Share.share({
+            message: shareText,
+            title: content.title,
+          });
+        } catch (shareError) {
+          // Ignorar erro se o usuário cancelar o compartilhamento
+          if ((shareError as Error).message !== 'User did not share' && (shareError as Error).message !== 'User cancelled') {
+            throw shareError;
+          }
+        }
       }
     } catch (error) {
-      // Ignorar erro se o usuário cancelar o compartilhamento
-      if ((error as Error).message !== 'User did not share') {
-        console.error('Error sharing:', error);
-      }
+      // Log apenas se não for cancelamento do usuário
+      console.error('Error sharing:', error);
     }
   };
 

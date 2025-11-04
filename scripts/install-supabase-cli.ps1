@@ -187,4 +187,3 @@ if (Get-Command supabase -ErrorAction SilentlyContinue) {
     Write-Host "Feche e reabra o terminal, ou reinicie o PowerShell" -ForegroundColor Yellow
     Write-Host ""
 }
-
