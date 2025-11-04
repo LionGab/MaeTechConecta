@@ -49,12 +49,12 @@ export interface ThemeColors {
  */
 export const themes = {
   bubblegum: {
-    light: bubblegumLight,
-    dark: bubblegumDark,
+    light: bubblegumLight as ThemeColors,
+    dark: bubblegumDark as ThemeColors,
   },
   'v0-app': {
-    light: v0AppLight,
-    dark: v0AppDark,
+    light: v0AppLight as ThemeColors,
+    dark: v0AppDark as ThemeColors,
   },
 } as const;
 

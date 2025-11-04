@@ -7,23 +7,23 @@ O Netlify estava detectando chaves de API reais nos arquivos de documentação e
 ## ✅ Arquivos Corrigidos
 
 1. **APP-FUNCIONAL-CONFIGURADO.md** (linha 108)
-   - ❌ Antes: `AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg`
+   - ❌ Antes: Chave Gemini API real (removida)
    - ✅ Depois: `your-gemini-api-key-here` (com link para obter)
 
 2. **RESUMO-FINAL-CONFIGURACAO.md** (linhas 19 e 111)
-   - ❌ Antes: `AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg`
+   - ❌ Antes: Chave Gemini API real (removida)
    - ✅ Depois: `your-gemini-api-key-here` ou "Configurada (obtenha em...)" com link
 
 3. **SUPABASE-SECRETS.md** (linha 21)
-   - ❌ Antes: `AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg`
+   - ❌ Antes: Chave Gemini API real (removida)
    - ✅ Depois: `your-gemini-api-key-here` com instruções de como obter
 
 4. **SUPABASE-SECRETS.md** (linha 39)
-   - ❌ Antes: Token JWT completo do Supabase
+   - ❌ Antes: Token JWT completo do Supabase (removido)
    - ✅ Depois: Instruções de como obter no Dashboard
 
 5. **CONFIGURACAO-CHAVES-API.md** (linha 39)
-   - ❌ Antes: `AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg`
+   - ❌ Antes: Chave Gemini API real (removida)
    - ✅ Depois: `your-gemini-api-key-here` com instruções
 
 ## ✅ Próximos Passos
