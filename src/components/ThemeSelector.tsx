@@ -1,8 +1,8 @@
 /**
  * ThemeSelector Component
- * 
+ *
  * Componente para selecionar tema (Bubblegum ou v0.app)
- * 
+ *
  * @example
  * <ThemeSelector />
  */
@@ -81,12 +81,7 @@ export const ThemeSelector: React.FC = () => {
                 </View>
 
                 {isSelected && (
-                  <Icon
-                    name="check-circle"
-                    size={24}
-                    color={colors.primaryForeground}
-                    style={styles.checkIcon}
-                  />
+                  <Icon name="check-circle" size={24} color={colors.primaryForeground} style={styles.checkIcon} />
                 )}
               </View>
             </TouchableOpacity>
@@ -139,4 +134,3 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
 });
-

@@ -130,31 +130,34 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Obter cores do tema atual
   const colors = getThemeColors(themeName, isDark);
-  
+
   // Tema completo (compatibilidade com código existente)
   // Se o tema for bubblegum, usa getTheme, senão constrói do tema atual
-  const baseTheme = themeName === 'bubblegum' ? getTheme(isDark) : {
-    colors: {
-      ...colors,
-      // Adicionar escalas dinâmicas baseadas na cor primária
-      primaryScale: generateColorScale(colors.primary, isDark),
-      secondaryScale: generateColorScale(colors.secondary, isDark),
-      neutral: generateNeutralScale(isDark),
-      success: '#81C784',
-      warning: '#FFB74D',
-      error: colors.destructive,
-      info: '#64B5F6',
-      backgroundScale: {
-        primary: colors.background,
-        secondary: colors.card,
-        tertiary: isDark ? '#1A1A1A' : '#FFFFFF',
-      },
-    },
-    shadows: isDark ? shadows.dark : shadows.light,
-    typography,
-    spacing,
-    borderRadius,
-  };
+  const baseTheme =
+    themeName === 'bubblegum'
+      ? getTheme(isDark)
+      : {
+          colors: {
+            ...colors,
+            // Adicionar escalas dinâmicas baseadas na cor primária
+            primaryScale: generateColorScale(colors.primary, isDark),
+            secondaryScale: generateColorScale(colors.secondary, isDark),
+            neutral: generateNeutralScale(isDark),
+            success: '#81C784',
+            warning: '#FFB74D',
+            error: colors.destructive,
+            info: '#64B5F6',
+            backgroundScale: {
+              primary: colors.background,
+              secondary: colors.card,
+              tertiary: isDark ? '#1A1A1A' : '#FFFFFF',
+            },
+          },
+          shadows: isDark ? shadows.dark : shadows.light,
+          typography,
+          spacing,
+          borderRadius,
+        };
 
   const theme = {
     ...baseTheme,

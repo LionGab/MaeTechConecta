@@ -49,4 +49,3 @@ git branch -r
 # Ver status atualizado
 git status
 ```
-

@@ -53,7 +53,7 @@ PERPLEXITY_API_KEY=sua-chave-perplexity
 # NOSSA MATERNIDADE - Environment Variables (.env.local)
 # =============================================================================
 
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 # SUPABASE - Database & Authentication
 # -----------------------------------------------------------------------------
 EXPO_PUBLIC_SUPABASE_URL=https://bbcwitnbnosyfpfjtzkr.supabase.co
@@ -64,44 +64,44 @@ SUPABASE_SERVICE_ROLE_KEY=sua-service-role-key-aqui
 NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL=http://localhost:3000/onboarding
 NEXT_PUBLIC_PROD_SUPABASE_REDIRECT_URL=https://nossamaternidade.netlify.app/onboarding
 
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 # ANTHROPIC - Claude AI
 # -----------------------------------------------------------------------------
 EXPO_PUBLIC_CLAUDE_API_KEY=sua-chave-anthropic-aqui
 ANTHROPIC_API_KEY=sua-chave-anthropic-aqui
 
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 # OPENAI - GPT-4 / GPT-4o
 # -----------------------------------------------------------------------------
 EXPO_PUBLIC_OPENAI_API_KEY=sua-chave-openai-aqui
 OPENAI_API_KEY=sua-chave-openai-aqui
 
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 # GOOGLE AI (Gemini)
 # -----------------------------------------------------------------------------
 EXPO_PUBLIC_GEMINI_API_KEY=sua-chave-gemini-aqui
 GOOGLE_AI_API_KEY=sua-chave-gemini-aqui
 
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 # PERPLEXITY - IA de busca contextual
 # -----------------------------------------------------------------------------
 EXPO_PUBLIC_PERPLEXITY_API_KEY=sua-chave-perplexity-aqui
 PERPLEXITY_API_KEY=sua-chave-perplexity-aqui
 
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 # CONFIGURAÇÕES DE AMBIENTE
 # -----------------------------------------------------------------------------
 NODE_ENV=development
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 # FEATURE FLAGS
 # -----------------------------------------------------------------------------
 EXPO_PUBLIC_ENABLE_AI_FEATURES=true
 EXPO_PUBLIC_ENABLE_GAMIFICATION=true
 EXPO_PUBLIC_ENABLE_ANALYTICS=false
 
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 # RATE LIMITING
 # -----------------------------------------------------------------------------
 RATE_LIMIT_MAX_REQUESTS=100
@@ -141,4 +141,3 @@ Select-String -Path .gitignore -Pattern "\.env\.local"
 - **NUNCA** commite o arquivo `.env.local`
 - **SEMPRE** revogue chaves antigas ao gerar novas
 - **SEMPRE** use prefixo `EXPO_PUBLIC_*` apenas para variáveis que precisam ser acessíveis no cliente
-

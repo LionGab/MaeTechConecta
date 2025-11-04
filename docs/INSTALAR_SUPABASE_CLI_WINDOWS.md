@@ -85,6 +85,7 @@ supabase link --project-ref SEU-PROJECT-REF
 ```
 
 **Como obter o PROJECT-REF:**
+
 - Acesse: https://supabase.com/dashboard
 - Selecione seu projeto
 - Settings > General > Reference ID
@@ -123,6 +124,7 @@ supabase secrets list
 ### Erro: "supabase: command not found"
 
 **Solução:**
+
 1. Feche e reabra o terminal/PowerShell
 2. Verifique se o PATH está configurado corretamente
 3. Tente reiniciar o computador (último recurso)
@@ -130,11 +132,13 @@ supabase secrets list
 ### Erro: "Scoop/choco: command not found"
 
 **Solução:**
+
 - Instale Scoop ou Chocolatey primeiro (veja Método 1 ou 2)
 
 ### Erro: "Permission denied"
 
 **Solução:**
+
 - Se usar Chocolatey, execute PowerShell como Administrador
 - Se usar Scoop, não precisa ser Admin (usa diretório do usuário)
 
@@ -152,4 +156,3 @@ supabase secrets list
 ---
 
 **Última atualização:** 2025-01-04
-

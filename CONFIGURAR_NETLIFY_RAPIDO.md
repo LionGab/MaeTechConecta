@@ -50,4 +50,3 @@ EXPO_PUBLIC_PERPLEXITY_API_KEY=[SUA-CHAVE-PERPLEXITY-ATUALIZADA]
 ---
 
 **Status:** ⚠️ **Revogue as chaves antigas primeiro!** | ✅ Configure no Netlify
-

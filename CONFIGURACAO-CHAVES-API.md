@@ -38,7 +38,7 @@ O arquivo `.env.local` foi criado com as seguintes chaves:
    Nome: GEMINI_API_KEY
    Valor: your-gemini-api-key-here
    ```
-   
+
    **Como obter a chave:**
    - Acesse: https://aistudio.google.com/app/apikey
    - Faça login com sua conta Google

@@ -15,11 +15,13 @@ npm run git:keep-all:ps1
 ```
 
 **O que faz:**
+
 - Adiciona todas as mudanças ao staging (`git add --all`)
 - Não pede confirmação
 - Mostra status antes e depois
 
 **Com commit automático:**
+
 ```bash
 # Commit automático
 AUTO_COMMIT=true npm run git:keep-all "mensagem do commit"
@@ -39,6 +41,7 @@ npm run git:keep-ours:ps1
 ```
 
 **O que faz:**
+
 - Resolve conflitos mantendo nossas mudanças (`git checkout --ours .`)
 - Adiciona ao staging automaticamente
 - Não pede confirmação
@@ -54,6 +57,7 @@ npm run git:keep-theirs:ps1
 ```
 
 **O que faz:**
+
 - Resolve conflitos mantendo mudanças deles (`git checkout --theirs .`)
 - Adiciona ao staging automaticamente
 - Não pede confirmação
@@ -61,6 +65,7 @@ npm run git:keep-theirs:ps1
 ## 📋 Variáveis de Ambiente
 
 ### AUTO_COMMIT
+
 Habilita commit automático após keep all:
 
 ```bash
@@ -68,6 +73,7 @@ AUTO_COMMIT=true npm run git:keep-all "chore: auto commit"
 ```
 
 ### COMMIT_MESSAGE
+
 Define mensagem do commit:
 
 ```bash
@@ -75,6 +81,7 @@ COMMIT_MESSAGE="feat: nova feature" AUTO_COMMIT=true npm run git:keep-all
 ```
 
 ### AUTO_PUSH
+
 Habilita push automático após commit:
 
 ```bash
@@ -119,22 +126,24 @@ npm run review-changes:auto && AUTO_COMMIT=true npm run git:keep-all "chore: aut
 ## 🔧 Scripts Disponíveis
 
 ### Node.js (Cross-Platform)
+
 - `scripts/git-keep-all-auto.js`
 - `scripts/git-keep-ours-auto.js`
 - `scripts/git-keep-theirs-auto.js`
 
 ### PowerShell (Windows)
+
 - `scripts/git-keep-all-auto.ps1`
 - `scripts/git-keep-ours-auto.ps1`
 - `scripts/git-keep-theirs-auto.ps1`
 
 ## 📊 Comparação
 
-| Comando | Script Original | Script Auto |
-|---------|----------------|-------------|
-| `git:keep-all` | Pede confirmação | ✅ Sem confirmação |
-| `git:keep-ours` | Pede "SIM" | ✅ Sem confirmação |
-| `git:keep-theirs` | Pede "SIM" | ✅ Sem confirmação |
+| Comando           | Script Original  | Script Auto        |
+| ----------------- | ---------------- | ------------------ |
+| `git:keep-all`    | Pede confirmação | ✅ Sem confirmação |
+| `git:keep-ours`   | Pede "SIM"       | ✅ Sem confirmação |
+| `git:keep-theirs` | Pede "SIM"       | ✅ Sem confirmação |
 
 ## ⚙️ Configuração
 
@@ -168,4 +177,3 @@ AUTO_COMMIT=true npm run git:keep-all "mensagem"
 
 **Criado em:** 04/11/2025  
 **Versão:** 1.0
-

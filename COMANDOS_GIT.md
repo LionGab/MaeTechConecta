@@ -37,18 +37,21 @@ git push origin main
 ## 📋 Resumo das Mudanças
 
 ### Tema v0.app
+
 - Sistema de temas múltiplos
 - Tema v0.app criado (estrutura)
 - ThemeContext atualizado
 - Componente ThemeSelector
 
 ### Configuração de Secrets (Fase 3)
+
 - Scripts de setup (setup-secrets.ps1, setup-secrets.sh)
 - Scripts de validação (validate-secrets.sh)
 - Documentação completa (FASE3_CONFIGURACAO_SECRETS.md)
 - Scripts de instalação do Supabase CLI
 
 ### Correções
+
 - Script install-supabase-cli.ps1 (PATH comparison corrigida)
 
 ## ✅ Verificar Após Push
@@ -64,4 +67,3 @@ git status
 ---
 
 **Status:** ✅ Pronto para commit e push
-

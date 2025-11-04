@@ -89,6 +89,7 @@ git log --oneline --graph --all --decorate
 Se você está trabalhando na Fase 3 (Configuração de Secrets), pode ser útil:
 
 1. **Fazer commit das mudanças:**
+
    ```powershell
    git add .
    git commit -m "feat: adicionar scripts e documentação de configuração de secrets"
@@ -96,6 +97,7 @@ Se você está trabalhando na Fase 3 (Configuração de Secrets), pode ser útil
    ```
 
 2. **Criar uma nova branch para desenvolvimento:**
+
    ```powershell
    git checkout -b feature/fase3-secrets
    ```
@@ -104,4 +106,3 @@ Se você está trabalhando na Fase 3 (Configuração de Secrets), pode ser útil
    ```powershell
    git status
    ```
-

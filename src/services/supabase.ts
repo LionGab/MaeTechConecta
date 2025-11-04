@@ -13,7 +13,8 @@ const rawKey = SUPABASE_CONFIG.ANON_KEY || '';
 // Valores dummy válidos do Supabase (apenas para evitar erro de inicialização)
 // Em produção, essas variáveis DEVE estar configuradas no Netlify
 const dummyUrl = 'https://placeholder.supabase.co';
-const dummyKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0';
+const dummyKey =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0';
 
 // Garantir que sempre temos valores não-vazios (usar dummy se necessário)
 const supabaseUrl = rawUrl.trim() || dummyUrl;
@@ -21,12 +22,8 @@ const supabaseAnonKey = rawKey.trim() || dummyKey;
 
 // Avisar se usando valores dummy
 if (!rawUrl || !rawKey) {
-  console.warn(
-    '⚠️ Supabase não configurado. Configure EXPO_PUBLIC_SUPABASE_URL e EXPO_PUBLIC_SUPABASE_ANON_KEY'
-  );
-  console.warn(
-    '⚠️ Usando valores dummy para evitar erro. Configure as variáveis de ambiente no Netlify para produção'
-  );
+  console.warn('⚠️ Supabase não configurado. Configure EXPO_PUBLIC_SUPABASE_URL e EXPO_PUBLIC_SUPABASE_ANON_KEY');
+  console.warn('⚠️ Usando valores dummy para evitar erro. Configure as variáveis de ambiente no Netlify para produção');
 }
 
 // Criar cliente Supabase (sempre com valores válidos)

@@ -7,11 +7,13 @@
 ### 1. Sistema de Temas Múltiplos ✅
 
 **Arquivos criados:**
+
 - `src/theme/themes/v0-app.ts` - Tema v0.app (estrutura pronta)
 - `src/theme/themes/index.ts` - Sistema de gerenciamento de temas
 - `src/components/ThemeSelector.tsx` - Componente para selecionar tema
 
 **Arquivos atualizados:**
+
 - `src/contexts/ThemeContext.tsx` - Suporte a múltiplos temas
 
 ### 2. Funcionalidades
@@ -109,4 +111,3 @@ export const v0AppLight = {
 ---
 
 **Próximo passo:** Preencher cores do v0.app em `src/theme/themes/v0-app.ts`
-

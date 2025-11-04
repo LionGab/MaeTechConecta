@@ -1,8 +1,8 @@
 /**
  * Babel Configuration - Nossa Maternidade
- * 
+ *
  * Configuração do Babel para resolver path aliases e suportar Expo
- * 
+ *
  * @see https://docs.expo.dev/guides/using-babel/
  * @see https://github.com/tleunen/babel-plugin-module-resolver
  */

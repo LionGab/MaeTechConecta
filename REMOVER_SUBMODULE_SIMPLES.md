@@ -9,6 +9,7 @@ Execute este script que faz tudo automaticamente:
 ```
 
 O script:
+
 1. Remove o submodule
 2. Remove do .gitmodules
 3. Remove do .git/config
@@ -52,4 +53,3 @@ Não deve aparecer mais "LionNath-archive" no status.
 ---
 
 **Status:** ✅ Script criado | Execute: `.\scripts\remove-submodule-complete.ps1`
-

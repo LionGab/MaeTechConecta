@@ -65,6 +65,7 @@ git ls-files | Select-String -Pattern "LionNath-archive"
 Se o Netlify ainda der erro após remover:
 
 1. **Verificar se há referências no .git/config:**
+
    ```powershell
    cat .git/config | Select-String -Pattern "LionNath-archive"
    ```
@@ -76,4 +77,3 @@ Se o Netlify ainda der erro após remover:
 ---
 
 **Status:** ✅ Script criado | ⚠️ Execute o script para remover
-

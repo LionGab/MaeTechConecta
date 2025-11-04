@@ -43,19 +43,19 @@ export const v0AppLight = {
   // Backgrounds
   background: '#FFFFFF', // TODO: Substituir por cor real
   foreground: '#0A0A0A', // TODO: Substituir por cor real
-  
+
   // Cards
   card: '#FAFAFA', // TODO: Substituir por cor real
   cardForeground: '#0A0A0A',
-  
+
   // Primary (cor principal do v0.app)
   primary: '#0070F3', // TODO: Substituir por cor primária real
   primaryForeground: '#FFFFFF',
-  
+
   // Secondary
   secondary: '#F1F3F5', // TODO: Substituir por cor secundária real
   secondaryForeground: '#0A0A0A',
-  
+
   // ... preencher todas as cores
 };
 ```
@@ -65,6 +65,7 @@ export const v0AppLight = {
 Após preencher:
 
 1. **Testar tema:**
+
    ```typescript
    const { setThemeName } = useTheme();
    setThemeName('v0-app');
@@ -84,40 +85,40 @@ export const v0AppLight = {
   // Backgrounds
   background: string,
   foreground: string,
-  
+
   // Cards
   card: string,
   cardForeground: string,
-  
+
   // Popover
   popover: string,
   popoverForeground: string,
-  
+
   // Primary
   primary: string,
   primaryForeground: string,
-  
+
   // Secondary
   secondary: string,
   secondaryForeground: string,
-  
+
   // Muted
   muted: string,
   mutedForeground: string,
-  
+
   // Accent
   accent: string,
   accentForeground: string,
-  
+
   // Destructive
   destructive: string,
   destructiveForeground: string,
-  
+
   // Border
   border: string,
   input: string,
   ring: string,
-  
+
   // Sidebar
   sidebar: string,
   sidebarForeground: string,
@@ -127,7 +128,7 @@ export const v0AppLight = {
   sidebarAccentForeground: string,
   sidebarBorder: string,
   sidebarRing: string,
-  
+
   // Charts
   chart1: string,
   chart2: string,
@@ -152,4 +153,3 @@ export const v0AppLight = {
 ---
 
 **Status:** ⚠️ Aguardando preenchimento das cores do v0.app
-

@@ -157,7 +157,10 @@ export default function ContentDetailScreen() {
           });
         } catch (shareError) {
           // Ignorar erro se o usuário cancelar o compartilhamento
-          if ((shareError as Error).message !== 'User did not share' && (shareError as Error).message !== 'User cancelled') {
+          if (
+            (shareError as Error).message !== 'User did not share' &&
+            (shareError as Error).message !== 'User cancelled'
+          ) {
             throw shareError;
           }
         }

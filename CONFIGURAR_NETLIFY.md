@@ -37,18 +37,21 @@ A extensão cria variáveis com nomes diferentes. Para o Expo funcionar, adicion
 
 1. Vá em **Site settings** → **Environment variables**
 2. Adicione as variáveis com prefixo `EXPO_PUBLIC_`:
+
    ```
    EXPO_PUBLIC_SUPABASE_URL=${SUPABASE_DATABASE_URL}
    EXPO_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
    ```
 
    Ou configure manualmente:
+
    ```
    EXPO_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
    EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
    ```
 
 **Vantagens da Extensão:**
+
 - ✅ Configuração automática
 - ✅ Sincronização automática
 - ✅ Menos chance de erro
@@ -73,6 +76,7 @@ EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 **Como obter:**
+
 1. Acesse: https://supabase.com/dashboard
 2. Selecione seu projeto
 3. Vá em **Settings → API**
@@ -105,6 +109,7 @@ Após adicionar as variáveis:
 ## ✅ Verificar
 
 Após o deploy, o app deve:
+
 - ✅ Inicializar sem erros
 - ✅ Conectar ao Supabase corretamente
 - ✅ Funcionalidades funcionando
@@ -136,4 +141,3 @@ Se ainda houver erros:
 ---
 
 **Status:** ✅ Correções aplicadas | ⚠️ Configure as variáveis no Netlify
-

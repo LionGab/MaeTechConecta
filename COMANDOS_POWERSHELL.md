@@ -68,6 +68,7 @@ supabase secrets list
 ### Erro: "supabase: command not found"
 
 **Solução:**
+
 1. Feche e reabra o PowerShell
 2. Verifique se o PATH está configurado
 3. Execute: `refreshenv` (se usar Chocolatey)
@@ -76,6 +77,7 @@ supabase secrets list
 
 **Solução:**
 Instale o Scoop primeiro:
+
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
 Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
@@ -85,7 +87,8 @@ Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 
 **Causa:** Você tentou executar Markdown no PowerShell!
 
-**Solução:** 
+**Solução:**
+
 - Use apenas os comandos PowerShell (sem `- [ ]`, `---`, `**`, etc.)
 - Os arquivos `.md` são apenas documentação
 - Execute os comandos listados acima
@@ -103,4 +106,3 @@ Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 ---
 
 **Lembrete:** Use apenas comandos PowerShell. Os arquivos `.md` são documentação!
-

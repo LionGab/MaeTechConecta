@@ -3,17 +3,20 @@
 ## ✅ O Que Foi Feito
 
 ### 1. Sistema de Temas Múltiplos
+
 - ✅ Criado `src/theme/themes/` com sistema de gerenciamento
 - ✅ Tema v0.app criado (estrutura pronta)
 - ✅ ThemeContext atualizado para suportar múltiplos temas
 - ✅ Componente ThemeSelector criado
 
 ### 2. Refatorações Aplicadas
+
 - ✅ **ThemeContext.tsx** - Suporte a `themeName` e `setThemeName`
 - ✅ **Sistema de Cores** - Estrutura flexível para múltiplos temas
 - ✅ **Helpers** - Funções para gerar escalas de cores dinamicamente
 
 ### 3. Componentes Criados
+
 - ✅ `ThemeSelector.tsx` - Componente para selecionar tema
 
 ## ⚠️ O Que Falta
@@ -23,6 +26,7 @@
 O arquivo `src/theme/themes/v0-app.ts` está criado mas com cores **placeholder**.
 
 **Ação necessária:**
+
 1. Acessar: https://v0.app/chat/duplicate-of-nossa-maternidade-app-ScMbww6iS8W
 2. Extrair cores do design
 3. Preencher `src/theme/themes/v0-app.ts` com cores reais
@@ -30,6 +34,7 @@ O arquivo `src/theme/themes/v0-app.ts` está criado mas com cores **placeholder*
 ### 2. Testar Tema
 
 Após preencher as cores:
+
 - [ ] Testar tema v0.app em todas as telas
 - [ ] Verificar contraste de cores (WCAG 2.1 AA)
 - [ ] Ajustar cores se necessário
@@ -62,12 +67,14 @@ const { colors } = useTheme();
 ## 🎯 Arquivos Criados/Modificados
 
 ### Criados
+
 - `src/theme/themes/v0-app.ts`
 - `src/theme/themes/index.ts`
 - `src/components/ThemeSelector.tsx`
 - `docs/TEMA_V0_APP.md`
 
 ### Modificados
+
 - `src/contexts/ThemeContext.tsx` - Suporte a múltiplos temas
 
 ### Estrutura Final
@@ -95,4 +102,3 @@ src/
 ---
 
 **Status:** ✅ Estrutura completa | ⚠️ Cores precisam ser preenchidas manualmente
-

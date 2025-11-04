@@ -9,6 +9,7 @@ O Netlify estava falhando porque o script `prepare` chamava `husky install`, mas
 **Arquivo:** `package.json`
 
 **Mudança:**
+
 ```json
 // ❌ Antes (quebrado):
 "prepare": "husky install"
@@ -18,6 +19,7 @@ O Netlify estava falhando porque o script `prepare` chamava `husky install`, mas
 ```
 
 **Como funciona:**
+
 - Tenta instalar o Husky se estiver disponível
 - Se não estiver disponível (MODULE_NOT_FOUND), ignora silenciosamente
 - Se houver outro erro, lança o erro normalmente
@@ -26,6 +28,7 @@ O Netlify estava falhando porque o script `prepare` chamava `husky install`, mas
 ## ✅ Resultado
 
 Agora o Netlify:
+
 - ✅ Instala dependências sem erro
 - ✅ Ignora Husky se não estiver disponível (produção)
 - ✅ Instala Husky se estiver disponível (desenvolvimento)
@@ -41,6 +44,7 @@ HUSKY_SKIP_INSTALL=1
 ```
 
 E no `package.json`:
+
 ```json
 "prepare": "[ \"$HUSKY_SKIP_INSTALL\" = \"1\" ] || husky install"
 ```
@@ -66,6 +70,7 @@ Mover `husky` de `devDependencies` para `dependencies` (não recomendado, pois a
 ## ✅ Verificar
 
 Após a correção, o Netlify deve:
+
 - ✅ Instalar dependências com sucesso
 - ✅ Build passar sem erros
 - ✅ Deploy funcionar corretamente
@@ -73,4 +78,3 @@ Após a correção, o Netlify deve:
 ---
 
 **Status:** ✅ Correção aplicada | ⚠️ Faça commit e push para testar
-

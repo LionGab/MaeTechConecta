@@ -512,7 +512,7 @@
 
 Data prevista: **_/_**/**\_**
 
-Responsável: ****\*\*****\_****\*\*****
+Responsável: \***\*\*\*\*\***\_\***\*\*\*\*\***
 
 Aprovado por DPO: [ ] Sim [ ] Não
 

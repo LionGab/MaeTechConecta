@@ -25,14 +25,12 @@ export const API_CONFIG = {
 // Supabase config
 // Suporta tanto variáveis do Expo (EXPO_PUBLIC_*) quanto da extensão Netlify (SUPABASE_*)
 export const SUPABASE_CONFIG = {
-  URL: process.env.EXPO_PUBLIC_SUPABASE_URL || 
-       process.env.SUPABASE_DATABASE_URL || 
-       process.env.SUPABASE_URL || 
-       '',
-  ANON_KEY: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || 
-            process.env.SUPABASE_ANON_KEY || 
-            process.env.PUBLIC_SUPABASE_ANON_KEY || 
-            '',
+  URL: process.env.EXPO_PUBLIC_SUPABASE_URL || process.env.SUPABASE_DATABASE_URL || process.env.SUPABASE_URL || '',
+  ANON_KEY:
+    process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    process.env.PUBLIC_SUPABASE_ANON_KEY ||
+    '',
   FUNCTIONS_URL: process.env.EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL || '',
 };
 

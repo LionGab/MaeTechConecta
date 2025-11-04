@@ -112,15 +112,17 @@ export const v0AppLight = {
 Os componentes já usam o sistema de tema, mas podem precisar de ajustes:
 
 1. **Verificar componentes que usam `colors` diretamente:**
+
    ```bash
    grep -r "from '@/theme/colors'" src/
    ```
 
 2. **Atualizar para usar `useTheme()` quando possível:**
+
    ```typescript
    // Antes
    import { colors } from '@/theme/colors';
-   
+
    // Depois (quando possível)
    import { useTheme } from '@/contexts/ThemeContext';
    const { colors } = useTheme();
@@ -193,4 +195,3 @@ src/
 **Status:** ✅ Estrutura criada | ⚠️ Cores do v0.app precisam ser preenchidas
 
 **Próximo passo:** Extrair cores do design do v0.app e preencher `src/theme/themes/v0-app.ts`
-
