@@ -10,17 +10,17 @@
 
 ### Documentação Existente
 
-| Arquivo | Status | Qualidade | Observação |
-|---------|--------|-----------|------------|
-| **README.md** | ✅ | ⭐⭐⭐⭐ | Bom overview |
-| **SETUP.md** | ✅ | ⭐⭐⭐⭐ | Instruções claras |
-| **FEATURES.md** | ✅ | ⭐⭐⭐ | Lista features |
-| **CHANGELOG.md** | ✅ | ⭐⭐⭐ | Histórico de mudanças |
-| **SECURITY.md** | ✅ | ⭐⭐⭐ | Políticas de segurança |
-| **src/utils/*.ts** | ⚠️ | ⭐⭐ | JSDoc básico |
-| **src/services/*.ts** | ⚠️ | ⭐⭐ | Falta exemplos |
-| **src/hooks/*.ts** | ⚠️ | ⭐⭐ | Falta README |
-| **src/components/*.tsx** | ⚠️ | ⭐⭐ | Falta doc |
+| Arquivo                   | Status | Qualidade | Observação             |
+| ------------------------- | ------ | --------- | ---------------------- |
+| **README.md**             | ✅     | ⭐⭐⭐⭐  | Bom overview           |
+| **SETUP.md**              | ✅     | ⭐⭐⭐⭐  | Instruções claras      |
+| **FEATURES.md**           | ✅     | ⭐⭐⭐    | Lista features         |
+| **CHANGELOG.md**          | ✅     | ⭐⭐⭐    | Histórico de mudanças  |
+| **SECURITY.md**           | ✅     | ⭐⭐⭐    | Políticas de segurança |
+| **src/utils/\*.ts**       | ⚠️     | ⭐⭐      | JSDoc básico           |
+| **src/services/\*.ts**    | ⚠️     | ⭐⭐      | Falta exemplos         |
+| **src/hooks/\*.ts**       | ⚠️     | ⭐⭐      | Falta README           |
+| **src/components/\*.tsx** | ⚠️     | ⭐⭐      | Falta doc              |
 
 **Score Geral:** ⭐⭐⭐ (60/100)
 
@@ -34,20 +34,23 @@
 **Doc Status:** ✅ Completo
 
 #### Visão Geral
+
 Sistema robusto de logging com 5 níveis, salvamento automático de logs críticos e auditoria estruturada.
 
 #### Estrutura
+
 ```typescript
 enum LogLevel {
-  DEBUG = 0,      // Desenvolvimento
-  INFO = 1,       // Informações gerais
-  WARN = 2,       // Avisos
-  ERROR = 3,      // Erros
-  CRITICAL = 4,   // Erros críticos
+  DEBUG = 0, // Desenvolvimento
+  INFO = 1, // Informações gerais
+  WARN = 2, // Avisos
+  ERROR = 3, // Erros
+  CRITICAL = 4, // Erros críticos
 }
 ```
 
 #### Uso Básico
+
 ```typescript
 import { logger } from '../utils/logger';
 
@@ -63,6 +66,7 @@ logger.critical('Erro crítico detectado', { context }, error);
 ```
 
 #### Features
+
 - ✅ 5 níveis de log estruturados
 - ✅ Salvamento automático de logs críticos (AsyncStorage)
 - ✅ Limite de 50 logs críticos mantidos
@@ -73,6 +77,7 @@ logger.critical('Erro crítico detectado', { context }, error);
 #### Exemplos
 
 **Debug em Desenvolvimento:**
+
 ```typescript
 if (__DEV__) {
   logger.debug('Estado do chat', { messages: state.messages.length });
@@ -80,6 +85,7 @@ if (__DEV__) {
 ```
 
 **Erro Crítico com Salvamento:**
+
 ```typescript
 try {
   await criticalOperation();
@@ -90,6 +96,7 @@ try {
 ```
 
 #### API Completa
+
 ```typescript
 // Configuração
 logger.setUserId(userId: string): void
@@ -114,39 +121,35 @@ logger.clearCriticalLogs(): Promise<void>
 **Doc Status:** ✅ Completo
 
 #### Visão Geral
+
 Sistema inteligente de retry com backoff exponencial, detecção de erros recuperáveis e logging integrado.
 
 #### Estrutura
+
 ```typescript
 interface RetryOptions {
-  maxRetries?: number;        // Default: 3
-  initialDelay?: number;      // Default: 1000ms
-  maxDelay?: number;          // Default: 10000ms
+  maxRetries?: number; // Default: 3
+  initialDelay?: number; // Default: 1000ms
+  maxDelay?: number; // Default: 10000ms
   backoffMultiplier?: number; // Default: 2
   onRetry?: (attempt, error) => void;
 }
 ```
 
 #### Uso Básico
+
 ```typescript
 import { retryWithBackoff, smartRetry } from '../utils/retry';
 
 // Retry simples com backoff
-const result = await retryWithBackoff(
-  () => apiCall(),
-  { maxRetries: 3, initialDelay: 1000 },
-  logger
-);
+const result = await retryWithBackoff(() => apiCall(), { maxRetries: 3, initialDelay: 1000 }, logger);
 
 // Retry inteligente (só em erros recuperáveis)
-const result = await smartRetry(
-  () => apiCall(),
-  { maxRetries: 3 },
-  logger
-);
+const result = await smartRetry(() => apiCall(), { maxRetries: 3 }, logger);
 ```
 
 #### Features
+
 - ✅ Backoff exponencial (1s → 2s → 4s → 8s)
 - ✅ Detecção automática de erros recuperáveis
 - ✅ Smart retry que ignora erros não-recuperáveis
@@ -157,6 +160,7 @@ const result = await smartRetry(
 #### Exemplos
 
 **Chamada de API com Retry:**
+
 ```typescript
 const response = await retryWithBackoff(
   async () => {
@@ -169,23 +173,21 @@ const response = await retryWithBackoff(
     initialDelay: 1000,
     onRetry: (attempt, error) => {
       console.log(`Retry ${attempt} após ${error.message}`);
-    }
+    },
   },
   logger
 );
 ```
 
 **Smart Retry (Só em Erros Recuperáveis):**
+
 ```typescript
 // Só retenta se for erro de rede/timeout
-const data = await smartRetry(
-  () => fetchData(),
-  { maxRetries: 3 },
-  logger
-);
+const data = await smartRetry(() => fetchData(), { maxRetries: 3 }, logger);
 ```
 
 **Verificar Erro Recuperável:**
+
 ```typescript
 import { isRecoverableError } from '../utils/retry';
 
@@ -197,6 +199,7 @@ if (isRecoverableError(error)) {
 ```
 
 #### Backoff Curve
+
 ```
 Tentativa 0: imediato
 Tentativa 1: 1s
@@ -206,6 +209,7 @@ Tentativa 4: 8s (max)
 ```
 
 #### API Completa
+
 ```typescript
 retryWithBackoff<T>(
   fn: () => Promise<T>,
@@ -230,9 +234,11 @@ isRecoverableError(error: any): boolean
 **Doc Status:** ✅ Completo
 
 #### Visão Geral
+
 Sistema de salvamento offline com queue, auto-sync e cleanup automático de dados antigos.
 
 #### Estrutura
+
 ```typescript
 interface PendingMessage {
   id: string;
@@ -244,6 +250,7 @@ interface PendingMessage {
 ```
 
 #### Uso Básico
+
 ```typescript
 import {
   saveOfflineMessage,
@@ -269,6 +276,7 @@ const count = await syncPendingMessages(async (message) => {
 ```
 
 #### Features
+
 - ✅ Queue management de mensagens
 - ✅ Auto-sync a cada 30 segundos
 - ✅ Cleanup automático (24h)
@@ -279,6 +287,7 @@ const count = await syncPendingMessages(async (message) => {
 #### Exemplos
 
 **Chat Offline:**
+
 ```typescript
 // Tentar enviar
 try {
@@ -302,6 +311,7 @@ useEffect(() => {
 ```
 
 **Sync Manual:**
+
 ```typescript
 const handleRefresh = async () => {
   const count = await syncPendingMessages(async (message) => {
@@ -315,12 +325,14 @@ const handleRefresh = async () => {
 ```
 
 **Limpar Pendentes (Debug):**
+
 ```typescript
 // Útil para testes
 await clearPendingMessages();
 ```
 
 #### API Completa
+
 ```typescript
 saveOfflineMessage(
   message: string,
@@ -349,7 +361,7 @@ clearPendingMessages(): Promise<void>
 
 **Arquivo:** `src/utils/README.md` (criar)
 
-```markdown
+````markdown
 # Utils - Guia de Integração
 
 Este guia explica como integrar os utilitários no seu código.
@@ -367,10 +379,12 @@ logger.setUserId(userId);
 // Usar
 const result = await smartRetry(() => fetchData(), { maxRetries: 3 }, logger);
 ```
+````
 
 ## Integração Completa
 
 Ver: [INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md)
+
 ```
 
 ---
@@ -429,3 +443,4 @@ Ver: [INTEGRATION_GUIDE.md](./INTEGRATION_GUIDE.md)
 ---
 
 **Documentation Score:** ⭐⭐⭐⭐ (80/100) - Excelente para Utils | Boa Base Geral
+```

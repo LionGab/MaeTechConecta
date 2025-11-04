@@ -1,4 +1,5 @@
 # 🔍 Auditoria Completa - Club Valente
+
 ## Projeto: C:\Users\User\Desktop\Projetos\Correto
 
 **Data:** 30/10/2025
@@ -8,14 +9,14 @@
 
 ## 📊 RESUMO EXECUTIVO
 
-| Categoria | Status | Progresso | Prioridade |
-|-----------|--------|-----------|------------|
-| **Fundação** | ✅ | 90% | OK |
-| **Design System** | ✅ | 100% | OK |
-| **Telas Core** | ✅ | 80% | Melhorar |
-| **IA/Backend** | 🟡 | 60% | **CRÍTICO** |
-| **Features** | 🟡 | 40% | **CRÍTICO** |
-| **Integrações** | 🟡 | 50% | **CRÍTICO** |
+| Categoria         | Status | Progresso | Prioridade  |
+| ----------------- | ------ | --------- | ----------- |
+| **Fundação**      | ✅     | 90%       | OK          |
+| **Design System** | ✅     | 100%      | OK          |
+| **Telas Core**    | ✅     | 80%       | Melhorar    |
+| **IA/Backend**    | 🟡     | 60%       | **CRÍTICO** |
+| **Features**      | 🟡     | 40%       | **CRÍTICO** |
+| **Integrações**   | 🟡     | 50%       | **CRÍTICO** |
 
 ---
 
@@ -24,6 +25,7 @@
 ### 1. **Fundação & Setup** ✅ 90%
 
 #### ✅ Configuração Base:
+
 - [x] React Native + Expo SDK 51 configurado
 - [x] TypeScript strict mode
 - [x] Package.json com todas dependências
@@ -31,6 +33,7 @@
 - [x] ESLint + Prettier (implícito)
 
 #### ✅ Supabase:
+
 - [x] Cliente Supabase configurado (`src/services/supabase.ts`)
 - [x] Schema SQL criado (`SCHEMA_COMPLETO_FINAL.sql`)
 - [x] Edge Functions criadas (6 funções):
@@ -42,6 +45,7 @@
   - `transcribe-audio` ✅
 
 #### ⚠️ Problemas Encontrados:
+
 - [ ] Não usa Zustand (ainda useState/Context)
 - [ ] Variáveis de ambiente não validadas na inicialização
 - [ ] Sem husky/pre-commit hooks
@@ -51,6 +55,7 @@
 ### 2. **Design System** ✅ 100%
 
 #### ✅ Componentes Criados:
+
 - [x] `Button` (variantes: primary, secondary, outline, ghost, destructive)
 - [x] `Card` (variantes: elevated, outlined, flat)
 - [x] `Input` (com label, erro, helper text, ícone)
@@ -59,6 +64,7 @@
 - [x] `MessageItem` (chat)
 
 #### ✅ Tema Bubblegum:
+
 - [x] Paleta de cores completa (light + dark)
 - [x] Tipografia padronizada
 - [x] Espaçamento sistemático
@@ -66,6 +72,7 @@
 - [x] Shadows
 
 #### ⚠️ Problemas:
+
 - [ ] Tema exporta `dark` como padrão (deveria ser `light`)
 - [ ] Fontes customizadas não configuradas (Poppins, Lora)
 
@@ -74,6 +81,7 @@
 ### 3. **Telas Core** ✅ 80%
 
 #### ✅ Telas Implementadas:
+
 - [x] `OnboardingScreen` - Funcional, mas:
   - ❌ Não salva `userId` no AsyncStorage
   - ❌ Cria usuário com email temporário (deveria usar `signInAnonymously`)
@@ -99,6 +107,7 @@
   - ❌ Falta LGPD (exportar/deletar dados)
 
 #### ⚠️ Problemas:
+
 - [ ] Navegação sem type safety completo
 - [ ] Algumas telas não usam componentes do Design System
 - [ ] Loading states inconsistentes
@@ -108,6 +117,7 @@
 ### 4. **IA & Backend** 🟡 60%
 
 #### ✅ Implementado:
+
 - [x] `ai.ts` com Claude API
 - [x] Edge Function `nathia-chat` com Gemini 2.0 Flash
 - [x] Moderação 3 camadas (Edge Function)
@@ -115,6 +125,7 @@
 - [x] Análise comportamental (Edge Function)
 
 #### ❌ Problemas Críticos:
+
 - [ ] **Frontend ainda usa Claude** (deveria usar Edge Function)
 - [ ] **ChatScreen não integra com `nathia-chat`**
 - [ ] Não usa RAG/Vector Store (embeddings)
@@ -122,6 +133,7 @@
 - [ ] `ai.ts` tem código duplicado com Edge Function
 
 #### 🔄 Integração Necessária:
+
 ```typescript
 // ATUAL (src/services/ai.ts):
 chatWithAI() → Claude API direto
@@ -135,12 +147,14 @@ chatWithAI() → Edge Function nathia-chat → Gemini 2.0 Flash
 ### 5. **Features** 🟡 40%
 
 #### ✅ Implementado:
+
 - [x] Onboarding básico
 - [x] Chat com IA
 - [x] Plano diário
 - [x] Perfil básico
 
 #### ❌ Falta Completamente:
+
 - [ ] **Sistema de Hábitos** (0%)
   - Tabelas existem no schema
   - Nenhuma tela/componente implementado
@@ -155,6 +169,7 @@ chatWithAI() → Edge Function nathia-chat → Gemini 2.0 Flash
 ### 6. **Integrações** 🟡 50%
 
 #### ✅ Implementado:
+
 - [x] Supabase Auth
 - [x] AsyncStorage para local
 - [x] Notificações (básico)
@@ -163,6 +178,7 @@ chatWithAI() → Edge Function nathia-chat → Gemini 2.0 Flash
 - [x] Offline storage
 
 #### ❌ Falta:
+
 - [ ] Zustand para state management
 - [ ] Integração completa com Edge Functions
 - [ ] RAG/Vector Store (pgvector)
@@ -198,21 +214,25 @@ chatWithAI() → Edge Function nathia-chat → Gemini 2.0 Flash
 ### **FASE 1: Integrações Críticas (Esta Semana)**
 
 #### **Dia 1 (Hoje - 30/10):**
+
 - [ ] Migrar `ChatScreen` para Edge Function `nathia-chat`
 - [ ] Corrigir `OnboardingScreen` para salvar `userId`
 - [ ] Adicionar Zustand ao projeto
 - [ ] Criar store básico de usuário
 
 #### **Dia 2 (31/10):**
+
 - [ ] Migrar `ai.ts` para usar Edge Functions
 - [ ] Implementar integração RAG/Vector Store
 - [ ] Testes de integração chat
 
 #### **Dia 3 (01/11):**
+
 - [ ] Sistema de Hábitos (tela + hooks + services)
 - [ ] Integração com Supabase
 
 #### **Dia 4-5 (02-03/11):**
+
 - [ ] Feed de Conteúdos completo
 - [ ] Player de vídeo/áudio
 - [ ] Favoritos
@@ -243,6 +263,7 @@ chatWithAI() → Edge Function nathia-chat → Gemini 2.0 Flash
 ## 🎯 MÉTRICAS DE SUCESSO
 
 ### **Atuais:**
+
 - Telas funcionais: 5/5 ✅
 - Edge Functions criadas: 6/6 ✅
 - Design System: 100% ✅
@@ -250,6 +271,7 @@ chatWithAI() → Edge Function nathia-chat → Gemini 2.0 Flash
 - Features faltando: 2/4 (Hábitos, Conteúdos) ❌
 
 ### **Meta MVP:**
+
 - Telas funcionais: 5/5 ✅
 - Integrações críticas: 4/4 ⬜
 - Features core: 4/4 ⬜

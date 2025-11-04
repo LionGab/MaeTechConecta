@@ -20,6 +20,7 @@ await AsyncStorage.setItem('userId', user.id);
 ### Impacto do Bug
 
 **CRÍTICO:** Sem salvar o `userId` no AsyncStorage, o app não consegue:
+
 - ✅ Identificar o usuário após o onboarding
 - ✅ Carregar histórico de chat
 - ✅ Gerar planos diários personalizados
@@ -32,10 +33,11 @@ await AsyncStorage.setItem('userId', user.id);
 **Commit:** `2ee765f` - "Fix: Save userId in AsyncStorage on onboarding completion"
 
 **Código correto:**
+
 ```typescript
 // Salvar dados localmente
 await AsyncStorage.setItem('onboarded', 'true');
-await AsyncStorage.setItem('userId', user.id);  // ✅ ESTA LINHA FALTA
+await AsyncStorage.setItem('userId', user.id); // ✅ ESTA LINHA FALTA
 await AsyncStorage.setItem('userProfile', JSON.stringify(profile));
 ```
 
@@ -68,12 +70,14 @@ $ git show origin/cursor/make-app-functional-5e3c:src/screens/OnboardingScreen.t
 **Mudanças de código (arquivos .ts/.tsx/.js):** ❌ NENHUMA
 
 **Arquivos adicionados/modificados:**
+
 - ✅ `.env.example` (modificado - melhorado)
 - ✅ `ANALISE-COMPLETA-FALTANTES.md` (novo - 552 linhas)
 - ✅ `ANALISE-BRANCHES.md` (novo - análise de branches)
 - ✅ `SECURITY.md` (novo - 21 linhas)
 
 **Conteúdo:**
+
 - ✅ Análise técnica completa e detalhada
 - ✅ Documentação de segurança
 - ✅ Template de ambiente melhorado
@@ -92,10 +96,12 @@ $ git show origin/cursor/make-app-functional-5e3c:src/screens/OnboardingScreen.t
 **Commits além da main:** 1 commit
 
 **Mudanças de código:**
+
 - ✅ `src/screens/OnboardingScreen.tsx` - **FIX CRÍTICO DO userId**
 - ✅ `CHECKLIST-FUNCIONALIDADE.md` (novo - 157 linhas)
 
 **Conteúdo:**
+
 - ✅ **Fix crítico:** Salva userId no AsyncStorage
 - ✅ Checklist de funcionalidades
 - ❌ Não tem documentação técnica detalhada
@@ -115,10 +121,12 @@ $ git show origin/cursor/make-app-functional-5e3c:src/screens/OnboardingScreen.t
 **Commits além da main:** 1 commit
 
 **Mudanças de código:**
+
 - ❌ Nenhuma mudança em código (.ts/.tsx/.js)
 - ❌ **NÃO TEM o fix do userId** (mesma situação da branch atual)
 
 **Arquivos adicionados:**
+
 - ✅ `CHECKLIST-CONFIGURACAO.md` (194 linhas)
 - ✅ `COMO-DEIXAR-APP-FUNCIONAL.md` (348 linhas)
 - ✅ `INICIO-RAPIDO.md` (135 linhas)
@@ -127,6 +135,7 @@ $ git show origin/cursor/make-app-functional-5e3c:src/screens/OnboardingScreen.t
 - ✅ `package.json` (adiciona scripts `check` e `verify`)
 
 **Conteúdo:**
+
 - ✅ Guias práticos completos de setup
 - ✅ Script de verificação de status
 - ✅ Documentação passo-a-passo
@@ -146,6 +155,7 @@ $ git show origin/cursor/make-app-functional-5e3c:src/screens/OnboardingScreen.t
 **Commits:** Base do projeto
 
 **Conteúdo:**
+
 - ✅ Código base completo
 - ✅ Todas as telas implementadas
 - ✅ Design System completo
@@ -162,12 +172,12 @@ $ git show origin/cursor/make-app-functional-5e3c:src/screens/OnboardingScreen.t
 
 **Análise:** Todas as branches têm alguma coisa, mas nenhuma tem tudo:
 
-| Branch | Análise Técnica | Fix userId | Guias Práticos | Scripts |
-|--------|----------------|-----------|----------------|---------|
-| `cursor/analyze-...` (atual) | ✅ Sim | ❌ Não | ❌ Não | ❌ Não |
-| `make-app-functional-5a70` | ❌ Não | ✅ **SIM** | ⚠️ Parcial | ❌ Não |
-| `make-app-functional-5e3c` | ❌ Não | ❌ Não | ✅ Sim | ✅ Sim |
-| `main` | ❌ Não | ❌ Não | ❌ Não | ❌ Não |
+| Branch                       | Análise Técnica | Fix userId | Guias Práticos | Scripts |
+| ---------------------------- | --------------- | ---------- | -------------- | ------- |
+| `cursor/analyze-...` (atual) | ✅ Sim          | ❌ Não     | ❌ Não         | ❌ Não  |
+| `make-app-functional-5a70`   | ❌ Não          | ✅ **SIM** | ⚠️ Parcial     | ❌ Não  |
+| `make-app-functional-5e3c`   | ❌ Não          | ❌ Não     | ✅ Sim         | ✅ Sim  |
+| `main`                       | ❌ Não          | ❌ Não     | ❌ Não         | ❌ Não  |
 
 ### 2. O Fix do userId Está Isolado
 
@@ -177,7 +187,8 @@ $ git show origin/cursor/make-app-functional-5e3c:src/screens/OnboardingScreen.t
 
 ### 3. Branches Funcionais Não São Baseadas umas nas Outras
 
-**Descoberta:** 
+**Descoberta:**
+
 - `make-app-functional-5e3c` é baseada na `main`, não na `5a70`
 - Por isso não herdou o fix do userId
 - Todas têm o mesmo merge-base (`8bdc7f7`)
@@ -223,6 +234,7 @@ git commit -m "feat: Integrate critical fixes and practical guides - Complete fu
 ```
 
 **Resultado:** Uma branch completa com:
+
 - ✅ Análise técnica completa (da atual)
 - ✅ Fix crítico do userId (da 5a70)
 - ✅ Guias práticos completos (da 5e3c)
@@ -381,14 +393,14 @@ cb0f963 Initial plan (refactor-duplicated-code)
 
 ## 📊 Métricas Finais
 
-| Métrica | Branch Atual | Branch 5a70 | Branch 5e3c | Ideal |
-|---------|--------------|-------------|-------------|-------|
-| **Análise Técnica** | ✅ 100% | ❌ 0% | ❌ 0% | ✅ Sim |
-| **Fix Crítico** | ❌ Não | ✅ Sim | ❌ Não | ✅ Sim |
-| **Guias Práticos** | ❌ Não | ⚠️ Parcial | ✅ Sim | ✅ Sim |
-| **Scripts Úteis** | ❌ Não | ❌ Não | ✅ Sim | ✅ Sim |
-| **Código Funcional** | ⚠️ Tem bug | ✅ Funcional | ⚠️ Tem bug | ✅ Funcional |
-| **Completude** | 40% | 30% | 50% | **100%** |
+| Métrica              | Branch Atual | Branch 5a70  | Branch 5e3c | Ideal        |
+| -------------------- | ------------ | ------------ | ----------- | ------------ |
+| **Análise Técnica**  | ✅ 100%      | ❌ 0%        | ❌ 0%       | ✅ Sim       |
+| **Fix Crítico**      | ❌ Não       | ✅ Sim       | ❌ Não      | ✅ Sim       |
+| **Guias Práticos**   | ❌ Não       | ⚠️ Parcial   | ✅ Sim      | ✅ Sim       |
+| **Scripts Úteis**    | ❌ Não       | ❌ Não       | ✅ Sim      | ✅ Sim       |
+| **Código Funcional** | ⚠️ Tem bug   | ✅ Funcional | ⚠️ Tem bug  | ✅ Funcional |
+| **Completude**       | 40%          | 30%          | 50%         | **100%**     |
 
 ---
 

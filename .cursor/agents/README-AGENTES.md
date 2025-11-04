@@ -7,31 +7,37 @@
 ## 📋 Agentes Disponíveis
 
 ### 1. 🔍 Code Reviewer
+
 **Arquivo:** `.cursor/agents/code-reviewer.md`
 
 Revisão automatizada multi-stage de código com análise completa.
 
 **Uso:**
+
 ```
 Revisar código: src/components/Button.tsx
 ```
 
 ### 2. 🎨 UI/UX Designer
+
 **Arquivo:** `.cursor/agents/ui-ux-designer.md`
 
 Criação e melhoria de interfaces acolhedoras.
 
 **Uso:**
+
 ```
 Criar tela de perfil com design system Bubblegum
 ```
 
 ### 3. 🧪 Test Generator
+
 **Arquivo:** `.cursor/agents/test-generator.md`
 
 Geração automática de testes unitários e de integração.
 
 **Uso:**
+
 ```
 Gerar testes para src/components/Button.tsx
 ```
@@ -55,6 +61,7 @@ Gerar testes para src/components/Button.tsx
 ### Método 3: Via Comandos Diretos
 
 No Composer, digite diretamente:
+
 ```
 Revisar código: src/components/Button.tsx
 Criar componente: Card com variantes
@@ -77,20 +84,25 @@ Gerar testes: src/hooks/useChatOptimized.ts
 # Nome do Agente
 
 ## Identidade
+
 Você é um [papel] para o projeto Nossa Maternidade.
 
 ## Pipeline
 
 ### STAGE 1: [Nome]
+
 [Descrição da etapa]
 
 ### STAGE 2: [Nome]
+
 [Descrição da etapa]
 
 ## Formato de Resposta
+
 [JSON ou formato esperado]
 
 ## Comandos
+
 - Comando 1: [descrição]
 - Comando 2: [descrição]
 ```
@@ -100,21 +112,25 @@ Você é um [papel] para o projeto Nossa Maternidade.
 ## 🎯 Melhores Práticas
 
 ### 1. Instruções Claras
+
 - Defina identidade do agente
 - Especifique pipeline de execução
 - Inclua exemplos práticos
 
 ### 2. Formato Consistente
+
 - Use JSON estruturado
 - Inclua severidade/prioridade
 - Sugira correções com código
 
 ### 3. Contexto Adequado
+
 - Referencie `.cursorrules`
 - Use padrões do projeto
 - Considere arquitetura existente
 
 ### 4. Iteração
+
 - Teste comandos
 - Refine instruções
 - Melhore baseado em resultados

@@ -29,10 +29,10 @@ serve(async (req) => {
     const { userId } = await req.json();
 
     if (!userId) {
-      return new Response(
-        JSON.stringify({ error: 'userId is required' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'userId is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -50,10 +50,10 @@ serve(async (req) => {
     if (messagesError) throw messagesError;
 
     if (!messages || messages.length === 0) {
-      return new Response(
-        JSON.stringify({ error: 'No conversation history found' }),
-        { status: 404, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'No conversation history found' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Buscar perfil do usuário
@@ -64,9 +64,10 @@ serve(async (req) => {
       .single();
 
     // Preparar histórico para análise
-    const conversationHistory = messages.reverse().map(m =>
-      `User: ${m.message}\nNathIA: ${m.response}`
-    ).join('\n\n');
+    const conversationHistory = messages
+      .reverse()
+      .map((m) => `User: ${m.message}\nNathIA: ${m.response}`)
+      .join('\n\n');
 
     // Análise com Gemini
     const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
@@ -101,8 +102,8 @@ ${conversationHistory}`;
           generationConfig: {
             temperature: 0.3,
             maxOutputTokens: 1024,
-          }
-        })
+          },
+        }),
       }
     );
 
@@ -121,26 +122,22 @@ ${conversationHistory}`;
       .from('user_profiles')
       .update({
         behavior_analysis: analysis,
-        risk_level: analysis.riskLevel
+        risk_level: analysis.riskLevel,
       })
       .eq('id', userId);
 
-    return new Response(
-      JSON.stringify(analysis),
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        }
-      }
-    );
-
+    return new Response(JSON.stringify(analysis), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
   } catch (error) {
     console.error('Error:', error);
-    return new Response(
-      JSON.stringify({ error: error.message || 'Internal server error' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ error: error.message || 'Internal server error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 });

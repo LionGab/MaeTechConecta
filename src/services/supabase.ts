@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SUPABASE_CONFIG } from '../config/api';
+import { SUPABASE_CONFIG } from '@/config/api';
 
 // ⚠️ CONFIGURE SUAS CREDENCIAIS DO SUPABASE
 // Substitua pelos valores do seu projeto Supabase no arquivo .env.local
@@ -10,7 +10,9 @@ const supabaseAnonKey = SUPABASE_CONFIG.ANON_KEY || '';
 
 // Validação básica para evitar erros silenciosos
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('⚠️ Supabase não configurado. Configure EXPO_PUBLIC_SUPABASE_URL e EXPO_PUBLIC_SUPABASE_ANON_KEY no arquivo .env.local');
+  console.warn(
+    '⚠️ Supabase não configurado. Configure EXPO_PUBLIC_SUPABASE_URL e EXPO_PUBLIC_SUPABASE_ANON_KEY no arquivo .env.local'
+  );
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
@@ -66,10 +68,7 @@ export const createTemporaryUser = async () => {
 
 // Função para salvar perfil
 export const saveUserProfile = async (profile: Partial<UserProfile>) => {
-  const { data, error } = await supabase
-    .from('user_profiles')
-    .upsert(profile)
-    .select();
+  const { data, error } = await supabase.from('user_profiles').upsert(profile).select();
 
   if (error) throw error;
   return data;
@@ -77,10 +76,7 @@ export const saveUserProfile = async (profile: Partial<UserProfile>) => {
 
 // Função para salvar mensagem de chat
 export const saveChatMessage = async (message: Partial<ChatMessage>) => {
-  const { data, error } = await supabase
-    .from('chat_messages')
-    .insert(message)
-    .select();
+  const { data, error } = await supabase.from('chat_messages').insert(message).select();
 
   if (error) throw error;
   return data;
@@ -101,10 +97,7 @@ export const getChatHistory = async (userId: string, limit: number = 50) => {
 
 // Função para salvar plano diário
 export const saveDailyPlan = async (plan: Partial<DailyPlan>) => {
-  const { data, error } = await supabase
-    .from('daily_plans')
-    .upsert(plan)
-    .select();
+  const { data, error } = await supabase.from('daily_plans').upsert(plan).select();
 
   if (error) throw error;
   return data;

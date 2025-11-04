@@ -1,22 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import {
-  Alert,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Alert, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Button } from '../components/Button';
-import { Input } from '../components/Input';
-import { Logo } from '../components/Logo';
-import { supabase, UserProfile } from '../services/supabase';
-import { borderRadius, colors, shadows, spacing, typography } from '../theme/colors';
+import { Button } from '@/components/Button';
+import { Input } from '@/components/Input';
+import { Logo } from '@/components/Logo';
+import { supabase, UserProfile } from '@/services/supabase';
+import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
 
 interface OnboardingScreenProps {
   onComplete?: () => void;
@@ -46,7 +37,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete, route }
 
   const togglePreference = (pref: string) => {
     if (preferences.includes(pref)) {
-      setPreferences(preferences.filter(p => p !== pref));
+      setPreferences(preferences.filter((p) => p !== pref));
     } else {
       setPreferences([...preferences, pref]);
     }
@@ -77,7 +68,9 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete, route }
     setLoading(true);
     try {
       // Criar perfil no Supabase
-      const { data: { user } } = await supabase.auth.signUp({
+      const {
+        data: { user },
+      } = await supabase.auth.signUp({
         email: `${Date.now()}@temp.com`, // Email temporário
         password: `${Date.now()}-${Math.random()}`, // Senha temporária
       });
@@ -96,9 +89,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete, route }
           last_interaction_date: new Date().toISOString(),
         };
 
-        const { error } = await supabase
-          .from('user_profiles')
-          .insert(profile);
+        const { error } = await supabase.from('user_profiles').insert(profile);
 
         if (error) throw error;
 
@@ -131,9 +122,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete, route }
             <Icon name="mother-heart" size={32} color={colors.primary} />
             <Text style={styles.title}>Bem-vinda ao Nossa Maternidade!</Text>
           </View>
-          <Text style={styles.subtitle}>
-            Vou te conhecer melhor para poder te ajudar da melhor forma
-          </Text>
+          <Text style={styles.subtitle}>Vou te conhecer melhor para poder te ajudar da melhor forma</Text>
 
           {step === 1 && (
             <View style={styles.stepContainer}>
@@ -149,148 +138,141 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete, route }
             </View>
           )}
 
-        {step === 2 && (
-          <View style={styles.stepContainer}>
-            <Text style={styles.stepTitle}>Como você se identifica?</Text>
-            <TouchableOpacity
-              style={[styles.option, type === 'gestante' && styles.optionSelected]}
-              onPress={() => setType('gestante')}
-              accessible={true}
-              accessibilityRole="button"
-              accessibilityLabel="Gestante"
-              accessibilityState={{ selected: type === 'gestante' }}
-            >
-              <Icon
-                name="baby-carriage"
-                size={32}
-                color={type === 'gestante' ? colors.primary : colors.mutedForeground}
-              />
-              <Text style={styles.optionText}>Gestante</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.option, type === 'mae' && styles.optionSelected]}
-              onPress={() => setType('mae')}
-              accessible={true}
-              accessibilityRole="button"
-              accessibilityLabel="Mãe"
-              accessibilityState={{ selected: type === 'mae' }}
-            >
-              <Icon
-                name="mother-nurse"
-                size={32}
-                color={type === 'mae' ? colors.primary : colors.mutedForeground}
-              />
-              <Text style={styles.optionText}>Mãe</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.option, type === 'tentante' && styles.optionSelected]}
-              onPress={() => setType('tentante')}
-              accessible={true}
-              accessibilityRole="button"
-              accessibilityLabel="Tentante"
-              accessibilityState={{ selected: type === 'tentante' }}
-            >
-              <Icon
-                name="heart-multiple"
-                size={32}
-                color={type === 'tentante' ? colors.primary : colors.mutedForeground}
-              />
-              <Text style={styles.optionText}>Tentante</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {step === 3 && type === 'gestante' && (
-          <View style={styles.stepContainer}>
-            <Text style={styles.stepTitle}>Em que semana de gestação você está?</Text>
-            <Input
-              label="Semana de gestação"
-              value={pregnancyWeek}
-              onChangeText={setPregnancyWeek}
-              placeholder="Ex: 28"
-              keyboardType="number-pad"
-              icon="calendar-heart"
-              helperText={`Você está na semana ${pregnancyWeek || '0'}`}
-              required
-            />
-          </View>
-        )}
-
-        {step === 3 && (type === 'mae' || type === 'tentante') && (
-          <View style={styles.stepContainer}>
-            <Text style={styles.stepTitle}>Qual é o nome do seu bebê?</Text>
-            <Input
-              label="Nome do bebê"
-              value={babyName}
-              onChangeText={setBabyName}
-              placeholder="Ou deixe em branco se preferir"
-              icon="baby-face"
-            />
-          </View>
-        )}
-
-        {step === 4 && (
-          <View style={styles.stepContainer}>
-            <Text style={styles.stepTitle}>Quais são seus principais interesses?</Text>
-            <Text style={styles.subtitle}>Selecione os que mais te interessam:</Text>
-            {preferencesOptions.map(pref => (
+          {step === 2 && (
+            <View style={styles.stepContainer}>
+              <Text style={styles.stepTitle}>Como você se identifica?</Text>
               <TouchableOpacity
-                key={pref.label}
-                style={[
-                  styles.preferenceOption,
-                  preferences.includes(pref.label) && styles.preferenceSelected,
-                ]}
-                onPress={() => togglePreference(pref.label)}
+                style={[styles.option, type === 'gestante' && styles.optionSelected]}
+                onPress={() => setType('gestante')}
                 accessible={true}
-                accessibilityRole="checkbox"
-                accessibilityLabel={pref.label}
-                accessibilityState={{ checked: preferences.includes(pref.label) }}
+                accessibilityRole="button"
+                accessibilityLabel="Gestante"
+                accessibilityState={{ selected: type === 'gestante' }}
               >
                 <Icon
-                  name={pref.icon}
-                  size={24}
-                  color={preferences.includes(pref.label) ? colors.primary : colors.mutedForeground}
-                  style={styles.preferenceIcon}
+                  name="baby-carriage"
+                  size={32}
+                  color={type === 'gestante' ? colors.primary : colors.mutedForeground}
                 />
-                <Text style={styles.preferenceText}>{pref.label}</Text>
+                <Text style={styles.optionText}>Gestante</Text>
               </TouchableOpacity>
-            ))}
-          </View>
-        )}
+              <TouchableOpacity
+                style={[styles.option, type === 'mae' && styles.optionSelected]}
+                onPress={() => setType('mae')}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="Mãe"
+                accessibilityState={{ selected: type === 'mae' }}
+              >
+                <Icon name="mother-nurse" size={32} color={type === 'mae' ? colors.primary : colors.mutedForeground} />
+                <Text style={styles.optionText}>Mãe</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.option, type === 'tentante' && styles.optionSelected]}
+                onPress={() => setType('tentante')}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="Tentante"
+                accessibilityState={{ selected: type === 'tentante' }}
+              >
+                <Icon
+                  name="heart-multiple"
+                  size={32}
+                  color={type === 'tentante' ? colors.primary : colors.mutedForeground}
+                />
+                <Text style={styles.optionText}>Tentante</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
-        <Button
-          variant="primary"
-          size="lg"
-          fullWidth
-          onPress={handleNext}
-          loading={loading}
-          disabled={loading}
-          icon={step < 4 ? "arrow-right" : "check-circle"}
-          iconPosition="right"
-          accessibilityLabel={step < 4 ? 'Ir para próximo passo' : 'Começar a usar o app'}
-          accessibilityHint={step < 4 ? `Avançar para o passo ${step + 1} de 4` : 'Finalizar cadastro e começar'}
-        >
-          {step < 4 ? 'Próximo' : 'Começar agora!'}
-        </Button>
+          {step === 3 && type === 'gestante' && (
+            <View style={styles.stepContainer}>
+              <Text style={styles.stepTitle}>Em que semana de gestação você está?</Text>
+              <Input
+                label="Semana de gestação"
+                value={pregnancyWeek}
+                onChangeText={setPregnancyWeek}
+                placeholder="Ex: 28"
+                keyboardType="number-pad"
+                icon="calendar-heart"
+                helperText={`Você está na semana ${pregnancyWeek || '0'}`}
+                required
+              />
+            </View>
+          )}
 
-        {step > 1 && (
+          {step === 3 && (type === 'mae' || type === 'tentante') && (
+            <View style={styles.stepContainer}>
+              <Text style={styles.stepTitle}>Qual é o nome do seu bebê?</Text>
+              <Input
+                label="Nome do bebê"
+                value={babyName}
+                onChangeText={setBabyName}
+                placeholder="Ou deixe em branco se preferir"
+                icon="baby-face"
+              />
+            </View>
+          )}
+
+          {step === 4 && (
+            <View style={styles.stepContainer}>
+              <Text style={styles.stepTitle}>Quais são seus principais interesses?</Text>
+              <Text style={styles.subtitle}>Selecione os que mais te interessam:</Text>
+              {preferencesOptions.map((pref) => (
+                <TouchableOpacity
+                  key={pref.label}
+                  style={[styles.preferenceOption, preferences.includes(pref.label) && styles.preferenceSelected]}
+                  onPress={() => togglePreference(pref.label)}
+                  accessible={true}
+                  accessibilityRole="checkbox"
+                  accessibilityLabel={pref.label}
+                  accessibilityState={{ checked: preferences.includes(pref.label) }}
+                >
+                  <Icon
+                    name={pref.icon}
+                    size={24}
+                    color={preferences.includes(pref.label) ? colors.primary : colors.mutedForeground}
+                    style={styles.preferenceIcon}
+                  />
+                  <Text style={styles.preferenceText}>{pref.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+
           <Button
-            variant="ghost"
-            size="md"
+            variant="primary"
+            size="lg"
             fullWidth
-            onPress={() => setStep(Math.max(1, step - 1))}
-            icon="arrow-left"
-            accessibilityLabel="Voltar para passo anterior"
-            style={styles.backButton}
+            onPress={handleNext}
+            loading={loading}
+            disabled={loading}
+            icon={step < 4 ? 'arrow-right' : 'check-circle'}
+            iconPosition="right"
+            accessibilityLabel={step < 4 ? 'Ir para próximo passo' : 'Começar a usar o app'}
+            accessibilityHint={step < 4 ? `Avançar para o passo ${step + 1} de 4` : 'Finalizar cadastro e começar'}
           >
-            Voltar
+            {step < 4 ? 'Próximo' : 'Começar agora!'}
           </Button>
-        )}
-      </View>
-    </ScrollView>
+
+          {step > 1 && (
+            <Button
+              variant="ghost"
+              size="md"
+              fullWidth
+              onPress={() => setStep(Math.max(1, step - 1))}
+              icon="arrow-left"
+              accessibilityLabel="Voltar para passo anterior"
+              style={styles.backButton}
+            >
+              Voltar
+            </Button>
+          )}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   safeArea: {

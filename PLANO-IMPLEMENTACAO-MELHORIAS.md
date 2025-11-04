@@ -11,6 +11,7 @@
 ### 1. Remover API Keys do Client 🚨 URGENTE
 
 **Problema:**
+
 ```typescript
 // ❌ src/services/ai.ts
 export const chatWithAI = async (...) => {
@@ -23,6 +24,7 @@ export const chatWithAI = async (...) => {
 **Solução Completa:**
 
 **Passo 1:** Deletar funções perigosas
+
 ```bash
 # Backup primeiro
 cp src/services/ai.ts src/services/ai.ts.backup
@@ -32,6 +34,7 @@ cp src/services/ai.ts src/services/ai.ts.backup
 ```
 
 **Passo 2:** Manter apenas chatWithNATIA
+
 ```typescript
 // src/services/ai.ts - VERSÃO SEGURA
 
@@ -47,11 +50,7 @@ export interface ChatContext {
 /**
  * Chat com NAT-IA via Edge Function (ÚNICO método seguro)
  */
-export const chatWithNATIA = async (
-  message: string,
-  context: ChatContext,
-  userId: string
-): Promise<string> => {
+export const chatWithNATIA = async (message: string, context: ChatContext, userId: string): Promise<string> => {
   try {
     const { data, error } = await supabase.functions.invoke('nathia-chat', {
       body: { userId, message, context },
@@ -68,17 +67,27 @@ export const chatWithNATIA = async (
 
 export const detectUrgency = (message: string): boolean => {
   const urgencyKeywords = [
-    'sangrando', 'sangramento', 'sangue',
-    'dor forte', 'muita dor', 'dor insuportável',
-    'desmaio', 'desmaiei', 'febre alta', 'convulsão',
-    'não me sinto bem', 'emergência', 'urgente',
+    'sangrando',
+    'sangramento',
+    'sangue',
+    'dor forte',
+    'muita dor',
+    'dor insuportável',
+    'desmaio',
+    'desmaiei',
+    'febre alta',
+    'convulsão',
+    'não me sinto bem',
+    'emergência',
+    'urgente',
   ];
   const lowerMessage = message.toLowerCase();
-  return urgencyKeywords.some(keyword => lowerMessage.includes(keyword));
+  return urgencyKeywords.some((keyword) => lowerMessage.includes(keyword));
 };
 ```
 
 **Passo 3:** Criar Edge Function para plano diário
+
 ```bash
 cd supabase/functions
 supabase functions new daily-plan-generator
@@ -102,10 +111,7 @@ serve(async (req) => {
   }
 
   try {
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_ANON_KEY')!
-    );
+    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_ANON_KEY')!);
 
     const { context } = await req.json();
 
@@ -133,8 +139,8 @@ RECEITA:
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 500 }
-        })
+          generationConfig: { temperature: 0.7, maxOutputTokens: 500 },
+        }),
       }
     );
 
@@ -142,28 +148,30 @@ RECEITA:
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
     // Parse do texto
-    const priorities = text.match(/PRIORIDADES:(.*?)(?=DICA DO DIA:|$)/s)?.[1]
-      ?.split('\n')
-      .filter(Boolean)
-      .map(p => p.trim()) || [];
+    const priorities =
+      text
+        .match(/PRIORIDADES:(.*?)(?=DICA DO DIA:|$)/s)?.[1]
+        ?.split('\n')
+        .filter(Boolean)
+        .map((p) => p.trim()) || [];
 
     const tip = text.match(/DICA DO DIA:(.*?)(?=RECEITA:|$)/s)?.[1]?.trim() || '';
     const recipe = text.match(/RECEITA:(.*?)$/s)?.[1]?.trim() || '';
 
-    return new Response(
-      JSON.stringify({ priorities, tip, recipe }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ priorities, tip, recipe }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   } catch (error: any) {
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
 });
 ```
 
 **Passo 4:** Atualizar HomeScreen para usar Edge Function
+
 ```typescript
 // src/screens/HomeScreen.tsx
 
@@ -175,7 +183,7 @@ const generateTodaysPlan = async () => {
 
     // ✅ Agora chama Edge Function
     const { data, error } = await supabase.functions.invoke('daily-plan-generator', {
-      body: { context }
+      body: { context },
     });
 
     if (error) throw error;
@@ -190,7 +198,7 @@ const generateTodaysPlan = async () => {
       await saveDailyPlan({
         user_id: userId,
         date: today,
-        ...data
+        ...data,
       });
     }
   } catch (error) {
@@ -203,6 +211,7 @@ const generateTodaysPlan = async () => {
 ```
 
 **Passo 5:** Deploy
+
 ```bash
 supabase functions deploy daily-plan-generator
 ```
@@ -214,36 +223,33 @@ supabase functions deploy daily-plan-generator
 ### 2. Setup de Testes Básicos 🧪
 
 **Passo 1: Instalar dependências**
+
 ```bash
 npm install --save-dev jest @testing-library/react-native @testing-library/jest-native @testing-library/react-hooks
 ```
 
 **Passo 2: Configurar Jest**
+
 ```javascript
 // jest.config.js
 module.exports = {
   preset: 'react-native',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|expo|@expo|@supabase)/)'
-  ],
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/index.ts'
-  ],
+  transformIgnorePatterns: ['node_modules/(?!(react-native|@react-native|expo|@expo|@supabase)/)'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/index.ts'],
   coverageThreshold: {
     global: {
       statements: 70,
       branches: 70,
       functions: 70,
-      lines: 70
-    }
-  }
+      lines: 70,
+    },
+  },
 };
 ```
 
 **Passo 3: Setup file**
+
 ```javascript
 // jest.setup.js
 import '@testing-library/jest-native/extend-expect';
@@ -257,20 +263,20 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 jest.mock('./src/services/supabase', () => ({
   supabase: {
     functions: {
-      invoke: jest.fn()
+      invoke: jest.fn(),
     },
     auth: {
       getSession: jest.fn(),
-      signUp: jest.fn()
+      signUp: jest.fn(),
     },
     from: jest.fn(() => ({
       select: jest.fn().mockReturnThis(),
       insert: jest.fn().mockReturnThis(),
       upsert: jest.fn().mockReturnThis(),
       eq: jest.fn().mockReturnThis(),
-      single: jest.fn()
-    }))
-  }
+      single: jest.fn(),
+    })),
+  },
 }));
 ```
 
@@ -366,6 +372,7 @@ describe('useChatOptimized', () => {
 ```
 
 **Passo 5: Atualizar package.json**
+
 ```json
 {
   "scripts": {
@@ -377,6 +384,7 @@ describe('useChatOptimized', () => {
 ```
 
 **Passo 6: Executar testes**
+
 ```bash
 npm test
 npm run test:coverage
@@ -499,6 +507,7 @@ export function useAuth() {
 ```
 
 **Integrar no App.tsx:**
+
 ```typescript
 // App.tsx
 import { AuthProvider } from './src/contexts/AuthContext';
@@ -517,6 +526,7 @@ export default function App() {
 ```
 
 **Usar nas screens:**
+
 ```typescript
 // src/screens/ProfileScreen.tsx
 import { useAuth } from '../contexts/AuthContext';
@@ -658,6 +668,7 @@ export function useUserProfile() {
 ```
 
 **Integrar no App.tsx:**
+
 ```typescript
 // App.tsx
 import { UserProfileProvider } from './src/contexts/UserProfileContext';
@@ -678,6 +689,7 @@ export default function App() {
 ```
 
 **Usar nas screens:**
+
 ```typescript
 // src/screens/HomeScreen.tsx
 import { useUserProfile } from '../contexts/UserProfileContext';
@@ -747,11 +759,7 @@ export function useUserProfileQuery(userId: string) {
   return useQuery({
     queryKey: ['profile', userId],
     queryFn: async () => {
-      const { data } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
+      const { data } = await supabase.from('user_profiles').select('*').eq('id', userId).single();
       return data;
     },
     enabled: !!userId,
@@ -843,7 +851,7 @@ useEffect(() => {
 const handleSendMessage = () => {
   Analytics.logEvent('message_sent', {
     message_length: inputText.length,
-    is_urgent: detectUrgency(inputText)
+    is_urgent: detectUrgency(inputText),
   });
   sendMessage(inputText);
 };
@@ -853,17 +861,17 @@ const handleSendMessage = () => {
 
 ## ⏱️ CRONOGRAMA SUGERIDO
 
-| Semana | Tarefa | Prioridade | Estimativa |
-|--------|--------|-----------|------------|
-| **1** | Remover API keys do client | 🚨 Crítico | 2 dias |
-| **1** | Setup de testes básicos | 🚨 Crítico | 2 dias |
-| **2** | AuthContext | ⚠️ Alta | 2 dias |
-| **2** | UserProfileContext | ⚠️ Alta | 2 dias |
-| **3** | React Query | ⚠️ Alta | 3 dias |
-| **3** | Melhorar TypeScript | ⚠️ Alta | 2 dias |
-| **4** | Sentry | ℹ️ Média | 1 dia |
-| **4** | Firebase Analytics | ℹ️ Média | 1 dia |
-| **4** | Error Boundaries | ℹ️ Média | 1 dia |
+| Semana | Tarefa                     | Prioridade | Estimativa |
+| ------ | -------------------------- | ---------- | ---------- |
+| **1**  | Remover API keys do client | 🚨 Crítico | 2 dias     |
+| **1**  | Setup de testes básicos    | 🚨 Crítico | 2 dias     |
+| **2**  | AuthContext                | ⚠️ Alta    | 2 dias     |
+| **2**  | UserProfileContext         | ⚠️ Alta    | 2 dias     |
+| **3**  | React Query                | ⚠️ Alta    | 3 dias     |
+| **3**  | Melhorar TypeScript        | ⚠️ Alta    | 2 dias     |
+| **4**  | Sentry                     | ℹ️ Média   | 1 dia      |
+| **4**  | Firebase Analytics         | ℹ️ Média   | 1 dia      |
+| **4**  | Error Boundaries           | ℹ️ Média   | 1 dia      |
 
 ---
 

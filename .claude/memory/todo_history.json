@@ -113,11 +113,7 @@
       "sprint": "Sprint 2",
       "estimated_hours": 16,
       "dependencies": ["T005"],
-      "subtabs": [
-        "Perguntas",
-        "Depoimentos",
-        "Grupos"
-      ]
+      "subtabs": ["Perguntas", "Depoimentos", "Grupos"]
     },
     {
       "id": "T008",
@@ -128,12 +124,7 @@
       "sprint": "Sprint 3",
       "estimated_hours": 12,
       "dependencies": [],
-      "content_types": [
-        "Vídeos",
-        "Artigos",
-        "Áudios",
-        "Lives exclusivas"
-      ]
+      "content_types": ["Vídeos", "Artigos", "Áudios", "Lives exclusivas"]
     },
     {
       "id": "T009",
@@ -144,11 +135,7 @@
       "sprint": "Sprint 3",
       "estimated_hours": 14,
       "dependencies": ["T002", "T003"],
-      "aspects": [
-        "Tom de voz adaptativo",
-        "Tipo de conteúdo personalizado",
-        "Horários de notificação inteligentes"
-      ]
+      "aspects": ["Tom de voz adaptativo", "Tipo de conteúdo personalizado", "Horários de notificação inteligentes"]
     },
     {
       "id": "T010",

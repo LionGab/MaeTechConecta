@@ -216,7 +216,6 @@ Adicione estas configurações ao `settings.json` do Cursor:
 ### OpenAI/Anthropic (Opcional)
 
 1. **Abrir Configurações:**
-
    - `Ctrl + Shift + P`
    - Digite: "Cursor: Settings"
 
@@ -287,7 +286,6 @@ Todas as extensões do VS Code funcionam no Cursor:
    ```
 
 2. **Verificar modelo:**
-
    - Settings → Cursor → Model
    - Selecionar GPT-4 ou Claude
 

@@ -1,4 +1,5 @@
 # 🚀 CLUB VALENTE - Comece Aqui!
+
 ## Sistema Multi-Agent com Cursor 2.0
 
 **Data de início:** 30/10/2025 (HOJE!)
@@ -85,31 +86,31 @@ club-valente/
 
 ## 🎯 Agentes do Sistema
 
-| Agente | Workspace | Responsabilidade |
-|--------|-----------|------------------|
-| **Agent 1** | `agent-frontend/` | React Native + Expo + UI |
-| **Agent 2** | `agent-backend/` | Supabase + Edge Functions |
-| **Agent 3** | `agent-ia/` | Gemini 2.0 Flash + NAT-IA |
-| **Agent 4** | `agent-design/` | Design System + Components |
-| **Agent 5** | `agent-qa/` | Testes E2E + Unit Tests |
+| Agente      | Workspace         | Responsabilidade             |
+| ----------- | ----------------- | ---------------------------- |
+| **Agent 1** | `agent-frontend/` | React Native + Expo + UI     |
+| **Agent 2** | `agent-backend/`  | Supabase + Edge Functions    |
+| **Agent 3** | `agent-ia/`       | Gemini 2.0 Flash + NAT-IA    |
+| **Agent 4** | `agent-design/`   | Design System + Components   |
+| **Agent 5** | `agent-qa/`       | Testes E2E + Unit Tests      |
 | **Agent 6** | `agent-security/` | LGPD + Security + Compliance |
-| **Agent 7** | `agent-devops/` | Build + Deploy + Monitoring |
-| **Agent 8** | `agent-docs/` | Documentação + UX Copy |
+| **Agent 7** | `agent-devops/`   | Build + Deploy + Monitoring  |
+| **Agent 8** | `agent-docs/`     | Documentação + UX Copy       |
 
 ---
 
 ## 📅 Timeline Resumido
 
-| Semana | Período | Foco Principal | Status |
-|--------|---------|----------------|--------|
-| **Semana 1** | 30/10 - 05/11 | Setup + Fundação | 🟡 Em progresso |
-| **Semana 2** | 06/11 - 12/11 | Onboarding + NAT-IA | ⬜ Próxima |
-| **Semana 3** | 13/11 - 19/11 | NAT-IA Avançado | ⬜ Próxima |
-| **Semana 4** | 20/11 - 26/11 | Hábitos | ⬜ Próxima |
-| **Semana 5** | 27/11 - 03/12 | Conteúdos | ⬜ Próxima |
-| **Semana 6** | 04/12 - 10/12 | Polish + Testes | ⬜ Próxima |
-| **Semana 7** | 11/12 - 17/12 | Buffer + Ajustes | ⬜ Próxima |
-| **Semana 8** | 18/12 - 24/12 | Deploy + Docs | ⬜ Próxima |
+| Semana       | Período       | Foco Principal      | Status          |
+| ------------ | ------------- | ------------------- | --------------- |
+| **Semana 1** | 30/10 - 05/11 | Setup + Fundação    | 🟡 Em progresso |
+| **Semana 2** | 06/11 - 12/11 | Onboarding + NAT-IA | ⬜ Próxima      |
+| **Semana 3** | 13/11 - 19/11 | NAT-IA Avançado     | ⬜ Próxima      |
+| **Semana 4** | 20/11 - 26/11 | Hábitos             | ⬜ Próxima      |
+| **Semana 5** | 27/11 - 03/12 | Conteúdos           | ⬜ Próxima      |
+| **Semana 6** | 04/12 - 10/12 | Polish + Testes     | ⬜ Próxima      |
+| **Semana 7** | 11/12 - 17/12 | Buffer + Ajustes    | ⬜ Próxima      |
+| **Semana 8** | 18/12 - 24/12 | Deploy + Docs       | ⬜ Próxima      |
 
 ---
 

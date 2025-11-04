@@ -66,6 +66,7 @@ export function useChatOptimized() {
 ```
 
 ### Critérios de sucesso:
+
 - [ ] Redução comprovada de 50%+ nos re-renders (React DevTools Profiler).
 - [ ] Scroll suave na lista com 100+ mensagens.
 - [ ] Testes unitários para hook `useChatOptimized`.

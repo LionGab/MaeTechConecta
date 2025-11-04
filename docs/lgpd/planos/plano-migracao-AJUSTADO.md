@@ -1,4 +1,5 @@
 # Plano de Migração LGPD-Compliant (VERSÃO AJUSTADA)
+
 ## Nossa Maternidade - Roadmap de Conformidade
 
 **Versão**: 2.0 (Ajustada com feedback crítico)
@@ -11,6 +12,7 @@
 ## ⚠️ AJUSTES CRÍTICOS DESTA VERSÃO
 
 ### Mudanças em relação à v1.0:
+
 1. **Fase 1 estendida**: 7 dias → **21 dias** (realista)
 2. **Autenticação**: Anônima → **Email real com verificação simplificada**
 3. **Migração retroativa**: Adicionado tratamento de dados pré-existentes
@@ -24,14 +26,17 @@
 ## 📊 FASE 1 - IMEDIATO (21 dias) - R$ 35.000
 
 ### Semana 1: Documentação Legal (7 dias)
+
 **Responsável**: Advogado LGPD + Redator
 
 #### 1.1 Política de Privacidade Completa
+
 **Arquivo**: `docs/legal/politica-privacidade.md`
 **Prazo**: 3 dias
 **Custo**: R$ 15.000
 
 **Conteúdo obrigatório**:
+
 - [ ] Identificação do controlador (Nossa Maternidade)
 - [ ] Contato do DPO: dpo@nossa-maternidade.com.br
 - [ ] Lista completa de dados coletados (ver inventário)
@@ -53,11 +58,13 @@
 **Aprovação**: Escritório especializado em LGPD
 
 #### 1.2 Termos de Uso
+
 **Arquivo**: `docs/legal/termos-uso.md`
 **Prazo**: 2 dias
 **Custo**: R$ 5.000
 
 **Conteúdo obrigatório**:
+
 - [ ] **Disclaimer médico destacado**:
   > "Este aplicativo NÃO substitui consultas médicas profissionais. As informações fornecidas pela IA são de caráter informativo e educacional. Em caso de emergência, ligue 192 (SAMU) imediatamente."
 - [ ] Limitações de responsabilidade
@@ -67,6 +74,7 @@
 - [ ] Lei aplicável: LGPD + CDC + Marco Civil
 
 #### 1.3 Termo de Consentimento Específico
+
 **Arquivo**: `docs/legal/termo-consentimento.md`
 **Prazo**: 2 dias
 **Custo**: R$ 3.000
@@ -77,64 +85,65 @@
 ## TERMO DE CONSENTIMENTO - NOSSA MATERNIDADE
 
 ### 1. Dados Cadastrais Básicos (OBRIGATÓRIO)
+
 [ ] Autorizo a coleta de: nome, email, data de cadastro
 Finalidade: Identificação e comunicação
 Base legal: Consentimento (Art. 7º, I)
 
 ### 2. Dados Sensíveis de Saúde (OBRIGATÓRIO PARA USO COMPLETO)
+
 ⚠️ ATENÇÃO: Dados sensíveis sob proteção especial (Art. 11, LGPD)
 
-[ ] Autorizo a coleta de:
-    - Status de maternidade (gestante/mãe/tentante)
-    - Semana de gestação
-    - Preferências de saúde
-    - Histórico de conversas sobre saúde
+[ ] Autorizo a coleta de: - Status de maternidade (gestante/mãe/tentante) - Semana de gestação - Preferências de saúde - Histórico de conversas sobre saúde
 
 Finalidade: Personalização de planos diários e respostas da IA
 Base legal: Consentimento específico (Art. 11, §1º)
 Retenção: 30 dias para chats, 90 dias para planos
 
 ### 3. Compartilhamento com Inteligências Artificiais (OPCIONAL)
-[ ] Autorizo o envio de dados PSEUDONIMIZADOS para:
-    - Anthropic Claude (EUA) - geração de respostas
-    - OpenAI GPT-4 (EUA) - planos diários e conteúdo
+
+[ ] Autorizo o envio de dados PSEUDONIMIZADOS para: - Anthropic Claude (EUA) - geração de respostas - OpenAI GPT-4 (EUA) - planos diários e conteúdo
 
 ⚠️ Transferência internacional com proteção:
+
 - Dados anonimizados/pseudonimizados
 - Cláusulas Contratuais Padrão (SCCs)
 - Data Processing Agreements assinados
 
 ❌ Se você NEGAR este consentimento:
+
 - Funcionalidades de IA avançada ficarão limitadas
 - Planos diários serão templates genéricos
 - Chat ficará desabilitado
 
 ### 4. Comunicações e Notificações (OPCIONAL)
-[ ] Autorizo receber:
-    - Emails sobre atualizações do app
-    - Notificações push com dicas de saúde
-    - Newsletter semanal
+
+[ ] Autorizo receber: - Emails sobre atualizações do app - Notificações push com dicas de saúde - Newsletter semanal
 
 Você pode revogar a qualquer momento em Configurações.
 
 ---
 
 **IMPORTANTE**: Você pode revogar qualquer consentimento a qualquer momento através de:
+
 - Menu Perfil > Meus Dados > Gerenciar Consentimentos
 - Email: dpo@nossa-maternidade.com.br
 
 Li e compreendi os termos acima: [ ]
-Data: __/__/____
+Data: **/**/\_\_\_\_
 ```
 
 ### Semana 2: Implementação de Consentimento (7 dias)
+
 **Responsável**: Dev Frontend + Backend
 
 #### 2.1 Criar ConsentScreen.tsx
+
 **Arquivo**: `src/screens/ConsentScreen.tsx` (NOVO)
 **Prazo**: 3 dias
 
 **Features**:
+
 - [ ] Scroll obrigatório (botão "Aceitar" só ativa após scroll completo)
 - [ ] Checkboxes separados (conforme termo acima)
 - [ ] Links inline para Política Completa e Termos
@@ -143,6 +152,7 @@ Data: __/__/____
 - [ ] Versão da política exibida (ex: v1.0 - 30/10/2025)
 
 **Implementação**:
+
 ```typescript
 // src/screens/ConsentScreen.tsx
 import React, { useState, useRef } from 'react';
@@ -176,6 +186,7 @@ export default function ConsentScreen() {
 ```
 
 #### 2.2 Criar Tabela user_consents
+
 **Arquivo**: `supabase/migrations/003_user_consents.sql`
 **Prazo**: 1 dia
 
@@ -205,18 +216,23 @@ CREATE POLICY "Users can insert own consents"
 ```
 
 #### 2.3 **AJUSTE: Autenticação com Email Real**
+
 **Arquivo**: Atualizar `OnboardingScreen.tsx:84-87`
 **Prazo**: 2 dias
 
 **ANTES (ERRADO)**:
+
 ```typescript
-const { data: { user } } = await supabase.auth.signUp({
+const {
+  data: { user },
+} = await supabase.auth.signUp({
   email: `${Date.now()}@temp.com`, // ❌ Temporário
   password: `${Date.now()}-${Math.random()}`, // ❌ Inseguro
 });
 ```
 
 **DEPOIS (CORRETO)**:
+
 ```typescript
 // Opção 1: Magic Link (Sem senha, link por email)
 const { data, error } = await supabase.auth.signInWithOtp({
@@ -227,7 +243,9 @@ const { data, error } = await supabase.auth.signInWithOtp({
 });
 
 // OU Opção 2: Email + Senha simples
-const { data: { user } } = await supabase.auth.signUp({
+const {
+  data: { user },
+} = await supabase.auth.signUp({
   email: userEmail,
   password: password, // Mínimo 8 caracteres, validado
   options: {
@@ -240,23 +258,22 @@ const { data: { user } } = await supabase.auth.signUp({
 ```
 
 **Nova tela**: `EmailVerificationScreen.tsx`
+
 - Input de email com validação
 - Opção: "Continuar com email" ou "Continuar sem conta" (limitado)
 
 #### 2.4 Migração Retroativa de Usuários Existentes
+
 **Arquivo**: `src/screens/RetroactiveConsentScreen.tsx` (NOVO)
 **Prazo**: 1 dia
 
 **Problema**: E se já houver usuários cadastrados com sistema antigo?
 
 **Solução**:
+
 ```typescript
 // Detectar usuários sem consentimento
-const userNeedsConsent = await supabase
-  .from('user_consents')
-  .select('id')
-  .eq('user_id', userId)
-  .single();
+const userNeedsConsent = await supabase.from('user_consents').select('id').eq('user_id', userId).single();
 
 if (!userNeedsConsent) {
   // Exibir tela de consentimento retroativo
@@ -265,6 +282,7 @@ if (!userNeedsConsent) {
 ```
 
 **Tela**:
+
 ```
 ⚠️ ATUALIZAÇÃO DE PRIVACIDADE
 
@@ -283,17 +301,21 @@ Por favor, revise e forneça novo consentimento para continuar usando o app.
 ```
 
 **Prazo para consentimento**: 30 dias
+
 - Após 30 dias sem consentimento → conta suspensa
 - Após 60 dias → dados excluídos automaticamente
 
 ### Semana 3: Segurança Crítica (7 dias)
+
 **Responsável**: Dev Backend + DevOps
 
 #### 3.1 Criptografar AsyncStorage
+
 **Arquivo**: `src/services/secureStorage.ts` (NOVO)
 **Prazo**: 2 dias
 
 **Implementação**:
+
 ```bash
 npm install expo-secure-store
 ```
@@ -328,6 +350,7 @@ export const secureStorage = {
 ```
 
 **Migração de dados existentes**:
+
 ```typescript
 // scripts/migrate-to-secure-storage.ts
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -348,11 +371,13 @@ async function migrate() {
 ```
 
 **Substituir em todos os arquivos**:
+
 - `OnboardingScreen.tsx:111`
 - `useUserProfile.ts:29`
 - `App.tsx:27`
 
 #### 3.2 Implementar Logger Seguro
+
 **Arquivo**: `src/utils/logger.ts` (NOVO)
 **Prazo**: 1 dia
 
@@ -374,7 +399,7 @@ class Logger {
     const sanitized = { ...data };
 
     for (const key in sanitized) {
-      if (sensitive.some(s => key.toLowerCase().includes(s))) {
+      if (sensitive.some((s) => key.toLowerCase().includes(s))) {
         sanitized[key] = '[REDACTED]';
       }
     }
@@ -413,6 +438,7 @@ export const logger = new Logger();
 ```
 
 **Substituir todos os console.log/error**:
+
 ```typescript
 // ANTES
 console.error('Erro ao chamar API:', error.response?.data);
@@ -422,16 +448,20 @@ logger.error('Erro ao chamar API', error, { action: 'claude_api_call' });
 ```
 
 #### 3.3 Mover Credenciais para Expo Secrets
+
 **Prazo**: 2 dias
 
 **Passos**:
+
 1. Remover `.env.local` do git
+
 ```bash
 git rm --cached .env.local
 echo ".env.local" >> .gitignore
 ```
 
 2. Configurar EAS Secrets
+
 ```bash
 eas secret:create --name EXPO_PUBLIC_CLAUDE_API_KEY --value "sk-..."
 eas secret:create --name EXPO_PUBLIC_OPENAI_API_KEY --value "sk-..."
@@ -440,7 +470,8 @@ eas secret:create --name EXPO_PUBLIC_SUPABASE_ANON_KEY --value "eyJ..."
 ```
 
 3. Validar na inicialização
-**Arquivo**: `src/config/api.ts`
+   **Arquivo**: `src/config/api.ts`
+
 ```typescript
 const CLAUDE_API_KEY = process.env.EXPO_PUBLIC_CLAUDE_API_KEY;
 
@@ -458,6 +489,7 @@ export const config = {
 ```
 
 #### 3.4 Adicionar Links de Privacidade no Footer
+
 **Arquivo**: Atualizar todas as telas
 **Prazo**: 1 dia
 
@@ -491,11 +523,13 @@ Adicionar em: `OnboardingScreen`, `HomeScreen`, `ProfileScreen`, `ConsentScreen`
 ### 2.1 Direitos dos Titulares (10 dias)
 
 #### 2.1.1 Criar MyDataScreen.tsx
+
 **Arquivo**: `src/screens/MyDataScreen.tsx` (NOVO)
 **Prazo**: 5 dias
 **Custo**: R$ 25.000
 
 **Seções**:
+
 1. **Dados Cadastrais**
    - Nome
    - Email
@@ -522,11 +556,13 @@ Adicionar em: `OnboardingScreen`, `HomeScreen`, `ProfileScreen`, `ConsentScreen`
    - IP, dispositivo, data/hora
 
 **Ações**:
+
 ```
 [Exportar Meus Dados (JSON)] [Editar Dados] [Solicitar Exclusão Total]
 ```
 
 #### 2.1.2 Implementar Exportação (Portabilidade)
+
 **Arquivo**: `src/services/dataExport.ts` (NOVO)
 **Prazo**: 2 dias
 
@@ -556,17 +592,16 @@ export async function exportUserData(userId: string): Promise<string> {
 ```
 
 **Download**:
+
 ```typescript
 const data = await exportUserData(userId);
 const blob = new Blob([data], { type: 'application/json' });
-FileSystem.writeAsStringAsync(
-  FileSystem.documentDirectory + 'meus-dados.json',
-  data
-);
+FileSystem.writeAsStringAsync(FileSystem.documentDirectory + 'meus-dados.json', data);
 Share.open({ url: FileSystem.documentDirectory + 'meus-dados.json' });
 ```
 
 #### 2.1.3 Implementar Exclusão Completa
+
 **Arquivo**: `src/services/dataSubjectRights.ts` (NOVO)
 **Prazo**: 3 dias
 
@@ -574,10 +609,13 @@ Share.open({ url: FileSystem.documentDirectory + 'meus-dados.json' });
 // src/services/dataSubjectRights.ts
 export async function requestDataDeletion(userId: string): Promise<void> {
   // 1. Marcar para exclusão (período de carência 7 dias)
-  await supabase.from('user_profiles').update({
-    deletion_requested_at: new Date(),
-    status: 'pending_deletion',
-  }).eq('id', userId);
+  await supabase
+    .from('user_profiles')
+    .update({
+      deletion_requested_at: new Date(),
+      status: 'pending_deletion',
+    })
+    .eq('id', userId);
 
   // 2. Enviar email de confirmação
   await sendEmail({
@@ -596,6 +634,7 @@ export async function requestDataDeletion(userId: string): Promise<void> {
 ```
 
 **Cron job** (Supabase Edge Function):
+
 ```typescript
 // supabase/functions/process-deletions/index.ts
 Deno.serve(async () => {
@@ -617,11 +656,13 @@ Deno.serve(async () => {
 ### 2.2 Transferência Internacional (14 dias)
 
 #### 2.2.1 Assinar Data Processing Agreements (DPAs)
+
 **Responsável**: Jurídico
 **Prazo**: 10 dias
 **Custo**: R$ 20.000
 
 **Terceiros**:
+
 1. **Anthropic (Claude)**
    - Solicitar DPA: https://anthropic.com/legal/dpa
    - Incluir Cláusulas Contratuais Padrão (SCCs)
@@ -645,15 +686,18 @@ Deno.serve(async () => {
 **Documentar** em: `docs/legal/contratos-processadores/`
 
 #### 2.2.2 **AJUSTE: Pseudonimização Reversível (não anonimização total)**
+
 **Arquivo**: `src/utils/dataPseudonymization.ts` (NOVO)
 **Prazo**: 4 dias
 **Custo**: R$ 15.000
 
 **Problema com anonimização total**:
+
 - Remove contexto necessário para personalização
 - "Semana arredondada" pode dar conselhos inadequados
 
 **Solução: Pseudonimização**:
+
 ```typescript
 // src/utils/dataPseudonymization.ts
 import crypto from 'crypto';
@@ -691,7 +735,7 @@ export function pseudonymizeForAI(context: UserContext): PseudonymizedContext {
   }
 
   // Generalizar preferências
-  const interests = context.preferences.map(pref => {
+  const interests = context.preferences.map((pref) => {
     // "yoga_prenatal" → "exercícios"
     // "amamentacao_exclusiva" → "nutrição"
     return categorizePreference(pref);
@@ -712,19 +756,21 @@ export function forgetSession(sessionId: string): void {
 ```
 
 **Aplicar em**:
+
 - `ChatScreen.tsx:92-93`
 - `DailyPlanScreen.tsx`
 - `contentGenerator.ts`
 
 **Exemplo**:
+
 ```typescript
 // ANTES (RUIM)
 const response = await claudeAPI.chat({
   message: userMessage,
   context: {
-    name: "Maria",
+    name: 'Maria',
     week: 28,
-    baby_name: "João",
+    baby_name: 'João',
   },
 });
 
@@ -741,10 +787,12 @@ forgetSession(pseudoContext.sessionId);
 ```
 
 #### 2.2.3 Opt-out para IAs Internacionais
+
 **Arquivo**: Atualizar `ConsentScreen.tsx`
 **Prazo**: Já implementado na Fase 1 (checkbox separado)
 
 **Lógica**:
+
 ```typescript
 if (!user.consents.ai_sharing) {
   // Desabilitar chat com IA
@@ -756,11 +804,13 @@ if (!user.consents.ai_sharing) {
 ### 2.3 Governança (10 dias)
 
 #### 2.3.1 Designar DPO (Encarregado de Dados)
+
 **Responsável**: Gestão
 **Prazo**: 3 dias
 **Custo**: R$ 8.000/mês (contínuo)
 
 **Opções**:
+
 1. **DPO as a Service** (recomendado para MVP):
    - Empresas: iubenda, DataPrivacy, LegitLab
    - Custo: R$ 5-8k/mês
@@ -771,11 +821,13 @@ if (!user.consents.ai_sharing) {
    - Dedicação mínima 20h/mês
 
 **Publicar**:
+
 - Email: dpo@nossa-maternidade.com.br
 - Política de Privacidade (seção "Contato")
 - App: Perfil > Ajuda > "Falar com DPO"
 
 #### 2.3.2 Registro de Atividades de Tratamento
+
 **Arquivo**: `docs/governanca/registro-atividades-tratamento.xlsx`
 **Prazo**: 3 dias
 **Responsável**: DPO + Dev Lead
@@ -790,12 +842,14 @@ if (!user.consents.ai_sharing) {
 | Logs de auditoria | Segurança | Legítimo interesse | User ID, ação, timestamp, IP | Supabase | 5 anos | Não | Não |
 
 #### 2.3.3 Relatório de Impacto (RIPD)
+
 **Arquivo**: `docs/governanca/ripd-nossa-maternidade.pdf`
 **Prazo**: 4 dias
 **Responsável**: DPO + Advogado
 **Custo**: R$ 12.000
 
 **Estrutura**:
+
 1. **Descrição do Tratamento**
    - Tipo: App de saúde para gestantes
    - Volume: Estimativa 10k usuárias/ano
@@ -828,6 +882,7 @@ if (!user.consents.ai_sharing) {
 ### 2.4 Auditoria de Acesso (5 dias)
 
 #### 2.4.1 Criar Tabela audit_logs
+
 **Arquivo**: `supabase/migrations/004_audit_logs.sql`
 **Prazo**: 1 dia
 
@@ -854,6 +909,7 @@ CREATE INDEX idx_audit_logs_action ON audit_logs(action);
 ```
 
 #### 2.4.2 Implementar Logging de Acessos
+
 **Arquivo**: `src/services/auditLogger.ts` (NOVO)
 **Prazo**: 2 dias
 
@@ -891,6 +947,7 @@ async function getIPAddress(): Promise<string> {
 ```
 
 **Usar em**:
+
 ```typescript
 // Login
 await logAudit(userId, 'login');
@@ -906,6 +963,7 @@ await logAudit(userId, 'request_deletion', 'user_profile', userId);
 ```
 
 #### 2.4.3 Exibir Logs na MyDataScreen
+
 **Prazo**: 2 dias
 
 ```typescript
@@ -945,6 +1003,7 @@ useEffect(() => {
 ### 3.1 Retenção e Eliminação (15 dias)
 
 #### 3.1.1 Implementar Política de Retenção
+
 **Arquivo**: `supabase/migrations/005_retention_policy.sql`
 **Prazo**: 5 dias
 
@@ -1017,6 +1076,7 @@ $$ LANGUAGE plpgsql;
 ```
 
 **Cron Jobs** (pg_cron extension):
+
 ```sql
 -- Instalar pg_cron (Supabase já tem)
 CREATE EXTENSION IF NOT EXISTS pg_cron;
@@ -1030,16 +1090,14 @@ SELECT cron.schedule('delete-inactive', '0 5 * * *', 'SELECT delete_inactive_acc
 ```
 
 #### 3.1.2 Atualizar last_activity_at
+
 **Arquivo**: Middleware global
 **Prazo**: 2 dias
 
 ```typescript
 // src/middleware/activityTracker.ts (NOVO)
 export async function updateLastActivity(userId: string) {
-  await supabase
-    .from('user_profiles')
-    .update({ last_activity_at: new Date() })
-    .eq('id', userId);
+  await supabase.from('user_profiles').update({ last_activity_at: new Date() }).eq('id', userId);
 }
 
 // Chamar em:
@@ -1050,6 +1108,7 @@ export async function updateLastActivity(userId: string) {
 ```
 
 #### 3.1.3 Script de Anonimização em Massa
+
 **Arquivo**: `scripts/anonymize-inactive-users.sql`
 **Prazo**: 3 dias
 
@@ -1084,9 +1143,11 @@ $$);
 ```
 
 #### 3.1.4 Atualizar Política de Privacidade
+
 **Prazo**: 2 dias
 
 Adicionar seção:
+
 ```markdown
 ## Retenção de Dados
 
@@ -1100,6 +1161,7 @@ Seus dados serão mantidos pelos seguintes períodos:
 ### Contas Inativas
 
 Se você não usar o app por 2 anos:
+
 1. Sua conta será marcada como inativa
 2. Você receberá email 30 dias antes da exclusão
 3. Você pode reativar clicando no link do email
@@ -1108,6 +1170,7 @@ Se você não usar o app por 2 anos:
 ### Anonimização
 
 Usuários inativos há 1+ ano terão dados anonimizados:
+
 - Nome → "Usuário Anônimo"
 - Email → endereço genérico
 - Mensagens e planos → deletados
@@ -1117,6 +1180,7 @@ Usuários inativos há 1+ ano terão dados anonimizados:
 ### 3.2 Plano de Resposta a Incidentes (10 dias)
 
 #### 3.2.1 Criar Plano Formal
+
 **Arquivo**: `docs/governanca/plano-resposta-incidentes.md`
 **Prazo**: 5 dias
 **Responsável**: DPO + CTO
@@ -1126,6 +1190,7 @@ Usuários inativos há 1+ ano terão dados anonimizados:
 
 ```markdown
 # Plano de Resposta a Incidentes de Dados
+
 ## Nossa Maternidade
 
 ### 1. Definição de Incidente
@@ -1139,31 +1204,33 @@ Incidente de segurança que pode acarretar risco aos direitos dos titulares:
 - Indisponibilidade prolongada (>24h)
 
 **Não é incidente (mas deve ser monitorado)**:
+
 - Tentativas de login falhadas isoladas
 - Erros de API pontuais
 - Bugs sem exposição de dados
 
 ### 2. Classificação de Severidade
 
-| Nível | Descrição | Exemplo | Prazo Notificação ANPD |
-|-------|-----------|---------|------------------------|
-| **CRÍTICO** | Dados sensíveis de saúde expostos publicamente | Banco de dados vazado | 72 horas |
-| **ALTO** | Acesso não autorizado a múltiplos usuários | Credencial de admin comprometida | 72 horas |
-| **MÉDIO** | Acesso não autorizado a usuário único | Conta individual hackeada | 72 horas (se risco) |
-| **BAIXO** | Potencial exposição sem confirmação | Log com dados em servidor de dev | Monitorar |
+| Nível       | Descrição                                      | Exemplo                          | Prazo Notificação ANPD |
+| ----------- | ---------------------------------------------- | -------------------------------- | ---------------------- |
+| **CRÍTICO** | Dados sensíveis de saúde expostos publicamente | Banco de dados vazado            | 72 horas               |
+| **ALTO**    | Acesso não autorizado a múltiplos usuários     | Credencial de admin comprometida | 72 horas               |
+| **MÉDIO**   | Acesso não autorizado a usuário único          | Conta individual hackeada        | 72 horas (se risco)    |
+| **BAIXO**   | Potencial exposição sem confirmação            | Log com dados em servidor de dev | Monitorar              |
 
 ### 3. Equipe de Resposta
 
-| Papel | Responsável | Contato |
-|-------|-------------|---------|
-| **Líder de Incidente** | DPO | dpo@nossa-maternidade.com.br / (XX) XXXXX-XXXX |
-| **Técnico** | CTO | cto@nossa-maternidade.com.br / (XX) XXXXX-XXXX |
-| **Jurídico** | Advogado LGPD | juridico@nossa-maternidade.com.br |
-| **Comunicação** | CEO | ceo@nossa-maternidade.com.br |
+| Papel                  | Responsável   | Contato                                        |
+| ---------------------- | ------------- | ---------------------------------------------- |
+| **Líder de Incidente** | DPO           | dpo@nossa-maternidade.com.br / (XX) XXXXX-XXXX |
+| **Técnico**            | CTO           | cto@nossa-maternidade.com.br / (XX) XXXXX-XXXX |
+| **Jurídico**           | Advogado LGPD | juridico@nossa-maternidade.com.br              |
+| **Comunicação**        | CEO           | ceo@nossa-maternidade.com.br                   |
 
 ### 4. Fluxo de Resposta
 
 #### Fase 1: Detecção e Contenção (0-2 horas)
+
 1. **Alertas automáticos** disparam (ex: acesso suspeito detectado)
 2. **Técnico on-call** valida se é incidente real
 3. **Se CRÍTICO/ALTO**: Acionar DPO imediatamente
@@ -1173,6 +1240,7 @@ Incidente de segurança que pode acarretar risco aos direitos dos titulares:
    - Bloquear acesso externo (se necessário)
 
 #### Fase 2: Investigação (2-12 horas)
+
 1. **Identificar**:
    - Quais dados foram expostos?
    - Quantos usuários afetados?
@@ -1186,6 +1254,7 @@ Incidente de segurança que pode acarretar risco aos direitos dos titulares:
    - Baixo risco → Apenas mitigar
 
 #### Fase 3: Notificação (12-72 horas)
+
 **Se risco aos direitos dos titulares**:
 
 1. **Notificar ANPD** (até 72h):
@@ -1200,6 +1269,7 @@ Incidente de segurança que pode acarretar risco aos direitos dos titulares:
    - Canais de suporte
 
 #### Fase 4: Mitigação (72h - 30 dias)
+
 1. **Correção da vulnerabilidade**
 2. **Auditoria de segurança**
 3. **Relatório final para ANPD**
@@ -1209,37 +1279,42 @@ Incidente de segurança que pode acarretar risco aos direitos dos titulares:
 
 #### Template ANPD
 ```
+
 COMUNICAÇÃO DE INCIDENTE DE SEGURANÇA
 Controlador: Nossa Maternidade LTDA
 CNPJ: XX.XXX.XXX/0001-XX
 DPO: [Nome], dpo@nossa-maternidade.com.br
 
 1. NATUREZA DO INCIDENTE:
-[Descrição: vazamento, acesso não autorizado, perda, etc.]
+   [Descrição: vazamento, acesso não autorizado, perda, etc.]
 
 2. DATA E HORA DA OCORRÊNCIA:
-[DD/MM/AAAA HH:MM]
+   [DD/MM/AAAA HH:MM]
 
 3. DADOS AFETADOS:
+
 - Categorias: [Ex: nome, email, dados de saúde]
 - Quantidade de titulares: [Número aproximado]
 
 4. MEDIDAS ADOTADAS:
+
 - Contenção: [Ex: credenciais revogadas]
 - Notificação aos titulares: [Sim/Não, data]
 
 5. CONSEQUÊNCIAS PROVÁVEIS:
-[Ex: Risco de uso indevido de dados de saúde]
+   [Ex: Risco de uso indevido de dados de saúde]
 
 6. MEDIDAS PARA MITIGAR:
-[Ex: Mudança de senhas, auditoria completa]
+   [Ex: Mudança de senhas, auditoria completa]
 
 7. CONTATO:
-DPO: [Nome], [Email], [Telefone]
+   DPO: [Nome], [Email], [Telefone]
+
 ```
 
 #### Template Usuárias
 ```
+
 Assunto: IMPORTANTE: Incidente de Segurança - Nossa Maternidade
 
 Olá [Nome],
@@ -1250,14 +1325,17 @@ O QUE ACONTECEU?
 [Explicação simples]
 
 QUAIS DADOS FORAM AFETADOS?
+
 - [Lista de dados]
 
 O QUE ESTAMOS FAZENDO?
+
 - [Medidas de contenção]
 - [Investigação em andamento]
 - [Notificação à ANPD]
 
 O QUE VOCÊ DEVE FAZER?
+
 - Altere sua senha: [Link]
 - Fique atenta a emails/mensagens suspeitas
 - Entre em contato se tiver dúvidas: dpo@nossa-maternidade.com.br
@@ -1266,6 +1344,7 @@ Lamentamos profundamente este incidente e estamos trabalhando para evitar que oc
 
 Atenciosamente,
 Equipe Nossa Maternidade
+
 ```
 
 ### 6. Contatos de Emergência
@@ -1305,6 +1384,7 @@ Após resolução:
 ```
 
 #### 3.2.2 Implementar Sistema de Alertas
+
 **Arquivo**: `src/services/securityAlerts.ts` (NOVO)
 **Prazo**: 3 dias
 **Custo**: R$ 5.000
@@ -1346,6 +1426,7 @@ export async function alertSecurity(level: 'critical' | 'high' | 'medium' | 'low
 ```
 
 **Usar em**:
+
 ```typescript
 // Múltiplas tentativas de login
 if (failedAttempts > 5) {
@@ -1371,13 +1452,16 @@ if (backupFailed) {
 ```
 
 #### 3.2.3 Teste de Simulação (Tabletop Exercise)
+
 **Prazo**: 2 dias
 **Custo**: R$ 3.000
 
 **Cenário**:
+
 > "Desenvolver percebe que credencial de API do Supabase está exposta em repositório público do GitHub por 6 horas. Possível que terceiros acessaram banco de dados."
 
 **Exercício**:
+
 1. Equipe se reúne
 2. Cada membro descreve ações que tomaria
 3. Cronometrar se conseguem:
@@ -1390,15 +1474,18 @@ if (backupFailed) {
 ### 3.3 Segurança de Infraestrutura (20 dias)
 
 #### 3.3.1 Configurar Backups Criptografados
+
 **Prazo**: 5 dias
 **Custo**: R$ 8.000
 
 **Supabase**:
+
 - Habilitar Point-in-Time Recovery (PITR)
 - Backups diários automáticos
 - Criptografia AES-256 em repouso (já ativo por padrão)
 
 **Testar restauração**:
+
 ```sql
 -- Mensalmente, fazer teste de restore
 -- 1. Criar banco de teste
@@ -1408,10 +1495,12 @@ if (backupFailed) {
 ```
 
 #### 3.3.2 Auditar Row Level Security (RLS)
+
 **Prazo**: 5 dias
 **Custo**: R$ 10.000 (auditor externo)
 
 **Tabelas a auditar**:
+
 - `user_profiles`
 - `chat_messages`
 - `daily_plans`
@@ -1419,6 +1508,7 @@ if (backupFailed) {
 - `audit_logs`
 
 **Teste**:
+
 ```sql
 -- Como User A, tentar acessar dados de User B
 SET request.jwt.claim.sub = '<user-a-uuid>';
@@ -1427,6 +1517,7 @@ SELECT * FROM user_profiles WHERE id = '<user-b-uuid>';
 ```
 
 **Políticas esperadas**:
+
 ```sql
 -- user_profiles
 CREATE POLICY "Users can view own profile"
@@ -1446,6 +1537,7 @@ CREATE POLICY "Users can view own messages"
 ```
 
 #### 3.3.3 Implementar Rate Limiting
+
 **Arquivo**: `src/middleware/rateLimit.ts` (NOVO)
 **Prazo**: 5 dias
 **Custo**: R$ 5.000
@@ -1479,6 +1571,7 @@ export const loginRateLimiter = rateLimit({
 ```
 
 **Aplicar**:
+
 ```typescript
 // Em routes
 app.post('/api/chat', chatRateLimiter, chatHandler);
@@ -1487,15 +1580,18 @@ app.post('/api/login', loginRateLimiter, loginHandler);
 ```
 
 #### 3.3.4 Segregação de Ambientes
+
 **Prazo**: 5 dias
 **Custo**: R$ 7.000
 
 **Criar**:
+
 - **Produção**: Banco real, credenciais reais
 - **Staging**: Cópia anônima de produção (dados fake)
 - **Desenvolvimento**: Dados de teste sintéticos
 
 **Regras**:
+
 - NUNCA usar dados reais em dev/staging
 - Pipelines CI/CD separados
 - Credenciais diferentes por ambiente
@@ -1517,6 +1613,7 @@ CLAUDE_API_KEY=sk-mock-...
 ### 3.4 Disclaimers Médicos (5 dias)
 
 #### 3.4.1 Criar Seção de Disclaimers nos Termos
+
 **Arquivo**: Atualizar `docs/legal/termos-uso.md`
 **Prazo**: 2 dias
 
@@ -1528,11 +1625,13 @@ CLAUDE_API_KEY=sk-mock-...
 O aplicativo Nossa Maternidade é uma ferramenta de **suporte informativo e educacional**. As informações fornecidas pela inteligência artificial:
 
 ✅ SÃO:
+
 - Baseadas em literatura científica e guidelines de saúde pública
 - Personalizadas com base no seu perfil
 - Úteis para planejamento e organização
 
 ❌ NÃO SÃO:
+
 - Diagnósticos médicos
 - Prescrições de tratamento
 - Substitutas de consultas com obstetra, pediatra ou outros profissionais
@@ -1541,6 +1640,7 @@ O aplicativo Nossa Maternidade é uma ferramenta de **suporte informativo e educ
 ### Obrigatoriedade de Acompanhamento Profissional
 
 Todo usuária DEVE:
+
 - Realizar pré-natal regular com obstetra
 - Seguir orientações do seu médico de confiança
 - Realizar exames de rotina recomendados
@@ -1559,6 +1659,7 @@ O app não monitora em tempo real e NÃO pode detectar emergências.
 ### Limitação de Responsabilidade
 
 A Nossa Maternidade não se responsabiliza por:
+
 - Decisões médicas tomadas com base nas informações do app
 - Atrasos em buscar atendimento profissional
 - Interpretações incorretas de conteúdo
@@ -1568,6 +1669,7 @@ A Nossa Maternidade não se responsabiliza por:
 ```
 
 #### 3.4.2 Adicionar Disclaimer na HomeScreen
+
 **Arquivo**: `src/screens/HomeScreen.tsx`
 **Prazo**: 1 dia
 
@@ -1584,6 +1686,7 @@ A Nossa Maternidade não se responsabiliza por:
 ```
 
 #### 3.4.3 Criar Tela MedicalDisclaimerScreen
+
 **Arquivo**: `src/screens/MedicalDisclaimerScreen.tsx` (NOVO)
 **Prazo**: 1 dia
 
@@ -1615,9 +1718,11 @@ export default function MedicalDisclaimerScreen() {
 ```
 
 #### 3.4.4 Integração com Canais Oficiais
+
 **Prazo**: 1 dia
 
 **Adicionar na HomeScreen**:
+
 ```typescript
 <Card title="Recursos de Saúde Pública">
   <Button
@@ -1641,11 +1746,13 @@ export default function MedicalDisclaimerScreen() {
 ### 3.5 Testes de Conformidade (10 dias)
 
 #### 3.5.1 Teste com Usuárias Reais - Fluxo de Consentimento
+
 **Prazo**: 3 dias
 **Participantes**: 10 usuárias beta
 **Custo**: R$ 5.000 (R$ 500/pessoa)
 
 **Perguntas**:
+
 1. Você entendeu quais dados são coletados?
 2. Ficou claro que dados de saúde vão para EUA?
 3. Você se sentiu pressionada a aceitar?
@@ -1655,10 +1762,12 @@ export default function MedicalDisclaimerScreen() {
 **Critério de sucesso**: >80% responde "sim" em 1-4, "não" em 3.
 
 #### 3.5.2 Teste de Exercício de Direitos
+
 **Prazo**: 2 dias
 **Participantes**: 5 usuárias beta
 
 **Cenários**:
+
 1. Solicitar exclusão de conta → Deve receber email em <24h
 2. Exportar dados → JSON completo e legível
 3. Corrigir dados → Atualização refletida imediatamente
@@ -1667,19 +1776,23 @@ export default function MedicalDisclaimerScreen() {
 **Critério**: 100% de sucesso.
 
 #### 3.5.3 Teste de Estresse - Auditoria
+
 **Prazo**: 2 dias
 
 **Cenário**:
+
 - Simular 1.000 ações simultâneas (logins, chats, exports)
 - Verificar se audit_logs registra TODAS
 - Verificar performance (latência <100ms)
 
 #### 3.5.4 Revisão por Escritório Externo
+
 **Prazo**: 3 dias
 **Custo**: R$ 15.000
 
 **Contratar**: Escritório especializado em LGPD
 **Escopo**:
+
 - Revisar TODA a documentação legal
 - Validar RIPD
 - Testar fluxo de consentimento
@@ -1695,6 +1808,7 @@ export default function MedicalDisclaimerScreen() {
 ### 4.1 Segurança Avançada (20 dias)
 
 #### 4.1.1 Autenticação 2FA (Opcional)
+
 **Prazo**: 5 dias
 **Custo**: R$ 5.000
 
@@ -1708,6 +1822,7 @@ await supabase.auth.mfa.enroll({
 **UI**: Opção em Configurações > Segurança.
 
 #### 4.1.2 Certificado Pinning (SSL)
+
 **Prazo**: 5 dias
 **Custo**: R$ 3.000
 
@@ -1726,14 +1841,17 @@ await sslFetch('https://api.anthropic.com', {
 ```
 
 #### 4.1.3 Web Application Firewall (WAF)
+
 **Prazo**: 10 dias
 **Custo**: R$ 12.000 (setup + 3 meses)
 
 **Opções**:
+
 - Cloudflare (recomendado)
 - AWS WAF
 
 **Proteção**:
+
 - DDoS
 - SQL injection
 - XSS
@@ -1742,6 +1860,7 @@ await sslFetch('https://api.anthropic.com', {
 ### 4.2 Transparência (15 dias)
 
 #### 4.2.1 Criar Página de Transparência Pública
+
 **Arquivo**: `public/transparencia.html`
 **Prazo**: 5 dias
 
@@ -1772,10 +1891,12 @@ await sslFetch('https://api.anthropic.com', {
 ```
 
 #### 4.2.2 Dashboard de Compliance para Admin
+
 **Prazo**: 10 dias
 **Custo**: R$ 8.000
 
 **Métricas**:
+
 - Solicitações de exclusão pendentes
 - Tempo médio de resposta
 - Alertas de segurança (últimos 7 dias)
@@ -1785,26 +1906,32 @@ await sslFetch('https://api.anthropic.com', {
 ### 4.3 Privacy by Design (25 dias)
 
 #### 4.3.1 Avaliar IAs Brasileiras/Europeias
+
 **Prazo**: 10 dias
 
 **Alternativas**:
+
 - **Maritaca AI** (Brasil) - Baseada em LLaMA, treinada em português
 - **Mistral** (França) - GDPR compliant
 - **Cohere** (Canadá) - Com data residency EU
 
 **Trade-offs**:
+
 - Qualidade: Claude/GPT ainda superiores
 - Custo: Maritaca mais barata
 - Latência: Mistral EU mais rápido para Brasil
 
 **Decisão**: Implementar fallback híbrido
+
 - Usuárias que negam consentimento internacional → Maritaca AI
 - Usuárias que aceitam → Claude (melhor qualidade)
 
 #### 4.3.2 Implementar Minimização de Dados
+
 **Prazo**: 10 dias
 
 **Refatorar coleta**:
+
 - ANTES: Coletar 10 preferências de saúde
 - DEPOIS: Coletar apenas 3 prioritárias
 
@@ -1812,6 +1939,7 @@ await sslFetch('https://api.anthropic.com', {
 - DEPOIS: Armazenar apenas resumos (embeddings vetoriais)
 
 #### 4.3.3 Redesenhar Arquitetura com Privacidade
+
 **Prazo**: 5 dias
 
 **Padrão**: Privacy by Design + Security by Default
@@ -1834,27 +1962,27 @@ IAs (sem armazenamento permanente)
 
 ## 💰 INVESTIMENTO TOTAL AJUSTADO
 
-| Fase | Duração | Custo Original | Custo Ajustado | Justificativa |
-|------|---------|----------------|----------------|---------------|
-| **Fase 1** | 7 → 21 dias | R$ 10.000 | **R$ 35.000** | Prazo realista + consultoria jurídica profissional |
-| **Fase 2** | 30 → 39 dias | R$ 30.000 | **R$ 80.000** | DPO mensal + DPAs + auditoria |
-| **Fase 3** | 90 → 60 dias | R$ 25.000 | **R$ 45.000** | Testes de conformidade + auditoria externa |
-| **Fase 4** | 180 → 60 dias | R$ 15.000 | **R$ 20.000** | WAF + dashboard |
-| **TOTAL** | **6 meses** | R$ 80.000 | **R$ 180.000** | Realista para SP |
+| Fase       | Duração       | Custo Original | Custo Ajustado | Justificativa                                      |
+| ---------- | ------------- | -------------- | -------------- | -------------------------------------------------- |
+| **Fase 1** | 7 → 21 dias   | R$ 10.000      | **R$ 35.000**  | Prazo realista + consultoria jurídica profissional |
+| **Fase 2** | 30 → 39 dias  | R$ 30.000      | **R$ 80.000**  | DPO mensal + DPAs + auditoria                      |
+| **Fase 3** | 90 → 60 dias  | R$ 25.000      | **R$ 45.000**  | Testes de conformidade + auditoria externa         |
+| **Fase 4** | 180 → 60 dias | R$ 15.000      | **R$ 20.000**  | WAF + dashboard                                    |
+| **TOTAL**  | **6 meses**   | R$ 80.000      | **R$ 180.000** | Realista para SP                                   |
 
 ### Recursos Humanos Ajustados:
 
-| Recurso | Quantidade | Custo/Mês | Duração | Total |
-|---------|------------|-----------|---------|-------|
-| **Dev Backend Sênior** | 1 | R$ 15.000 | 5 meses | R$ 75.000 |
-| **Dev Frontend Pleno** | 1 | R$ 12.000 | 4 meses | R$ 48.000 |
-| **Advogado LGPD** | Consultoria | R$ 20.000 | 2 meses | R$ 40.000 |
-| **DPO Terceirizado** | Contínuo | R$ 8.000 | 3 meses | R$ 24.000 |
-| **Auditor Segurança** | Consultoria | R$ 15.000 | 1 mês | R$ 15.000 |
-| **Redator Jurídico** | Freelancer | R$ 5.000 | 1 mês | R$ 5.000 |
-| **Testes UX** | Beta testers | R$ 500 | 15 pessoas | R$ 7.500 |
-| **Infraestrutura** | WAF, backups | - | - | R$ 10.000 |
-| **TOTAL** | - | - | - | **R$ 224.500** |
+| Recurso                | Quantidade   | Custo/Mês | Duração    | Total          |
+| ---------------------- | ------------ | --------- | ---------- | -------------- |
+| **Dev Backend Sênior** | 1            | R$ 15.000 | 5 meses    | R$ 75.000      |
+| **Dev Frontend Pleno** | 1            | R$ 12.000 | 4 meses    | R$ 48.000      |
+| **Advogado LGPD**      | Consultoria  | R$ 20.000 | 2 meses    | R$ 40.000      |
+| **DPO Terceirizado**   | Contínuo     | R$ 8.000  | 3 meses    | R$ 24.000      |
+| **Auditor Segurança**  | Consultoria  | R$ 15.000 | 1 mês      | R$ 15.000      |
+| **Redator Jurídico**   | Freelancer   | R$ 5.000  | 1 mês      | R$ 5.000       |
+| **Testes UX**          | Beta testers | R$ 500    | 15 pessoas | R$ 7.500       |
+| **Infraestrutura**     | WAF, backups | -         | -          | R$ 10.000      |
+| **TOTAL**              | -            | -         | -          | **R$ 224.500** |
 
 **Contingência 20%**: R$ 45.000
 **TOTAL FINAL**: **R$ 270.000**
@@ -1863,12 +1991,12 @@ IAs (sem armazenamento permanente)
 
 ## ⏱️ CRONOGRAMA AJUSTADO
 
-| Semana | Fase | Atividades | Marco |
-|--------|------|-----------|-------|
-| 1-3 | Fase 1 | Documentação legal + Consentimento + Segurança | ✅ Documentação completa |
-| 4-9 | Fase 2 | Direitos titulares + Transferência intl. + Governança + Auditoria | ✅ Pronto para beta |
-| 10-18 | Fase 3 | Retenção + Incidentes + Segurança infra + Disclaimers + Testes | ✅ Pronto para lançamento |
-| 19-26 | Fase 4 | 2FA + WAF + Transparência + Privacy by Design | ✅ Otimizado |
+| Semana | Fase   | Atividades                                                        | Marco                     |
+| ------ | ------ | ----------------------------------------------------------------- | ------------------------- |
+| 1-3    | Fase 1 | Documentação legal + Consentimento + Segurança                    | ✅ Documentação completa  |
+| 4-9    | Fase 2 | Direitos titulares + Transferência intl. + Governança + Auditoria | ✅ Pronto para beta       |
+| 10-18  | Fase 3 | Retenção + Incidentes + Segurança infra + Disclaimers + Testes    | ✅ Pronto para lançamento |
+| 19-26  | Fase 4 | 2FA + WAF + Transparência + Privacy by Design                     | ✅ Otimizado              |
 
 **Prazo mínimo para lançamento beta**: **60 dias** (após Fase 2)
 **Prazo para lançamento público**: **18 semanas** (~4.5 meses)
@@ -1878,6 +2006,7 @@ IAs (sem armazenamento permanente)
 ## ✅ CHECKLIST DE LANÇAMENTO (ATUALIZADO)
 
 ### Documentação ✅
+
 - [ ] Política de Privacidade publicada (v1.0)
 - [ ] Termos de Uso publicados (v1.0)
 - [ ] Termo de Consentimento implementado (4 checkboxes separados)
@@ -1887,6 +2016,7 @@ IAs (sem armazenamento permanente)
 - [ ] Disclaimers médicos em Termos + HomeScreen + tela dedicada
 
 ### Consentimento ✅
+
 - [ ] ConsentScreen.tsx funcional
 - [ ] Scroll obrigatório até o fim
 - [ ] Checkboxes: básico (obrig.), saúde (obrig.), IAs (opc.), comunicações (opc.)
@@ -1895,6 +2025,7 @@ IAs (sem armazenamento permanente)
 - [ ] Prazo de 30 dias para consentimento retroativo
 
 ### Segurança ✅
+
 - [ ] SecureStore implementado (criptografia local)
 - [ ] Logger seguro (sem dados sensíveis)
 - [ ] Credenciais em Expo Secrets (sem .env.local no git)
@@ -1902,12 +2033,14 @@ IAs (sem armazenamento permanente)
 - [ ] Links de Privacidade em footer de todas as telas
 
 ### Autenticação ✅
+
 - [ ] **Email real** (magic link ou senha)
 - [ ] Verificação de email
 - [ ] Opção: "Continuar sem conta" (funcionalidades limitadas)
 - [ ] Migração de contas temporárias antigas
 
 ### Direitos dos Titulares ✅
+
 - [ ] MyDataScreen.tsx funcional
 - [ ] Exibe: cadastro, chat (50 msgs), planos, consentimentos, logs
 - [ ] Exportação JSON completa (portabilidade)
@@ -1916,6 +2049,7 @@ IAs (sem armazenamento permanente)
 - [ ] Notificação de exclusão por email
 
 ### Terceiros ✅
+
 - [ ] DPAs assinados: Anthropic, OpenAI, Supabase, Stripe
 - [ ] SCCs incluídas nos contratos
 - [ ] Lista de terceiros na Política de Privacidade
@@ -1923,24 +2057,28 @@ IAs (sem armazenamento permanente)
 - [ ] Opt-out para IAs internacionais funcionando
 
 ### Governança ✅
+
 - [ ] DPO designado: dpo@nossa-maternidade.com.br
 - [ ] Email/canal de contato ativo
 - [ ] Registro de Atividades completo
 - [ ] RIPD aprovado
 
 ### Auditoria ✅
+
 - [ ] `audit_logs` tabela criada
 - [ ] Logging de: login, view_chat, export_data, delete_account
 - [ ] Exibição de logs em MyDataScreen
 - [ ] Alertas de segurança configurados (Slack)
 
 ### Retenção ✅
+
 - [ ] Política implementada: 30d chats, 90d planos, 2 anos inatividade
 - [ ] Cron jobs configurados
 - [ ] Notificação 30 dias antes de exclusão automática
 - [ ] Script de anonimização para inativos 1+ ano
 
 ### Infraestrutura ✅
+
 - [ ] Backups criptografados habilitados
 - [ ] PITR (Point-in-Time Recovery) ativo
 - [ ] RLS auditado por terceiro
@@ -1948,18 +2086,21 @@ IAs (sem armazenamento permanente)
 - [ ] Ambientes segregados (prod, staging, dev)
 
 ### Incidentes ✅
+
 - [ ] Plano de Resposta documentado
 - [ ] Templates de notificação ANPD + usuárias
 - [ ] Sistema de alertas funcionando
 - [ ] Teste de simulação (tabletop) realizado
 
 ### Disclaimers Médicos ✅
+
 - [ ] Seção nos Termos de Uso
 - [ ] Disclaimer na HomeScreen
 - [ ] Tela MedicalDisclaimerScreen.tsx
 - [ ] Botões para SAMU 192, Disque Saúde 136, Disque 180
 
 ### Testes ✅
+
 - [ ] Teste com 10 usuárias: fluxo de consentimento (>80% aprovação)
 - [ ] Teste de exercício de direitos (100% sucesso)
 - [ ] Teste de estresse: auditoria sob carga
@@ -1967,6 +2108,7 @@ IAs (sem armazenamento permanente)
 - [ ] Certificado de Conformidade emitido
 
 ### Opcional (Fase 4) 🟢
+
 - [ ] 2FA implementado
 - [ ] Certificado pinning (SSL)
 - [ ] WAF ativo
@@ -1979,24 +2121,31 @@ IAs (sem armazenamento permanente)
 ## 🎯 RECOMENDAÇÕES FINAIS
 
 ### 1. NÃO subestime prazos
+
 21 dias (Fase 1) é o MÍNIMO realista para documentação legal aprovada por advogado.
 
 ### 2. Invista em DPO desde o início
+
 R$ 8k/mês parece caro, mas evita multas de R$ 154 milhões.
 
 ### 3. Priorize testes de conformidade
+
 Usuárias reais testando fluxo de consentimento são cruciais - elas dirão se está claro.
 
 ### 4. Migração retroativa é OBRIGATÓRIA
+
 Se já há usuários, você DEVE solicitar novo consentimento. Não há exceção.
 
 ### 5. Pseudonimização > Anonimização
+
 Manter trimestre (ao invés de semana) preserva funcionalidade sem expor demais.
 
 ### 6. Disclaimers médicos não são opcionais
+
 App de saúde sem disclaimer = responsabilidade civil enorme.
 
 ### 7. Escritório externo é investimento, não custo
+
 R$ 15k de auditoria previne R$ 50 milhões de multa.
 
 ---

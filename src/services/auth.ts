@@ -183,7 +183,10 @@ export const updatePassword = async (newPassword: string) => {
  * Obter usuário atual
  */
 export const getCurrentUser = async () => {
-  const { data: { user }, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
 
   if (error) throw error;
   return user;
@@ -193,7 +196,10 @@ export const getCurrentUser = async () => {
  * Obter sessão atual
  */
 export const getCurrentSession = async () => {
-  const { data: { session }, error } = await supabase.auth.getSession();
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
 
   if (error) throw error;
   return session;
@@ -202,11 +208,7 @@ export const getCurrentSession = async () => {
 /**
  * Atualizar dados do usuário
  */
-export const updateUser = async (updates: {
-  email?: string;
-  password?: string;
-  data?: Record<string, any>;
-}) => {
+export const updateUser = async (updates: { email?: string; password?: string; data?: Record<string, any> }) => {
   const { data, error } = await supabase.auth.updateUser(updates);
 
   if (error) throw error;

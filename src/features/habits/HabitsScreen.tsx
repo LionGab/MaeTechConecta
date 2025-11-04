@@ -6,30 +6,23 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Card } from '../../components/Card';
-import { Badge } from '../../components/Badge';
-import { Button } from '../../components/Button';
-import { colors, spacing, typography, borderRadius } from '../../theme/colors';
-import { supabase } from '../../services/supabase';
-import { EmptyState } from '../../shared/components/EmptyState';
-import { SkeletonPresets } from '../../shared/components/Skeleton';
-import { Loading } from '../../shared/components/Loading';
+import { Card } from '@/components/Card';
+import { Badge } from '@/components/Badge';
+import { Button } from '@/components/Button';
+import { colors, spacing, typography, borderRadius } from '@/theme/colors';
+import { supabase } from '@/services/supabase';
+import { EmptyState } from '@/shared/components/EmptyState';
+import { SkeletonPresets } from '@/shared/components/Skeleton';
+import { Loading } from '@/shared/components/Loading';
 import {
   scheduleHabitReminder,
   cancelHabitReminder,
   scheduleStreakCelebration,
   requestNotificationPermissions,
-} from '../../services/notifications';
+} from '@/services/notifications';
 
 interface Habit {
   id: string;
@@ -81,7 +74,9 @@ export default function HabitsScreen() {
 
   const loadHabits = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) return;
 
       // Buscar hábitos do usuário
@@ -106,7 +101,7 @@ export default function HabitsScreen() {
         .eq('user_id', user.id)
         .eq('date', today);
 
-      const completedIds = new Set(completions?.map(c => c.habit_id) || []);
+      const completedIds = new Set(completions?.map((c) => c.habit_id) || []);
 
       // Calcular streaks
       const habitsWithStats = await Promise.all(
@@ -121,7 +116,7 @@ export default function HabitsScreen() {
 
           let streak = 0;
           if (streakData && streakData.length > 0) {
-            const dates = streakData.map(d => new Date(d.date).getTime()).sort((a, b) => b - a);
+            const dates = streakData.map((d) => new Date(d.date).getTime()).sort((a, b) => b - a);
             let currentDate = new Date().getTime();
             for (const date of dates) {
               const diff = Math.floor((currentDate - date) / (1000 * 60 * 60 * 24));
@@ -147,7 +142,7 @@ export default function HabitsScreen() {
       );
 
       setHabits(habitsWithStats);
-      setTodayCompleted(habitsWithStats.filter(h => h.completed_today).length);
+      setTodayCompleted(habitsWithStats.filter((h) => h.completed_today).length);
     } catch (error) {
       console.error('Error loading habits:', error);
       Alert.alert('Erro', 'Não foi possível carregar os hábitos');
@@ -157,7 +152,7 @@ export default function HabitsScreen() {
   };
 
   const createDefaultHabits = async (userId: string) => {
-    const habitsToCreate = DEFAULT_HABITS.map(habit => ({
+    const habitsToCreate = DEFAULT_HABITS.map((habit) => ({
       user_id: userId,
       name: habit.name,
       description: habit.description,
@@ -171,7 +166,9 @@ export default function HabitsScreen() {
 
   const toggleHabit = async (habitId: string, completed: boolean) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) return;
 
       const today = new Date().toISOString().split('T')[0];
@@ -248,41 +245,34 @@ export default function HabitsScreen() {
       ) : (
         <View style={styles.habitsList}>
           {habits.map((habit) => (
-          <Card
-            key={habit.id}
-            variant="elevated"
-            style={styles.habitCard}
-            onPress={() => toggleHabit(habit.id, !habit.completed_today)}
-            accessibilityLabel={`${habit.name} - ${habit.completed_today ? 'Completo' : 'Incompleto'}`}
-          >
-            <View style={styles.habitContent}>
-              <TouchableOpacity
-                style={[
-                  styles.checkbox,
-                  habit.completed_today && styles.checkboxCompleted,
-                ]}
-                onPress={() => toggleHabit(habit.id, !habit.completed_today)}
-                accessible={false}
-              >
-                {habit.completed_today && (
-                  <Icon name="check" size={24} color={colors.primaryForeground} />
-                )}
-              </TouchableOpacity>
+            <Card
+              key={habit.id}
+              variant="elevated"
+              style={styles.habitCard}
+              onPress={() => toggleHabit(habit.id, !habit.completed_today)}
+              accessibilityLabel={`${habit.name} - ${habit.completed_today ? 'Completo' : 'Incompleto'}`}
+            >
+              <View style={styles.habitContent}>
+                <TouchableOpacity
+                  style={[styles.checkbox, habit.completed_today && styles.checkboxCompleted]}
+                  onPress={() => toggleHabit(habit.id, !habit.completed_today)}
+                  accessible={false}
+                >
+                  {habit.completed_today && <Icon name="check" size={24} color={colors.primaryForeground} />}
+                </TouchableOpacity>
 
-              <View style={styles.habitInfo}>
-                <Text style={styles.habitName}>{habit.name}</Text>
-                {habit.description && (
-                  <Text style={styles.habitDescription}>{habit.description}</Text>
-                )}
-                {habit.streak_days > 0 && (
-                  <Badge variant="success" size="sm" style={styles.streakBadge}>
-                    🔥 {habit.streak_days} dias seguidos
-                  </Badge>
-                )}
+                <View style={styles.habitInfo}>
+                  <Text style={styles.habitName}>{habit.name}</Text>
+                  {habit.description && <Text style={styles.habitDescription}>{habit.description}</Text>}
+                  {habit.streak_days > 0 && (
+                    <Badge variant="success" size="sm" style={styles.streakBadge}>
+                      🔥 {habit.streak_days} dias seguidos
+                    </Badge>
+                  )}
+                </View>
               </View>
-            </View>
-          </Card>
-        ))}
+            </Card>
+          ))}
         </View>
       )}
     </ScrollView>

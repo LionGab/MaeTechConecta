@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { canUserInteract, DAILY_INTERACTION_LIMITS } from '../services/payments';
+import { canUserInteract, DAILY_INTERACTION_LIMITS } from '@/services/payments';
 
 export const useDailyInteractions = () => {
   const [dailyCount, setDailyCount] = useState(0);
@@ -20,7 +20,7 @@ export const useDailyInteractions = () => {
       await AsyncStorage.setItem('lastInteractionDate', today);
       await AsyncStorage.setItem('dailyInteractions', '0');
     } else {
-      const count = parseInt(await AsyncStorage.getItem('dailyInteractions') || '0');
+      const count = parseInt((await AsyncStorage.getItem('dailyInteractions')) || '0');
       setDailyCount(count);
     }
   };
@@ -33,7 +33,7 @@ export const useDailyInteractions = () => {
 
   const canInteract = async (subscriptionTier: 'free' | 'premium'): Promise<boolean> => {
     if (subscriptionTier === 'premium') return true;
-    
+
     const limit = DAILY_INTERACTION_LIMITS.FREE;
     return dailyCount < limit;
   };
@@ -50,4 +50,3 @@ export const useDailyInteractions = () => {
     resetDailyCount,
   };
 };
-

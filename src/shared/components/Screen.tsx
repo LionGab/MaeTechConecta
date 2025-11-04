@@ -5,17 +5,10 @@
  */
 
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  ViewStyle,
-} from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { colors, spacing } from '../../theme/colors';
+import { colors, spacing } from '@/theme/colors';
 import { Loading } from './Loading';
 import { ErrorBoundary } from './ErrorBoundary';
 
@@ -64,10 +57,7 @@ export const Screen: React.FC<ScreenProps> = ({
     <ErrorBoundary>
       <SafeAreaView edges={edges} style={[styles.safeArea, { backgroundColor }]}>
         <StatusBar style={statusBarStyle} />
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.keyboardView}
-        >
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.keyboardView}>
           {content}
           {loading && (
             <View style={styles.loadingOverlay}>

@@ -6,8 +6,8 @@
 
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { colors, spacing, typography, borderRadius } from '../../theme/colors';
-import { Button } from '../../components/Button';
+import { colors, spacing, typography, borderRadius } from '@/theme/colors';
+import { Button } from '@/components/Button';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export interface EmptyStateProps {

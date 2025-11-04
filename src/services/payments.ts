@@ -42,4 +42,3 @@ export const canUserInteract = async (userId: string, dailyCount: number): Promi
 
   return dailyCount < limit;
 };
-

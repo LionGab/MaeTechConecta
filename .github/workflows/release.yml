@@ -1,36 +1,75 @@
-name: Release
+name: Release Train (EAS)
 
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*.*.*'
 
 jobs:
-  release:
-    name: Create Release
+  build-android:
+    name: Build + Submit Android
     runs-on: ubuntu-latest
-    
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            ## 🎉 Nova Versão!
-            
-            ### Mudanças
-            - Implementadas funcionalidades X
-            - Corrigido bug Y
-            - Melhorias de performance
-            
-            ### Download
-            - iOS: [Em breve]
-            - Android: [Em breve]
-          draft: false
-          prerelease: false
+      - uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Android
+        run: pnpm --filter apps/mobile run eas:build:android
+
+      - name: Submit Android
+        run: pnpm --filter apps/mobile run eas:submit:android
+
+  build-ios:
+    name: Build + Submit iOS
+    runs-on: macos-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build iOS
+        run: pnpm --filter apps/mobile run eas:build:ios
+
+      - name: Submit iOS
+        run: pnpm --filter apps/mobile run eas:submit:ios

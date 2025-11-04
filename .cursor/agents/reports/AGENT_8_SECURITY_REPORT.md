@@ -10,17 +10,17 @@
 
 ### Status de Compliance
 
-| Requisito LGPD | Status | Observação |
-|----------------|--------|------------|
-| **Consentimento Explícito** | ⚠️ Parcial | Onboarding coleta dados, falta checkbox explícito |
-| **Minimização de Dados** | ✅ OK | Apenas dados necessários coletados |
-| **Finalidade** | ✅ OK | Dados usados para fins específicos |
-| **Transparência** | ⚠️ Parcial | Falta política de privacidade visível |
-| **Segurança** | ✅ OK | HTTPS, RLS, encryption |
-| **Direito ao Esquecimento** | ❌ Faltando | Sem funcionalidade de deletar dados |
-| **Portabilidade** | ❌ Faltando | Sem export de dados |
-| **Auditoria** | ⚠️ Parcial | Logs existem, falta compliance log |
-| **Anonimização** | ✅ OK | Auth anônima disponível |
+| Requisito LGPD              | Status      | Observação                                        |
+| --------------------------- | ----------- | ------------------------------------------------- |
+| **Consentimento Explícito** | ⚠️ Parcial  | Onboarding coleta dados, falta checkbox explícito |
+| **Minimização de Dados**    | ✅ OK       | Apenas dados necessários coletados                |
+| **Finalidade**              | ✅ OK       | Dados usados para fins específicos                |
+| **Transparência**           | ⚠️ Parcial  | Falta política de privacidade visível             |
+| **Segurança**               | ✅ OK       | HTTPS, RLS, encryption                            |
+| **Direito ao Esquecimento** | ❌ Faltando | Sem funcionalidade de deletar dados               |
+| **Portabilidade**           | ❌ Faltando | Sem export de dados                               |
+| **Auditoria**               | ⚠️ Parcial  | Logs existem, falta compliance log                |
+| **Anonimização**            | ✅ OK       | Auth anônima disponível                           |
 
 **Score LGPD:** 55% (5/9 requisitos atendidos)
 
@@ -33,15 +33,18 @@
 #### ✅ Pontos Fortes
 
 1. **Supabase RLS Habilitado**
+
    ```sql
    -- supabase-setup.sql:45-50
    ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
    ALTER TABLE chat_messages ENABLE ROW LEVEL SECURITY;
    ALTER TABLE daily_plans ENABLE ROW LEVEL SECURITY;
    ```
+
    **Status:** ✅ Implementado corretamente
 
 2. **Autenticação Anônima**
+
    ```typescript
    // src/services/supabase.ts:56
    export const createTemporaryUser = async () => {
@@ -50,9 +53,11 @@
      return data.user;
    };
    ```
+
    **Status:** ✅ Permite uso sem coleta desnecessária
 
 3. **HTTPS em Todas APIs**
+
    ```typescript
    // src/config/api.ts:17-20
    export const API_URLS = {
@@ -60,17 +65,22 @@
      OPENAI: 'https://api.openai.com/v1',
    };
    ```
+
    **Status:** ✅ Criptografia em trânsito
 
 4. **Sanitização de Inputs**
+
    ```typescript
    // src/services/ai.ts:171-184
    export const detectUrgency = (message: string): boolean => {
-     const urgencyKeywords = [/* lista segura */];
+     const urgencyKeywords = [
+       /* lista segura */
+     ];
      const lowerMessage = message.toLowerCase();
-     return urgencyKeywords.some(keyword => lowerMessage.includes(keyword));
+     return urgencyKeywords.some((keyword) => lowerMessage.includes(keyword));
    };
    ```
+
    **Status:** ✅ Keyword detection implementado
 
 5. **Logging Estruturado**
@@ -89,6 +99,7 @@
 #### ⚠️ Vulnerabilidades Identificadas
 
 1. **Chaves de API Hardcoded** 🔴 CRÍTICO
+
    ```typescript
    // src/config/api.ts:5-14
    export const API_CONFIG = {
@@ -96,14 +107,18 @@
      OPENAI_API_KEY: process.env.EXPO_PUBLIC_OPENAI_API_KEY || '',
    };
    ```
+
    **Problema:** Fallback para string vazia
    **Risco:** Exposição de chaves em bundle
    **Solução:**
+
    ```typescript
    export const API_CONFIG = {
-     CLAUDE_API_KEY: process.env.EXPO_PUBLIC_CLAUDE_API_KEY ?? (() => {
-       throw new Error('CLAUDE_API_KEY não configurada');
-     })(),
+     CLAUDE_API_KEY:
+       process.env.EXPO_PUBLIC_CLAUDE_API_KEY ??
+       (() => {
+         throw new Error('CLAUDE_API_KEY não configurada');
+       })(),
    };
    ```
 
@@ -113,13 +128,16 @@
    **Solução:** Implementar rate limiter (ver Agent 7)
 
 3. **Stack Traces Expostos** 🟡 MÉDIO
+
    ```typescript
    // src/services/ai.ts:64
    throw new Error(`Claude API error: ${error.response?.data?.error?.message || error.message}`);
    ```
+
    **Problema:** Mensagens de erro expostas aos usuários
    **Risco:** Exposição de detalhes de sistema
    **Solução:**
+
    ```typescript
    throw new Error('Erro ao processar mensagem. Tente novamente.');
    ```
@@ -128,6 +146,7 @@
    **Problema:** Dados sensíveis armazenados em texto plano
    **Risco:** Acesso a dados locais
    **Solução:** Implementar criptografia local
+
    ```bash
    npm install react-native-encrypted-storage
    ```
@@ -156,29 +175,29 @@
 
 ### Dados Coletados
 
-| Dado | Onde | Finalidade | Consentimento |
-|------|------|------------|---------------|
-| **Nome** | OnboardingScreen | Personalização | ✅ Implícito |
-| **Tipo** (gestante/mãe) | OnboardingScreen | Conteúdo personalizado | ✅ Implícito |
-| **Semana** | OnboardingScreen | Conteúdo personalizado | ✅ Implícito |
-| **Bebê** | OnboardingScreen | Personalização | ✅ Implícito |
-| **Preferências** | OnboardingScreen | Recomendações | ✅ Implícito |
-| **Mensagens** | ChatScreen | Histórico de chat | ✅ Implícito |
-| **Localização** | ❌ Não coletado | - | N/A |
-| **Email** | OnboardingScreen | Opcional | ✅ Opcional |
+| Dado                    | Onde             | Finalidade             | Consentimento |
+| ----------------------- | ---------------- | ---------------------- | ------------- |
+| **Nome**                | OnboardingScreen | Personalização         | ✅ Implícito  |
+| **Tipo** (gestante/mãe) | OnboardingScreen | Conteúdo personalizado | ✅ Implícito  |
+| **Semana**              | OnboardingScreen | Conteúdo personalizado | ✅ Implícito  |
+| **Bebê**                | OnboardingScreen | Personalização         | ✅ Implícito  |
+| **Preferências**        | OnboardingScreen | Recomendações          | ✅ Implícito  |
+| **Mensagens**           | ChatScreen       | Histórico de chat      | ✅ Implícito  |
+| **Localização**         | ❌ Não coletado  | -                      | N/A           |
+| **Email**               | OnboardingScreen | Opcional               | ✅ Opcional   |
 
 **Status:** ✅ Apenas dados necessários
 
 ### Direitos do Titular
 
-| Direito LGPD | Implementado | Onde |
-|--------------|--------------|------|
-| **Acesso** | ⚠️ Parcial | ProfileScreen mostra dados |
-| **Correção** | ✅ OK | ProfileScreen permite editar |
-| **Exclusão** | ❌ Não | Falta funcionalidade |
-| **Portabilidade** | ❌ Não | Falta export |
-| **Oposição** | ❌ Não | Falta unsubscribe |
-| **Revogação** | ❌ Não | Falta revogar consentimento |
+| Direito LGPD      | Implementado | Onde                         |
+| ----------------- | ------------ | ---------------------------- |
+| **Acesso**        | ⚠️ Parcial   | ProfileScreen mostra dados   |
+| **Correção**      | ✅ OK        | ProfileScreen permite editar |
+| **Exclusão**      | ❌ Não       | Falta funcionalidade         |
+| **Portabilidade** | ❌ Não       | Falta export                 |
+| **Oposição**      | ❌ Não       | Falta unsubscribe            |
+| **Revogação**     | ❌ Não       | Falta revogar consentimento  |
 
 **Score:** 33% (2/6 direitos)
 
@@ -189,6 +208,7 @@
 ### Prioridade Alta (1 semana)
 
 #### 1. Mover Chaves para Env Vars
+
 ```bash
 # .env.local
 EXPO_PUBLIC_CLAUDE_API_KEY=sk-ant-...
@@ -200,6 +220,7 @@ EXPO_PUBLIC_OPENAI_API_KEY=sk-proj-...
 ```
 
 #### 2. Implementar Rate Limiting
+
 ```typescript
 // src/utils/rateLimiter.ts
 class RateLimiter {
@@ -215,7 +236,7 @@ class RateLimiter {
   async checkLimit(userId: string): Promise<void> {
     const now = Date.now();
     const userRequests = this.requests.get(userId) || [];
-    const recentRequests = userRequests.filter(time => now - time < this.windowMs);
+    const recentRequests = userRequests.filter((time) => now - time < this.windowMs);
 
     if (recentRequests.length >= this.limit) {
       throw new Error('Limite de requisições excedido. Tente novamente em breve.');
@@ -228,6 +249,7 @@ class RateLimiter {
 ```
 
 #### 3. Adicionar Política de Privacidade
+
 ```typescript
 // src/components/PrivacyPolicy.tsx
 export const PrivacyPolicyScreen = () => {
@@ -254,26 +276,18 @@ export const PrivacyPolicyScreen = () => {
 ### Prioridade Média (2-4 semanas)
 
 #### 4. Implementar Direito ao Esquecimento
+
 ```typescript
 // src/services/lgpd.ts
 export async function deleteUserData(userId: string): Promise<void> {
   // Anonimizar dados
-  await supabase
-    .from('user_profiles')
-    .update({ name: 'Usuário Deletado', email: null })
-    .eq('id', userId);
+  await supabase.from('user_profiles').update({ name: 'Usuário Deletado', email: null }).eq('id', userId);
 
   // Deletar mensagens
-  await supabase
-    .from('chat_messages')
-    .delete()
-    .eq('user_id', userId);
+  await supabase.from('chat_messages').delete().eq('user_id', userId);
 
   // Deletar planos
-  await supabase
-    .from('daily_plans')
-    .delete()
-    .eq('user_id', userId);
+  await supabase.from('daily_plans').delete().eq('user_id', userId);
 
   // Deletar conta
   await supabase.auth.admin.deleteUser(userId);
@@ -281,6 +295,7 @@ export async function deleteUserData(userId: string): Promise<void> {
 ```
 
 #### 5. Implementar Portabilidade de Dados
+
 ```typescript
 export async function exportUserData(userId: string): Promise<string> {
   const [profile, messages, plans] = await Promise.all([
@@ -301,6 +316,7 @@ export async function exportUserData(userId: string): Promise<string> {
 ```
 
 #### 6. Criptografia Local
+
 ```bash
 npm install react-native-encrypted-storage
 ```
@@ -320,6 +336,7 @@ export async function getSecure(key: string): Promise<string | null> {
 ### Prioridade Baixa (1-3 meses)
 
 #### 7. Compliance Log Dedicado
+
 ```typescript
 // src/utils/complianceLogger.ts
 export async function logCompliance(action: string, userId: string, data: any) {
@@ -338,6 +355,7 @@ await logCompliance('CONSENT_REVOKED', userId, { consent_type: 'marketing' });
 ```
 
 #### 8. Anonimização Automática
+
 ```sql
 -- Supabase function para anonimizar dados antigos
 CREATE OR REPLACE FUNCTION anonymize_old_data()
@@ -360,33 +378,36 @@ $$);
 
 ## 📊 Métricas de Segurança
 
-| Métrica | Target | Atual | Status |
-|---------|--------|-------|--------|
-| LGPD Compliance | 100% | 55% | ⚠️ |
-| Vulnerabilidades Críticas | 0 | 2 | ❌ |
-| Vulnerabilidades Médias | 0 | 3 | ⚠️ |
-| Rights Implemented | 6/6 | 2/6 | ⚠️ |
-| Security Headers | ✅ | ⚠️ | ⚠️ |
-| Encryption in Transit | 100% | 100% | ✅ |
-| Encryption at Rest | 100% | 0% | ❌ |
+| Métrica                   | Target | Atual | Status |
+| ------------------------- | ------ | ----- | ------ |
+| LGPD Compliance           | 100%   | 55%   | ⚠️     |
+| Vulnerabilidades Críticas | 0      | 2     | ❌     |
+| Vulnerabilidades Médias   | 0      | 3     | ⚠️     |
+| Rights Implemented        | 6/6    | 2/6   | ⚠️     |
+| Security Headers          | ✅     | ⚠️    | ⚠️     |
+| Encryption in Transit     | 100%   | 100%  | ✅     |
+| Encryption at Rest        | 100%   | 0%    | ❌     |
 
 ---
 
 ## 🚨 Plano de Ação Imediato
 
 ### Semana 1 (Crítico)
+
 - [ ] Mover chaves de API para env vars
 - [ ] Implementar rate limiting
 - [ ] Sanitizar inputs
 - [ ] Adicionar política de privacidade
 
 ### Semana 2-4 (Alto)
+
 - [ ] Implementar direito ao esquecimento
 - [ ] Implementar portabilidade
 - [ ] Criptografia local
 - [ ] Compliance logging
 
 ### Mês 2-3 (Médio)
+
 - [ ] Compliance log avançado
 - [ ] Anonimização automática
 - [ ] Auditoria de segurança trimestral
@@ -397,6 +418,7 @@ $$);
 ## ✅ Conclusão
 
 ### Pontos Fortes
+
 - ✅ RLS implementado
 - ✅ Auth anônima disponível
 - ✅ HTTPS obrigatório
@@ -404,6 +426,7 @@ $$);
 - ✅ Minimização de dados
 
 ### Áreas Críticas
+
 - ❌ Chaves hardcoded
 - ❌ Sem rate limiting
 - ❌ Sem direito ao esquecimento
@@ -411,6 +434,7 @@ $$);
 - ❌ Compliance parcial LGPD
 
 ### Prioridades
+
 1. **Crítico:** Mover chaves para env vars
 2. **Crítico:** Implementar rate limiting
 3. **Alto:** Direito ao esquecimento

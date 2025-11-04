@@ -4,7 +4,7 @@
  * Notifica equipe da Natália sobre situações de alto risco
  */
 
-import { supabase } from '../../services/supabase';
+import { supabase } from '@/services/supabase';
 
 export interface RiskAlert {
   userId: string;
@@ -81,11 +81,7 @@ async function saveAlertLog(alert: RiskAlert): Promise<void> {
  */
 async function getUserInfo(userId: string): Promise<{ full_name: string; phone?: string } | null> {
   try {
-    const { data, error } = await supabase
-      .from('user_profiles')
-      .select('full_name, phone')
-      .eq('id', userId)
-      .single();
+    const { data, error } = await supabase.from('user_profiles').select('full_name, phone').eq('id', userId).single();
 
     if (error || !data) {
       return null;
@@ -104,7 +100,10 @@ async function getUserInfo(userId: string): Promise<{ full_name: string; phone?:
 /**
  * Envia notificação para webhook (Slack/Discord)
  */
-async function sendWebhookNotification(webhookUrl: string, alert: RiskAlert & { userName?: string; userPhone?: string }): Promise<void> {
+async function sendWebhookNotification(
+  webhookUrl: string,
+  alert: RiskAlert & { userName?: string; userPhone?: string }
+): Promise<void> {
   try {
     const payload = {
       text: `🚨 ALERTA DE ALTO RISCO - NAT-AI`,

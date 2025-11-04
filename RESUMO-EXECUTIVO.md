@@ -11,6 +11,7 @@
 O **Nossa Maternidade** é um aplicativo React Native/Expo **funcional e bem estruturado** para apoiar mães, gestantes e tentantes brasileiras. O código é **limpo, bem organizado, com componentes reutilizáveis** e **documentação extensa**.
 
 **Porém**, há **3 problemas críticos** que precisam ser resolvidos URGENTEMENTE:
+
 1. 🚨 **API keys expostas** no bundle do app (risco de segurança)
 2. 🚨 **Zero testes** (0% cobertura)
 3. ⚠️ **Gerenciamento de estado fragmentado** (AsyncStorage chamado diretamente em vários lugares)
@@ -19,15 +20,15 @@ O **Nossa Maternidade** é um aplicativo React Native/Expo **funcional e bem est
 
 ## 📈 MÉTRICAS DO PROJETO
 
-| Categoria | Nota | Detalhes |
-|-----------|------|----------|
-| **Arquitetura** | 9/10 | ✅ Estrutura limpa, separação de responsabilidades |
-| **Código** | 7.5/10 | ✅ Bem tipado, mas com alguns `any` |
-| **Testes** | 0/10 | 🚨 Nenhum teste implementado |
-| **Segurança** | 4/10 | 🚨 API keys expostas, sem rate limiting client |
-| **Performance** | 8/10 | ✅ FlatList otimizado, memoization |
-| **UX/UI** | 8.5/10 | ✅ Design System consistente, acessibilidade |
-| **Documentação** | 10/10 | ✅ 45+ arquivos de documentação |
+| Categoria        | Nota   | Detalhes                                           |
+| ---------------- | ------ | -------------------------------------------------- |
+| **Arquitetura**  | 9/10   | ✅ Estrutura limpa, separação de responsabilidades |
+| **Código**       | 7.5/10 | ✅ Bem tipado, mas com alguns `any`                |
+| **Testes**       | 0/10   | 🚨 Nenhum teste implementado                       |
+| **Segurança**    | 4/10   | 🚨 API keys expostas, sem rate limiting client     |
+| **Performance**  | 8/10   | ✅ FlatList otimizado, memoization                 |
+| **UX/UI**        | 8.5/10 | ✅ Design System consistente, acessibilidade       |
+| **Documentação** | 10/10  | ✅ 45+ arquivos de documentação                    |
 
 **Nota Final:** **7.5/10** ⭐⭐⭐⭐☆
 
@@ -72,6 +73,7 @@ O **Nossa Maternidade** é um aplicativo React Native/Expo **funcional e bem est
 ### 1. **API Keys Expostas no Bundle** (Severidade: 10/10)
 
 **Problema:**
+
 ```typescript
 // ❌ src/config/api.ts
 export const API_CONFIG = {
@@ -84,11 +86,13 @@ headers: { 'x-api-key': API_CONFIG.CLAUDE_API_KEY } // EXPOSTO NO APK!
 ```
 
 **Impacto:**
+
 - Qualquer pessoa pode extrair as keys do APK/IPA
 - Risco de abuso e custos não controlados
 - Violação de ToS das APIs
 
 **Solução:**
+
 - Remover TODAS as chamadas de IA do client
 - Usar APENAS Edge Functions
 - Tempo estimado: **2-3 dias**
@@ -98,17 +102,20 @@ headers: { 'x-api-key': API_CONFIG.CLAUDE_API_KEY } // EXPOSTO NO APK!
 ### 2. **Zero Testes** (Severidade: 9/10)
 
 **Problema:**
+
 - 0% de cobertura de testes
 - Nenhum teste unitário
 - Nenhum teste de integração
 - Nenhum teste E2E
 
 **Impacto:**
+
 - Bugs em produção não detectados
 - Refactoring arriscado
 - Confiabilidade baixa
 
 **Solução:**
+
 - Setup Jest + React Native Testing Library
 - Testes para componentes críticos
 - Meta: >70% de cobertura
@@ -119,6 +126,7 @@ headers: { 'x-api-key': API_CONFIG.CLAUDE_API_KEY } // EXPOSTO NO APK!
 ### 3. **Gerenciamento de Estado Fragmentado** (Severidade: 8/10)
 
 **Problema:**
+
 ```typescript
 // AsyncStorage chamado diretamente em 5+ lugares
 // HomeScreen.tsx:38
@@ -132,11 +140,13 @@ const storedUserId = await AsyncStorage.getItem('userId');
 ```
 
 **Impacto:**
+
 - Performance degradada (múltiplas leituras)
 - Bugs de sincronização
 - Código duplicado
 
 **Solução:**
+
 - Criar AuthContext e UserProfileContext
 - Centralizar acesso ao AsyncStorage
 - Implementar cache inteligente
@@ -208,13 +218,13 @@ const storedUserId = await AsyncStorage.getItem('userId');
 
 ## 💰 ESFORÇO ESTIMADO
 
-| Fase | Duração | Esforço (dev-days) |
-|------|---------|-------------------|
-| **Fase 1: Segurança URGENTE** | 1 semana | 5 dias |
-| **Fase 2: Qualidade de Código** | 2 semanas | 8 dias |
-| **Fase 3: Features e UX** | 3 semanas | 12 dias |
-| **Fase 4: Performance** | 2 semanas | 6 dias |
-| **Total** | **8 semanas** | **31 dias** |
+| Fase                            | Duração       | Esforço (dev-days) |
+| ------------------------------- | ------------- | ------------------ |
+| **Fase 1: Segurança URGENTE**   | 1 semana      | 5 dias             |
+| **Fase 2: Qualidade de Código** | 2 semanas     | 8 dias             |
+| **Fase 3: Features e UX**       | 3 semanas     | 12 dias            |
+| **Fase 4: Performance**         | 2 semanas     | 6 dias             |
+| **Total**                       | **8 semanas** | **31 dias**        |
 
 **Com 2 devs em paralelo: ~4 semanas**
 
@@ -222,13 +232,13 @@ const storedUserId = await AsyncStorage.getItem('userId');
 
 ## 📊 ROI ESPERADO
 
-| Melhoria | Impacto | Benefício |
-|----------|---------|-----------|
-| **Remover API keys** | 🔥 Alto | Segurança, redução de custos |
-| **Implementar testes** | 🔥 Alto | Confiabilidade, menos bugs |
-| **Contextos centralizados** | 🔥 Médio | Performance, manutenibilidade |
-| **Analytics** | ⚡ Médio | Insights de uso, decisões data-driven |
-| **Dark mode** | ⚡ Baixo | UX melhorada, satisfação |
+| Melhoria                    | Impacto  | Benefício                             |
+| --------------------------- | -------- | ------------------------------------- |
+| **Remover API keys**        | 🔥 Alto  | Segurança, redução de custos          |
+| **Implementar testes**      | 🔥 Alto  | Confiabilidade, menos bugs            |
+| **Contextos centralizados** | 🔥 Médio | Performance, manutenibilidade         |
+| **Analytics**               | ⚡ Médio | Insights de uso, decisões data-driven |
+| **Dark mode**               | ⚡ Baixo | UX melhorada, satisfação              |
 
 ---
 
@@ -237,12 +247,14 @@ const storedUserId = await AsyncStorage.getItem('userId');
 **Status:** O projeto está **funcional e bem estruturado**, mas com **riscos de segurança críticos** que precisam ser resolvidos **imediatamente**.
 
 **Ação Recomendada:**
+
 1. ✅ **Aprovar desenvolvimento** com ressalvas
 2. 🚨 **Priorizar:** Segurança de API keys (esta semana)
 3. 🚨 **Priorizar:** Setup de testes (próxima semana)
 4. ⚠️ **Planejar:** Melhorias de médio prazo (próximo mês)
 
 **Parecer:**
+
 - ✅ Projeto tem fundações sólidas
 - ⚠️ Problemas críticos são **solucionáveis** em curto prazo
 - ✅ ROI alto para as melhorias propostas

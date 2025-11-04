@@ -180,15 +180,15 @@ Ctrl + C
 
 ## 📚 DOCUMENTAÇÃO
 
-| Se precisar de... | Leia... |
-|-------------------|---------|
-| Passo-a-passo detalhado | `COMO-DEIXAR-APP-FUNCIONAL.md` |
-| Visão geral do status | `STATUS-APP.md` |
-| Início rápido | `INICIO-RAPIDO.md` |
-| Solução de problemas | `COMO-DEIXAR-APP-FUNCIONAL.md` → Problemas Comuns |
+| Se precisar de...       | Leia...                                           |
+| ----------------------- | ------------------------------------------------- |
+| Passo-a-passo detalhado | `COMO-DEIXAR-APP-FUNCIONAL.md`                    |
+| Visão geral do status   | `STATUS-APP.md`                                   |
+| Início rápido           | `INICIO-RAPIDO.md`                                |
+| Solução de problemas    | `COMO-DEIXAR-APP-FUNCIONAL.md` → Problemas Comuns |
 
 ---
 
 **Bom trabalho! 🚀**
 
-*Imprima ou salve este checklist para acompanhar seu progresso.*
+_Imprima ou salve este checklist para acompanhar seu progresso._

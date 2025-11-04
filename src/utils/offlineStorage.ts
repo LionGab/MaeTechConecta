@@ -46,7 +46,7 @@ export async function saveOfflineMessage(
     logger.info('Mensagem salva offline', {
       id: id.substring(0, 8),
       role,
-      context: context?.userId
+      context: context?.userId,
     });
 
     return id;
@@ -74,9 +74,7 @@ export async function getPendingMessages(): Promise<PendingMessage[]> {
 export async function markMessageAsSynced(messageId: string): Promise<void> {
   try {
     const pendingMessages = await getPendingMessages();
-    const updatedMessages = pendingMessages.map(msg =>
-      msg.id === messageId ? { ...msg, synced: true } : msg
-    );
+    const updatedMessages = pendingMessages.map((msg) => (msg.id === messageId ? { ...msg, synced: true } : msg));
 
     await AsyncStorage.setItem('pending_messages', JSON.stringify(updatedMessages));
 
@@ -95,7 +93,7 @@ async function cleanOldSyncedMessages() {
     const pendingMessages = await getPendingMessages();
     const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
 
-    const filteredMessages = pendingMessages.filter(msg => {
+    const filteredMessages = pendingMessages.filter((msg) => {
       if (!msg.synced) return true;
       const timestamp = new Date(msg.timestamp).getTime();
       return timestamp > oneDayAgo;
@@ -113,12 +111,10 @@ async function cleanOldSyncedMessages() {
 /**
  * Força sync de todas mensagens pendentes
  */
-export async function syncPendingMessages(
-  syncFunction: (message: PendingMessage) => Promise<void>
-): Promise<number> {
+export async function syncPendingMessages(syncFunction: (message: PendingMessage) => Promise<void>): Promise<number> {
   try {
     const pendingMessages = await getPendingMessages();
-    const unsyncedMessages = pendingMessages.filter(msg => !msg.synced);
+    const unsyncedMessages = pendingMessages.filter((msg) => !msg.synced);
 
     let syncedCount = 0;
 
@@ -148,7 +144,7 @@ export async function syncPendingMessages(
  */
 export async function hasPendingMessages(): Promise<boolean> {
   const pendingMessages = await getPendingMessages();
-  return pendingMessages.some(msg => !msg.synced);
+  return pendingMessages.some((msg) => !msg.synced);
 }
 
 /**

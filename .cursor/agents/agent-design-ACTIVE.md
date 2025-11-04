@@ -1,4 +1,5 @@
 # 🎨 Agent Design - ATIVO
+
 ## Trabalhando no Design System Bubblegum
 
 **Status:** ✅ ATIVO
@@ -74,6 +75,7 @@ Referência: src/theme/colors.ts (tema Bubblegum)
 ## 📋 CHECKLIST DE TRABALHO
 
 ### Fase 1: Auditoria ✅
+
 - [ ] Scannear todos arquivos .tsx/.ts em src/
 - [ ] Listar cores hardcoded
 - [ ] Listar espaçamentos hardcoded
@@ -81,17 +83,20 @@ Referência: src/theme/colors.ts (tema Bubblegum)
 - [ ] Verificar acessibilidade
 
 ### Fase 2: Correções 🔥
+
 - [ ] Corrigir colors.ts (tema padrão)
 - [ ] Corrigir Badge.tsx
 - [ ] Substituir cores hardcoded por variáveis do tema
 - [ ] Substituir espaçamentos hardcoded
 
 ### Fase 3: Componentes ⬜
+
 - [ ] Criar Loading.tsx
 - [ ] Criar ErrorBoundary.tsx
 - [ ] Melhorar componentes existentes
 
 ### Fase 4: Telas ⬜
+
 - [ ] Auditar OnboardingScreen
 - [ ] Auditar ChatScreen
 - [ ] Auditar HomeScreen

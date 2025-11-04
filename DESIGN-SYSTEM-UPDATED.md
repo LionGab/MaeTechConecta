@@ -8,6 +8,7 @@
 ## 🎨 ATUALIZAÇÕES REALIZADAS
 
 ### ✅ 1. Tema Padrão Corrigido
+
 - **Antes:** `export const colors = dark;` ❌
 - **Agora:** `export const colors = light;` ✅
 - O tema padrão agora é **light mode**, não dark
@@ -15,16 +16,19 @@
 ### ✅ 2. Cores Completas Adicionadas
 
 #### **Light Mode:**
+
 - ✅ Chart colors (5 cores): `chart1`, `chart2`, `chart3`, `chart4`, `chart5`
 - ✅ Sidebar completo: `sidebarBorder`, `sidebarRing`
 - ✅ Todas as cores OKLCH convertidas para RGB/hex
 
 #### **Dark Mode:**
+
 - ✅ Chart colors (5 cores): `chart1`, `chart2`, `chart3`, `chart4`, `chart5`
 - ✅ Sidebar completo: `sidebarBorder`, `sidebarRing`
 - ✅ Todas as cores OKLCH convertidas para RGB/hex
 
 ### ✅ 3. Border Radius Atualizado
+
 - **Base:** `0.4rem` (≈ 6px) conforme tema oficial
 - **Sm:** `calc(0.4rem - 4px)` ≈ 2px
 - **Md:** `calc(0.4rem - 2px)` ≈ 4px
@@ -34,6 +38,7 @@
 ### ✅ 4. Componentes Corrigidos
 
 #### **Badge.tsx:**
+
 - ❌ Removido: `backgroundColor: '#FFEBEE'` hardcoded
 - ✅ Agora usa: `colors.muted` (variável do tema)
 - ❌ Removido: `'#D4A574'`, `'#E8F5E9'`, `'#4CAF50'`, `'#8B5E3C'`, `'#2E7D32'`
@@ -44,6 +49,7 @@
 ## 📋 ESTRUTURA DO TEMA
 
 ### **Cores Principais:**
+
 ```typescript
 colors = {
   background, foreground,
@@ -63,30 +69,34 @@ colors = {
 ```
 
 ### **Tipografia:**
+
 ```typescript
 typography = {
   fontFamily: { sans: 'Poppins', serif: 'Lora', mono: 'Fira Code' },
   sizes: { xs: 12, sm: 14, base: 16, lg: 18, xl: 20, '2xl': 24, '3xl': 28, '4xl': 32 },
-  weights: { normal: '400', medium: '500', semibold: '600', bold: '700' }
-}
+  weights: { normal: '400', medium: '500', semibold: '600', bold: '700' },
+};
 ```
 
 ### **Espaçamento:**
+
 ```typescript
-spacing = { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, '2xl': 24, '3xl': 32 }
+spacing = { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, '2xl': 24, '3xl': 32 };
 ```
 
 ### **Border Radius:**
+
 ```typescript
-borderRadius = { sm: 2, md: 4, lg: 6, xl: 10, full: 999 } // ✅ ATUALIZADO
+borderRadius = { sm: 2, md: 4, lg: 6, xl: 10, full: 999 }; // ✅ ATUALIZADO
 ```
 
 ### **Shadows:**
+
 ```typescript
 shadows = {
   light: { xs, sm, md, lg },
-  dark: { xs, sm, md, lg }
-}
+  dark: { xs, sm, md, lg },
+};
 ```
 
 ---
@@ -121,6 +131,7 @@ shadows = {
 ## 🚀 USO DO TEMA
 
 ### **Exemplo Básico:**
+
 ```typescript
 import { colors, spacing, borderRadius, typography, shadows } from '../theme/colors';
 
@@ -140,6 +151,7 @@ const styles = StyleSheet.create({
 ```
 
 ### **Alternar Tema:**
+
 ```typescript
 import { getTheme } from '../theme/colors';
 

@@ -36,33 +36,33 @@
 
 ### Distribuição de Qualidade por Pasta
 
-| Pasta | Arquivos | Linhas | Nota | Status |
-|-------|----------|--------|------|--------|
-| **src/components/** | 10 | 1.415 | 9.5/10 | ✅ Excelente |
-| **src/screens/** | 5 | 1.850 | 8.5/10 | ✅ Muito Bom |
-| **src/services/** | 6 | 642 | 6.0/10 | ⚠️ Crítico (API keys) |
-| **src/hooks/** | 5 | 532 | 8.0/10 | ✅ Bom |
-| **src/lib/** | 6 | 1.124 | 9.0/10 | ✅ Excelente |
-| **src/utils/** | 5 | 382 | 8.5/10 | ✅ Muito Bom |
-| **src/shared/** | 7 | 389 | 8.0/10 | ✅ Bom |
-| **src/features/** | 3 | 589 | 7.5/10 | ✅ Bom |
-| **src/navigation/** | 4 | 116 | 7.0/10 | ⚠️ Necessita contextos |
-| **supabase/functions/** | 7 | ~2.500 | 5.5/10 | 🚨 Crítico |
+| Pasta                   | Arquivos | Linhas | Nota   | Status                 |
+| ----------------------- | -------- | ------ | ------ | ---------------------- |
+| **src/components/**     | 10       | 1.415  | 9.5/10 | ✅ Excelente           |
+| **src/screens/**        | 5        | 1.850  | 8.5/10 | ✅ Muito Bom           |
+| **src/services/**       | 6        | 642    | 6.0/10 | ⚠️ Crítico (API keys)  |
+| **src/hooks/**          | 5        | 532    | 8.0/10 | ✅ Bom                 |
+| **src/lib/**            | 6        | 1.124  | 9.0/10 | ✅ Excelente           |
+| **src/utils/**          | 5        | 382    | 8.5/10 | ✅ Muito Bom           |
+| **src/shared/**         | 7        | 389    | 8.0/10 | ✅ Bom                 |
+| **src/features/**       | 3        | 589    | 7.5/10 | ✅ Bom                 |
+| **src/navigation/**     | 4        | 116    | 7.0/10 | ⚠️ Necessita contextos |
+| **supabase/functions/** | 7        | ~2.500 | 5.5/10 | 🚨 Crítico             |
 
 ### Top 10 Problemas Encontrados
 
-| # | Problema | Severidade | Arquivos Afetados | Linha(s) |
-|---|----------|-----------|-------------------|----------|
-| 1 | API Keys expostas no bundle | 🚨 CRÍTICA | `src/services/ai.ts`, `src/config/api.ts` | 15-23, 93 |
-| 2 | API Keys em URL query params | 🚨 CRÍTICA | 3 Edge Functions | Múltiplas |
-| 3 | SSRF vulnerability | 🚨 CRÍTICA | `transcribe-audio/index.ts` | 19-26 |
-| 4 | Sem autenticação em LGPD | 🚨 CRÍTICA | `lgpd-requests/index.ts` | 20-27 |
-| 5 | Rate limiting ineficaz | ⚠️ ALTA | `nat-ai-chat/index.ts` | 387-407 |
-| 6 | Zero testes | ⚠️ ALTA | Todo o projeto | N/A |
-| 7 | JSON parsing inseguro | ⚠️ ALTA | 4 Edge Functions | Múltiplas |
-| 8 | AsyncStorage fragmentado | ⚠️ ALTA | 5 arquivos | Múltiplas |
-| 9 | ThemeContext morto | ⚠️ MÉDIA | `src/contexts/ThemeContext.tsx`, `App.tsx` | 11, Todo |
-| 10 | Sem timeout em fetch | ⚠️ MÉDIA | 3 Edge Functions | Múltiplas |
+| #   | Problema                     | Severidade | Arquivos Afetados                          | Linha(s)  |
+| --- | ---------------------------- | ---------- | ------------------------------------------ | --------- |
+| 1   | API Keys expostas no bundle  | 🚨 CRÍTICA | `src/services/ai.ts`, `src/config/api.ts`  | 15-23, 93 |
+| 2   | API Keys em URL query params | 🚨 CRÍTICA | 3 Edge Functions                           | Múltiplas |
+| 3   | SSRF vulnerability           | 🚨 CRÍTICA | `transcribe-audio/index.ts`                | 19-26     |
+| 4   | Sem autenticação em LGPD     | 🚨 CRÍTICA | `lgpd-requests/index.ts`                   | 20-27     |
+| 5   | Rate limiting ineficaz       | ⚠️ ALTA    | `nat-ai-chat/index.ts`                     | 387-407   |
+| 6   | Zero testes                  | ⚠️ ALTA    | Todo o projeto                             | N/A       |
+| 7   | JSON parsing inseguro        | ⚠️ ALTA    | 4 Edge Functions                           | Múltiplas |
+| 8   | AsyncStorage fragmentado     | ⚠️ ALTA    | 5 arquivos                                 | Múltiplas |
+| 9   | ThemeContext morto           | ⚠️ MÉDIA   | `src/contexts/ThemeContext.tsx`, `App.tsx` | 11, Todo  |
+| 10  | Sem timeout em fetch         | ⚠️ MÉDIA   | 3 Edge Functions                           | Múltiplas |
 
 ---
 
@@ -188,6 +188,7 @@ Implementação de Design System (Bubblegum) de **qualidade profissional**. Comp
 **Análise Linha por Linha:**
 
 #### ✅ **Imports e Estrutura** (Linhas 1-22)
+
 ```typescript
 // Linha 16-21: Lazy loading de Haptics (EXCELENTE prática)
 let Haptics: any = null;
@@ -197,9 +198,11 @@ try {
   // expo-haptics não disponível, ignorar
 }
 ```
+
 **Análise:** Implementação robusta de feature flag opcional. Não quebra se `expo-haptics` não estiver instalado.
 
 #### ✅ **TypeScript Typing** (Linhas 40-79)
+
 ```typescript
 export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   children: React.ReactNode;
@@ -209,12 +212,15 @@ export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   accessibilityLabel: string; // OBRIGATÓRIO ✅
 }
 ```
+
 **Análise:**
+
 - ✅ Extends de `TouchableOpacityProps` com `Omit<..., 'style'>` - evita conflito de tipos
 - ✅ `accessibilityLabel` obrigatório - WCAG 2.1 compliance
 - ✅ Tipos bem definidos (`ButtonVariant`, `ButtonSize`)
 
 #### ✅ **Component Logic** (Linhas 81-172)
+
 ```typescript
 // Linha 117-130: Haptic feedback opcional
 const handlePress = (event: any) => {
@@ -231,12 +237,15 @@ const handlePress = (event: any) => {
   }
 };
 ```
+
 **Análise:**
+
 - ✅ Try-catch duplo (lazy load + execution) - extremamente robusto
 - ✅ Fallback para `1` se `Light` não existir
 - ✅ Não quebra se haptics falhar
 
 #### ✅ **Acessibilidade** (Linhas 136-143)
+
 ```typescript
 <TouchableOpacity
   accessible={true}
@@ -248,12 +257,15 @@ const handlePress = (event: any) => {
   // ...
 >
 ```
+
 **Análise:**
+
 - ✅ WCAG 2.1 AA compliant
 - ✅ `accessibilityState` com estado de `disabled`
 - ✅ `activeOpacity` customizado para feedback visual
 
 #### ✅ **Styles** (Linhas 205-327)
+
 ```typescript
 // Linha 211-215: Área de toque mínima WCAG
 base: {
@@ -265,7 +277,9 @@ base: {
   minWidth: 44,  // ✅ WCAG 2.1 mínimo
 },
 ```
+
 **Análise:**
+
 - ✅ 44x44px mínimo (WCAG 2.1 Level AA guideline)
 - ✅ Variants bem separadas (primary, secondary, destructive, outline, ghost)
 - ✅ Sizes bem definidas (sm, md, lg)
@@ -273,6 +287,7 @@ base: {
 **PROBLEMAS:** **NENHUM** 🎉
 
 **SUGESTÕES DE MELHORIA:**
+
 1. Adicionar `testID` prop para testes E2E
 2. Considerar adicionar variant `link` (texto sem background)
 3. Documentar com Storybook ou similar
@@ -286,6 +301,7 @@ base: {
 **Análise Linha por Linha:**
 
 #### ✅ **Props Interface** (Linhas 38-77)
+
 ```typescript
 export interface CardProps {
   children: React.ReactNode;
@@ -298,7 +314,9 @@ export interface CardProps {
   accessibilityLabel?: string; // ⚠️ Opcional, mas deveria ser obrigatório se onPress presente
 }
 ```
+
 **Análise:**
+
 - ✅ Props bem definidas e documentadas
 - ⚠️ **PROBLEMA MENOR:** `accessibilityLabel` é opcional, mas na linha 106 usa fallback
   ```typescript
@@ -308,6 +326,7 @@ export interface CardProps {
   **Solução:** Tornar obrigatório quando `onPress` presente via conditional type
 
 #### ✅ **Conditional Rendering** (Linhas 113-172)
+
 ```typescript
 // Renderizar como TouchableOpacity ou View dependendo de onPress
 if (onPress) {
@@ -316,11 +335,14 @@ if (onPress) {
 
 return <View ...>{/* mesmo conteúdo */}</View>;
 ```
+
 **Análise:**
+
 - ✅ Lógica correta: só usa `TouchableOpacity` se `onPress` presente
 - ⚠️ **CODE SMELL:** Duplicação de código (header e content repetidos 2x)
 
 **Solução:**
+
 ```typescript
 const renderContent = () => (
   <>
@@ -336,9 +358,11 @@ return <View ...>{renderContent()}</View>;
 ```
 
 **PROBLEMAS:**
+
 1. **CODE SMELL (Linha 113-172):** Duplicação de código - Score: -0.5 pontos
 
 **SUGESTÕES:**
+
 1. Refatorar para eliminar duplicação
 2. Adicionar variant `gradient` para cards especiais
 3. Adicionar prop `onLongPress` para ações secundárias
@@ -352,6 +376,7 @@ return <View ...>{renderContent()}</View>;
 **Análise Linha por Linha:**
 
 #### ✅ **State Management** (Linhas 85-105)
+
 ```typescript
 const [isFocused, setIsFocused] = useState(false);
 
@@ -359,18 +384,17 @@ const hasError = !!error;
 const isDisabled = !editable;
 
 // Linha 90-95: Lógica de cor da borda
-const borderColor = hasError
-  ? colors.destructive
-  : isFocused
-  ? colors.primary
-  : colors.border;
+const borderColor = hasError ? colors.destructive : isFocused ? colors.primary : colors.border;
 ```
+
 **Análise:**
+
 - ✅ Estado de foco gerenciado corretamente
 - ✅ Lógica condicional limpa e legível
 - ✅ Priorização: erro > focus > default
 
 #### ✅ **Acessibilidade** (Linhas 151-157)
+
 ```typescript
 <TextInput
   accessible={true}
@@ -380,12 +404,15 @@ const borderColor = hasError
   // ...
 />
 ```
+
 **Análise:**
+
 - ✅ Fallbacks múltiplos para `accessibilityLabel`
 - ✅ `accessibilityHint` usa `helperText` ou `error` dinamicamente
 - ✅ Estado de `disabled` propagado corretamente
 
 #### ✅ **Error Handling** (Linhas 162-170)
+
 ```typescript
 {(helperText || error) && (
   <Text
@@ -397,12 +424,15 @@ const borderColor = hasError
   </Text>
 )}
 ```
+
 **Análise:**
+
 - ✅ `accessibilityLiveRegion` com `assertive` para erros - screen readers anunciam imediatamente
 - ✅ `polite` para helper text - não interrompe leitura
 - ✅ Prioriza `error` sobre `helperText`
 
 #### ⚠️ **Styles** (Linhas 205-210)
+
 ```typescript
 inputContainerFocused: {
   borderColor: colors.primary,
@@ -411,16 +441,20 @@ inputContainerFocused: {
   borderWidth: 3,
 },
 ```
+
 **Análise:**
+
 - ⚠️ **TYPE ASSERTION:** `(shadows as any)` indica problema de tipagem
 - **Causa:** `shadows` pode não ter `light?.xs`
 - **Impacto:** Baixo - tem fallback `|| {}`
 - **Solução:** Tipar `shadows` corretamente em `theme/colors.ts`
 
 **PROBLEMAS:**
+
 1. **Type assertion** (Linha 208) - Score: -0.5 pontos
 
 **SUGESTÕES:**
+
 1. Adicionar `maxLength` visual indicator (contador de caracteres)
 2. Adicionar prop `autoComplete` para melhor UX
 3. Adicionar suporte a máscaras (telefone, CPF, etc)
@@ -434,6 +468,7 @@ inputContainerFocused: {
 **Análise Linha por Linha:**
 
 #### ✅ **Variants** (Linhas 80-101)
+
 ```typescript
 warningContainer: {
   backgroundColor: colors.accent, // Amarelo pastel
@@ -447,12 +482,15 @@ successContainer: {
   opacity: 0.8,
 },
 ```
+
 **Análise:**
+
 - ⚠️ **PROBLEMA:** `warning` e `success` usam a MESMA cor base (`colors.accent`)
 - **Impacto:** Difícil distinguir visualmente entre aviso e sucesso
 - **Acessibilidade:** Pode violar WCAG se cores não tiverem contraste suficiente
 
 **Solução:**
+
 ```typescript
 // Adicionar cores específicas no theme
 successContainer: {
@@ -467,10 +505,12 @@ warningContainer: {
 ```
 
 **PROBLEMAS:**
+
 1. **Cores duplicadas** (Linhas 87-101) - Score: -1.0 ponto
 2. **Falta cor `success` dedicada** no tema
 
 **SUGESTÕES:**
+
 1. Adicionar cores `success`, `warning`, `info` no tema
 2. Adicionar variant `neutral` (cinza)
 3. Adicionar prop `closable` com botão X
@@ -484,6 +524,7 @@ warningContainer: {
 **Análise Linha por Linha:**
 
 #### ✅ **Animações** (Linhas 16-34)
+
 ```typescript
 const fadeAnim = useRef(new Animated.Value(0)).current;
 const scaleAnim = useRef(new Animated.Value(0.8)).current;
@@ -505,13 +546,16 @@ useEffect(() => {
   ]).start();
 }, []);
 ```
+
 **Análise:**
+
 - ✅ `useNativeDriver: true` - animações rodam na thread nativa (60 FPS)
 - ✅ `Animated.parallel` - fade e scale simultâneos
 - ✅ `spring` physics-based - mais natural que `timing`
 - ⚠️ **MEMORY LEAK?** - `useEffect` sem cleanup e sem dependencies
 
 **Problema:**
+
 ```typescript
 // ❌ Sem cleanup
 useEffect(() => {
@@ -530,19 +574,24 @@ useEffect(() => {
 ```
 
 #### ✅ **Memoization** (Linha 14)
+
 ```typescript
 export const MessageItem = React.memo<MessageItemProps>(({ message, onPress }) => {
   // ...
 });
 ```
+
 **Análise:**
+
 - ✅ `React.memo` previne re-renders desnecessários
 - ✅ `displayName` definido (linha 90) para DevTools
 
 **PROBLEMAS:**
+
 1. **Memory leak potencial** (Linha 19-34) - Score: -1.0 ponto
 
 **SUGESTÕES:**
+
 1. Adicionar cleanup nas animações
 2. Adicionar prop `onLongPress` para copiar mensagem
 3. Adicionar indicador de "lido/não lido"
@@ -564,23 +613,19 @@ Screens bem estruturadas, com boa separação de lógica e UI. Performance otimi
 **Análise Linha por Linha:**
 
 #### ✅ **Custom Hook** (Linhas 115-124)
+
 ```typescript
-const {
-  messages,
-  loading,
-  initialLoading,
-  error,
-  sendMessage,
-  resetChat,
-  reloadHistory,
-  userContext,
-} = useChatOptimized(); // ✅ Hook bem abstraído
+const { messages, loading, initialLoading, error, sendMessage, resetChat, reloadHistory, userContext } =
+  useChatOptimized(); // ✅ Hook bem abstraído
 ```
+
 **Análise:**
+
 - ✅ Toda lógica de chat encapsulada em hook customizado
 - ✅ Separação de concerns: UI vs Business Logic
 
 #### ✅ **Performance Optimization** (Linhas 286-322)
+
 ```typescript
 <FlatList
   ref={flatListRef}
@@ -596,13 +641,16 @@ const {
   maintainVisibleContentPosition={{ minIndexForVisible: 0 }}
 />
 ```
+
 **Análise:**
+
 - ✅ **EXCELENTE configuração de FlatList**
 - ✅ `removeClippedSubviews` - remove views fora da tela (economiza memória)
 - ✅ `windowSize={10}` - renderiza apenas 10 itens além dos visíveis
 - ✅ `maintainVisibleContentPosition` - mantém posição ao adicionar mensagens
 
 #### ✅ **Memoization** (Linhas 207-214)
+
 ```typescript
 const renderMessageItem = useCallback(
   ({ item }: { item: Message }) => (
@@ -612,11 +660,14 @@ const renderMessageItem = useCallback(
 
 const keyExtractor = useCallback((item: Message) => String(item.id), []);
 ```
+
 **Análise:**
+
 - ✅ `useCallback` previne re-criação de funções a cada render
 - ✅ `keyExtractor` memoizado - melhora performance do FlatList
 
 #### ✅ **Quick Actions** (Linhas 99-106)
+
 ```typescript
 const QUICK_ACTIONS: QuickAction[] = [
   { icon: '🤢', text: 'Enjoo matinal', message: 'Enjoo está me incomodando...' },
@@ -627,12 +678,15 @@ const QUICK_ACTIONS: QuickAction[] = [
   { icon: '🚨', text: 'Preocupada', message: '...', isUrgent: true }, // ✅ Flag de urgência
 ];
 ```
+
 **Análise:**
+
 - ✅ UX excelente - atalhos para perguntas comuns
 - ✅ `isUrgent` flag para destaque visual
 - ✅ Emojis para comunicação visual rápida
 
 #### ⚠️ **Filtro de Actions** (Linhas 183-199)
+
 ```typescript
 const filteredQuickActions = useMemo(() => {
   if (!userContext) return QUICK_ACTIONS;
@@ -640,33 +694,34 @@ const filteredQuickActions = useMemo(() => {
   if (userContext.type === 'gestante') {
     return QUICK_ACTIONS;
   } else if (userContext.type === 'mae') {
-    return QUICK_ACTIONS.filter(action =>
-      !action.message.includes('gravidez') &&
-      !action.message.includes('gestantes')
+    return QUICK_ACTIONS.filter(
+      (action) => !action.message.includes('gravidez') && !action.message.includes('gestantes')
     );
   }
 
   return QUICK_ACTIONS;
 }, [userContext]);
 ```
+
 **Análise:**
+
 - ⚠️ **PROBLEMA:** Filtro apenas para 'mae', não para 'tentante'
 - ⚠️ **PROBLEM:** Usa `includes` em `message` (case-sensitive)
 - **Impacto:** Ações não filtradas corretamente para todos os tipos
 
 **Solução:**
+
 ```typescript
 const filteredQuickActions = useMemo(() => {
   if (!userContext?.type) return QUICK_ACTIONS;
 
   const filters = {
     gestante: () => QUICK_ACTIONS,
-    mae: () => QUICK_ACTIONS.filter(a =>
-      !/gravid|gestan/i.test(a.message) // Regex case-insensitive
-    ),
-    tentante: () => QUICK_ACTIONS.filter(a =>
-      !/semana|trimestre/i.test(a.message)
-    ),
+    mae: () =>
+      QUICK_ACTIONS.filter(
+        (a) => !/gravid|gestan/i.test(a.message) // Regex case-insensitive
+      ),
+    tentante: () => QUICK_ACTIONS.filter((a) => !/semana|trimestre/i.test(a.message)),
   };
 
   return filters[userContext.type]() || QUICK_ACTIONS;
@@ -674,10 +729,12 @@ const filteredQuickActions = useMemo(() => {
 ```
 
 **PROBLEMAS:**
+
 1. **Filtro incompleto** (Linhas 183-199) - Score: -0.5 pontos
 2. **handleMessagePress vazio** (Linha 202-204) - função não implementada
 
 **SUGESTÕES:**
+
 1. Implementar `handleMessagePress` (copiar mensagem, etc)
 2. Adicionar botão "Scroll to bottom" quando não está no final
 3. Adicionar indicador de "typing" quando IA está respondendo
@@ -691,6 +748,7 @@ const filteredQuickActions = useMemo(() => {
 **Análise Linha por Linha:**
 
 #### ⚠️ **AsyncStorage Direto** (Linhas 37-44)
+
 ```typescript
 const loadUserProfile = async () => {
   const profileJson = await AsyncStorage.getItem('userProfile'); // ❌ AsyncStorage direto
@@ -701,7 +759,9 @@ const loadUserProfile = async () => {
   }
 };
 ```
+
 **Análise:**
+
 - ❌ **PROBLEMA CRÍTICO:** AsyncStorage chamado diretamente
 - **Impacto:**
   - Performance degradada (múltiplas leituras do disco)
@@ -710,6 +770,7 @@ const loadUserProfile = async () => {
 - **Solução:** Usar `UserProfileContext` (recomendado em análise anterior)
 
 #### ⚠️ **Geração de Plano** (Linhas 60-88)
+
 ```typescript
 const generateTodaysPlan = async () => {
   setLoading(true);
@@ -727,7 +788,7 @@ const generateTodaysPlan = async () => {
       await saveDailyPlan({
         user_id: userId,
         date: today,
-        ...planData
+        ...planData,
       });
     }
   } catch (error) {
@@ -738,7 +799,9 @@ const generateTodaysPlan = async () => {
   }
 };
 ```
+
 **Análise:**
+
 - ❌ **PROBLEMA:** Chama `generateDailyPlan` de `ai.ts` que usa API keys no client
 - ❌ **PROBLEMA:** AsyncStorage lido 2x na mesma função
 - **Solução:**
@@ -746,6 +809,7 @@ const generateTodaysPlan = async () => {
   2. Usar UserProfileContext
 
 #### ✅ **UI/UX** (Linhas 129-154)
+
 ```typescript
 <View style={styles.quickActionsContainer}>
   <QuickActionButton
@@ -761,15 +825,19 @@ const generateTodaysPlan = async () => {
   // ...
 </View>
 ```
+
 **Análise:**
+
 - ✅ Grid de ações rápidas - UX excelente
 - ⚠️ **TYPE ASSERTION:** `as never` indica problema de tipagem de navegação
 
 **PROBLEMAS:**
+
 1. **AsyncStorage direto** (Linhas 38, 63, 70) - Score: -1.5 pontos
 2. **API call no client** (Linha 66) - Score: -0.5 pontos
 
 **SUGESTÕES:**
+
 1. Migrar para UserProfileContext
 2. Usar Edge Function para plano diário
 3. Adicionar skeleton loading durante carregamento do plano
@@ -783,6 +851,7 @@ const generateTodaysPlan = async () => {
 **Análise Linha por Linha:**
 
 #### ✅ **Multi-step Logic** (Linhas 29-35)
+
 ```typescript
 const [step, setStep] = useState(1);
 const [name, setName] = useState('');
@@ -792,11 +861,14 @@ const [babyName, setBabyName] = useState('');
 const [preferences, setPreferences] = useState<string[]>([]);
 const [loading, setLoading] = useState(false);
 ```
+
 **Análise:**
+
 - ✅ Estado bem gerenciado com múltiplos `useState`
 - ⚠️ **SUGESTÃO:** Usar `useReducer` para melhor organização
 
 #### ✅ **Validation** (Linhas 55-73)
+
 ```typescript
 const handleNext = () => {
   if (step === 1 && !name.trim()) {
@@ -814,19 +886,26 @@ const handleNext = () => {
   // ...
 };
 ```
+
 **Análise:**
+
 - ✅ Validação por step
 - ✅ Mensagens de erro amigáveis
 - ⚠️ **SUGESTÃO:** Desabilitar botão "Próximo" em vez de mostrar alert
 
 #### ⚠️ **Criação de Conta** (Linhas 79-84)
+
 ```typescript
-const { data: { user } } = await supabase.auth.signUp({
+const {
+  data: { user },
+} = await supabase.auth.signUp({
   email: `${Date.now()}@temp.com`, // ❌ Email temporário
   password: `${Date.now()}-${Math.random()}`, // ❌ Senha temporária
 });
 ```
+
 **Análise:**
+
 - ❌ **PROBLEMA:** Email e senha temporários são **má prática**
 - **Impacto:**
   - Usuário não pode fazer login novamente
@@ -835,27 +914,36 @@ const { data: { user } } = await supabase.auth.signUp({
 - **Solução:** Usar `signInAnonymously()` ou pedir email real
 
 **Solução:**
+
 ```typescript
 // Opção 1: Anonymous Auth
-const { data: { user } } = await supabase.auth.signInAnonymously();
+const {
+  data: { user },
+} = await supabase.auth.signInAnonymously();
 
 // Opção 2: Email real
-const { data: { user } } = await supabase.auth.signUp({
+const {
+  data: { user },
+} = await supabase.auth.signUp({
   email: emailFromInput,
   password: passwordFromInput,
 });
 ```
 
 #### ✅ **Salvar Dados** (Linhas 106-108)
+
 ```typescript
 await AsyncStorage.setItem('onboarded', 'true');
 await AsyncStorage.setItem('userId', user.id);
 await AsyncStorage.setItem('userProfile', JSON.stringify(profile));
 ```
+
 **Análise:**
+
 - ✅ Salva localmente para acesso offline
 - ⚠️ **PROBLEMA:** 3 chamadas AsyncStorage sequenciais
 - **Solução:** Usar `multiSet`
+
 ```typescript
 await AsyncStorage.multiSet([
   ['onboarded', 'true'],
@@ -865,10 +953,12 @@ await AsyncStorage.multiSet([
 ```
 
 **PROBLEMAS:**
+
 1. **Email/senha temporários** (Linhas 80-82) - Score: -1.0 ponto
 2. **AsyncStorage não otimizado** (Linhas 106-108) - Score: -0.5 pontos
 
 **SUGESTÕES:**
+
 1. Usar `signInAnonymously` ou pedir email real
 2. Otimizar AsyncStorage com `multiSet`
 3. Adicionar indicador de progresso (step 1/4, 2/4, etc)
@@ -890,6 +980,7 @@ Pasta com **problemas críticos de segurança**. API keys expostas no client-sid
 **Análise Linha por Linha:**
 
 #### 🚨 **VULNERABILIDADE CRÍTICA** (Linhas 1-3, 93-97)
+
 ```typescript
 // Linha 2: Importa API_CONFIG
 import { API_CONFIG, API_URLS } from '../config/api';
@@ -909,6 +1000,7 @@ const response = await axios.post(
 ```
 
 **Análise:**
+
 - 🚨 **CRÍTICO:** API key é incluída no bundle JavaScript
 - **Como funciona:**
   1. `API_CONFIG.CLAUDE_API_KEY` = `process.env.EXPO_PUBLIC_CLAUDE_API_KEY`
@@ -917,6 +1009,7 @@ const response = await axios.post(
   4. **Resultado:** Key comprometida em minutos
 
 **Prova de Conceito:**
+
 ```bash
 # 1. Baixar APK
 adb pull /data/app/com.exemplo.app/base.apk
@@ -931,11 +1024,13 @@ grep -r "CLAUDE_API_KEY" base/
 ```
 
 **Impacto:**
+
 - 🚨 **Custos:** Qualquer pessoa pode fazer requisições ilimitadas
 - 🚨 **Abuse:** Uso da key para fins maliciosos
 - 🚨 **Violação:** Quebra ToS da Anthropic/OpenAI
 
 **Solução URGENTE:**
+
 ```typescript
 // ❌ NUNCA FAZER
 headers: { 'x-api-key': API_CONFIG.CLAUDE_API_KEY }
@@ -952,6 +1047,7 @@ export const chatWithNATIA = async (...) => {
 #### 🚨 **Funções Perigosas** (Linhas 64-105, 107-139, 141-183, 185-208)
 
 **Funções que DEVEM ser removidas:**
+
 1. `chatWithAI` (linhas 64-105) - Claude direto
 2. `validateWithGPT` (linhas 107-139) - GPT direto
 3. `generateDailyPlan` (linhas 141-183) - GPT direto
@@ -960,12 +1056,9 @@ export const chatWithNATIA = async (...) => {
 **Todas expõem API keys!**
 
 #### ✅ **Única Função Segura** (Linhas 29-58)
+
 ```typescript
-export const chatWithNATIA = async (
-  message: string,
-  context: ChatContext,
-  userId: string
-): Promise<string> => {
+export const chatWithNATIA = async (message: string, context: ChatContext, userId: string): Promise<string> => {
   const { supabase } = await import('./supabase');
 
   const { data, error } = await supabase.functions.invoke('nathia-chat', {
@@ -978,15 +1071,19 @@ export const chatWithNATIA = async (
   return data.response;
 };
 ```
+
 **Análise:**
+
 - ✅ Usa Edge Function (segura)
 - ✅ API key fica no servidor Supabase
 - ✅ Única função que deve permanecer
 
 **PROBLEMAS:**
+
 1. **API keys expostas** (Linhas 93, 127, 162, 197) - Score: -7.0 pontos 🚨
 
 **AÇÃO URGENTE:**
+
 1. **DELETAR** funções: `chatWithAI`, `validateWithGPT`, `generateDailyPlan`, `generateImage`
 2. **MANTER** apenas: `chatWithNATIA`, `detectUrgency`
 3. **CRIAR** Edge Functions para cada funcionalidade deletada
@@ -1000,6 +1097,7 @@ export const chatWithNATIA = async (
 **Análise Linha por Linha:**
 
 #### ✅ **Configuração** (Linhas 8-23)
+
 ```typescript
 const supabaseUrl = SUPABASE_CONFIG.URL || '';
 const supabaseAnonKey = SUPABASE_CONFIG.ANON_KEY || '';
@@ -1018,25 +1116,27 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
 });
 ```
+
 **Análise:**
+
 - ✅ Validação de configuração
 - ✅ AsyncStorage para persistência de sessão
 - ✅ Auto-refresh de token
 - ✅ `detectSessionInUrl: false` - correto para React Native
 
 #### ✅ **Funções Helper** (Linhas 68-76, 79-87, 90-100)
+
 ```typescript
 export const saveUserProfile = async (profile: Partial<UserProfile>) => {
-  const { data, error } = await supabase
-    .from('user_profiles')
-    .upsert(profile)
-    .select();
+  const { data, error } = await supabase.from('user_profiles').upsert(profile).select();
 
   if (error) throw error;
   return data;
 };
 ```
+
 **Análise:**
+
 - ✅ `upsert` - insert ou update automaticamente
 - ✅ `.select()` - retorna dados atualizados
 - ✅ Lança erro para ser tratado pelo caller
@@ -1044,6 +1144,7 @@ export const saveUserProfile = async (profile: Partial<UserProfile>) => {
 **PROBLEMAS:** **NENHUM** 🎉
 
 **SUGESTÕES:**
+
 1. Adicionar retry logic com `smartRetry` de `utils/retry.ts`
 2. Adicionar cache com React Query
 3. Adicionar tipos mais específicos (usar database types do Supabase CLI)
@@ -1063,6 +1164,7 @@ Hooks customizados bem abstraídos. Boa separação de lógica.
 **Análise na análise anterior já cobriu este arquivo detalhadamente.**
 
 **Resumo de Problemas:**
+
 1. AsyncStorage fragmentado (linhas 111, 123)
 2. Possível memory leak em setInterval (linha 102)
 3. Detecção de urgência fraca (linha 165)
@@ -1082,15 +1184,18 @@ Utilitários robustos e bem implementados.
 **Propósito:** Sistema de logging estruturado
 
 **Análise:**
+
 - ✅ Níveis de log (DEBUG, INFO, WARN, ERROR, CRITICAL)
 - ✅ Salva logs críticos localmente
 - ✅ Singleton pattern
 - ✅ Formatação consistente
 
 **Único problema:**
+
 - Linha 76: `// TODO: Integrar com Sentry, Datadog, etc.`
 
 **SUGESTÕES:**
+
 1. Implementar integração com Sentry (conforme TODO)
 2. Adicionar `flush()` para enviar logs em batch
 3. Adicionar filtros de log por categoria
@@ -1102,6 +1207,7 @@ Utilitários robustos e bem implementados.
 **Propósito:** Sistema de retry com backoff exponencial
 
 **Análise:**
+
 - ✅ Backoff exponencial correto
 - ✅ `isRecoverableError` detecta erros de rede
 - ✅ `smartRetry` só retenta erros recuperáveis
@@ -1116,11 +1222,13 @@ Utilitários robustos e bem implementados.
 **Propósito:** Sistema de salvamento offline e sincronização
 
 **Análise:**
+
 - ✅ Salva mensagens offline
 - ✅ Sincroniza quando volta online
 - ✅ Limpa mensagens antigas (>24h)
 
 **Problema menor:**
+
 - Linha 93-111: Cleanup pode falhar silenciosamente
 
 ---
@@ -1132,6 +1240,7 @@ Utilitários robustos e bem implementados.
 **MÚLTIPLOS PROBLEMAS DE SEGURANÇA** conforme análise detalhada do agente.
 
 Principais problemas (já documentados na análise do agente):
+
 1. 🚨 API keys em URL query params (3 funções)
 2. 🚨 SSRF em transcribe-audio
 3. 🚨 Sem autenticação em lgpd-requests
@@ -1147,10 +1256,12 @@ Principais problemas (já documentados na análise do agente):
 ### 1. API Keys Expostas no Client (Severidade: 10/10)
 
 **Arquivos Afetados:**
+
 - `src/config/api.ts` (linhas 14-23)
 - `src/services/ai.ts` (linhas 93, 127, 162, 197)
 
 **Como Exploitar:**
+
 ```bash
 # Passo 1: Baixar APK
 wget https://exemplo.com/app.apk
@@ -1166,6 +1277,7 @@ grep -r "sk-ant-" decoded/
 ```
 
 **Custo Potencial:**
+
 - Claude: $0.015/1K tokens = $15/milhão
 - Se atacante fizer 10 milhões de requests: **$150.000 de custo**
 
@@ -1178,6 +1290,7 @@ grep -r "sk-ant-" decoded/
 **Arquivo:** `supabase/functions/transcribe-audio/index.ts`
 
 **Exploit:**
+
 ```javascript
 // Atacante envia:
 POST /transcribe-audio
@@ -1191,11 +1304,13 @@ fetch("http://localhost:5432/admin/reset-database")
 ```
 
 **Impacto:**
+
 - Acesso a serviços internos
 - Scan de rede interna
 - Potencial RCE
 
 **Solução:**
+
 ```typescript
 // Validar URL
 const url = new URL(audioUrl);
@@ -1204,11 +1319,8 @@ if (!['https:'].includes(url.protocol)) {
 }
 
 // Bloquear IPs privados
-const privateRanges = [
-  /^127\./, /^10\./, /^172\.(1[6-9]|2[0-9]|3[0-1])\./,
-  /^192\.168\./, /^169\.254\./
-];
-if (privateRanges.some(r => r.test(url.hostname))) {
+const privateRanges = [/^127\./, /^10\./, /^172\.(1[6-9]|2[0-9]|3[0-1])\./, /^192\.168\./, /^169\.254\./];
+if (privateRanges.some((r) => r.test(url.hostname))) {
   throw new Error('Private IP not allowed');
 }
 ```
@@ -1220,6 +1332,7 @@ if (privateRanges.some(r => r.test(url.hostname))) {
 **Arquivo:** `supabase/functions/lgpd-requests/index.ts`
 
 **Exploit:**
+
 ```javascript
 // Atacante pode exportar dados de QUALQUER usuário:
 POST /lgpd-requests
@@ -1232,11 +1345,13 @@ POST /lgpd-requests
 ```
 
 **Impacto:**
+
 - **VIOLAÇÃO MASSIVA DE PRIVACIDADE**
 - Exposição de PII de todos os usuários
 - Multa LGPD potencial
 
 **Solução:**
+
 ```typescript
 // Verificar JWT e validar que userId = token.sub
 const authResult = await verifyAuth(req, supabase);
@@ -1255,29 +1370,29 @@ if (authResult.userId !== userId) {
 
 ### Cobertura de Código
 
-| Tipo | Atual | Meta | Gap |
-|------|-------|------|-----|
-| **Testes Unitários** | 0% | 80% | -80% |
-| **Testes Integração** | 0% | 60% | -60% |
-| **Testes E2E** | 0% | 40% | -40% |
+| Tipo                  | Atual | Meta | Gap  |
+| --------------------- | ----- | ---- | ---- |
+| **Testes Unitários**  | 0%    | 80%  | -80% |
+| **Testes Integração** | 0%    | 60%  | -60% |
+| **Testes E2E**        | 0%    | 40%  | -40% |
 
 ### Qualidade de Código
 
-| Métrica | Atual | Meta | Status |
-|---------|-------|------|--------|
-| **TypeScript Strict** | 70% | 100% | ⚠️ |
-| **ESLint Errors** | ~15 | 0 | ⚠️ |
-| **Code Smells** | ~30 | <10 | ⚠️ |
-| **Duplicação** | ~5% | <3% | ⚠️ |
+| Métrica               | Atual | Meta | Status |
+| --------------------- | ----- | ---- | ------ |
+| **TypeScript Strict** | 70%   | 100% | ⚠️     |
+| **ESLint Errors**     | ~15   | 0    | ⚠️     |
+| **Code Smells**       | ~30   | <10  | ⚠️     |
+| **Duplicação**        | ~5%   | <3%  | ⚠️     |
 
 ### Segurança
 
-| Categoria | Score | Status |
-|-----------|-------|--------|
-| **Authentication** | 6/10 | ⚠️ |
-| **Authorization** | 4/10 | 🚨 |
-| **Data Protection** | 3/10 | 🚨 |
-| **API Security** | 2/10 | 🚨 |
+| Categoria           | Score | Status |
+| ------------------- | ----- | ------ |
+| **Authentication**  | 6/10  | ⚠️     |
+| **Authorization**   | 4/10  | 🚨     |
+| **Data Protection** | 3/10  | 🚨     |
+| **API Security**    | 2/10  | 🚨     |
 
 ---
 
@@ -1322,20 +1437,24 @@ if (authResult.userId !== userId) {
 ## 📈 CRONOGRAMA DE IMPLEMENTAÇÃO
 
 ### Semana 1: Segurança Crítica
+
 - [ ] Remover API keys (dias 1-3)
 - [ ] Auth em LGPD (dia 4)
 - [ ] Fix SSRF (dia 5)
 
 ### Semana 2: Qualidade
+
 - [ ] Setup testes (dias 1-3)
 - [ ] AuthContext (dias 4-5)
 
 ### Semana 3: Features
+
 - [ ] UserProfileContext (dias 1-2)
 - [ ] Sentry (dia 3)
 - [ ] Analytics (dias 4-5)
 
 ### Semana 4: Otimização
+
 - [ ] Refatorações
 - [ ] Documentação
 - [ ] Code review
@@ -1347,6 +1466,7 @@ if (authResult.userId !== userId) {
 **Nossa Maternidade** é um projeto com **fundações sólidas** mas com **vulnerabilidades críticas de segurança** que precisam ser corrigidas **IMEDIATAMENTE**.
 
 **Prioridades:**
+
 1. 🚨 **Segurança** (Semana 1)
 2. ⚠️ **Qualidade** (Semanas 2-3)
 3. ✅ **Otimização** (Semana 4)

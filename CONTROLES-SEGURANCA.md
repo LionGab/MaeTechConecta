@@ -46,11 +46,13 @@
 ## 🎯 Permissões Configuradas
 
 ### READ (Leitura)
+
 - ✅ **Status:** Habilitado para todos
 - ✅ **Aprovação:** Não requerida
 - ✅ **Scope:** Todos os arquivos do projeto (exceto node_modules, .git)
 
 ### WRITE (Escrita)
+
 - ⚠️ **Status:** Habilitado com restrições
 - ⚠️ **Aprovação:** Sempre requerida
 - ⚠️ **Restrições:**
@@ -60,6 +62,7 @@
 - ✅ **Ações permitidas:** Fix suggestions, linter fixes, format, docs, refactor
 
 ### SHELL (Terminal)
+
 - ⚠️ **Status:** Habilitado com restrições
 - ⚠️ **Aprovação:** Sempre requerida
 - ✅ **Comandos permitidos:**
@@ -80,6 +83,7 @@
   - `sudo *`
 
 ### REVIEW (Revisão)
+
 - ✅ **Status:** Habilitado sem aprovação
 - ✅ **Ações:** Ler, analisar, sugerir, gerar relatórios
 - ❌ **Restrições:** Não pode aplicar correções automaticamente
@@ -89,17 +93,20 @@
 ## 🔐 Trust Levels
 
 ### Admin
+
 - ✅ Read, Write, Shell, Review, Approve
 - ✅ Gerenciar whitelist
 - ✅ Configurar sistema
 
 ### Reviewer
+
 - ✅ Read, Review, Suggest fixes
 - ✅ Gerar relatórios
 - ❌ Não pode aplicar correções automaticamente
 - ❌ Não pode fazer push
 
 ### Developer
+
 - ✅ Read, Write (scope específico)
 - ✅ Suggest fixes
 - ⚠️ Requer aprovação para write
@@ -107,6 +114,7 @@
 - ❌ Não pode modificar arquivos restritos
 
 ### Readonly
+
 - ✅ Read apenas
 - ✅ Logs de leitura
 - ❌ Nenhuma modificação
@@ -116,26 +124,31 @@
 ## 🚀 Como Usar
 
 ### 1. Verificar Permissão
+
 ```bash
 node scripts/review-manager.js check code-reviewer write src/components/Button.tsx
 ```
 
 ### 2. Registrar Log
+
 ```bash
 node scripts/review-manager.js log code-reviewer review src/components/Button.tsx 3 success
 ```
 
 ### 3. Gerar Relatório
+
 ```bash
 node scripts/review-manager.js report 2025-01-01 2025-01-30
 ```
 
 ### 4. Aprovar Ação
+
 ```bash
 node scripts/review-manager.js approve <approval_id>
 ```
 
 ### 5. Solicitar Aprovação Interativa
+
 ```bash
 node scripts/approval-prompt.js <approval_id>
 ```
@@ -180,6 +193,7 @@ node scripts/approval-prompt.js <approval_id>
 ## 🔒 Regras de Segurança
 
 ### ✅ Sempre
+
 1. Verificar whitelist antes de qualquer ação
 2. Registrar logs de todas as ações
 3. Requerer aprovação para write/shell
@@ -187,6 +201,7 @@ node scripts/approval-prompt.js <approval_id>
 5. Timeout de aprovação (300s padrão)
 
 ### ❌ Nunca
+
 1. Auto-aplicar correções críticas (severidade 4-5)
 2. Modificar arquivos restritos sem aprovação
 3. Executar comandos shell destrutivos
@@ -224,22 +239,26 @@ node scripts/approval-prompt.js <approval_id>
 ## 🎯 Workflow de Revisão Segura
 
 ### Passo 1: Agente Identifica Problema
+
 ```
 code-reviewer: "Encontrei bug em Button.tsx, severidade 3"
 ```
 
 ### Passo 2: Sistema Verifica Permissões
+
 ```bash
 node scripts/review-manager.js check code-reviewer suggest_fix src/components/Button.tsx
 # ✅ Permissão concedida (reviewer pode sugerir)
 ```
 
 ### Passo 3: Gerar Sugestão
+
 ```
 code-reviewer: "Sugestão de correção gerada..."
 ```
 
 ### Passo 4: Se Aplicar Correção (requer aprovação)
+
 ```bash
 node scripts/review-manager.js check code-reviewer write src/components/Button.tsx
 # ⚠️ Requer aprovação
@@ -248,6 +267,7 @@ node scripts/review-manager.js check code-reviewer write src/components/Button.t
 ```
 
 ### Passo 5: Usuário Aprova/Nega
+
 ```bash
 node scripts/approval-prompt.js <approval_id>
 # ⚠️ APROVAÇÃO REQUERIDA
@@ -256,6 +276,7 @@ node scripts/approval-prompt.js <approval_id>
 ```
 
 ### Passo 6: Aplicar Correção
+
 ```
 Aplicar correção...
 Registrar log...
@@ -267,21 +288,25 @@ Registrar log...
 ## 📊 Relatórios Disponíveis
 
 ### Relatório Diário
+
 ```bash
 node scripts/review-manager.js report 2025-01-30 2025-01-30
 ```
 
 ### Relatório Semanal
+
 ```bash
 node scripts/review-manager.js report 2025-01-23 2025-01-30
 ```
 
 ### Relatório Mensal
+
 ```bash
 node scripts/review-manager.js report 2025-01-01 2025-01-30
 ```
 
 **Saída:**
+
 ```json
 {
   "period": { "start": "2025-01-01", "end": "2025-01-30" },
@@ -307,6 +332,7 @@ node scripts/review-manager.js report 2025-01-01 2025-01-30
 ### Personalizar Permissões
 
 Editar `.cursor/cli.json`:
+
 ```json
 {
   "permissions": {
@@ -322,6 +348,7 @@ Editar `.cursor/cli.json`:
 ### Adicionar Agente à Whitelist
 
 Editar `.cursor/whitelist.json`:
+
 ```json
 {
   "agents": [
@@ -340,10 +367,11 @@ Editar `.cursor/whitelist.json`:
 ### Ajustar Retenção de Logs
 
 Editar `.cursor/cli.json`:
+
 ```json
 {
   "logging": {
-    "retention_days": 90  // Alterar para 30, 60, etc.
+    "retention_days": 90 // Alterar para 30, 60, etc.
   }
 }
 ```
@@ -364,6 +392,7 @@ Editar `.cursor/cli.json`:
 **Sistema de segurança pronto para uso!** 🔒✨
 
 Para começar, verifique permissões:
+
 ```bash
 node scripts/review-manager.js check code-reviewer read
 ```

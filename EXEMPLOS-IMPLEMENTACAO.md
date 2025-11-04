@@ -5,6 +5,7 @@
 ## PROBLEMA 1: ThemeContext Não Está Sendo Utilizado
 
 ### Antes (Padrão Atual - Quebrado)
+
 ```typescript
 // HomeScreen.tsx
 import { colors, spacing, typography } from '../theme/colors';
@@ -21,13 +22,14 @@ export default function HomeScreen() {
 ```
 
 ### Depois (Corrigido)
+
 ```typescript
 // HomeScreen.tsx
 import { useTheme } from '../contexts/ThemeContext';
 
 export default function HomeScreen() {
   const { theme, isDark } = useTheme();
-  
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -49,6 +51,7 @@ export default function HomeScreen() {
 ```
 
 **Mudanças Necessárias em ThemeContext:**
+
 ```typescript
 // src/contexts/ThemeContext.tsx - adicionar spacing e typography ao theme
 const theme = getTheme(isDark);
@@ -60,9 +63,9 @@ const value: ThemeContextType = {
   setThemeMode,
   theme,
   // Adicionar:
-  spacing,        // Do tema
-  typography,     // Do tema
-  borderRadius,   // Do tema
+  spacing, // Do tema
+  typography, // Do tema
+  borderRadius, // Do tema
 };
 ```
 
@@ -102,17 +105,17 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
     try {
       setLoading(true);
       setError(null);
-      
+
       // Tentar carregar do Supabase primeiro
       const { data: { user } } = await supabase.auth.getUser();
-      
+
       if (user) {
         const { data } = await supabase
           .from('user_profiles')
           .select('*')
           .eq('id', user.id)
           .single();
-        
+
         if (data) {
           setProfile(data as UserProfile);
           // Sincronizar com AsyncStorage
@@ -120,7 +123,7 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
           return;
         }
       }
-      
+
       // Fallback: carregar do AsyncStorage se Supabase falhar
       const profileJson = await AsyncStorage.getItem('userProfile');
       if (profileJson) {
@@ -190,6 +193,7 @@ export const useUserProfile = (): UserProfileContextType => {
 ### Como Usar em Componentes
 
 **Antes (Disperso):**
+
 ```typescript
 // HomeScreen.tsx
 const [userName, setUserName] = useState('');
@@ -210,6 +214,7 @@ const loadUserProfile = async () => {
 ```
 
 **Depois (Centralizado):**
+
 ```typescript
 // HomeScreen.tsx
 export default function HomeScreen() {
@@ -235,6 +240,7 @@ export default function HomeScreen() {
 ### Consolidação
 
 **Antes:**
+
 ```typescript
 // src/theme/colors.ts - básico
 // src/constants/theme.ts - expandido
@@ -242,18 +248,10 @@ export default function HomeScreen() {
 ```
 
 **Depois - Arquivo Único:**
+
 ```typescript
 // src/theme/index.ts
-export {
-  light,
-  dark,
-  colors,
-  shadows,
-  typography,
-  spacing,
-  borderRadius,
-  getTheme,
-} from './colors';
+export { light, dark, colors, shadows, typography, spacing, borderRadius, getTheme } from './colors';
 
 // Re-exportar scales expandidas de constants/theme
 export const themeScales = {
@@ -271,6 +269,7 @@ export type ThemeType = ReturnType<typeof getTheme>;
 ```
 
 **Usar em qualquer lugar:**
+
 ```typescript
 import { colors, spacing, themeScales } from '../theme';
 ```
@@ -309,7 +308,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const storedUserId = await AsyncStorage.getItem('userId');
       const onboarded = await AsyncStorage.getItem('onboarded');
-      
+
       if (storedUserId && onboarded === 'true') {
         setUserId(storedUserId);
       }
@@ -323,7 +322,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const onboard = useCallback(async (profile: Partial<UserProfile>) => {
     try {
       setError(null);
-      
+
       // Criar usuário
       const { data: { user } } = await supabase.auth.signUp({
         email: `${Date.now()}@temp.com`,
@@ -363,13 +362,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = useCallback(async () => {
     try {
       setError(null);
-      
+
       // Limpar AsyncStorage
       await AsyncStorage.multiRemove(['userId', 'onboarded', 'userProfile']);
-      
+
       // Logout do Supabase
       await supabase.auth.signOut();
-      
+
       setUserId(null);
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Erro no logout';
@@ -406,15 +405,16 @@ export const useAuth = (): AuthContextType => {
 ### Usar em AppNavigator
 
 **Antes (Acoplado):**
+
 ```typescript
 export function AppNavigator() {
   const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null);
-  
+
   // ... lógica complexa
-  
+
   return (
     {!isOnboarded ? (
-      <Stack.Screen 
+      <Stack.Screen
         name="Onboarding"
         initialParams={{ onComplete: () => setIsOnboarded(true) }}
       />
@@ -426,6 +426,7 @@ export function AppNavigator() {
 ```
 
 **Depois (Limpo):**
+
 ```typescript
 export function AppNavigator() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -484,6 +485,7 @@ export default function App() {
 ```
 
 **Ordem de Providers (de baixo para cima):**
+
 1. ErrorBoundary (top-level error handling)
 2. ThemeProvider (tema aplicado globalmente)
 3. AuthProvider (valida se está autenticado)
@@ -504,7 +506,7 @@ export function ContentCard({ contentId, title }: { contentId: string; title: st
   const handlePress = () => {
     // Opção 1: navigate com params (recomendado)
     navigation.navigate('ContentDetail', { contentId });
-    
+
     // Opção 2: deep link (se vier de fora da app)
     // navigation.navigate('ContentDetail', { contentId }); // Mesmo resultado
   };
@@ -573,18 +575,17 @@ describe('AuthContext', () => {
     const wrapper = ({ children }) => (
       <AuthProvider>{children}</AuthProvider>
     );
-    
+
     const { result } = renderHook(() => useAuth(), { wrapper });
-    
+
     expect(result.current.isAuthenticated).toBe(false);
-    
+
     await act(async () => {
       await result.current.onboard({ name: 'Maria' });
     });
-    
+
     expect(result.current.isAuthenticated).toBe(true);
     expect(result.current.userId).not.toBeNull();
   });
 });
 ```
-

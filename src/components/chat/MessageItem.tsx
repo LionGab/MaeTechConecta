@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text } from 'react-native';
-import { borderRadius, colors, spacing, typography } from '../../theme/colors';
+import { borderRadius, colors, spacing, typography } from '@/theme/colors';
 
 export interface MessageItemProps {
   message: {
@@ -41,16 +41,14 @@ export const MessageItem = React.memo<MessageItemProps>(({ message, onPress }) =
         {
           opacity: fadeAnim,
           transform: [{ scale: scaleAnim }],
-        }
+        },
       ]}
       accessible={true}
       accessibilityLabel={isUser ? 'Sua mensagem' : 'Mensagem da assistente'}
       accessibilityRole="text"
       accessibilityHint={message.content.substring(0, 100)}
     >
-      <Text style={[styles.text, isUser ? styles.userText : styles.assistantText]}>
-        {message.content}
-      </Text>
+      <Text style={[styles.text, isUser ? styles.userText : styles.assistantText]}>{message.content}</Text>
     </Animated.View>
   );
 });

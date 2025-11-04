@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserProfile } from '../services/supabase';
+import { UserProfile } from '@/services/supabase';
 
 export const useUserProfile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -35,4 +35,3 @@ export const useUserProfile = () => {
 
   return { profile, loading, updateProfile, reload: loadProfile };
 };
-

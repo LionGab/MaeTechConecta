@@ -52,22 +52,26 @@
 ## 🔐 Permissões Configuradas
 
 ### ✅ READ (Leitura)
+
 - **Status:** Habilitado para todos
 - **Aprovação:** Não requerida
 - **Scope:** Todos os arquivos do projeto
 
 ### ⚠️ WRITE (Escrita)
+
 - **Status:** Habilitado com restrições
 - **Aprovação:** Sempre requerida
-- **Restrições:** package.json, .env*, arquivos de config críticos
+- **Restrições:** package.json, .env\*, arquivos de config críticos
 
 ### ⚠️ SHELL (Terminal)
+
 - **Status:** Habilitado com restrições
 - **Aprovação:** Sempre requerida
 - **Permitido:** npm install, npm run lint, git status, expo start
 - **Bloqueado:** git push, gh pr create, npm publish, rm -rf
 
 ### ✅ REVIEW (Revisão)
+
 - **Status:** Habilitado sem aprovação
 - **Ações:** Ler, analisar, sugerir, gerar relatórios
 - **Restrições:** Não pode aplicar correções automaticamente
@@ -76,37 +80,40 @@
 
 ## 🎯 Trust Levels
 
-| Trust Level | Read | Write | Shell | Review | Approve | Whitelist |
-|-------------|------|-------|-------|--------|---------|-----------|
-| **Admin** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Reviewer** | ✅ | ⚠️* | ❌ | ✅ | ❌ | ❌ |
-| **Developer** | ✅ | ⚠️** | ❌ | ⚠️*** | ❌ | ❌ |
-| **Readonly** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Trust Level   | Read | Write  | Shell | Review   | Approve | Whitelist |
+| ------------- | ---- | ------ | ----- | -------- | ------- | --------- |
+| **Admin**     | ✅   | ✅     | ✅    | ✅       | ✅      | ✅        |
+| **Reviewer**  | ✅   | ⚠️\*   | ❌    | ✅       | ❌      | ❌        |
+| **Developer** | ✅   | ⚠️\*\* | ❌    | ⚠️\*\*\* | ❌      | ❌        |
+| **Readonly**  | ✅   | ❌     | ❌    | ❌       | ❌      | ❌        |
 
-*Requer aprovação
-**Scope específico + aprovação
-***Somente sugestões
+\*Requer aprovação
+**Scope específico + aprovação \***Somente sugestões
 
 ---
 
 ## 🚀 Como Usar AGORA
 
 ### Verificar Permissão
+
 ```bash
 npm run review:check code-reviewer write src/components/Button.tsx
 ```
 
 ### Registrar Log
+
 ```bash
 npm run review:log code-reviewer review src/components/Button.tsx 3 success
 ```
 
 ### Gerar Relatório
+
 ```bash
 npm run review:report 2025-01-01 2025-01-30
 ```
 
 ### Aprovar Ação
+
 ```bash
 npm run review:approve <approval_id>
 ```
@@ -116,6 +123,7 @@ npm run review:approve <approval_id>
 ## 📊 Sistema de Logs
 
 ### Estrutura
+
 ```
 .cursor/review-logs/
 ├── review-2025-01-30.json      # Logs diários
@@ -124,6 +132,7 @@ npm run review:approve <approval_id>
 ```
 
 ### Formato
+
 ```json
 {
   "timestamp": "2025-01-30T10:30:00.000Z",
@@ -138,6 +147,7 @@ npm run review:approve <approval_id>
 ```
 
 ### Retenção
+
 - **Período:** 90 dias
 - **Limite:** 1000 logs por arquivo (rotação automática)
 
@@ -146,6 +156,7 @@ npm run review:approve <approval_id>
 ## 🔒 Regras de Segurança
 
 ### ✅ Sempre
+
 1. Verificar whitelist antes de qualquer ação
 2. Registrar logs de todas as ações
 3. Requerer aprovação para write/shell
@@ -153,6 +164,7 @@ npm run review:approve <approval_id>
 5. Timeout de aprovação (300s padrão)
 
 ### ❌ Nunca
+
 1. Auto-aplicar correções críticas (severidade 4-5)
 2. Modificar arquivos restritos sem aprovação
 3. Executar comandos shell destrutivos
@@ -236,6 +248,7 @@ npm run review:approve <approval_id>
 **🎉 Sistema de segurança ATIVO e pronto para uso!**
 
 Para testar:
+
 ```bash
 npm run review:check code-reviewer read
 ```

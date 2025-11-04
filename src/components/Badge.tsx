@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { borderRadius, colors, spacing, typography } from '../theme/colors';
+import { borderRadius, colors, spacing, typography } from '@/theme/colors';
 
 /**
  * Badge Component - Sistema de Design Bubblegum
@@ -32,24 +32,10 @@ export interface BadgeProps {
   style?: ViewStyle;
 }
 
-export const Badge: React.FC<BadgeProps> = ({
-  children,
-  variant = 'info',
-  size = 'md',
-  style,
-}) => {
-  const containerStyle = [
-    styles.base,
-    styles[`${variant}Container`],
-    styles[`${size}Container`],
-    style,
-  ];
+export const Badge: React.FC<BadgeProps> = ({ children, variant = 'info', size = 'md', style }) => {
+  const containerStyle = [styles.base, styles[`${variant}Container`], styles[`${size}Container`], style];
 
-  const textStyle = [
-    styles.baseText,
-    styles[`${variant}Text`],
-    styles[`${size}Text`],
-  ];
+  const textStyle = [styles.baseText, styles[`${variant}Text`], styles[`${size}Text`]];
 
   return (
     <View

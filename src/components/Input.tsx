@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TextInputProps,
-  TextStyle,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { StyleSheet, Text, TextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { borderRadius, colors, shadows, spacing, typography } from '../theme/colors';
+import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
 
 /**
  * Input Component - Sistema de Design Bubblegum
@@ -88,20 +80,11 @@ export const Input: React.FC<InputProps> = ({
   const isDisabled = !editable;
 
   // Determinar cor da borda
-  const borderColor = hasError
-    ? colors.destructive
-    : isFocused
-    ? colors.primary
-    : colors.border;
+  const borderColor = hasError ? colors.destructive : isFocused ? colors.primary : colors.border;
 
   // Determinar cor do ícone
   const finalIconColor =
-    iconColor ||
-    (hasError
-      ? colors.destructive
-      : isFocused
-      ? colors.primary
-      : colors.mutedForeground);
+    iconColor || (hasError ? colors.destructive : isFocused ? colors.primary : colors.mutedForeground);
 
   return (
     <View style={[styles.container, containerStyle]}>
@@ -124,23 +107,11 @@ export const Input: React.FC<InputProps> = ({
         ]}
       >
         {/* Ícone */}
-        {icon && (
-          <Icon
-            name={icon}
-            size={22}
-            color={finalIconColor}
-            style={styles.icon}
-          />
-        )}
+        {icon && <Icon name={icon} size={22} color={finalIconColor} style={styles.icon} />}
 
         {/* TextInput */}
         <TextInput
-          style={[
-            styles.input,
-            icon && styles.inputWithIcon,
-            isDisabled && styles.inputDisabled,
-            inputStyle,
-          ]}
+          style={[styles.input, icon && styles.inputWithIcon, isDisabled && styles.inputDisabled, inputStyle]}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}

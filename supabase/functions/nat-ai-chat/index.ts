@@ -10,6 +10,7 @@
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { checkRateLimit } from '../_shared/rateLimiter.ts';
 
 // =====================================================
 // SYSTEM PROMPT - Importado do sistema de prompts
@@ -48,20 +49,33 @@ Mantenha respostas concisas e empáticas (máximo 300 palavras).`;
 // =====================================================
 
 const FORBIDDEN_TOPICS = [
-  'remedio', 'remédio', 'medicamento', 'medicação',
-  'comprimido', 'pílula', 'diagnostico', 'diagnóstico',
-  'doença', 'doenca', 'exame', 'teste', 'tratamento',
-  'tomar', 'usar', 'aplicar', 'receita', 'prescrição',
+  'remedio',
+  'remédio',
+  'medicamento',
+  'medicação',
+  'comprimido',
+  'pílula',
+  'diagnostico',
+  'diagnóstico',
+  'doença',
+  'doenca',
+  'exame',
+  'teste',
+  'tratamento',
+  'tomar',
+  'usar',
+  'aplicar',
+  'receita',
+  'prescrição',
 ];
 
 function containsForbiddenTopic(message: string): boolean {
-  const lowerMessage = message.toLowerCase()
+  const lowerMessage = message
+    .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 
-  return FORBIDDEN_TOPICS.some(topic =>
-    lowerMessage.includes(topic.toLowerCase())
-  );
+  return FORBIDDEN_TOPICS.some((topic) => lowerMessage.includes(topic.toLowerCase()));
 }
 
 const BLOCKED_RESPONSE = `Oi querida! Entendo sua preocupação ou curiosidade, mas preciso ser honesta: não sou médica e não posso te ajudar com questões de saúde, medicamentos ou diagnósticos.
@@ -110,11 +124,13 @@ async function analyzeRisk(message: string): Promise<RiskAnalysis> {
   "suggested_resources": ["cvv", "caps", "emergency"],
   "reasoning": "explicação"
 }`,
-        messages: [{
-          role: 'user',
-          content: `Analise: "${message}"`
-        }]
-      })
+        messages: [
+          {
+            role: 'user',
+            content: `Analise: "${message}"`,
+          },
+        ],
+      }),
     });
 
     if (!response.ok) {
@@ -140,7 +156,8 @@ async function analyzeRisk(message: string): Promise<RiskAnalysis> {
 }
 
 function fallbackRiskAnalysis(message: string): RiskAnalysis {
-  const lowerMessage = message.toLowerCase()
+  const lowerMessage = message
+    .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
 
@@ -177,7 +194,7 @@ function fallbackRiskAnalysis(message: string): RiskAnalysis {
     flags,
     requires_intervention: level >= 7,
     suggested_resources: resources,
-    reasoning: `Análise baseada em padrões: nível ${level}`
+    reasoning: `Análise baseada em padrões: nível ${level}`,
   };
 }
 
@@ -327,8 +344,8 @@ async function callGemini(prompt: string): Promise<string> {
         { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
         { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
         { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
-      ]
-    })
+      ],
+    }),
   });
 
   if (!response.ok) {
@@ -349,7 +366,15 @@ async function callGemini(prompt: string): Promise<string> {
 // SALVAR MENSAGEM
 // =====================================================
 
-async function saveMessage(userId: string, conversationId: string, message: string, response: string, riskLevel: number, riskFlags: string[], supabase: any) {
+async function saveMessage(
+  userId: string,
+  conversationId: string,
+  message: string,
+  response: string,
+  riskLevel: number,
+  riskFlags: string[],
+  supabase: any
+) {
   await supabase.from('chat_messages').insert({
     user_id: userId,
     conversation_id: conversationId,
@@ -358,7 +383,7 @@ async function saveMessage(userId: string, conversationId: string, message: stri
     role: 'user',
     risk_level: riskLevel,
     risk_flags: riskFlags,
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
   });
 }
 
@@ -373,38 +398,20 @@ async function notifyTeam(userId: string, messageId: string, analysis: RiskAnaly
     message_id: messageId,
     risk_level: analysis.level,
     risk_flags: analysis.flags,
-    notified_at: new Date().toISOString()
+    notified_at: new Date().toISOString(),
   });
 
   // Aqui você pode adicionar webhook para Slack/Discord
-  console.log(`🚨 ALERTA DE ALTO RISCO - User: ${userId}, Level: ${analysis.level}, Flags: ${analysis.flags.join(', ')}`);
+  console.log(
+    `🚨 ALERTA DE ALTO RISCO - User: ${userId}, Level: ${analysis.level}, Flags: ${analysis.flags.join(', ')}`
+  );
 }
 
 // =====================================================
 // RATE LIMITING
 // =====================================================
-
-const rateLimiter = new Map<string, { count: number; resetTime: number }>();
-
-function checkRateLimit(userId: string): { allowed: boolean; remaining: number } {
-  const now = Date.now();
-  const windowMs = 3600000; // 1 hora
-  const maxRequests = 50; // 50 mensagens por hora
-
-  const userData = rateLimiter.get(userId);
-
-  if (!userData || now > userData.resetTime) {
-    rateLimiter.set(userId, { count: 1, resetTime: now + windowMs });
-    return { allowed: true, remaining: maxRequests - 1 };
-  }
-
-  if (userData.count >= maxRequests) {
-    return { allowed: false, remaining: 0 };
-  }
-
-  userData.count++;
-  return { allowed: true, remaining: maxRequests - userData.count };
-}
+// Rate limiting agora usa modelo event-based do banco
+// Ver: supabase/functions/_shared/rateLimiter.ts
 
 // =====================================================
 // EDGE FUNCTION HANDLER
@@ -429,39 +436,57 @@ serve(async (req: Request) => {
       throw new Error('Supabase não configurado');
     }
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // Auth check
+    // Criar cliente Supabase com ANON_KEY + Authorization header
+    // Isso garante que RLS está ativo e não bypassa segurança
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
       return new Response(JSON.stringify({ error: 'Authorization required' }), {
         status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      global: {
+        headers: { Authorization: authHeader },
+      },
+    });
+
     const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser(token);
 
     if (authError || !user) {
       return new Response(JSON.stringify({ error: 'Invalid token' }), {
         status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
     const userId = user.id;
 
-    // Rate limit
-    const rateCheck = checkRateLimit(userId);
+    // Verificar rate limit (event-based do banco)
+    const rateCheck = await checkRateLimit(userId, 'nat-ai-chat', authHeader);
     if (!rateCheck.allowed) {
-      return new Response(JSON.stringify({
-        error: 'Rate limit exceeded',
-        message: 'Muitas mensagens. Aguarde um momento.'
-      }), {
-        status: 429,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+      return new Response(
+        JSON.stringify({
+          error: 'Rate limit exceeded',
+          message: 'Muitas mensagens. Aguarde um momento.',
+          remaining: rateCheck.remaining,
+          resetAt: rateCheck.resetAt.toISOString(),
+        }),
+        {
+          status: 429,
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+            'X-RateLimit-Remaining': rateCheck.remaining.toString(),
+            'X-RateLimit-Reset': rateCheck.resetAt.toISOString(),
+          },
+        }
+      );
     }
 
     // Extrair mensagem
@@ -470,7 +495,7 @@ serve(async (req: Request) => {
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return new Response(JSON.stringify({ error: 'Message required' }), {
         status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
@@ -478,7 +503,7 @@ serve(async (req: Request) => {
     if (containsForbiddenTopic(message)) {
       return new Response(JSON.stringify({ response: BLOCKED_RESPONSE }), {
         status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
@@ -507,41 +532,58 @@ serve(async (req: Request) => {
     }
 
     // 8. Salvar mensagem com análise de risco
-    const { data: savedMessage } = await supabase.from('chat_messages').insert({
-      user_id: userId,
-      conversation_id: contextData.conversationId,
-      message: message,
-      response: finalResponse,
-      role: 'user',
-      risk_level: riskAnalysis.level,
-      risk_flags: riskAnalysis.flags,
-      created_at: new Date().toISOString()
-    }).select().single();
+    const { data: savedMessage } = await supabase
+      .from('chat_messages')
+      .insert({
+        user_id: userId,
+        conversation_id: contextData.conversationId,
+        message: message,
+        response: finalResponse,
+        role: 'user',
+        risk_level: riskAnalysis.level,
+        risk_flags: riskAnalysis.flags,
+        created_at: new Date().toISOString(),
+      })
+      .select()
+      .single();
 
     // 9. Notificar equipe se alto risco
     if (riskAnalysis.level >= 8 && savedMessage) {
-      notifyTeam(userId, savedMessage.id, riskAnalysis, supabase).catch(err =>
+      notifyTeam(userId, savedMessage.id, riskAnalysis, supabase).catch((err) =>
         console.error('Erro ao notificar equipe:', err)
       );
     }
 
     // 10. Retornar resposta
-    return new Response(JSON.stringify({
-      response: finalResponse,
-      rateLimit: { remaining: rateCheck.remaining }
-    }), {
-      status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
-
+    return new Response(
+      JSON.stringify({
+        response: finalResponse,
+        rateLimit: {
+          remaining: rateCheck.remaining,
+          resetAt: rateCheck.resetAt.toISOString(),
+        },
+      }),
+      {
+        status: 200,
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'application/json',
+          'X-RateLimit-Remaining': rateCheck.remaining.toString(),
+          'X-RateLimit-Reset': rateCheck.resetAt.toISOString(),
+        },
+      }
+    );
   } catch (error: any) {
     console.error('Erro na Edge Function:', error);
-    return new Response(JSON.stringify({
-      error: 'Internal server error',
-      message: error.message
-    }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
+    return new Response(
+      JSON.stringify({
+        error: 'Internal server error',
+        message: error.message,
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      }
+    );
   }
 });

@@ -5,14 +5,8 @@
  */
 
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import { colors, spacing, borderRadius, typography, shadows } from '../theme/colors';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { colors, spacing, borderRadius, typography, shadows } from '@/theme/colors';
 
 export const ThemeShowcase = () => {
   return (
@@ -21,47 +15,19 @@ export const ThemeShowcase = () => {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Cores Primárias</Text>
 
-        <ColorBox
-          name="Primary"
-          hex={colors.primary}
-          color={colors.primary}
-        />
-        <ColorBox
-          name="Primary Foreground"
-          hex={colors.primaryForeground}
-          color={colors.primaryForeground}
-        />
-        <ColorBox
-          name="Secondary"
-          hex={colors.secondary}
-          color={colors.secondary}
-        />
-        <ColorBox
-          name="Accent"
-          hex={colors.accent}
-          color={colors.accent}
-        />
+        <ColorBox name="Primary" hex={colors.primary} color={colors.primary} />
+        <ColorBox name="Primary Foreground" hex={colors.primaryForeground} color={colors.primaryForeground} />
+        <ColorBox name="Secondary" hex={colors.secondary} color={colors.secondary} />
+        <ColorBox name="Accent" hex={colors.accent} color={colors.accent} />
       </View>
 
       {/* BACKGROUNDS */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Backgrounds</Text>
 
-        <ColorBox
-          name="Background"
-          hex={colors.background}
-          color={colors.background}
-        />
-        <ColorBox
-          name="Card"
-          hex={colors.card}
-          color={colors.card}
-        />
-        <ColorBox
-          name="Input"
-          hex={colors.input}
-          color={colors.input}
-        />
+        <ColorBox name="Background" hex={colors.background} color={colors.background} />
+        <ColorBox name="Card" hex={colors.card} color={colors.card} />
+        <ColorBox name="Input" hex={colors.input} color={colors.input} />
       </View>
 
       {/* TIPOGRAFIA */}
@@ -86,9 +52,7 @@ export const ThemeShowcase = () => {
         <Text style={{ fontSize: typography.sizes['2xl'], color: colors.foreground, marginBottom: spacing.sm }}>
           2XL (24px)
         </Text>
-        <Text style={{ fontSize: typography.sizes['3xl'], color: colors.foreground }}>
-          3XL (28px)
-        </Text>
+        <Text style={{ fontSize: typography.sizes['3xl'], color: colors.foreground }}>3XL (28px)</Text>
       </View>
 
       {/* ESPAÇAMENTO */}
@@ -173,12 +137,7 @@ interface ColorBoxProps {
 
 const ColorBox: React.FC<ColorBoxProps> = ({ name, hex, color }) => (
   <View style={styles.colorBoxContainer}>
-    <View
-      style={[
-        styles.colorBoxColor,
-        { backgroundColor: color }
-      ]}
-    />
+    <View style={[styles.colorBoxColor, { backgroundColor: color }]} />
     <View style={styles.colorBoxText}>
       <Text style={styles.colorBoxName}>{name}</Text>
       <Text style={styles.colorBoxHex}>{hex}</Text>
@@ -205,12 +164,7 @@ interface BorderRadiusBoxProps {
 
 const BorderRadiusBox: React.FC<BorderRadiusBoxProps> = ({ label, radius }) => (
   <View style={styles.borderRadiusContainer}>
-    <View
-      style={[
-        styles.borderRadiusBox,
-        { borderRadius: radius }
-      ]}
-    />
+    <View style={[styles.borderRadiusBox, { borderRadius: radius }]} />
     <Text style={styles.borderRadiusLabel}>{label}</Text>
   </View>
 );

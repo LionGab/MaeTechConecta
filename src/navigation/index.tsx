@@ -10,14 +10,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Loading } from '../shared/components/Loading';
+import { Loading } from '@/shared/components/Loading';
 
 import { RootStackParamList } from './types';
 import { TabNavigator } from './TabNavigator';
-import OnboardingScreen from '../screens/OnboardingScreen';
-import DailyPlanScreen from '../screens/DailyPlanScreen';
-import ContentDetailScreen from '../features/content/ContentDetailScreen';
-import { colors } from '../theme/colors';
+import OnboardingScreen from '@/screens/OnboardingScreen';
+import DailyPlanScreen from '@/screens/DailyPlanScreen';
+import ContentDetailScreen from '@/features/content/ContentDetailScreen';
+import { colors } from '@/theme/colors';
 import { linking } from './linking';
 
 const Stack = createStackNavigator<RootStackParamList>();

@@ -10,6 +10,7 @@
 ### 1. ✅ Código do Aplicativo - 100% COMPLETO
 
 **Telas Implementadas:**
+
 - ✅ Onboarding (7 etapas de cadastro)
 - ✅ Home Screen (dashboard personalizado)
 - ✅ Chat Screen (conversa com NathIA)
@@ -19,6 +20,7 @@
 - ✅ Daily Plan (plano diário personalizado)
 
 **Componentes do Design System:**
+
 - ✅ Button (5 variantes)
 - ✅ Card (3 variantes)
 - ✅ Input (com validação)
@@ -27,6 +29,7 @@
 - ✅ ErrorBoundary
 
 **Navegação:**
+
 - ✅ Stack Navigator configurado
 - ✅ Tab Navigator com 4 abas
 - ✅ Deep linking preparado
@@ -60,6 +63,7 @@
 ### 4. ✅ Backend/Database Preparado
 
 **Schema SQL Completo:**
+
 ```
 ✅ supabase/schema-nossa-maternidade-completo.sql (600+ linhas)
 
@@ -77,6 +81,7 @@ Tabelas criadas (SQL pronto):
 ```
 
 **Edge Function NathIA:**
+
 ```
 ✅ supabase/functions/nathia-chat/index.ts (400+ linhas)
 
@@ -107,6 +112,7 @@ Recursos implementados:
 ### Passo 1: Criar Projeto no Supabase (5 min) ⭐
 
 **VOCÊ PRECISA:**
+
 1. Ir em https://supabase.com/dashboard
 2. Criar novo projeto "nossa-maternidade"
 3. Anotar URL e anon key
@@ -118,6 +124,7 @@ Recursos implementados:
 ### Passo 2: Executar Schema SQL (2 min) ⭐
 
 **VOCÊ PRECISA:**
+
 1. Abrir SQL Editor no Supabase
 2. Copiar conteúdo de `supabase/schema-nossa-maternidade-completo.sql`
 3. Colar e executar
@@ -129,6 +136,7 @@ Recursos implementados:
 ### Passo 3: Preencher Arquivo .env (3 min) ⭐
 
 **VOCÊ PRECISA:**
+
 1. Abrir arquivo `.env` na raiz
 2. Substituir:
    - `EXPO_PUBLIC_SUPABASE_URL` → URL do seu projeto
@@ -141,6 +149,7 @@ Recursos implementados:
 ### Passo 4: Configurar Gemini API (5 min) ⭐
 
 **VOCÊ PRECISA:**
+
 1. Obter API key em https://makersuite.google.com/app/apikey
 2. Adicionar secret no Supabase:
    - Nome: `GEMINI_API_KEY`
@@ -153,6 +162,7 @@ Recursos implementados:
 ### Passo 5: Deploy Edge Function (5 min) ⭐
 
 **VOCÊ PRECISA:**
+
 ```bash
 # Instalar Supabase CLI
 npm install -g supabase
@@ -174,6 +184,7 @@ supabase functions deploy nathia-chat
 ### Passo 6: Testar App (2 min) ✅
 
 **VOCÊ PRECISA:**
+
 ```bash
 npm start
 ```
@@ -208,6 +219,7 @@ COMO-DEIXAR-APP-FUNCIONAL.md
 ```
 
 Esse arquivo contém:
+
 - ✅ Passo-a-passo detalhado de cada etapa
 - ✅ Screenshots e exemplos
 - ✅ Solução para problemas comuns
@@ -221,24 +233,24 @@ Esse arquivo contém:
 
 ## 📊 Comparação: Antes vs Agora
 
-| Item | ANTES | AGORA |
-|------|-------|-------|
-| Dependências | ❌ Não instaladas | ✅ Instaladas |
-| Arquivo .env | ❌ Não existia | ✅ Criado (precisa preencher) |
-| Documentação | ⚠️ Espalhada | ✅ Consolidada |
-| Status | ❓ Desconhecido | ✅ Mapeado 100% |
-| Próximos passos | ❓ Indefinido | ✅ Claramente definido |
+| Item            | ANTES             | AGORA                         |
+| --------------- | ----------------- | ----------------------------- |
+| Dependências    | ❌ Não instaladas | ✅ Instaladas                 |
+| Arquivo .env    | ❌ Não existia    | ✅ Criado (precisa preencher) |
+| Documentação    | ⚠️ Espalhada      | ✅ Consolidada                |
+| Status          | ❓ Desconhecido   | ✅ Mapeado 100%               |
+| Próximos passos | ❓ Indefinido     | ✅ Claramente definido        |
 
 ---
 
 ## 🔥 TL;DR (Muito Ocupado?)
 
-**O app está 75% pronto!** 
+**O app está 75% pronto!**
 
 **Falta apenas configuração externa:**
 
 1. Criar projeto Supabase (5 min)
-2. Executar SQL (2 min)  
+2. Executar SQL (2 min)
 3. Preencher .env (3 min)
 4. Configurar Gemini (5 min)
 5. Deploy função (5 min)
@@ -271,6 +283,7 @@ Esse arquivo contém:
 ### "O que posso testar depois?"
 
 **Resposta:**
+
 - ✅ Onboarding completo
 - ✅ Chat com IA (NathIA)
 - ✅ Geração de plano diário
@@ -282,11 +295,13 @@ Esse arquivo contém:
 ## 📞 Precisa de Ajuda?
 
 **Documentação:**
+
 - `COMO-DEIXAR-APP-FUNCIONAL.md` → Guia completo
 - `CONFIGURACAO-COMPLETA.md` → Detalhes técnicos
 - `ARCHITECTURE.md` → Arquitetura do sistema
 
 **Dúvidas:**
+
 - Me chame com a mensagem de erro
 - Screenshot da tela com problema
 - Qual passo travou

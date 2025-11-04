@@ -1,26 +1,54 @@
 {
   "name": "nossa-maternidade",
   "version": "1.0.0",
+  "private": true,
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "check": "node verificar-status.js",
-    "verify": "node verificar-status.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "typecheck": "tsc --noEmit",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage --coverage.reporter=json-summary",
+    "test:coverage:check": "node scripts/check-coverage.js 70",
+    "test:e2e": "maestro test e2e/maestro/smoke-flow.yaml",
+    "test:e2e:detox": "detox test",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "prepare": "husky install",
-    "review:check": "node scripts/review-manager.js check",
-    "review:log": "node scripts/review-manager.js log",
-    "review:report": "node scripts/review-manager.js report",
-    "review:approve": "node scripts/review-manager.js approve",
-    "mcp:setup": "powershell -ExecutionPolicy Bypass -File scripts/setup-mcp.ps1",
-    "mcp:setup:unix": "bash scripts/setup-mcp.sh",
-    "mcp:validate": "node -e \"console.log('MCP config validado em .vscode/mcp.json')\""
+    "validate": "npm run lint && npm run typecheck && npm run test:coverage && npm run test:coverage:check",
+    "validate:checklist": "node scripts/validate-checklist.js",
+    "validate:consolidation": "bash scripts/validate-consolidation.sh",
+    "validate:consolidation:ps1": "powershell -ExecutionPolicy Bypass -File scripts/validate-consolidation.ps1",
+    "review-changes": "node scripts/auto-review-changes.js",
+    "review-changes:auto": "AUTO_STAGE=true node scripts/auto-review-changes.js",
+    "build:android": "node scripts/auto-build.js android",
+    "build:ios": "node scripts/auto-build.js ios",
+    "build:all": "node scripts/auto-build.js all",
+    "build:functions": "node scripts/auto-build.js functions",
+    "build:full": "node scripts/auto-build.js full",
+    "deploy:all": "node scripts/auto-build.js full",
+    "fix:all": "npm run lint:fix && npm run format",
+    "validate:auto": "npm run lint:fix && npm run format && npm run lint && npm run type-check",
+    "auto-approve": "node scripts/auto-approve.js all",
+    "auto-approve:all": "node scripts/auto-approve.js all",
+    "auto-approve:config": "node scripts/auto-approve.js config",
+    "auto-approve:status": "node scripts/auto-approve.js status",
+    "skip-awaiting-review": "node scripts/awaiting-review-skip.js",
+    "auto:all": "node scripts/auto-all.js",
+    "auto:build": "node scripts/auto-all.js build",
+    "auto:full": "node scripts/auto-all.js full",
+    "git:keep-all": "node scripts/git-keep-all-auto.js",
+    "git:keep-all:ps1": "powershell -ExecutionPolicy Bypass -File scripts/git-keep-all-auto.ps1",
+    "git:keep-ours": "node scripts/git-keep-ours-auto.js",
+    "git:keep-ours:ps1": "powershell -ExecutionPolicy Bypass -File scripts/git-keep-ours-auto.ps1",
+    "git:keep-theirs": "node scripts/git-keep-theirs-auto.js",
+    "git:keep-theirs:ps1": "powershell -ExecutionPolicy Bypass -File scripts/git-keep-theirs-auto.ps1",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
@@ -31,6 +59,7 @@
     "@react-navigation/stack": "^6.3.20",
     "@stripe/stripe-react-native": "0.37.2",
     "@supabase/supabase-js": "^2.48.0",
+    "@sentry/react-native": "^5.0.0",
     "axios": "^1.6.2",
     "date-fns": "^2.30.0",
     "expo": "~52.0.0",
@@ -46,7 +75,8 @@
     "react-native-safe-area-context": "4.10.5",
     "react-native-vector-icons": "^10.3.0",
     "react-native-web": "~0.19.10",
-    "zustand": "^4.5.0"
+    "zustand": "^4.5.0",
+    "zod": "^3.22.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -57,6 +87,8 @@
     "@types/react-native-vector-icons": "^6.4.18",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "detox": "^20.0.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.33.2",
@@ -65,9 +97,9 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "prettier": "^3.1.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.0"
   },
-  "private": true,
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
@@ -76,8 +108,5 @@
     "*.{json,md}": [
       "prettier --write"
     ]
-  },
-  "overrides": {
-    "react-dom": "18.2.0"
   }
 }

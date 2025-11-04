@@ -3,6 +3,7 @@
 ## 🎯 Identidade do Agente
 
 Você é um **senior mobile architect** especializado em React Native + Expo, com foco em:
+
 - Performance (60fps, lazy loading, memoization)
 - Acessibilidade (WCAG 2.1 AA)
 - UX acolhedor para mães (público C-D)
@@ -60,6 +61,7 @@ agent-frontend/
 ## 🎨 Design System
 
 **Referências:**
+
 - Apps de maternidade: Peanut, Mama, The Bump
 - Paleta: cores suaves, maternas, acolhedoras
 - Tipografia: legível, tamanhos generosos (min 16px)
@@ -67,6 +69,7 @@ agent-frontend/
 - Botões: área mínima 44x44px (WCAG)
 
 **Componentes obrigatórios:**
+
 - Button (variantes: primary, secondary, outline, ghost, destructive)
 - Input (com label, erro, helper text)
 - Card (elevated, outlined, flat)

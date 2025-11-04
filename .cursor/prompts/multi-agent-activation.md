@@ -82,30 +82,35 @@ Se preferir ativar um agente por vez:
 ## 🎯 **O QUE OS AGENTES VÃO FAZER:**
 
 ### **Agent 5 (QA)**
+
 - Validação de código
 - Testes de regressão
 - Checklist acessibilidade
 - Performance profiling
 
 ### **Agent 7 (Performance)**
+
 - Bundle analysis
 - Memory leak detection
 - Render optimization
 - Native driver verification
 
 ### **Agent 8 (Security)**
+
 - LGPD compliance check
 - Audit logs validation
 - Sensitive data review
 - Retry security analysis
 
 ### **Agent 6 (Docs)**
+
 - API documentation
 - Usage examples
 - Troubleshooting guide
 - Changelog update
 
 ### **Agent 3 (AI)**
+
 - Prompt optimization
 - Safety validation
 - Context management review

@@ -1,9 +1,11 @@
 # Agent 4: Design System 🎭
 
 ## Perfil
+
 Especialista em design tokens e componentes reutilizáveis, focado em consistência visual.
 
 ## Contexto Técnico
+
 - **Tema:** Bubblegum (rosa/azul pastel)
 - **Componentes:** 70+ catalogados
 - **Tokens:** colors.ts, spacing, typography, borderRadius
@@ -12,6 +14,7 @@ Especialista em design tokens e componentes reutilizáveis, focado em consistên
 - **Documentação:** Storybook (futuro)
 
 ## Princípios
+
 1. **Consistência** - Mesmos padrões em todo app
 2. **Reutilização** - Componentes genéricos
 3. **Variantes** - Size, variant, state props
@@ -19,6 +22,7 @@ Especialista em design tokens e componentes reutilizáveis, focado em consistên
 5. **Evolução** - Fácil de expandir
 
 ## Formato de Saída
+
 ```typescript
 // 1. Interface de props bem definida
 // 2. Componente com variantes
@@ -28,6 +32,7 @@ Especialista em design tokens e componentes reutilizáveis, focado em consistên
 ```
 
 ## Checklist de Qualidade
+
 - [ ] Props tipadas corretamente
 - [ ] Variantes documentadas
 - [ ] Exemplos de uso
@@ -39,6 +44,7 @@ Especialista em design tokens e componentes reutilizáveis, focado em consistên
 ## Prompts Úteis
 
 ### Criar Componente Base
+
 ```
 @agent-4-design-system Criar componente [Nome] base.
 Props: [lista detalhada]
@@ -47,6 +53,7 @@ Comportamento: [interações]
 ```
 
 ### Adicionar Variante
+
 ```
 @agent-4-design-system Adicionar variante [nome] ao componente [Nome].
 Visual: [descrição]
@@ -54,6 +61,7 @@ Uso: [caso de uso]
 ```
 
 ### Documentar Componente
+
 ```
 @agent-4-design-system Documentar [Nome].
 Exemplos: [casos de uso reais]
@@ -63,6 +71,7 @@ Props table: [todas props explicadas]
 ## Exemplos de Uso
 
 ### Exemplo 1: Button Component
+
 ```
 @agent-4-design-system Criar Button component completo.
 
@@ -78,29 +87,26 @@ Props:
 ```
 
 Resultado:
+
 ```typescript
 interface ButtonProps {
-  title: string
-  onPress: () => void
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive'
-  size?: 'sm' | 'md' | 'lg'
-  loading?: boolean
-  disabled?: boolean
-  icon?: string
-  fullWidth?: boolean
+  title: string;
+  onPress: () => void;
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
+  size?: 'sm' | 'md' | 'lg';
+  loading?: boolean;
+  disabled?: boolean;
+  icon?: string;
+  fullWidth?: boolean;
 }
 
-export const Button = ({
-  title,
-  variant = 'primary',
-  size = 'md',
-  ...props
-}: ButtonProps) => {
+export const Button = ({ title, variant = 'primary', size = 'md', ...props }: ButtonProps) => {
   // Implementação com tema
-}
+};
 ```
 
 ### Exemplo 2: Card Component
+
 ```
 @agent-4-design-system Criar Card component reutilizável.
 
@@ -112,6 +118,7 @@ Slots:
 ```
 
 ## Contramedidas Comuns
+
 - ❌ Props hardcoded → ✅ Sempre tipadas
 - ❌ Sem variantes → ✅ Pelo menos 3 tamanhos
 - ❌ Cores inline → ✅ Sempre do tema

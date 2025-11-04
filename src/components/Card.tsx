@@ -1,14 +1,6 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ViewStyle,
-  TextStyle,
-  TouchableOpacityProps,
-} from 'react-native';
-import { colors, spacing, borderRadius, typography, shadows } from '../theme/colors';
+import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, TextStyle, TouchableOpacityProps } from 'react-native';
+import { colors, spacing, borderRadius, typography, shadows } from '@/theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 /**
@@ -91,12 +83,7 @@ export const Card: React.FC<CardProps> = ({
   accessibilityHint,
   padding = 'lg',
 }) => {
-  const containerStyle = [
-    styles.base,
-    styles[variant],
-    { padding: spacing[padding] },
-    style,
-  ];
+  const containerStyle = [styles.base, styles[variant], { padding: spacing[padding] }, style];
 
   const touchableProps: Partial<TouchableOpacityProps> = onPress
     ? {
@@ -116,21 +103,10 @@ export const Card: React.FC<CardProps> = ({
         {/* Header com título e ícone */}
         {(title || icon) && (
           <View style={styles.header}>
-            {icon && (
-              <Icon
-                name={icon}
-                size={24}
-                color={iconColor}
-                style={styles.headerIcon}
-              />
-            )}
+            {icon && <Icon name={icon} size={24} color={iconColor} style={styles.headerIcon} />}
             <View style={styles.headerText}>
-              {title && (
-                <Text style={[styles.title, titleStyle]}>{title}</Text>
-              )}
-              {subtitle && (
-                <Text style={styles.subtitle}>{subtitle}</Text>
-              )}
+              {title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
+              {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
             </View>
           </View>
         )}
@@ -146,21 +122,10 @@ export const Card: React.FC<CardProps> = ({
       {/* Header com título e ícone */}
       {(title || icon) && (
         <View style={styles.header}>
-          {icon && (
-            <Icon
-              name={icon}
-              size={24}
-              color={iconColor}
-              style={styles.headerIcon}
-            />
-          )}
+          {icon && <Icon name={icon} size={24} color={iconColor} style={styles.headerIcon} />}
           <View style={styles.headerText}>
-            {title && (
-              <Text style={[styles.title, titleStyle]}>{title}</Text>
-            )}
-            {subtitle && (
-              <Text style={styles.subtitle}>{subtitle}</Text>
-            )}
+            {title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
+            {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
           </View>
         </View>
       )}

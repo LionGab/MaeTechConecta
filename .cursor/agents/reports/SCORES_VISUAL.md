@@ -246,10 +246,12 @@ ESFORÇO│         │ Limiting│
 ## 📚 Links Rápidos
 
 **Comece Aqui:**
+
 - 📋 [EXECUTIVE_SUMMARY.md](./EXECUTIVE_SUMMARY.md)
 - 📂 [README.md](./README.md) (Índice)
 
 **Relatórios Detalhados:**
+
 - 🧪 [Agent 5 - QA](./AGENT_5_QA_REPORT.md)
 - ⚡ [Agent 7 - Performance](./AGENT_7_PERFORMANCE_REPORT.md)
 - 🔒 [Agent 8 - Security](./AGENT_8_SECURITY_REPORT.md)

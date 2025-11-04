@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Logo } from './Logo';
-import { colors, spacing, typography } from '../theme/colors';
+import { colors, spacing, typography } from '@/theme/colors';
 
 interface WelcomeHeaderProps {
   name: string;
@@ -18,11 +18,7 @@ export const WelcomeHeader: React.FC<WelcomeHeaderProps> = ({ name, pregnancyWee
   return (
     <View style={styles.container}>
       <Logo size={80} />
-      <Text
-        style={styles.greeting}
-        accessibilityRole="header"
-        accessibilityLabel={`Olá, ${name}`}
-      >
+      <Text style={styles.greeting} accessibilityRole="header" accessibilityLabel={`Olá, ${name}`}>
         Olá, {name}! 👋
       </Text>
       {pregnancyWeek && (
@@ -57,4 +53,3 @@ const styles = StyleSheet.create({
     fontFamily: typography.fontFamily.sans,
   },
 });
-

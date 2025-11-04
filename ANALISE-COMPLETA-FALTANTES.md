@@ -11,6 +11,7 @@
 Este documento identifica **todos os componentes, configurações e arquivos faltantes** que impedem o projeto "Nossa Maternidade" de funcionar completamente em produção.
 
 ### Status Geral
+
 - ✅ **Arquitetura:** Estrutura base criada
 - ✅ **Design System:** Componentes básicos implementados
 - ✅ **Navegação:** Stack e Tab Navigation configurados
@@ -30,10 +31,12 @@ Este documento identifica **todos os componentes, configurações e arquivos fal
 **Impacto:** App não consegue se conectar ao Supabase nem às APIs de IA
 
 **Arquivos Afetados:**
+
 - `src/config/api.ts` - Todas as chaves retornam string vazia
 - `src/services/supabase.ts` - Cliente Supabase com URLs vazias
 
 **Solução:**
+
 ```bash
 # Criar arquivo .env.local na raiz do projeto
 EXPO_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
@@ -52,12 +55,14 @@ EXPO_PUBLIC_OPENAI_API_KEY=sua_chave_openai (opcional)
 **Impacto:** Tabelas não existem, queries falham
 
 **Arquivos SQL Disponíveis:**
+
 - ✅ `supabase-setup.sql` - Schema básico
 - ✅ `SCHEMA_COMPLETO_FINAL.sql` - Schema completo
 - ✅ `supabase/schema-club-valente-completo.sql`
 - ✅ `supabase/schema-nossa-maternidade-completo.sql`
 
 **Tabelas Necessárias:**
+
 - `user_profiles` - Perfis de usuários
 - `chat_messages` - Mensagens do chat
 - `daily_plans` - Planos diários
@@ -65,6 +70,7 @@ EXPO_PUBLIC_OPENAI_API_KEY=sua_chave_openai (opcional)
 - Outras tabelas do schema completo
 
 **Ação Necessária:**
+
 1. Acessar Supabase Dashboard
 2. Executar SQL Editor com `supabase-setup.sql` OU `SCHEMA_COMPLETO_FINAL.sql`
 3. Verificar se RLS (Row Level Security) está configurado
@@ -79,10 +85,11 @@ EXPO_PUBLIC_OPENAI_API_KEY=sua_chave_openai (opcional)
 **Impacto:** `chatWithNATIA()` falha porque Edge Function não existe
 
 **Funções Necessárias:**
+
 ```
 supabase/functions/
 ├── nathia-chat/          ✅ Existe código
-├── nat-ai-chat/          ✅ Existe código  
+├── nat-ai-chat/          ✅ Existe código
 ├── moderation-service/   ✅ Existe código
 ├── risk-classifier/      ✅ Existe código
 ├── behavior-analysis/    ✅ Existe código
@@ -91,6 +98,7 @@ supabase/functions/
 ```
 
 **Deploy Necessário:**
+
 ```bash
 # Instalar Supabase CLI
 npm install -g supabase
@@ -117,6 +125,7 @@ supabase functions deploy risk-classifier
 **Problema:** `src/config/api.ts` apenas avisa com `console.warn`, não bloqueia execução
 
 **Código Atual:**
+
 ```typescript
 // ⚠️ PROBLEMA: Apenas avisa, não bloqueia
 function validateApiKey(key: string | undefined, keyName: string): string {
@@ -129,6 +138,7 @@ function validateApiKey(key: string | undefined, keyName: string): string {
 ```
 
 **Solução Necessária:**
+
 - Criar função `validateRequiredKeys()` que LANÇA ERRO se faltar
 - Chamar no `App.tsx` antes de renderizar
 - Mostrar tela de erro amigável ao usuário
@@ -142,15 +152,18 @@ function validateApiKey(key: string | undefined, keyName: string): string {
 **Problema:** Lógica de negócio misturada com UI (violação de arquitetura)
 
 **Arquivos Faltantes:**
+
 - ❌ `src/repositories/DailyPlanRepository.ts`
 - ❌ `src/repositories/UserRepository.ts`
 - ❌ `src/repositories/ChatRepository.ts` (implícito)
 
 **Referências no Código:**
+
 - `valeapena.txt:92-93` - Menciona criação dos repositórios
 - `.cursor/prompts/workflow-guide.md:153` - Menciona refatoração para repository pattern
 
 **Arquivos que Precisam Refatorar:**
+
 - `src/screens/HomeScreen.tsx` - Usa `getDailyPlan` diretamente
 - `src/screens/DailyPlanScreen.tsx` - Usa `saveDailyPlan` diretamente
 - `src/screens/ChatScreen.tsx` - Usa `saveChatMessage` diretamente
@@ -165,6 +178,7 @@ function validateApiKey(key: string | undefined, keyName: string): string {
 **Problema:** 11 ocorrências de `any` em 8 arquivos (segundo `valeapena.txt`)
 
 **Arquivos Afetados:**
+
 - `src/services/supabase.ts` - `context_data?: any`
 - `src/services/ai.ts` - `history: any[]`
 - Outros arquivos com tipos não definidos
@@ -172,6 +186,7 @@ function validateApiKey(key: string | undefined, keyName: string): string {
 **Arquivo `src/types/index.ts`:** ❌ NÃO EXISTE
 
 **Tipos Necessários:**
+
 ```typescript
 // src/types/index.ts - DEVE SER CRIADO
 export interface UserProfile { ... }
@@ -190,6 +205,7 @@ export interface NavigationParams { ... }
 **Problema:** `OnboardingScreen.tsx` aceita dados inválidos
 
 **Validações Necessárias:**
+
 - Semana de gravidez: 1-42 (não pode ser 0 ou >42)
 - Nome: não pode ser vazio
 - Email: formato válido (se fornecido)
@@ -206,6 +222,7 @@ export interface NavigationParams { ... }
 **Problema:** `as never` usado em todos os `navigate()` calls
 
 **Exemplo do Problema:**
+
 ```typescript
 // ⚠️ Type casting perigoso
 navigation.navigate('Chat' as never);
@@ -213,7 +230,8 @@ navigation.navigate('Chat' as never);
 
 **Arquivo:** `src/navigation/types.ts` - Tipos podem estar incompletos
 
-**Solução:** 
+**Solução:**
+
 - Verificar `RootStackParamList` em `types.ts`
 - Remover todos os `as never`
 - Garantir type-safety completo
@@ -231,6 +249,7 @@ navigation.navigate('Chat' as never);
 **Nota:** `src/shared/components/Loading.tsx` existe, mas é diferente de `LoadingScreen`
 
 **Uso Necessário:**
+
 - Substituir `return null` por `<LoadingScreen />`
 - Usar em `AppNavigator` durante verificação de onboarding
 - Usar em outras screens durante carregamento inicial
@@ -240,6 +259,7 @@ navigation.navigate('Chat' as never);
 ### 10. Cores Hardcoded 🟡
 
 **Arquivos com Cores Hardcoded:**
+
 - `src/components/Badge.tsx`
 - `src/components/Logo.tsx`
 - `src/screens/ChatScreen.tsx`
@@ -275,6 +295,7 @@ navigation.navigate('Chat' as never);
 **Arquivo:** ✅ `src/constants/theme.ts` existe, mas precisa de `src/constants/index.ts`
 
 **Constantes Necessárias:**
+
 - Limites de interação diária
 - Timeouts de API
 - Tamanhos de lista
@@ -289,6 +310,7 @@ navigation.navigate('Chat' as never);
 **Status:** ❌ Nenhum teste encontrado
 
 **Arquivos Necessários:**
+
 - `jest.config.js`
 - `__tests__/` directory
 - Testes para componentes críticos
@@ -304,6 +326,7 @@ navigation.navigate('Chat' as never);
 **Status:** ✅ Configurado parcialmente
 
 **Verificar:**
+
 - Regras strict ativadas?
 - Formatação automática no save?
 - Pre-commit hooks funcionando?
@@ -362,6 +385,7 @@ EXPO_PUBLIC_HEYGEN_API_KEY=...
 ## 🗄️ Banco de Dados - Checklist
 
 ### Tabelas Principais
+
 - [ ] `user_profiles` criada
 - [ ] `chat_messages` criada
 - [ ] `daily_plans` criada
@@ -369,6 +393,7 @@ EXPO_PUBLIC_HEYGEN_API_KEY=...
 - [ ] Outras tabelas do schema completo
 
 ### Segurança (RLS)
+
 - [ ] Row Level Security ativado
 - [ ] Políticas de acesso configuradas
 - [ ] Políticas de inserção configuradas
@@ -376,6 +401,7 @@ EXPO_PUBLIC_HEYGEN_API_KEY=...
 - [ ] Políticas de exclusão configuradas
 
 ### Extensões
+
 - [ ] `pgvector` extension instalada (para embeddings)
 - [ ] Outras extensões necessárias
 
@@ -384,6 +410,7 @@ EXPO_PUBLIC_HEYGEN_API_KEY=...
 ## 🔧 Edge Functions - Checklist
 
 ### Deploy Necessário
+
 - [ ] `nathia-chat` deployada e testada
 - [ ] `nat-ai-chat` deployada e testada
 - [ ] `moderation-service` deployada e testada
@@ -393,6 +420,7 @@ EXPO_PUBLIC_HEYGEN_API_KEY=...
 - [ ] `transcribe-audio` deployada e testada
 
 ### Configuração
+
 - [ ] Secrets configurados no Supabase Dashboard
 - [ ] URLs de callback configuradas
 - [ ] CORS configurado (se necessário)
@@ -402,10 +430,12 @@ EXPO_PUBLIC_HEYGEN_API_KEY=...
 ## 📁 Arquivos Faltantes - Lista Completa
 
 ### Críticos (Bloqueiam Execução)
+
 1. ❌ `.env.local` - Variáveis de ambiente
 2. ❌ `.env.example` - Template de exemplo
 
 ### Altos (Quebram Funcionalidades)
+
 3. ❌ `src/repositories/DailyPlanRepository.ts`
 4. ❌ `src/repositories/UserRepository.ts`
 5. ❌ `src/repositories/ChatRepository.ts`
@@ -413,11 +443,13 @@ EXPO_PUBLIC_HEYGEN_API_KEY=...
 7. ❌ `src/utils/validation.ts` - Validações de input
 
 ### Médios (Melhoram UX/Código)
+
 8. ❌ `src/components/LoadingScreen.tsx`
 9. ❌ `src/hooks/useDailyPlan.ts`
 10. ❌ `src/constants/index.ts` - Constantes não-tema
 
 ### Baixos (Refinamentos)
+
 11. ❌ `jest.config.js` - Configuração de testes
 12. ❌ `__tests__/` - Diretório de testes
 
@@ -426,6 +458,7 @@ EXPO_PUBLIC_HEYGEN_API_KEY=...
 ## 🎯 Plano de Ação Prioritário
 
 ### Fase 1: Bloqueios Críticos (2-3 horas)
+
 1. ✅ Criar `.env.example` com template
 2. ✅ Criar `.env.local` com valores reais (usuário)
 3. ✅ Validar API keys no `App.tsx`
@@ -433,6 +466,7 @@ EXPO_PUBLIC_HEYGEN_API_KEY=...
 5. ✅ Deploy das Edge Functions críticas (`nathia-chat`)
 
 ### Fase 2: Funcionalidades Essenciais (4-6 horas)
+
 6. ✅ Criar `src/types/index.ts`
 7. ✅ Criar `src/utils/validation.ts`
 8. ✅ Criar `src/repositories/` (3 arquivos)
@@ -440,12 +474,14 @@ EXPO_PUBLIC_HEYGEN_API_KEY=...
 10. ✅ Corrigir tipagem de navegação
 
 ### Fase 3: Melhorias UX (2-3 horas)
+
 11. ✅ Criar `LoadingScreen.tsx`
 12. ✅ Criar `useDailyPlan.ts` hook
 13. ✅ Substituir cores hardcoded
 14. ✅ Implementar sistema de logging
 
 ### Fase 4: Qualidade (Ongoing)
+
 15. ✅ Configurar testes
 16. ✅ Adicionar JSDoc
 17. ✅ Extrair magic numbers
@@ -455,16 +491,16 @@ EXPO_PUBLIC_HEYGEN_API_KEY=...
 
 ## 📊 Métricas de Completude
 
-| Categoria | Status | Completude |
-|-----------|--------|------------|
-| **Configuração** | ⚠️ | 40% |
-| **Backend (Supabase)** | ⚠️ | 60% |
-| **Arquitetura** | ✅ | 80% |
-| **Componentes UI** | ✅ | 85% |
-| **Tipos TypeScript** | ⚠️ | 70% |
-| **Validações** | ❌ | 20% |
-| **Testes** | ❌ | 0% |
-| **Documentação** | ⚠️ | 50% |
+| Categoria              | Status | Completude |
+| ---------------------- | ------ | ---------- |
+| **Configuração**       | ⚠️     | 40%        |
+| **Backend (Supabase)** | ⚠️     | 60%        |
+| **Arquitetura**        | ✅     | 80%        |
+| **Componentes UI**     | ✅     | 85%        |
+| **Tipos TypeScript**   | ⚠️     | 70%        |
+| **Validações**         | ❌     | 20%        |
+| **Testes**             | ❌     | 0%         |
+| **Documentação**       | ⚠️     | 50%        |
 
 **Geral:** ⚠️ **~55% Completo**
 
@@ -504,12 +540,14 @@ npm start
 ## ✅ Checklist Final de Funcionamento
 
 ### Antes de Testar
+
 - [ ] `.env.local` configurado com todas as chaves
 - [ ] Banco de dados Supabase criado e populado
 - [ ] Edge Functions deployadas
 - [ ] RLS configurado no Supabase
 
 ### Testes Básicos
+
 - [ ] App inicia sem erros
 - [ ] Onboarding funciona
 - [ ] Navegação entre telas funciona
@@ -518,6 +556,7 @@ npm start
 - [ ] Perfil do usuário carrega
 
 ### Testes Avançados
+
 - [ ] Offline mode funciona
 - [ ] Notificações push funcionam
 - [ ] Pagamentos funcionam (se configurado)
@@ -528,18 +567,21 @@ npm start
 ## 📝 Notas Adicionais
 
 ### Assumptions
+
 - Assumindo que Supabase project já foi criado
 - Assumindo que chaves de API já foram obtidas
 - Assumindo que SQL não foi executado ainda
 - Assumindo que Edge Functions não foram deployadas
 
 ### Dependências Externas
+
 - Supabase Account (gratuito disponível)
 - Google Gemini API Key (obrigatório)
 - Claude API Key (opcional - fallback)
 - OpenAI API Key (opcional - validação)
 
 ### Próximos Passos Sugeridos
+
 1. Criar `.env.example` como template
 2. Documentar processo de setup completo
 3. Criar script de setup automatizado

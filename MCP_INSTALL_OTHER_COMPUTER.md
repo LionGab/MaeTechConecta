@@ -79,16 +79,19 @@ Crie o arquivo `.vscode/mcp.json` com o seguinte conteúdo:
 Se estiver usando o Cursor, você também pode precisar configurar as MCP tools nas configurações globais:
 
 **Windows:**
+
 ```
 %APPDATA%\Cursor\User\globalStorage\saoudrizwan.claude-dev\settings\cline_mcp_settings.json
 ```
 
 **Linux:**
+
 ```
 ~/.config/Cursor/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
 ```
 
 **macOS:**
+
 ```
 ~/Library/Application Support/Cursor/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
 ```
@@ -128,6 +131,7 @@ npm run mcp:validate
 ```
 
 Você deve ver a mensagem:
+
 ```
 MCP config validado em .vscode/mcp.json
 ```
@@ -150,11 +154,13 @@ Para testar se as MCP tools estão funcionando:
 ## 📚 Servidores MCP Disponíveis
 
 ### GitHub MCP Server
+
 - **Tipo:** HTTP (Remoto)
 - **Funcionalidade:** Acesso read-only a repositórios, issues, pull requests
 - **Configuração:** Já incluído no `mcp.json`
 
 ### Filesystem MCP Server
+
 - **Tipo:** Local
 - **Funcionalidade:** Operações seguras no sistema de arquivos
 - **Ferramentas:**
@@ -169,8 +175,12 @@ Para adicionar outros servidores MCP, edite o arquivo `.vscode/mcp.json`:
 ```json
 {
   "mcpServers": {
-    "github": { /* ... */ },
-    "filesystem": { /* ... */ },
+    "github": {
+      /* ... */
+    },
+    "filesystem": {
+      /* ... */
+    },
     "seu-servidor": {
       "type": "local",
       "command": "npx",

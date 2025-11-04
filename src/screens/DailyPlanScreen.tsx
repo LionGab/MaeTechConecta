@@ -2,17 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { ChatContext, generateDailyPlan } from '../services/ai';
-import { getDailyPlan, saveDailyPlan } from '../services/supabase';
-import { borderRadius, colors, shadows, spacing, typography } from '../theme/colors';
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ChatContext, generateDailyPlan } from '@/services/ai';
+import { getDailyPlan, saveDailyPlan } from '@/services/supabase';
+import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
 
 export default function DailyPlanScreen() {
   const navigation = useNavigation();
@@ -99,14 +92,8 @@ export default function DailyPlanScreen() {
             <Text style={styles.emptyStateDescription}>
               Gere seu plano personalizado diário com prioridades, dicas e receitas!
             </Text>
-            <TouchableOpacity
-              style={styles.generateButton}
-              onPress={handleGeneratePlan}
-              disabled={generating}
-            >
-              <Text style={styles.generateButtonText}>
-                {generating ? 'Gerando...' : 'Gerar Plano Agora'}
-              </Text>
+            <TouchableOpacity style={styles.generateButton} onPress={handleGeneratePlan} disabled={generating}>
+              <Text style={styles.generateButtonText}>{generating ? 'Gerando...' : 'Gerar Plano Agora'}</Text>
             </TouchableOpacity>
           </View>
         ) : (
@@ -135,11 +122,7 @@ export default function DailyPlanScreen() {
             </View>
 
             {/* Botão para gerar novo plano */}
-            <TouchableOpacity
-              style={styles.regenerateButton}
-              onPress={handleGeneratePlan}
-              disabled={generating}
-            >
+            <TouchableOpacity style={styles.regenerateButton} onPress={handleGeneratePlan} disabled={generating}>
               <Text style={styles.regenerateButtonText}>
                 {generating ? 'Gerando novo plano...' : '🔄 Gerar Novo Plano'}
               </Text>

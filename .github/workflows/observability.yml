@@ -1,0 +1,41 @@
+name: Observability (Sentry Release)
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  sentry:
+    name: Sentry Release Tracking
+    runs-on: ubuntu-latest
+    env:
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+      SENTRY_PROJECT_APP: nossa-maternidade-mobile
+      SENTRY_PROJECT_FUNCS: nossa-maternidade-functions
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install sentry-cli
+        run: curl -sL https://sentry.io/get-cli/ | bash
+
+      - name: Create + Finalize Release
+        run: |
+          export REL=${GITHUB_REF#refs/tags/}
+          if [ -z "$REL" ] || [ "$REL" = "$GITHUB_REF" ]; then
+            REL=$GITHUB_SHA
+          fi
+          
+          echo "Creating release: $REL"
+          sentry-cli releases new "$REL" -p "$SENTRY_PROJECT_APP" -p "$SENTRY_PROJECT_FUNCS"
+          
+          sentry-cli releases set-commits --auto "$REL"
+          
+          sentry-cli releases finalize "$REL"
+          
+          echo "✅ Release $REL criado e finalizado"
+

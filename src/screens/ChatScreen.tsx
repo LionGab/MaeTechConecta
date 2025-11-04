@@ -14,14 +14,14 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { MessageItem } from '../components/chat/MessageItem';
-import { Message, useChatOptimized } from '../hooks/useChatOptimized';
-import { borderRadius, colors, spacing, typography } from '../theme/colors';
-import { EmptyState } from '../shared/components/EmptyState';
-import { SkeletonPresets } from '../shared/components/Skeleton';
+import { MessageItem } from '@/components/chat/MessageItem';
+import { Message, useChatOptimized } from '@/hooks/useChatOptimized';
+import { borderRadius, colors, spacing, typography } from '@/theme/colors';
+import { EmptyState } from '@/shared/components/EmptyState';
+import { SkeletonPresets } from '@/shared/components/Skeleton';
 // Import não usado removido - já estamos usando keyExtractor customizado
 
 // Componente de indicador de digitação animado
@@ -112,17 +112,8 @@ export default function ChatScreen() {
   const inputRef = useRef<TextInput>(null);
   const flatListRef = useRef<FlatList>(null);
 
-  const {
-    messages,
-    loading,
-    initialLoading,
-    error,
-    sendMessage,
-    resetChat,
-    reloadHistory,
-    userContext,
-  } = useChatOptimized();
-
+  const { messages, loading, initialLoading, error, sendMessage, resetChat, reloadHistory, userContext } =
+    useChatOptimized();
 
   // Scroll automático ao enviar mensagem (FlatList inverted)
   useEffect(() => {
@@ -156,12 +147,15 @@ export default function ChatScreen() {
   }, [inputText, loading, sendMessage]);
 
   // Handler para ações rápidas
-  const handleQuickAction = useCallback((action: QuickAction) => {
-    if (loading || initialLoading) return;
+  const handleQuickAction = useCallback(
+    (action: QuickAction) => {
+      if (loading || initialLoading) return;
 
-    inputRef.current?.blur();
-    sendMessage(action.message);
-  }, [loading, initialLoading, sendMessage]);
+      inputRef.current?.blur();
+      sendMessage(action.message);
+    },
+    [loading, initialLoading, sendMessage]
+  );
 
   // Handler para botão SOS
   const handleEmergency = useCallback(() => {
@@ -173,8 +167,8 @@ export default function ChatScreen() {
         {
           text: 'Ligar Agora',
           style: 'destructive',
-          onPress: () => Linking.openURL('tel:192')
-        }
+          onPress: () => Linking.openURL('tel:192'),
+        },
       ]
     );
   }, []);
@@ -189,9 +183,8 @@ export default function ChatScreen() {
       return QUICK_ACTIONS;
     } else if (userContext.type === 'mae') {
       // Ações específicas para mães
-      return QUICK_ACTIONS.filter(action =>
-        !action.message.includes('gravidez') &&
-        !action.message.includes('gestantes')
+      return QUICK_ACTIONS.filter(
+        (action) => !action.message.includes('gravidez') && !action.message.includes('gestantes')
       );
     }
 
@@ -205,9 +198,8 @@ export default function ChatScreen() {
 
   // Renderização da mensagem
   const renderMessageItem = useCallback(
-    ({ item }: { item: Message }) => (
-      <MessageItem message={item} onPress={handleMessagePress} />
-    ), [handleMessagePress]
+    ({ item }: { item: Message }) => <MessageItem message={item} onPress={handleMessagePress} />,
+    [handleMessagePress]
   );
 
   // Key extractor otimizado
@@ -290,11 +282,7 @@ export default function ChatScreen() {
           ListHeaderComponent={renderTypingIndicator}
           ListFooterComponent={renderError}
           ListEmptyComponent={
-            <EmptyState
-              emoji="💬"
-              title="Nenhuma mensagem ainda"
-              description="Comece uma conversa com a NathIA!"
-            />
+            <EmptyState emoji="💬" title="Nenhuma mensagem ainda" description="Comece uma conversa com a NathIA!" />
           }
           keyExtractor={keyExtractor}
           inverted
@@ -338,14 +326,16 @@ export default function ChatScreen() {
                 style={[
                   styles.quickActionButton,
                   action.isUrgent && styles.quickActionButtonUrgent,
-                  isDisabled && styles.quickActionButtonDisabled
+                  isDisabled && styles.quickActionButtonDisabled,
                 ]}
                 onPress={() => handleQuickAction(action)}
                 disabled={isDisabled}
                 accessible={true}
                 accessibilityLabel={`Ação rápida: ${action.text}`}
                 accessibilityRole="button"
-                accessibilityHint={isDisabled ? 'Aguarde a resposta da assistente' : `Envia mensagem sobre ${action.text}`}
+                accessibilityHint={
+                  isDisabled ? 'Aguarde a resposta da assistente' : `Envia mensagem sobre ${action.text}`
+                }
                 accessibilityState={{ disabled: isDisabled }}
                 activeOpacity={0.7}
               >
@@ -354,7 +344,7 @@ export default function ChatScreen() {
                   style={[
                     styles.quickActionText,
                     action.isUrgent && styles.quickActionTextUrgent,
-                    isDisabled && styles.quickActionTextDisabled
+                    isDisabled && styles.quickActionTextDisabled,
                   ]}
                   numberOfLines={1}
                 >
@@ -389,12 +379,14 @@ export default function ChatScreen() {
           accessible={true}
           accessibilityLabel="Enviar mensagem"
           accessibilityRole="button"
-          accessibilityHint={!inputText.trim() ? "Digite uma mensagem para enviar" : "Envia sua mensagem para a assistente virtual"}
+          accessibilityHint={
+            !inputText.trim() ? 'Digite uma mensagem para enviar' : 'Envia sua mensagem para a assistente virtual'
+          }
         >
           <Icon
             name={loading ? 'loading' : 'send'}
             size={24}
-            color={(!inputText.trim() || loading) ? colors.muted : colors.background}
+            color={!inputText.trim() || loading ? colors.muted : colors.background}
           />
         </TouchableOpacity>
       </View>

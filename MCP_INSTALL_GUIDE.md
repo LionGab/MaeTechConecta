@@ -20,6 +20,7 @@ cd nossa-maternidade
 ### 2. Execute o Script de Setup
 
 **No Linux:**
+
 ```bash
 npm run mcp:setup:unix
 # ou
@@ -27,6 +28,7 @@ bash scripts/setup-mcp.sh
 ```
 
 **No Windows (PowerShell):**
+
 ```powershell
 npm run mcp:setup
 # ou
@@ -34,6 +36,7 @@ powershell -ExecutionPolicy Bypass -File scripts/setup-mcp.ps1
 ```
 
 **No macOS:**
+
 ```bash
 npm run mcp:setup:unix
 # ou
@@ -63,20 +66,13 @@ O arquivo `.vscode/mcp.json` já deve estar no repositório. Se não estiver, co
     "filesystem": {
       "type": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "${workspaceFolder}"
-      ],
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "${workspaceFolder}"],
       "env": {}
     },
     "brave-search": {
       "type": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-brave-search"
-      ],
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
       "env": {
         "BRAVE_API_KEY": ""
       }
@@ -88,18 +84,21 @@ O arquivo `.vscode/mcp.json` já deve estar no repositório. Se não estiver, co
 ### 2. Copiar para o Cursor
 
 **Linux:**
+
 ```bash
 mkdir -p ~/.config/Cursor/User
 cp .vscode/mcp.json ~/.config/Cursor/User/mcp.json
 ```
 
 **macOS:**
+
 ```bash
 mkdir -p ~/Library/Application\ Support/Cursor/User
 cp .vscode/mcp.json ~/Library/Application\ Support/Cursor/User/mcp.json
 ```
 
 **Windows:**
+
 ```powershell
 mkdir -p $env:APPDATA\Cursor\User
 copy .vscode\mcp.json $env:APPDATA\Cursor\User\mcp.json
@@ -115,6 +114,7 @@ Se quiser usar o Brave Search MCP, você precisa de uma chave de API:
 2. Edite o arquivo de configuração MCP:
 
 **Linux/macOS:**
+
 ```bash
 nano ~/.config/Cursor/User/mcp.json  # Linux
 # ou
@@ -122,11 +122,13 @@ nano ~/Library/Application\ Support/Cursor/User/mcp.json  # macOS
 ```
 
 **Windows:**
+
 ```powershell
 notepad $env:APPDATA\Cursor\User\mcp.json
 ```
 
 3. Substitua a string vazia em `BRAVE_API_KEY`:
+
 ```json
 "env": {
   "BRAVE_API_KEY": "sua-chave-api-aqui"
@@ -151,18 +153,21 @@ npm run mcp:validate
 ## Servers MCP Incluídos
 
 ### 1. GitHub MCP Server
+
 - **Tipo:** HTTP (Remote)
 - **Acesso:** Read-only repository data
 - **Configuração:** Não necessária
 - **Ferramentas:** Repository, issues, pull requests, discussions
 
 ### 2. Filesystem MCP Server
+
 - **Tipo:** Local (stdio)
 - **Acesso:** Operações seguras no sistema de arquivos
 - **Configuração:** Não necessária
 - **Ferramentas:** read_file, list_directory, search_files
 
 ### 3. Brave Search MCP Server
+
 - **Tipo:** Local (stdio)
 - **Acesso:** Busca na web via Brave Search API
 - **Configuração:** Requer BRAVE_API_KEY
@@ -182,6 +187,7 @@ npm run mcp:validate
 ### Erro ao Executar Servers
 
 1. Verifique se o Node.js está instalado:
+
    ```bash
    node --version
    npm --version
@@ -195,6 +201,7 @@ npm run mcp:validate
 ### Erro de Permissão
 
 **Linux/macOS:**
+
 ```bash
 chmod +x scripts/setup-mcp.sh
 ```

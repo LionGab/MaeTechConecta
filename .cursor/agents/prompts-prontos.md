@@ -1,4 +1,5 @@
 # 🚀 Prompts Prontos para Cursor 2.0 Composer
+
 ## Copy & Paste direto no Cursor
 
 **Data:** 30/10/2025 (Hoje)
@@ -601,6 +602,7 @@ Configure players.
 ## 🚀 Próximos Passos
 
 Depois de usar os prompts, você terá:
+
 - ✅ Projeto completo configurado
 - ✅ Database schema pronto
 - ✅ NAT-IA básico funcionando

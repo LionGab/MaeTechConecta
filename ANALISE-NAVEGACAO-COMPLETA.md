@@ -1,4 +1,5 @@
 # ANÁLISE DETALHADA DA ARQUITETURA DE NAVEGAÇÃO E GERENCIAMENTO DE ESTADO
+
 ## Projeto: Nossa Maternidade
 
 ---
@@ -17,7 +18,7 @@ AppNavigator (Stack Navigator - RootStackParamList)
         ├── Habits Screen
         ├── Content Screen
         └── Profile Screen
-    
+
     Screens do Stack (acessíveis de qualquer tab)
     ├── DailyPlan Screen
     └── ContentDetail Screen
@@ -25,16 +26,17 @@ AppNavigator (Stack Navigator - RootStackParamList)
 
 ### 1.2 Arquivos de Navegação
 
-| Arquivo | Propósito | Observações |
-|---------|----------|-------------|
-| `src/navigation/index.tsx` | AppNavigator principal | Gerencia Onboarding vs Home |
-| `src/navigation/TabNavigator.tsx` | Bottom tab navigation | 5 tabs, lazy loading com Suspense |
-| `src/navigation/types.ts` | Type definitions | RootStackParamList, TabParamList |
-| `src/navigation/linking.ts` | Deep linking config | Configurado mas subutilizado |
+| Arquivo                           | Propósito              | Observações                       |
+| --------------------------------- | ---------------------- | --------------------------------- |
+| `src/navigation/index.tsx`        | AppNavigator principal | Gerencia Onboarding vs Home       |
+| `src/navigation/TabNavigator.tsx` | Bottom tab navigation  | 5 tabs, lazy loading com Suspense |
+| `src/navigation/types.ts`         | Type definitions       | RootStackParamList, TabParamList  |
+| `src/navigation/linking.ts`       | Deep linking config    | Configurado mas subutilizado      |
 
 ### 1.3 Deep Linking
 
 **Configuração:**
+
 ```typescript
 prefixes: ['nossa-maternidade://', 'https://nossa-maternidade.app']
 
@@ -54,12 +56,14 @@ Rotas configuradas:
 ### 2.1 ThemeContext (src/contexts/ThemeContext.tsx)
 
 **Funcionalidades:**
+
 - Gerencia modo de tema (light/dark/auto)
 - Suporta preferência do sistema (useColorScheme)
 - Persiste preferência em AsyncStorage
 - Fornece hook `useTheme()` para acesso
 
 **Interface:**
+
 ```typescript
 interface ThemeContextType {
   isDark: boolean;
@@ -71,6 +75,7 @@ interface ThemeContextType {
 ```
 
 **Estrutura do Provider:**
+
 ```
 App.tsx
 ├── ErrorBoundary
@@ -81,6 +86,7 @@ App.tsx
 ### 2.2 PROBLEMA CRÍTICO: ThemeContext Não Está Sendo Utilizado
 
 **Achado:** Busca por `useTheme` retornou apenas 3 resultados:
+
 1. Definição em ThemeContext.tsx
 2. Documentação em OTIMIZACOES-FINAIS.md
 3. Referência em .cursorrules
@@ -88,6 +94,7 @@ App.tsx
 **Nenhuma tela ou componente está usando `useTheme()`!**
 
 **Padrão Atual:**
+
 ```typescript
 // Em TODAS as telas:
 import { colors, spacing, typography, borderRadius } from '../theme/colors';
@@ -102,16 +109,17 @@ import { colors, spacing, typography, borderRadius } from '../theme/colors';
 
 ### 3.1 Estratégia de Estado por Camada
 
-| Camada | Tecnologia | Dados Armazenados | Observações |
-|--------|-----------|------------------|-------------|
-| **Persistência** | AsyncStorage | onboarded, userProfile, userId | Sem sincronização centralizada |
-| **State Local** | useState | Inputs, loading, filtering | Em cada componente individualmente |
-| **State Complexo** | useReducer | Chat messages (useChatOptimized) | Apenas em um hook |
-| **Tema Global** | ThemeContext | isDark, themeMode | Configurado mas não utilizado |
+| Camada             | Tecnologia   | Dados Armazenados                | Observações                        |
+| ------------------ | ------------ | -------------------------------- | ---------------------------------- |
+| **Persistência**   | AsyncStorage | onboarded, userProfile, userId   | Sem sincronização centralizada     |
+| **State Local**    | useState     | Inputs, loading, filtering       | Em cada componente individualmente |
+| **State Complexo** | useReducer   | Chat messages (useChatOptimized) | Apenas em um hook                  |
+| **Tema Global**    | ThemeContext | isDark, themeMode                | Configurado mas não utilizado      |
 
 ### 3.2 AsyncStorage Usage Pattern
 
 **Padrão Identificado:**
+
 ```typescript
 // Em múltiplos hooks:
 const loadUserProfile = async () => {
@@ -137,6 +145,7 @@ src/hooks/
 ```
 
 #### useChatOptimized.ts (Mais Complexo)
+
 ```typescript
 // State Management:
 - useReducer para state da conversa
@@ -153,6 +162,7 @@ src/hooks/
 **PROBLEMA:** 4 diferentes useState quando useReducer seria melhor centralizado.
 
 #### useUserProfile.ts (Padrão Simples)
+
 ```typescript
 // Apenas carrega uma vez do AsyncStorage
 // Sem atualização em tempo real
@@ -186,7 +196,7 @@ PROBLEMA: Sem sincronização central entre hooks
    - Shadows, typography, spacing, borderRadius
    - Usado em 90% das telas
 
-2. src/constants/theme.ts  
+2. src/constants/theme.ts
    - Tema expandido com scales
    - Colors primárias/secundárias
    - getTheme(isDark)
@@ -198,6 +208,7 @@ PROBLEMA: Sem sincronização central entre hooks
 ### 4.2 Falta de Context para User Profile/Authentication
 
 **Estado disperso:**
+
 ```typescript
 // HomeScreen.tsx
 const [userName, setUserName] = useState('');
@@ -220,11 +231,13 @@ const [type, setType] = useState<'gestante' | 'mae' | 'tentante' | null>(null);
 ### 4.3 ThemeContext Não Utilizado
 
 **Contexto Criado Mas Nunca Usado:**
+
 - Hook `useTheme()` não é chamado em nenhuma tela
 - Cores importadas diretamente: `import { colors } from '../theme/colors'`
 - Tema é estático, não muda quando `toggleTheme()` é chamado
 
 **Por Que Importa:**
+
 1. Não há mudança dinâmica de tema na aplicação
 2. Componentes não reagem a mudanças de isDark
 3. Toda a lógica de tema em ThemeContext é "morta"
@@ -232,12 +245,15 @@ const [type, setType] = useState<'gestante' | 'mae' | 'tentante' | null>(null);
 ### 4.4 Deep Linking Subutilizado
 
 **Configurado mas não implementado:**
+
 ```typescript
 // Existe configuration em linking.ts
 export const linking: LinkingOptions<RootStackParamList> = {
   prefixes: ['nossa-maternidade://', 'https://nossa-maternidade.app'],
-  config: { /* ... */ }
-}
+  config: {
+    /* ... */
+  },
+};
 
 // Mas NÃO é usado em navegação:
 // ❌ Nenhuma tela usa navigation.link()
@@ -248,10 +264,11 @@ export const linking: LinkingOptions<RootStackParamList> = {
 ### 4.5 Recarregamento Desnecessário de Dados
 
 **Exemplo em HomeScreen:**
+
 ```typescript
 useEffect(() => {
-  loadUserProfile();  // Carrega userProfile do AsyncStorage
-  loadDailyPlan();    // Carrega daily plan do Supabase
+  loadUserProfile(); // Carrega userProfile do AsyncStorage
+  loadDailyPlan(); // Carrega daily plan do Supabase
 }, []);
 
 // Mesmo dado é carregado independentemente em outros lugares
@@ -262,6 +279,7 @@ useEffect(() => {
 ### 4.6 Navegação de Onboarding vs Main App
 
 **Padrão Identificado:**
+
 ```typescript
 const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null);
 
@@ -282,13 +300,13 @@ initialParams={{ onComplete: () => setIsOnboarded(true) }}
 ### 5.1 Positivos
 
 ✅ **Lazy Loading de Screens**
+
 ```typescript
-const HomeScreen = lazy(() => 
-  import('../screens/HomeScreen').then(m => ({ default: m.default }))
-);
+const HomeScreen = lazy(() => import('../screens/HomeScreen').then((m) => ({ default: m.default })));
 ```
 
 ✅ **Suspense Boundary**
+
 ```typescript
 <Suspense fallback={<Loading message="Carregando..." />}>
   <Component {...props} />
@@ -296,6 +314,7 @@ const HomeScreen = lazy(() =>
 ```
 
 ✅ **Memoização em Alguns Hooks**
+
 ```typescript
 const aiHistory = useMemo(() => {
   return state.messages.filter(...).slice(-20)
@@ -305,15 +324,18 @@ const aiHistory = useMemo(() => {
 ### 5.2 Problemas de Performance
 
 ❌ **Re-renders Desnecessários**
+
 - TextInput `onChangeText` causa re-render da tela inteira
 - Sem useMemo em renderadores de listas
 - Sem React.memo em componentes fixos
 
 ❌ **Falta de Normalização de Estado**
+
 - Arrays de objetos não normalizados
 - Sem IDs únicos em algumas listas
 
 ❌ **AsyncStorage Chamado Múltiplas Vezes**
+
 - Sem cache ou contexto
 - Cada hook recarrega dados
 
@@ -324,6 +346,7 @@ const aiHistory = useMemo(() => {
 ### 6.1 Padrão de Estilo
 
 **Padrão Atual:**
+
 ```typescript
 // Em cada arquivo:
 import { colors, spacing, typography, borderRadius } from '../theme/colors';
@@ -371,6 +394,7 @@ src/shared/components/
 ### PRIORIDADE ALTA
 
 #### 1. **Criar UserProfileContext**
+
 ```typescript
 interface UserProfileContextType {
   profile: UserProfile | null;
@@ -381,18 +405,20 @@ interface UserProfileContextType {
 ```
 
 **Benefícios:**
+
 - Single source of truth para dados de usuário
 - Automática sincronização entre telas
 - Reduz chamadas ao AsyncStorage
 
 #### 2. **Utilizar ThemeContext Corretamente**
+
 ```typescript
 // Em cada componente/tela:
 import { useTheme } from '../contexts/ThemeContext';
 
 const MyScreen = () => {
   const { theme } = useTheme();
-  
+
   return (
     <View style={{ backgroundColor: theme.background }}>
       {/* ... */}
@@ -402,16 +428,19 @@ const MyScreen = () => {
 ```
 
 **Benefícios:**
+
 - Tema dinâmico funciona
 - Mudanças de isDark reagem em tempo real
 - Componentes responsivos a tema
 
 #### 3. **Consolidar Arquivo de Tema**
+
 - Mesclar `src/theme/colors.ts` e `src/constants/theme.ts`
 - Uma única fonte de verdade
 - Exportar tudo de um lugar
 
 #### 4. **Implementar AuthContext**
+
 ```typescript
 interface AuthContextType {
   userId: string | null;
@@ -423,6 +452,7 @@ interface AuthContextType {
 ```
 
 **Benefícios:**
+
 - Gerencia onboarding state centralmente
 - Valida autenticação em um lugar
 - Simplifica AppNavigator
@@ -430,11 +460,13 @@ interface AuthContextType {
 ### PRIORIDADE MÉDIA
 
 #### 5. **Refatorar useChatOptimized**
+
 - Consolidar 4 `useState` em um único `useReducer`
 - Separar side effects em custom hooks
 - Memoizar callbacks com useCallback
 
 #### 6. **Implementar Deep Linking Corretamente**
+
 ```typescript
 // Em navegação:
 navigation.link('content/123');
@@ -445,12 +477,14 @@ const contentId = params?.contentId;
 ```
 
 #### 7. **Adicionar Sincronização de Estado**
+
 ```typescript
 // Listener para mudanças no AsyncStorage
 // Notificar todos os subscribers quando dados mudam
 ```
 
 #### 8. **Otimizar Re-renders**
+
 ```typescript
 // Usar React.memo em componentes puros
 export const QuickActionButton = React.memo(({ ... }) => { ... });
@@ -465,11 +499,13 @@ const handleQuickAction = useCallback((action) => { ... }, []);
 ### PRIORIDADE BAIXA
 
 #### 9. **Melhorar Tipagem**
+
 - Criar arquivo `src/types/index.ts` centralizado
 - Exportar todos os types dali
 - Evitar `any`
 
 #### 10. **Documentação**
+
 - Diagrama de fluxo de estado
 - Guia de como adicionar nova tela
 - Padrões de gerenciamento de estado
@@ -503,6 +539,7 @@ App.tsx
 ## 9. RESUMO EXECUTIVO
 
 ### Estado Atual
+
 - Navegação bem estruturada com Stack + Tab
 - ThemeContext criado mas não utilizado
 - Gerenciamento de estado disperso e sem sincronização
@@ -510,6 +547,7 @@ App.tsx
 - Múltiplos arquivos de tema causando confusão
 
 ### Problemas Principais
+
 1. **ThemeContext morto** - não está sendo consumido
 2. **Falta UserProfileContext** - estado disperso entre componentes
 3. **AsyncStorage chamado múltiplas vezes** - sem cache central
@@ -517,6 +555,7 @@ App.tsx
 5. **Deep linking subutilizado** - funcionalidade perdida
 
 ### Impacto
+
 - Mudanças de tema não funcionam
 - Atualizar perfil em uma tela não reflete em outras
 - Difícil de debugar onde dados vêm de fato
@@ -524,7 +563,7 @@ App.tsx
 - Novo padrão confuso para contribuidores
 
 ### Esforço de Correção
+
 - **Alto:** UserProfileContext + AuthContext
 - **Médio:** Usar ThemeContext + consolidar temas
 - **Baixo:** Implementar deep linking + otimizações
-

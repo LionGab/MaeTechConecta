@@ -15,14 +15,18 @@
 ## Comandos Disponíveis
 
 ### **/memory** (sem argumentos)
+
 Mostra resumo completo do estado atual:
+
 - Status do projeto
 - Últimas decisões
 - TODOs pendentes críticos
 - Resumo da última sessão
 
 ### **/memory status**
+
 Exibe status detalhado:
+
 - Progresso geral do projeto (%)
 - Componentes criados/pendentes
 - Telas migradas/pendentes
@@ -30,37 +34,48 @@ Exibe status detalhado:
 - Bloqueadores
 
 ### **/memory decisions**
+
 Lista todas as decisões estratégicas tomadas:
+
 - ID, data, categoria
 - Decisão e rationale
 - Status (approved/implemented)
 - Impacto (critical/high/medium/low)
 
 ### **/memory decisions --recent 3**
+
 Mostra apenas as 3 decisões mais recentes
 
 ### **/memory todos**
+
 Lista todas as tarefas pendentes:
+
 - Prioridade (critical → low)
 - Sprint planejado
 - Estimativa de horas
 - Dependências
 
 ### **/memory todos --critical**
+
 Mostra apenas TODOs críticos
 
 ### **/memory log**
+
 Exibe histórico completo de conversas:
+
 - Todas as fases da sessão
 - Frases marcantes
 - Estatísticas
 - Próximos passos
 
 ### **/memory log --session 001**
+
 Mostra log de uma sessão específica
 
 ### **/memory context**
+
 Exibe contexto completo do projeto:
+
 - Visão geral
 - Stack tecnológica
 - Design System
@@ -68,13 +83,17 @@ Exibe contexto completo do projeto:
 - Navegação atual/planejada
 
 ### **/memory preferences**
+
 Mostra preferências do usuário e stakeholder:
+
 - Estilo de comunicação
 - Prioridades do projeto
 - Preferências técnicas e de design
 
 ### **/memory search <keyword>**
+
 Busca keyword em todos os arquivos de memória:
+
 - context.json
 - decisions.json
 - conversation_log.md
@@ -83,15 +102,20 @@ Busca keyword em todos os arquivos de memória:
 Exemplo: `/memory search gemini`
 
 ### **/memory update**
+
 Atualiza manualmente os arquivos de memória com informações da sessão atual
 
 ### **/memory export**
+
 Cria backup comprimido de toda a memória:
+
 - Salva em `.claude/memory/backups/`
 - Formato: `memory-backup-YYYYMMDD-HHMMSS.tar.gz`
 
 ### **/memory stats**
+
 Exibe estatísticas da memória:
+
 - Tamanho total dos arquivos
 - Número de decisões
 - Número de TODOs (pendentes/completos)
@@ -141,6 +165,7 @@ O comando `/memory` lê e processa os seguintes arquivos:
 Para transferir memória entre computadores:
 
 **Método 1 (Git - Recomendado)**:
+
 ```bash
 git add .claude/memory/
 git commit -m "chore: Update memory"
@@ -148,12 +173,14 @@ git push
 ```
 
 No outro computador:
+
 ```bash
 git pull
 /memory status  # Verificar que memória foi restaurada
 ```
 
 **Método 2 (Backup Manual)**:
+
 ```bash
 /memory export
 # Transferir arquivo .tar.gz para outro computador

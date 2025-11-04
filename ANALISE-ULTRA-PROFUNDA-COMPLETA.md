@@ -22,20 +22,20 @@ O repositório **Nossa Maternidade** é um projeto React Native/Expo **bem estru
 
 ## 📈 MÉTRICAS DO PROJETO
 
-| Métrica | Valor | Status |
-|---------|-------|--------|
-| **Linhas de Código** | 7.039 | ✅ Bom tamanho |
-| **Arquivos TypeScript** | 33 | ✅ Organizado |
-| **Componentes Reutilizáveis** | 15+ | ✅ Excelente |
-| **Screens** | 5 | ✅ Adequado |
-| **Services** | 6 | ✅ Bem modularizado |
-| **Hooks Customizados** | 5+ | ✅ Boa abstração |
-| **Testes Unitários** | 0 | 🚨 **CRÍTICO** |
-| **Testes E2E** | 0 | 🚨 **CRÍTICO** |
-| **Cobertura de Testes** | 0% | 🚨 **CRÍTICO** |
-| **Documentação** | 45+ arquivos MD | ✅ Excepcional |
-| **TypeScript Strict** | Parcial | ⚠️ Melhorar |
-| **Edge Functions** | 6 | ✅ Bom |
+| Métrica                       | Valor           | Status              |
+| ----------------------------- | --------------- | ------------------- |
+| **Linhas de Código**          | 7.039           | ✅ Bom tamanho      |
+| **Arquivos TypeScript**       | 33              | ✅ Organizado       |
+| **Componentes Reutilizáveis** | 15+             | ✅ Excelente        |
+| **Screens**                   | 5               | ✅ Adequado         |
+| **Services**                  | 6               | ✅ Bem modularizado |
+| **Hooks Customizados**        | 5+              | ✅ Boa abstração    |
+| **Testes Unitários**          | 0               | 🚨 **CRÍTICO**      |
+| **Testes E2E**                | 0               | 🚨 **CRÍTICO**      |
+| **Cobertura de Testes**       | 0%              | 🚨 **CRÍTICO**      |
+| **Documentação**              | 45+ arquivos MD | ✅ Excepcional      |
+| **TypeScript Strict**         | Parcial         | ⚠️ Melhorar         |
+| **Edge Functions**            | 6               | ✅ Bom              |
 
 ---
 
@@ -63,11 +63,13 @@ src/
 ```
 
 **Pontos Fortes:**
+
 - ✅ Separação clara de responsabilidades
 - ✅ Domain-driven design (chat/, nat-ai/)
 - ✅ Componentes atômicos bem definidos
 
 **Pontos de Melhoria:**
+
 - ⚠️ Falta pasta `__tests__/` para testes
 - ⚠️ Theme duplicado (`theme/colors.ts` + `theme/index.ts`)
 - ⚠️ Falta contextos importantes (AuthContext, UserProfileContext)
@@ -77,6 +79,7 @@ src/
 ### 2. **Design System (Bubblegum)** ✅ **MUITO BOM**
 
 **Arquivos:**
+
 - `src/theme/colors.ts` (139 linhas)
 - `src/components/Button.tsx` (303 linhas)
 - `src/components/Card.tsx` (198 linhas)
@@ -85,6 +88,7 @@ src/
 **Análise:**
 
 ✅ **Pontos Fortes:**
+
 - Sistema de cores consistente (paleta completa)
 - Componentes com variants (`primary`, `secondary`, `destructive`, etc)
 - TypeScript bem tipado
@@ -92,6 +96,7 @@ src/
 - Shadows, spacing, borderRadius padronizados
 
 ⚠️ **Melhorias Necessárias:**
+
 ```typescript
 // PROBLEMA: Dois arquivos de tema
 // src/theme/colors.ts - 139 linhas
@@ -107,15 +112,16 @@ src/
 
 **Situação Atual:**
 
-| Tipo de Estado | Solução Atual | Status |
-|----------------|---------------|--------|
-| **Tema** | ThemeContext ❌ (não usado) | 🚨 Morto |
-| **Auth** | AsyncStorage direto | ⚠️ Fragmentado |
-| **Perfil** | AsyncStorage direto | ⚠️ Fragmentado |
-| **Chat** | useReducer local | ✅ OK |
-| **Navegação** | React Navigation | ✅ OK |
+| Tipo de Estado | Solução Atual               | Status         |
+| -------------- | --------------------------- | -------------- |
+| **Tema**       | ThemeContext ❌ (não usado) | 🚨 Morto       |
+| **Auth**       | AsyncStorage direto         | ⚠️ Fragmentado |
+| **Perfil**     | AsyncStorage direto         | ⚠️ Fragmentado |
+| **Chat**       | useReducer local            | ✅ OK          |
+| **Navegação**  | React Navigation            | ✅ OK          |
 
 **Problema Crítico:**
+
 ```typescript
 // PROBLEMA: ThemeContext existe mas NÃO é usado
 // App.tsx:11 - <ThemeProvider>
@@ -133,6 +139,7 @@ src/
 **Recomendações CRÍTICAS:**
 
 1. **Criar AuthContext**
+
 ```typescript
 // src/contexts/AuthContext.tsx
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -161,6 +168,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 ```
 
 2. **Criar UserProfileContext**
+
 ```typescript
 // src/contexts/UserProfileContext.tsx
 export function UserProfileProvider({ children }: { children: ReactNode }) {
@@ -176,6 +184,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
 ### 4. **Navegação** ✅ **BOM**
 
 **Arquivos:**
+
 - `src/navigation/index.ts`
 - `src/navigation/types.ts`
 - `src/navigation/linking.ts`
@@ -183,11 +192,13 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
 **Análise:**
 
 ✅ **Pontos Fortes:**
+
 - React Navigation implementado corretamente
 - TypeScript typing para navegação
 - Deep linking configurado
 
 ⚠️ **Melhorias:**
+
 - Deep linking subutilizado (pode melhorar UX)
 - Falta guards de navegação (autenticação)
 
@@ -200,6 +211,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
 **Destaques:**
 
 ✅ **Otimizações de Performance:**
+
 ```typescript
 // Linha 207-211: Memoização correta
 const renderMessageItem = useCallback(
@@ -224,6 +236,7 @@ const keyExtractor = useCallback((item: Message) => String(item.id), []);
 ```
 
 ✅ **Acessibilidade:**
+
 ```typescript
 // Linha 242-248: Excelente uso de acessibilidade
 <TouchableOpacity
@@ -235,6 +248,7 @@ const keyExtractor = useCallback((item: Message) => String(item.id), []);
 ```
 
 ✅ **UX Cuidadosa:**
+
 - Typing indicator animado (linha 28-58)
 - Skeleton loading (linha 61-89)
 - Quick actions contextuais (linha 99-106)
@@ -242,6 +256,7 @@ const keyExtractor = useCallback((item: Message) => String(item.id), []);
 - Botão SOS para emergências (linha 167-180)
 
 ⚠️ **Melhorias Possíveis:**
+
 ```typescript
 // MELHORIA 1: Adicionar debounce no input
 import { useDebouncedCallback } from 'use-debounce';
@@ -252,7 +267,7 @@ const debouncedSend = useDebouncedCallback(handleSend, 300);
 const trackMessage = () => {
   Analytics.track('message_sent', {
     length: inputText.length,
-    hasQuickAction: false
+    hasQuickAction: false,
   });
 };
 
@@ -267,6 +282,7 @@ const [failedMessages, setFailedMessages] = useState<Message[]>([]);
 **Destaques:**
 
 ✅ **Reducer Pattern:**
+
 ```typescript
 // Linha 37-52: Reducer limpo e previsível
 function chatReducer(state: ChatState, action: Action): ChatState {
@@ -281,6 +297,7 @@ function chatReducer(state: ChatState, action: Action): ChatState {
 ```
 
 ✅ **Retry Inteligente:**
+
 ```typescript
 // Linha 192-225: Sistema de retry robusto
 aiResponse = await smartRetry(
@@ -303,6 +320,7 @@ catch (edgeFunctionError: any) {
 ```
 
 ✅ **Offline Support:**
+
 ```typescript
 // Linha 72-106: Sincronização de mensagens offline
 useEffect(() => {
@@ -335,7 +353,9 @@ const { profile, userId } = useAsyncStorage(['userProfile', 'userId']);
 // PROBLEMA 3: Detecção de urgência fraca
 // src/services/ai.ts:210-224
 const urgencyKeywords = [
-  'sangrando', 'sangramento', 'sangue',
+  'sangrando',
+  'sangramento',
+  'sangue',
   'dor forte', // ...
 ];
 
@@ -350,6 +370,7 @@ const urgencyKeywords = [
 **Destaques:**
 
 ✅ **Rate Limiting:**
+
 ```typescript
 // Linha 49-79: Rate limiter robusto
 const rateLimiter = new Map<string, RateLimitData>();
@@ -363,6 +384,7 @@ function checkRateLimit(userId: string): { allowed: boolean; remaining: number }
 ```
 
 ✅ **Autenticação:**
+
 ```typescript
 // Linha 85-101: Verificação JWT correta
 async function verifyAuth(req: Request, supabase: any): Promise<...> {
@@ -376,15 +398,12 @@ async function verifyAuth(req: Request, supabase: any): Promise<...> {
 ```
 
 ✅ **Context Management:**
+
 ```typescript
 // Linha 107-138: Busca contexto eficientemente
 async function getContext(userId: string, supabase: any) {
   // Buscar perfil e últimas 20 mensagens em paralelo
-  const { data: profile } = await supabase
-    .from('user_profiles')
-    .select('...')
-    .eq('id', userId)
-    .single();
+  const { data: profile } = await supabase.from('user_profiles').select('...').eq('id', userId).single();
 
   const { data: messages } = await supabase
     .from('chat_messages')
@@ -395,6 +414,7 @@ async function getContext(userId: string, supabase: any) {
 ```
 
 ✅ **Prompt Engineering:**
+
 ```typescript
 // Linha 16-45: System prompt bem estruturado
 const SYSTEM_PROMPT = `Você é a NathIA, assistente virtual...
@@ -414,7 +434,7 @@ RESTRIÇÕES CRÍTICAS:
 ```typescript
 // MELHORIA 1: Adicionar cache de contexto
 // Evitar buscar perfil em toda requisição
-const contextCache = new Map<string, { context: any, timestamp: number }>();
+const contextCache = new Map<string, { context: any; timestamp: number }>();
 
 // MELHORIA 2: Streaming de respostas
 // Usar streaming do Gemini para melhor UX
@@ -424,7 +444,7 @@ const stream = await callGeminiFlashStreaming(fullPrompt);
 await trackUsage(userId, {
   model: 'gemini-2.0-flash',
   tokens: estimateTokens(fullPrompt),
-  latency: Date.now() - startTime
+  latency: Date.now() - startTime,
 });
 ```
 
@@ -435,6 +455,7 @@ await trackUsage(userId, {
 **Análise:**
 
 ✅ **Pontos Fortes:**
+
 - Sistema de fallback (NAT-IA → Claude)
 - Detecção de urgência
 - Validação com GPT-4
@@ -483,6 +504,7 @@ export const chatWithAI = async (...) => {
 ### 5. **Componentes Reutilizáveis** ✅ **EXCELENTE**
 
 **Button.tsx** (303 linhas):
+
 ```typescript
 // Análise: EXCELENTE
 ✅ Múltiplas variants (primary, secondary, destructive, outline, ghost)
@@ -503,6 +525,7 @@ const handlePress = () => {
 ```
 
 **Card.tsx** (198 linhas):
+
 ```typescript
 ✅ Variants (default, outlined, elevated)
 ✅ Ícones opcionais
@@ -512,6 +535,7 @@ const handlePress = () => {
 ```
 
 **Input.tsx** (256 linhas):
+
 ```typescript
 ✅ Label, helperText, errorText
 ✅ Ícones
@@ -589,6 +613,7 @@ const handlePress = () => {
 8. **TypeScript não-strict em alguns lugares** (Severidade: 5/10)
    - **Problema:** `any` em vários lugares
    - **Exemplos:**
+
      ```typescript
      // src/services/ai.ts:54
      } catch (error: any) {
@@ -596,6 +621,7 @@ const handlePress = () => {
      // src/hooks/useChatOptimized.ts:277
      } catch (error: any) {
      ```
+
    - **Solução:** Tipagem estrita para errors
 
 ### MENORES ℹ️
@@ -613,6 +639,7 @@ const handlePress = () => {
 ### 1. **Performance** 🏎️
 
 #### A. Implementar Code Splitting
+
 ```typescript
 // App.tsx
 const ChatScreen = lazy(() => import('./src/screens/ChatScreen'));
@@ -624,6 +651,7 @@ const ProfileScreen = lazy(() => import('./src/screens/ProfileScreen'));
 ```
 
 #### B. Otimizar Imagens
+
 ```bash
 # Adicionar expo-image
 expo install expo-image
@@ -640,6 +668,7 @@ import { Image } from 'expo-image';
 ```
 
 #### C. Implementar React Query
+
 ```typescript
 npm install @tanstack/react-query
 
@@ -652,6 +681,7 @@ const { data: profile } = useQuery({
 ```
 
 #### D. Lazy Load Components
+
 ```typescript
 // Componentes pesados só quando necessários
 const ChartComponent = lazy(() => import('./ChartComponent'));
@@ -662,6 +692,7 @@ const ChartComponent = lazy(() => import('./ChartComponent'));
 ### 2. **Funcionalidades** ✨
 
 #### A. Sistema de Notificações Push Completo
+
 ```typescript
 // Já existe src/services/notifications.ts
 // Mas falta implementação completa
@@ -674,6 +705,7 @@ const ChartComponent = lazy(() => import('./ChartComponent'));
 ```
 
 #### B. Sistema de Onboarding Melhorado
+
 ```typescript
 // Adicionar tutorial interativo
 npm install react-native-onboarding-swiper
@@ -687,6 +719,7 @@ if (isFeatureEnabled('new-onboarding')) {
 ```
 
 #### C. Chat com Voz
+
 ```typescript
 // Já existe @react-native-voice/voice no package.json
 // Implementar:
@@ -703,6 +736,7 @@ Voice.onSpeechResults = (e) => {
 ```
 
 #### D. Modo Offline Completo
+
 ```typescript
 // Já existe src/utils/offlineStorage.ts
 // Melhorar:
@@ -720,30 +754,27 @@ Voice.onSpeechResults = (e) => {
 #### A. Implementar Testes (URGENTE)
 
 **Setup:**
+
 ```bash
 npm install --save-dev jest @testing-library/react-native @testing-library/jest-native
 ```
 
 **jest.config.js:**
+
 ```javascript
 module.exports = {
   preset: 'react-native',
   setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
-  transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|expo|@expo|@supabase)/)'
-  ],
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts'
-  ],
+  transformIgnorePatterns: ['node_modules/(?!(react-native|@react-native|expo|@expo|@supabase)/)'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts'],
   coverageThreshold: {
     global: {
       statements: 80,
       branches: 80,
       functions: 80,
-      lines: 80
-    }
-  }
+      lines: 80,
+    },
+  },
 };
 ```
 
@@ -818,20 +849,15 @@ describe('Button', () => {
 ```javascript
 // .eslintrc.js
 module.exports = {
-  extends: [
-    '@react-native',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
-    'prettier'
-  ],
+  extends: ['@react-native', 'plugin:@typescript-eslint/recommended', 'plugin:react-hooks/recommended', 'prettier'],
   rules: {
     '@typescript-eslint/no-explicit-any': 'error', // ❌ Proibir 'any'
     '@typescript-eslint/explicit-function-return-type': 'warn',
     'react-hooks/exhaustive-deps': 'error',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
     'prefer-const': 'error',
-    'no-var': 'error'
-  }
+    'no-var': 'error',
+  },
 };
 ```
 
@@ -847,18 +873,14 @@ module.exports = {
     }
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write",
-      "jest --bail --findRelatedTests"
-    ]
+    "*.{ts,tsx}": ["eslint --fix", "prettier --write", "jest --bail --findRelatedTests"]
   }
 }
 ```
 
 #### D. Documentação com TSDoc
 
-```typescript
+````typescript
 /**
  * Hook otimizado para gerenciamento de chat com NAT-IA
  *
@@ -880,7 +902,7 @@ module.exports = {
 export function useChatOptimized(): UseChatOptimizedReturn {
   // ...
 }
-```
+````
 
 ---
 
@@ -889,6 +911,7 @@ export function useChatOptimized(): UseChatOptimizedReturn {
 #### A. Remover API Keys do Client (URGENTE)
 
 **Problema:**
+
 ```typescript
 // ❌ src/config/api.ts
 export const API_CONFIG = {
@@ -898,6 +921,7 @@ export const API_CONFIG = {
 ```
 
 **Solução:**
+
 ```typescript
 // ✅ Remover completamente
 // Mover TODAS as chamadas para Edge Functions
@@ -925,8 +949,8 @@ const fetch = (url, options) =>
   SSLPinning.fetch(url, {
     ...options,
     sslPinning: {
-      certs: ['sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=']
-    }
+      certs: ['sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA='],
+    },
   });
 ```
 
@@ -942,7 +966,7 @@ class RateLimiter {
     const requests = this.requests.get(key) || [];
 
     // Remover requests antigas
-    const validRequests = requests.filter(time => now - time < windowMs);
+    const validRequests = requests.filter((time) => now - time < windowMs);
 
     if (validRequests.length >= maxRequests) {
       return false;
@@ -1151,7 +1175,7 @@ import analytics from '@react-native-firebase/analytics';
 useEffect(() => {
   analytics().logScreenView({
     screen_name: 'ChatScreen',
-    screen_class: 'ChatScreen'
+    screen_class: 'ChatScreen',
   });
 }, []);
 
@@ -1159,7 +1183,7 @@ useEffect(() => {
 const trackMessageSent = () => {
   analytics().logEvent('message_sent', {
     message_length: inputText.length,
-    is_urgent: detectUrgency(inputText)
+    is_urgent: detectUrgency(inputText),
   });
 };
 ```
@@ -1186,7 +1210,7 @@ export class PerformanceMonitor {
     // Enviar para analytics
     analytics().logEvent('screen_load_time', {
       screen: screenName,
-      duration: Math.round(duration)
+      duration: Math.round(duration),
     });
   }
 }
@@ -1326,6 +1350,7 @@ jobs:
    ```
 
 2. **Adicionar README para cada módulo**
+
    ```
    src/components/README.md
    src/hooks/README.md
@@ -1333,12 +1358,16 @@ jobs:
    ```
 
 3. **Adicionar CONTRIBUTING.md**
+
    ```markdown
    # Contributing to Nossa Maternidade
 
    ## Code Style
+
    ## Testing
+
    ## Pull Requests
+
    ## Code Review Process
    ```
 
@@ -1440,28 +1469,28 @@ jobs:
 
 ### Código
 
-| Métrica | Atual | Meta | Prazo |
-|---------|-------|------|-------|
-| **Cobertura de Testes** | 0% | 80% | 3 meses |
-| **TypeScript Strict** | 60% | 100% | 2 meses |
-| **ESLint Errors** | ~10 | 0 | 1 mês |
-| **Bundle Size** | ~15 MB | <10 MB | 2 meses |
+| Métrica                 | Atual  | Meta   | Prazo   |
+| ----------------------- | ------ | ------ | ------- |
+| **Cobertura de Testes** | 0%     | 80%    | 3 meses |
+| **TypeScript Strict**   | 60%    | 100%   | 2 meses |
+| **ESLint Errors**       | ~10    | 0      | 1 mês   |
+| **Bundle Size**         | ~15 MB | <10 MB | 2 meses |
 
 ### Performance
 
-| Métrica | Atual | Meta |
-|---------|-------|------|
-| **Time to Interactive** | ~2s | <1s |
-| **API Response Time** | ~500ms | <300ms |
-| **Crash-free Rate** | ? | >99.5% |
+| Métrica                 | Atual  | Meta   |
+| ----------------------- | ------ | ------ |
+| **Time to Interactive** | ~2s    | <1s    |
+| **API Response Time**   | ~500ms | <300ms |
+| **Crash-free Rate**     | ?      | >99.5% |
 
 ### Negócio
 
-| Métrica | Atual | Meta |
-|---------|-------|------|
-| **Daily Active Users** | ? | Crescimento |
-| **Retention Rate D7** | ? | >40% |
-| **Avg Session Length** | ? | >5min |
+| Métrica                | Atual | Meta        |
+| ---------------------- | ----- | ----------- |
+| **Daily Active Users** | ?     | Crescimento |
+| **Retention Rate D7**  | ?     | >40%        |
+| **Avg Session Length** | ?     | >5min       |
 
 ---
 
@@ -1491,19 +1520,13 @@ jobs:
 ### Próximos Passos Recomendados
 
 **URGENTE (Esta semana):**
+
 1. Remover API keys do client
 2. Implementar testes básicos
 
-**IMPORTANTE (Este mês):**
-3. Criar AuthContext e UserProfileContext
-4. Adicionar Sentry e Analytics
-5. Melhorar TypeScript
+**IMPORTANTE (Este mês):** 3. Criar AuthContext e UserProfileContext 4. Adicionar Sentry e Analytics 5. Melhorar TypeScript
 
-**DESEJÁVEL (Próximos 3 meses):**
-6. Dark mode funcional
-7. Chat com voz
-8. CI/CD completo
-9. Performance monitoring
+**DESEJÁVEL (Próximos 3 meses):** 6. Dark mode funcional 7. Chat com voz 8. CI/CD completo 9. Performance monitoring
 
 ---
 

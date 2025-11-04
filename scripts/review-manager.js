@@ -57,25 +57,24 @@ function checkWhitelist(agentId, action) {
   }
 
   // Verificar agentes
-  const agent = whitelist.agents.find(a => a.id === agentId && a.enabled);
+  const agent = whitelist.agents.find((a) => a.id === agentId && a.enabled);
   if (!agent) {
     return { allowed: false, reason: 'Agent not in whitelist or disabled' };
   }
 
   // Verificar permissões do trust level
   const trustLevel = whitelist.trust_level_permissions[agent.trust_level] || [];
-  const hasPermission = trustLevel.includes(action) ||
-                       agent.permissions.includes(action);
+  const hasPermission = trustLevel.includes(action) || agent.permissions.includes(action);
 
   if (!hasPermission) {
     return {
       allowed: false,
-      reason: `Action '${action}' not allowed for trust level '${agent.trust_level}'`
+      reason: `Action '${action}' not allowed for trust level '${agent.trust_level}'`,
     };
   }
 
   // Verificar restrições
-  const hasRestriction = agent.restrictions.some(restriction => {
+  const hasRestriction = agent.restrictions.some((restriction) => {
     if (restriction === 'no_auto_apply' && action === 'auto_apply') return true;
     if (restriction === 'no_git_push' && action === 'git_push') return true;
     if (restriction === 'no_shell_destructive' && action.includes('destructive')) return true;
@@ -85,7 +84,7 @@ function checkWhitelist(agentId, action) {
   if (hasRestriction) {
     return {
       allowed: false,
-      reason: `Action '${action}' restricted for agent '${agentId}'`
+      reason: `Action '${action}' restricted for agent '${agentId}'`,
     };
   }
 
@@ -110,7 +109,7 @@ function logAction(agentId, action, file, severity, result, metadata = {}) {
     severity: severity || null,
     result,
     metadata,
-    ...metadata
+    ...metadata,
   };
 
   // Criar arquivo de log por data
@@ -148,7 +147,7 @@ function logAction(agentId, action, file, severity, result, metadata = {}) {
       severity,
       result,
       requires_approval: action === 'write' || action === 'shell',
-      approved: result === 'approved' || result === 'auto_approved'
+      approved: result === 'approved' || result === 'auto_approved',
     };
 
     let auditLogs = [];
@@ -178,15 +177,13 @@ function requiresApproval(action, file, agentId) {
   }
 
   // Verificar se ação está na lista de requer aprovação
-  const approvalRequired = config.approval.required_for.some(pattern => {
+  const approvalRequired = config.approval.required_for.some((pattern) => {
     if (pattern === 'write_restricted_files') {
       const restrictedFiles = config.permissions.write.restricted_files || [];
-      return restrictedFiles.some(pattern =>
-        file && (file.includes(pattern) || file.match(new RegExp(pattern)))
-      );
+      return restrictedFiles.some((pattern) => file && (file.includes(pattern) || file.match(new RegExp(pattern))));
     }
     if (pattern === 'high_severity_fixes') {
-      return action === 'fix' && action.includes('severity_4') || action.includes('severity_5');
+      return (action === 'fix' && action.includes('severity_4')) || action.includes('severity_5');
     }
     return false;
   });
@@ -241,13 +238,13 @@ function generateReport(startDate, endDate) {
       required: 0,
       approved: 0,
       denied: 0,
-      pending: 0
+      pending: 0,
     },
     files_modified: new Set(),
-    errors: 0
+    errors: 0,
   };
 
-  reports.forEach(log => {
+  reports.forEach((log) => {
     // Por agente
     stats.by_agent[log.agent_id] = (stats.by_agent[log.agent_id] || 0) + 1;
 
@@ -283,7 +280,7 @@ function generateReport(startDate, endDate) {
   return {
     period: { start: startDate, end: endDate },
     stats,
-    reports: reports.slice(-100) // Últimos 100 logs
+    reports: reports.slice(-100), // Últimos 100 logs
   };
 }
 
@@ -299,14 +296,20 @@ switch (command) {
     const whitelistCheck = checkWhitelist(agentId, action);
     const approvalCheck = requiresApproval(action, file, agentId);
 
-    console.log(JSON.stringify({
-      agent_id: agentId,
-      action,
-      file,
-      whitelist: whitelistCheck,
-      approval: approvalCheck,
-      allowed: whitelistCheck.allowed && (!approvalCheck.requires || approvalCheck.approved)
-    }, null, 2));
+    console.log(
+      JSON.stringify(
+        {
+          agent_id: agentId,
+          action,
+          file,
+          whitelist: whitelistCheck,
+          approval: approvalCheck,
+          allowed: whitelistCheck.allowed && (!approvalCheck.requires || approvalCheck.approved),
+        },
+        null,
+        2
+      )
+    );
 
     process.exit(whitelistCheck.allowed ? 0 : 1);
     break;
@@ -341,19 +344,16 @@ switch (command) {
     }
 
     const approvalId = process.argv[3];
-    const approval = pendingApprovals.find(a => a.id === approvalId);
+    const approval = pendingApprovals.find((a) => a.id === approvalId);
 
     if (approval) {
-      logAction(
-        approval.agent_id,
-        approval.action,
-        approval.file,
-        approval.severity,
-        'approved',
-        { approval_id: approvalId, approved_by: 'manual', approved_at: new Date().toISOString() }
-      );
+      logAction(approval.agent_id, approval.action, approval.file, approval.severity, 'approved', {
+        approval_id: approvalId,
+        approved_by: 'manual',
+        approved_at: new Date().toISOString(),
+      });
 
-      pendingApprovals = pendingApprovals.filter(a => a.id !== approvalId);
+      pendingApprovals = pendingApprovals.filter((a) => a.id !== approvalId);
       fs.writeFileSync(approvalFile, JSON.stringify(pendingApprovals, null, 2));
 
       console.log(`Aprovação ${approvalId} registrada`);

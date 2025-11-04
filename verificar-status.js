@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 
 console.log('\n🔍 VERIFICANDO STATUS DO APP - Nossa Maternidade\n');
-console.log('=' .repeat(60));
+console.log('='.repeat(60));
 
 let allGood = true;
 
@@ -24,7 +24,7 @@ if (fs.existsSync(path.join(__dirname, 'node_modules'))) {
 
 // 2. Verificar .env ou .env.local
 console.log('\n2️⃣  Verificando arquivo .env ou .env.local...');
-const envPath = fs.existsSync(path.join(__dirname, '.env.local')) 
+const envPath = fs.existsSync(path.join(__dirname, '.env.local'))
   ? path.join(__dirname, '.env.local')
   : fs.existsSync(path.join(__dirname, '.env'))
     ? path.join(__dirname, '.env')
@@ -33,15 +33,16 @@ const envPath = fs.existsSync(path.join(__dirname, '.env.local'))
 if (envPath) {
   const envFile = path.basename(envPath);
   console.log(`   ✅ Arquivo ${envFile} existe`);
-  
+
   // Ler e verificar se está preenchido
   const envContent = fs.readFileSync(envPath, 'utf8');
-  
-  const hasSupabaseUrl = envContent.includes('EXPO_PUBLIC_SUPABASE_URL=') && 
-                         !envContent.includes('EXPO_PUBLIC_SUPABASE_URL=your-');
-  const hasSupabaseKey = envContent.includes('EXPO_PUBLIC_SUPABASE_ANON_KEY=') && 
-                         !envContent.includes('EXPO_PUBLIC_SUPABASE_ANON_KEY=your-');
-  
+
+  const hasSupabaseUrl =
+    envContent.includes('EXPO_PUBLIC_SUPABASE_URL=') && !envContent.includes('EXPO_PUBLIC_SUPABASE_URL=your-');
+  const hasSupabaseKey =
+    envContent.includes('EXPO_PUBLIC_SUPABASE_ANON_KEY=') &&
+    !envContent.includes('EXPO_PUBLIC_SUPABASE_ANON_KEY=your-');
+
   if (hasSupabaseUrl && hasSupabaseKey) {
     console.log('   ✅ Credenciais do Supabase configuradas');
   } else {
@@ -60,7 +61,7 @@ console.log('\n3️⃣  Verificando Schema SQL...');
 const schemaPath = path.join(__dirname, 'supabase', 'schema-nossa-maternidade-completo.sql');
 if (fs.existsSync(schemaPath)) {
   const schemaSize = fs.statSync(schemaPath).size;
-  console.log(`   ✅ Schema SQL existe (${Math.round(schemaSize/1024)}KB)`);
+  console.log(`   ✅ Schema SQL existe (${Math.round(schemaSize / 1024)}KB)`);
   console.log('   ⚠️  Verifique se já executou no Supabase Dashboard');
 } else {
   console.log('   ❌ Schema SQL NÃO encontrado');
@@ -72,7 +73,7 @@ console.log('\n4️⃣  Verificando Edge Function...');
 const edgeFunctionPath = path.join(__dirname, 'supabase', 'functions', 'nathia-chat', 'index.ts');
 if (fs.existsSync(edgeFunctionPath)) {
   const functionSize = fs.statSync(edgeFunctionPath).size;
-  console.log(`   ✅ Edge Function existe (${Math.round(functionSize/1024)}KB)`);
+  console.log(`   ✅ Edge Function existe (${Math.round(functionSize / 1024)}KB)`);
   console.log('   ⚠️  Verifique se já fez deploy com: supabase functions deploy nathia-chat');
 } else {
   console.log('   ❌ Edge Function NÃO encontrada');
@@ -85,15 +86,10 @@ const packagePath = path.join(__dirname, 'package.json');
 if (fs.existsSync(packagePath)) {
   const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
   console.log(`   ✅ Projeto: ${pkg.name} v${pkg.version}`);
-  
-  const criticalDeps = [
-    'expo',
-    '@supabase/supabase-js',
-    '@react-navigation/native',
-    'react-native'
-  ];
-  
-  const missingDeps = criticalDeps.filter(dep => !pkg.dependencies[dep]);
+
+  const criticalDeps = ['expo', '@supabase/supabase-js', '@react-navigation/native', 'react-native'];
+
+  const missingDeps = criticalDeps.filter((dep) => !pkg.dependencies[dep]);
   if (missingDeps.length === 0) {
     console.log('   ✅ Todas dependências críticas configuradas');
   } else {
@@ -106,16 +102,10 @@ if (fs.existsSync(packagePath)) {
 
 // 6. Verificar estrutura de pastas
 console.log('\n6️⃣  Verificando estrutura de pastas...');
-const criticalFolders = [
-  'src',
-  'src/components',
-  'src/screens',
-  'src/services',
-  'src/navigation'
-];
+const criticalFolders = ['src', 'src/components', 'src/screens', 'src/services', 'src/navigation'];
 
 let allFoldersExist = true;
-criticalFolders.forEach(folder => {
+criticalFolders.forEach((folder) => {
   if (!fs.existsSync(path.join(__dirname, folder))) {
     console.log(`   ❌ Pasta faltando: ${folder}`);
     allFoldersExist = false;
@@ -128,13 +118,9 @@ if (allFoldersExist) {
 
 // 7. Verificar documentação
 console.log('\n7️⃣  Verificando documentação...');
-const docs = [
-  'COMO-DEIXAR-APP-FUNCIONAL.md',
-  'STATUS-APP.md',
-  'README.md'
-];
+const docs = ['COMO-DEIXAR-APP-FUNCIONAL.md', 'STATUS-APP.md', 'README.md'];
 
-docs.forEach(doc => {
+docs.forEach((doc) => {
   if (fs.existsSync(path.join(__dirname, doc))) {
     console.log(`   ✅ ${doc}`);
   } else {
@@ -156,5 +142,5 @@ if (allGood) {
   console.log('   3. Rode este script novamente para verificar\n');
 }
 
-console.log('=' .repeat(60));
+console.log('='.repeat(60));
 console.log('\n💡 Dica: Leia o arquivo STATUS-APP.md para ver o progresso completo\n');

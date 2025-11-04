@@ -156,10 +156,7 @@ export async function cancelHabitReminder(identifier: string): Promise<void> {
 /**
  * Agendar notificação de celebração de streak
  */
-export async function scheduleStreakCelebration(
-  habitName: string,
-  streakDays: number
-): Promise<string | null> {
+export async function scheduleStreakCelebration(habitName: string, streakDays: number): Promise<string | null> {
   try {
     const identifier = await Notifications.scheduleNotificationAsync({
       content: {
@@ -186,10 +183,7 @@ export async function scheduleStreakCelebration(
 /**
  * Agendar notificação de novo conteúdo
  */
-export async function scheduleNewContentNotification(
-  contentTitle: string,
-  contentId: string
-): Promise<string | null> {
+export async function scheduleNewContentNotification(contentTitle: string, contentId: string): Promise<string | null> {
   try {
     const identifier = await Notifications.scheduleNotificationAsync({
       content: {
@@ -225,13 +219,9 @@ export function setupNotificationListeners(
   received: Notifications.Subscription;
   response: Notifications.Subscription;
 } {
-  const receivedListener = Notifications.addNotificationReceivedListener(
-    onNotificationReceived
-  );
+  const receivedListener = Notifications.addNotificationReceivedListener(onNotificationReceived);
 
-  const responseListener = Notifications.addNotificationResponseReceivedListener(
-    onNotificationTapped
-  );
+  const responseListener = Notifications.addNotificationResponseReceivedListener(onNotificationTapped);
 
   return {
     received: receivedListener,
@@ -242,12 +232,10 @@ export function setupNotificationListeners(
 /**
  * Remover listeners de notificações
  */
-export function removeNotificationListeners(
-  listeners: {
-    received: Notifications.Subscription;
-    response: Notifications.Subscription;
-  }
-): void {
+export function removeNotificationListeners(listeners: {
+  received: Notifications.Subscription;
+  response: Notifications.Subscription;
+}): void {
   Notifications.removeNotificationSubscription(listeners.received);
   Notifications.removeNotificationSubscription(listeners.response);
 }
@@ -266,9 +254,7 @@ export async function cancelAllNotifications(): Promise<void> {
 /**
  * Obter todas as notificações agendadas
  */
-export async function getAllScheduledNotifications(): Promise<
-  Notifications.NotificationRequest[]
-> {
+export async function getAllScheduledNotifications(): Promise<Notifications.NotificationRequest[]> {
   try {
     return await Notifications.getAllScheduledNotificationsAsync();
   } catch (error) {
@@ -282,7 +268,9 @@ export async function getAllScheduledNotifications(): Promise<
  */
 export async function savePushTokenToSupabase(token: string): Promise<void> {
   try {
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     if (!user) return;
 
     // Atualizar perfil com token de push

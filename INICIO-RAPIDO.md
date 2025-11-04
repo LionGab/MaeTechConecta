@@ -13,6 +13,7 @@ npm run check
 ```
 
 Este comando mostra:
+
 - ✅ O que já está configurado
 - ⚠️ O que ainda falta fazer
 
@@ -25,6 +26,7 @@ Este comando mostra:
 **Tempo total:** ~25 minutos
 
 **Passos resumidos:**
+
 1. Criar projeto no Supabase
 2. Executar schema SQL
 3. Preencher arquivo `.env`
@@ -46,12 +48,12 @@ Depois de completar a configuração acima.
 
 ## 📚 Documentação Completa
 
-| Arquivo | Descrição |
-|---------|-----------|
+| Arquivo                                                            | Descrição                               |
+| ------------------------------------------------------------------ | --------------------------------------- |
 | **[COMO-DEIXAR-APP-FUNCIONAL.md](./COMO-DEIXAR-APP-FUNCIONAL.md)** | 📖 Guia passo-a-passo completo (25 min) |
-| **[STATUS-APP.md](./STATUS-APP.md)** | 📊 Status atual do projeto |
-| **[CONFIGURACAO-COMPLETA.md](./CONFIGURACAO-COMPLETA.md)** | 🔧 Detalhes técnicos completos |
-| **[README.md](./README.md)** | 📘 Documentação geral do projeto |
+| **[STATUS-APP.md](./STATUS-APP.md)**                               | 📊 Status atual do projeto              |
+| **[CONFIGURACAO-COMPLETA.md](./CONFIGURACAO-COMPLETA.md)**         | 🔧 Detalhes técnicos completos          |
+| **[README.md](./README.md)**                                       | 📘 Documentação geral do projeto        |
 
 ---
 
@@ -62,6 +64,7 @@ Depois de completar a configuração acima.
 ```
 
 **✅ Pronto:**
+
 - Código do app
 - Dependências instaladas
 - Schema SQL criado
@@ -69,6 +72,7 @@ Depois de completar a configuração acima.
 - Documentação completa
 
 **⏳ Falta fazer (configuração manual):**
+
 - Criar projeto Supabase
 - Executar SQL
 - Configurar .env
@@ -80,6 +84,7 @@ Depois de completar a configuração acima.
 ## 🆘 Problemas?
 
 1. **Rode primeiro:**
+
    ```bash
    npm run check
    ```
@@ -106,7 +111,7 @@ npm start
 # Rodar no Android
 npm run android
 
-# Rodar no iOS  
+# Rodar no iOS
 npm run ios
 
 # Lint

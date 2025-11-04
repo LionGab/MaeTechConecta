@@ -65,6 +65,7 @@
    - Se aparecer erro, copie e me envie para ajudar
 
 **O que esse SQL cria:**
+
 - 10 tabelas (user_profiles, chat_messages, daily_plans, etc.)
 - Políticas RLS (segurança)
 - Índices otimizados
@@ -139,10 +140,12 @@ supabase functions deploy nathia-chat
 ```
 
 **Como obter o PROJECT-REF:**
+
 - No Dashboard do Supabase → Settings → General
 - Copie o "Reference ID" (8 caracteres)
 
 **Verificar se funcionou:**
+
 - No Dashboard → Edge Functions
 - Deve aparecer `nathia-chat` como **deployed**
 
@@ -163,6 +166,7 @@ npm run web      # Para Web
 ```
 
 **O que deve acontecer:**
+
 1. Metro bundler inicia
 2. QR Code aparece no terminal
 3. Escaneie com Expo Go (Android) ou Camera (iOS)
@@ -175,6 +179,7 @@ npm run web      # Para Web
 Marque cada item conforme completa:
 
 ### Configuração Supabase
+
 - [ ] Projeto criado no Supabase
 - [ ] Schema SQL executado com sucesso
 - [ ] Credenciais copiadas (URL + anon key)
@@ -182,11 +187,13 @@ Marque cada item conforme completa:
 - [ ] Tabelas criadas (verificar no Table Editor)
 
 ### Configuração Gemini AI
+
 - [ ] API Key do Gemini obtida
 - [ ] Secret `GEMINI_API_KEY` adicionada no Supabase
 - [ ] Edge Function `nathia-chat` deployed
 
 ### Teste Local
+
 - [ ] Dependências instaladas (`node_modules` existe)
 - [ ] Expo inicia sem erros
 - [ ] App abre no dispositivo/emulador
@@ -203,6 +210,7 @@ Marque cada item conforme completa:
 **Causa:** Arquivo `.env` não preenchido ou mal formatado
 
 **Solução:**
+
 1. Verifique se `.env` existe na raiz
 2. Confirme que as variáveis começam com `EXPO_PUBLIC_`
 3. Reinicie o Metro bundler (Ctrl+C e `npm start` novamente)
@@ -214,6 +222,7 @@ Marque cada item conforme completa:
 **Causa:** Extensões não habilitadas ou SQL malformado
 
 **Solução:**
+
 1. Execute primeiro (separadamente):
    ```sql
    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -228,6 +237,7 @@ Marque cada item conforme completa:
 **Causa:** Secret não configurada ou função não deployed
 
 **Solução:**
+
 1. Verifique secrets: Settings → Edge Functions → Manage secrets
 2. Confirme que `GEMINI_API_KEY` está lá
 3. Rode novamente: `supabase functions deploy nathia-chat`
@@ -237,11 +247,13 @@ Marque cada item conforme completa:
 ### ❌ Chat não responde
 
 **Possíveis causas:**
+
 1. Edge Function não deployed → Veja solução acima
 2. Gemini API Key inválida → Gere nova key
 3. Usuário não autenticado → Complete o onboarding
 
 **Debug:**
+
 - Abra DevTools do navegador (F12)
 - Vá em Console
 - Procure erros em vermelho
@@ -252,28 +264,33 @@ Marque cada item conforme completa:
 ## 📱 Testando Recursos Principais
 
 ### Teste 1: Onboarding
+
 1. ✅ Abra o app
 2. ✅ Complete as 7 telas de onboarding
 3. ✅ Veja se perfil é salvo
 
 ### Teste 2: Home Screen
+
 1. ✅ Veja nome e semana de gestação
 2. ✅ Clique em "Gerar Plano Agora"
 3. ✅ Aguarde loading
 4. ✅ Plano diário deve aparecer
 
 ### Teste 3: Chat NathIA
+
 1. ✅ Abra aba "Chat"
 2. ✅ Digite uma pergunta
 3. ✅ Aguarde resposta da IA
 4. ✅ Resposta deve ser personalizada
 
 ### Teste 4: Hábitos
+
 1. ✅ Abra aba "Hábitos"
 2. ✅ Marque um hábito como completo
 3. ✅ Veja progresso aumentar
 
 ### Teste 5: Conteúdos
+
 1. ✅ Abra aba "Conteúdos"
 2. ✅ Veja lista de artigos
 3. ✅ Clique em um artigo
@@ -283,15 +300,15 @@ Marque cada item conforme completa:
 
 ## ⏱️ Tempo Total Estimado
 
-| Etapa | Tempo | Dificuldade |
-|-------|-------|-------------|
-| Criar projeto Supabase | 5 min | Fácil |
-| Executar SQL | 2 min | Fácil |
-| Configurar .env | 3 min | Fácil |
-| Obter Gemini API | 5 min | Fácil |
-| Deploy Edge Function | 5 min | Médio |
-| Testar app | 5 min | Fácil |
-| **TOTAL** | **~25 min** | **Fácil/Médio** |
+| Etapa                  | Tempo       | Dificuldade     |
+| ---------------------- | ----------- | --------------- |
+| Criar projeto Supabase | 5 min       | Fácil           |
+| Executar SQL           | 2 min       | Fácil           |
+| Configurar .env        | 3 min       | Fácil           |
+| Obter Gemini API       | 5 min       | Fácil           |
+| Deploy Edge Function   | 5 min       | Médio           |
+| Testar app             | 5 min       | Fácil           |
+| **TOTAL**              | **~25 min** | **Fácil/Médio** |
 
 ---
 

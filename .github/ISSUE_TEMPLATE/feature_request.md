@@ -13,6 +13,7 @@ Uma descrição clara da funcionalidade que você gostaria.
 ## 💡 Problema que Resolve
 
 Qual problema esta feature resolveria? Ex:
+
 - Usuários têm dificuldade em...
 - Seria útil para...
 

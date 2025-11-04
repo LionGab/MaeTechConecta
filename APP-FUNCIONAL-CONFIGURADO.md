@@ -26,11 +26,13 @@
 **Arquivo:** `src/screens/OnboardingScreen.tsx`
 
 **Fix aplicado:** Adicionada linha para salvar `userId` no AsyncStorage:
+
 ```typescript
 await AsyncStorage.setItem('userId', user.id);
 ```
 
 **Impacto:** Agora o app consegue identificar o usuário após o onboarding e carregar:
+
 - ✅ Histórico de chat
 - ✅ Planos diários personalizados
 - ✅ Perfil do usuário
@@ -54,12 +56,14 @@ await AsyncStorage.setItem('userId', user.id);
 **Arquivo:** `package.json`
 
 **Scripts adicionados:**
+
 ```json
 "check": "node verificar-status.js",
 "verify": "node verificar-status.js"
 ```
 
 **Uso:**
+
 ```bash
 npm run check
 # ou
@@ -67,6 +71,7 @@ npm run verify
 ```
 
 Isso verifica:
+
 - ✅ Se dependências estão instaladas
 - ✅ Se `.env.local` existe e está configurado
 - ✅ Se schema SQL existe
@@ -85,6 +90,7 @@ Isso verifica:
    - Ou use: `SCHEMA_COMPLETO_FINAL.sql` na raiz do projeto
 
 **Tabelas que serão criadas:**
+
 - `user_profiles` - Perfis de usuários
 - `chat_messages` - Mensagens do chat
 - `daily_plans` - Planos diários
@@ -124,6 +130,7 @@ supabase functions deploy nathia-chat
 ```
 
 **Ou via Dashboard:**
+
 1. Acesse: https://supabase.com/dashboard
 2. Vá em **Edge Functions**
 3. Clique em **Deploy** e selecione a função `nathia-chat`
@@ -159,6 +166,7 @@ npm start
 Use este checklist para verificar se tudo está pronto:
 
 ### Configuração Local
+
 - [x] Arquivo `.env.local` criado
 - [x] Todas as chaves de API configuradas
 - [x] Fix do userId aplicado
@@ -166,6 +174,7 @@ Use este checklist para verificar se tudo está pronto:
 - [x] Guias práticos disponíveis
 
 ### Configuração Supabase
+
 - [ ] Schema SQL executado no Supabase Dashboard
 - [ ] Tabelas criadas (user_profiles, chat_messages, daily_plans)
 - [ ] RLS (Row Level Security) configurado
@@ -173,6 +182,7 @@ Use este checklist para verificar se tudo está pronto:
 - [ ] Edge Function `nathia-chat` deployada
 
 ### Testes
+
 - [ ] App inicia sem erros
 - [ ] Onboarding funciona e salva userId
 - [ ] Chat com NathIA funciona
@@ -184,16 +194,19 @@ Use este checklist para verificar se tudo está pronto:
 ## 🔍 Comandos Úteis
 
 ### Verificar Status
+
 ```bash
 npm run check
 ```
 
 ### Iniciar App
+
 ```bash
 npm start
 ```
 
 ### Verificar Variáveis de Ambiente
+
 ```bash
 # Linux/Mac
 cat .env.local
@@ -203,6 +216,7 @@ type .env.local
 ```
 
 ### Verificar se Supabase está configurado
+
 ```bash
 # O script verificar-status.js faz isso automaticamente
 npm run check
@@ -223,15 +237,15 @@ npm run check
 
 ## ✅ Status Final
 
-| Item | Status |
-|------|--------|
-| **Variáveis de Ambiente** | ✅ Configurado |
-| **Fix Crítico do userId** | ✅ Aplicado |
-| **Guias Práticos** | ✅ Adicionados |
-| **Scripts Úteis** | ✅ Adicionados |
-| **Schema SQL** | ⚠️ Pendente (executar no Supabase) |
+| Item                      | Status                               |
+| ------------------------- | ------------------------------------ |
+| **Variáveis de Ambiente** | ✅ Configurado                       |
+| **Fix Crítico do userId** | ✅ Aplicado                          |
+| **Guias Práticos**        | ✅ Adicionados                       |
+| **Scripts Úteis**         | ✅ Adicionados                       |
+| **Schema SQL**            | ⚠️ Pendente (executar no Supabase)   |
 | **Edge Function Secrets** | ⚠️ Pendente (configurar no Supabase) |
-| **Edge Function Deploy** | ⚠️ Pendente (se necessário) |
+| **Edge Function Deploy**  | ⚠️ Pendente (se necessário)          |
 
 **Completude:** ~70% (configuração local completa, falta apenas Supabase)
 

@@ -7,8 +7,8 @@
  * 3. Perfil da Usuária (onboarding + dados demográficos)
  */
 
-import { supabase } from '../../services/supabase';
-import { summarizeOldMessages } from '../gemini';
+import { supabase } from '@/services/supabase';
+import { summarizeOldMessages } from '@/lib/gemini';
 import { NAT_AI_SYSTEM_PROMPT } from './system-prompt';
 
 export interface UserProfile {
@@ -86,11 +86,7 @@ export class ContextManager {
       return this.cachedProfile;
     }
 
-    const { data: profile, error } = await supabase
-      .from('user_profiles')
-      .select('*')
-      .eq('id', this.userId)
-      .single();
+    const { data: profile, error } = await supabase.from('user_profiles').select('*').eq('id', this.userId).single();
 
     if (error || !profile) {
       throw new Error('Perfil não encontrado');
@@ -114,11 +110,7 @@ export class ContextManager {
    */
   private async loadOrCreateConversation() {
     if (this.conversationId) {
-      const { data } = await supabase
-        .from('conversation_history')
-        .select('*')
-        .eq('id', this.conversationId)
-        .single();
+      const { data } = await supabase.from('conversation_history').select('*').eq('id', this.conversationId).single();
 
       if (data) {
         return data;
@@ -146,10 +138,7 @@ export class ContextManager {
   /**
    * Carrega mensagens recentes (contexto quente)
    */
-  private async loadRecentMessages(
-    conversationId: string,
-    limit: number = 30
-  ): Promise<Message[]> {
+  private async loadRecentMessages(conversationId: string, limit: number = 30): Promise<Message[]> {
     const { data: messages, error } = await supabase
       .from('chat_messages')
       .select('*')
@@ -176,9 +165,7 @@ export class ContextManager {
         });
 
         // Procurar resposta correspondente
-        const response = messages.find(
-          m => m.role === 'assistant' && m.created_at > msg.created_at && m.response
-        );
+        const response = messages.find((m) => m.role === 'assistant' && m.created_at > msg.created_at && m.response);
         if (response && response.response) {
           formattedMessages.push({
             id: response.id,
@@ -197,10 +184,7 @@ export class ContextManager {
   /**
    * Carrega ou gera resumo de mensagens antigas
    */
-  private async loadOrGenerateSummary(
-    conversation: any,
-    recentMessages: Message[]
-  ): Promise<string> {
+  private async loadOrGenerateSummary(conversation: any, recentMessages: Message[]): Promise<string> {
     // Se já temos resumo e não há muitas mensagens novas, usar cache
     if (this.cachedSummary && recentMessages.length <= this.lastSummaryCount + 10) {
       return this.cachedSummary;
@@ -224,7 +208,7 @@ export class ContextManager {
         .range(30, 99); // Mensagens 31-100
 
       if (oldMessages && oldMessages.length > 0) {
-        const messagesToSummarize: Array<{ role: 'user' | 'model'; content: string }> = oldMessages.map(msg => ({
+        const messagesToSummarize: Array<{ role: 'user' | 'model'; content: string }> = oldMessages.map((msg) => ({
           role: (msg.role === 'user' ? 'user' : 'model') as 'user' | 'model',
           content: (msg.role === 'user' ? msg.message : msg.response || '') as string,
         }));
@@ -232,10 +216,7 @@ export class ContextManager {
         const summary = await summarizeOldMessages(messagesToSummarize, NAT_AI_SYSTEM_PROMPT);
 
         // Salvar resumo na conversa
-        await supabase
-          .from('conversation_history')
-          .update({ context_summary: summary })
-          .eq('id', conversation.id);
+        await supabase.from('conversation_history').update({ context_summary: summary }).eq('id', conversation.id);
 
         this.cachedSummary = summary;
         this.lastSummaryCount = recentMessages.length;
@@ -251,9 +232,7 @@ export class ContextManager {
    */
   formatForGemini(context: LoadedContext): string {
     const profileText = this.humanizeProfile(context.userProfile);
-    const summaryText = context.historySummary
-      ? `\n\n# RESUMO DE CONVERSAS ANTERIORES\n${context.historySummary}`
-      : '';
+    const summaryText = context.historySummary ? `\n\n# RESUMO DE CONVERSAS ANTERIORES\n${context.historySummary}` : '';
 
     return `${NAT_AI_SYSTEM_PROMPT}\n\n# CONTEXTO DA USUÁRIA\n${profileText}${summaryText}`;
   }
@@ -265,12 +244,7 @@ export class ContextManager {
     let text = `Nome: ${profile.full_name}\n`;
 
     if (profile.type) {
-      const typeText =
-        profile.type === 'gestante'
-          ? `Gestante`
-          : profile.type === 'mae'
-          ? `Mãe`
-          : `Tentante`;
+      const typeText = profile.type === 'gestante' ? `Gestante` : profile.type === 'mae' ? `Mãe` : `Tentante`;
       text += `Tipo: ${typeText}\n`;
 
       if (profile.type === 'gestante' && profile.pregnancy_week) {
@@ -336,7 +310,7 @@ export class ContextManager {
     // Gerar novo resumo
     const oldMessages = messages.slice(30, 99);
     if (oldMessages.length > 0) {
-      const messagesToSummarize: Array<{ role: 'user' | 'model'; content: string }> = oldMessages.map(msg => ({
+      const messagesToSummarize: Array<{ role: 'user' | 'model'; content: string }> = oldMessages.map((msg) => ({
         role: (msg.role === 'user' ? 'user' : 'model') as 'user' | 'model',
         content: (msg.role === 'user' ? msg.message : msg.response || '') as string,
       }));

@@ -1,0 +1,10 @@
+appId: com.nossa.maternidade
+---
+- launchApp
+- tapOn: "Entrar"
+- inputText: "user+smoke@nossamaternidade.app"
+- tapOn: "Continuar"
+- inputText: "123456"
+- tapOn: "Confirmar"
+- assertVisible: "Olá, Nath"
+- assertVisible: "Plano diário"

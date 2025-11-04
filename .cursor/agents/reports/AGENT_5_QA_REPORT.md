@@ -9,13 +9,16 @@
 ## 📊 Análise de Cobertura de Testes
 
 ### Status Atual
+
 - ❌ **Testes Unitários:** 0% de cobertura
 - ❌ **Testes E2E:** 0% de cobertura
 - ❌ **Suites de Teste:** Não implementadas
 - ❌ **CI/CD Testing:** Não configurado
 
 ### Impacto
+
 **CRÍTICO:** Sistema em produção sem testes automatizados aumenta risco de:
+
 - Bugs em produção
 - Regressões silenciosas
 - Dificuldade de manutenção
@@ -26,6 +29,7 @@
 ## 🎯 Componentes Críticos Sem Testes
 
 ### 1. **Utils (Retry, Logger, OfflineStorage)**
+
 **Prioridade:** 🔴 ALTA
 
 ```typescript
@@ -36,11 +40,13 @@
 ```
 
 **Riscos:**
+
 - Retry system: Falhas silenciosas em chamadas de API
 - Logger: Perda de logs críticos em produção
 - OfflineStorage: Perda de dados em modo offline
 
 **Testes Necessários:**
+
 - [ ] `retryWithBackoff()` - sucesso após N retries
 - [ ] `retryWithBackoff()` - timeout após maxRetries
 - [ ] `smartRetry()` - não retenta erros não-recuperáveis
@@ -51,6 +57,7 @@
 - [ ] `syncPendingMessages()` - sync após offline
 
 ### 2. **Serviços de IA**
+
 **Prioridade:** 🔴 CRÍTICA
 
 ```typescript
@@ -59,11 +66,13 @@
 ```
 
 **Riscos:**
+
 - Respostas médicas não validadas
 - Falhas de API não tratadas
 - Custos elevados por retries desnecessários
 
 **Testes Necessários:**
+
 - [ ] `chatWithAI()` - resposta válida
 - [ ] `chatWithAI()` - fallback em erro
 - [ ] `detectUrgency()` - keywords corretas
@@ -72,6 +81,7 @@
 - [ ] Context management eficiente
 
 ### 3. **Hooks**
+
 **Prioridade:** 🔴 ALTA
 
 ```typescript
@@ -81,6 +91,7 @@
 ```
 
 **Testes Necessários:**
+
 - [ ] `sendMessage()` - fluxo completo
 - [ ] Offline mode ativado corretamente
 - [ ] Retry integrado com useChatOptimized
@@ -88,17 +99,19 @@
 - [ ] Sync automático ao voltar online
 
 ### 4. **Screens**
+
 **Prioridade:** 🟡 MÉDIA
 
 ```typescript
-- src/screens/ChatScreen.tsx
-- src/screens/OnboardingScreen.tsx
-- src/screens/HomeScreen.tsx
-- src/screens/DailyPlanScreen.tsx
-- src/screens/ProfileScreen.tsx
+-src / screens / ChatScreen.tsx -
+  src / screens / OnboardingScreen.tsx -
+  src / screens / HomeScreen.tsx -
+  src / screens / DailyPlanScreen.tsx -
+  src / screens / ProfileScreen.tsx;
 ```
 
 **Testes Necessários:**
+
 - [ ] Renderização correta
 - [ ] Navegação entre telas
 - [ ] Interações do usuário
@@ -144,13 +157,9 @@ module.exports = {
   preset: 'jest-expo',
   setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)'
+    'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)',
   ],
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/__tests__/**',
-  ],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/__tests__/**'],
   coverageThreshold: {
     global: {
       branches: 70,
@@ -167,30 +176,35 @@ module.exports = {
 ## 📋 Checklist de Implementação
 
 ### Fase 1: Setup (1 dia)
+
 - [ ] Configurar Jest + React Native Testing Library
 - [ ] Criar estrutura de pastas `__tests__`
 - [ ] Configurar CI/CD (GitHub Actions)
 - [ ] Criar mocks de AsyncStorage e Supabase
 
 ### Fase 2: Utils (2 dias)
+
 - [ ] Testar retry.ts (8 testes)
 - [ ] Testar logger.ts (6 testes)
 - [ ] Testar offlineStorage.ts (8 testes)
 - [ ] Cobertura: 85%+
 
 ### Fase 3: Serviços (2 dias)
+
 - [ ] Testar ai.ts (10 testes)
 - [ ] Testar contentGenerator.ts (6 testes)
 - [ ] Mocks de APIs externas
 - [ ] Cobertura: 80%+
 
 ### Fase 4: Hooks (2 dias)
+
 - [ ] Testar useChatOptimized.ts (12 testes)
 - [ ] Testar useDailyInteractions.ts (6 testes)
 - [ ] Testar useUserProfile.ts (4 testes)
 - [ ] Cobertura: 75%+
 
 ### Fase 5: Screens (3 dias)
+
 - [ ] Testar ChatScreen (8 testes)
 - [ ] Testar OnboardingScreen (6 testes)
 - [ ] Testar outras screens (4 cada)
@@ -203,20 +217,27 @@ module.exports = {
 ## 🚨 Issues Críticos Encontrados
 
 ### 1. Falta de Mock em Produção
+
 **Arquivo:** `src/utils/logger.ts:76`
+
 ```typescript
 // TODO: Integrar com Sentry, Datadog, etc.
 ```
+
 **Impacto:** Logs perdidos em produção
 
 ### 2. Error Handling Incompleto
+
 **Arquivo:** `src/services/ai.ts:64`
+
 ```typescript
 throw new Error(`Claude API error: ${error.response?.data?.error?.message || error.message}`);
 ```
+
 **Impacto:** Stack traces expostos para usuários
 
 ### 3. Sem Rate Limiting Implementado
+
 **Arquivo:** `src/services/ai.ts`
 **Impacto:** Possível custo elevado com uso excessivo
 
@@ -224,13 +245,13 @@ throw new Error(`Claude API error: ${error.response?.data?.error?.message || err
 
 ## 📈 Métricas de Qualidade
 
-| Métrica | Target | Atual | Status |
-|---------|--------|-------|--------|
-| Cobertura Unit | 80% | 0% | ❌ |
-| Cobertura E2E | 50% | 0% | ❌ |
-| Testes Críticos | 100% | 0% | ❌ |
-| CI/CD | ✅ | ❌ | ❌ |
-| Testes Automatizados | ✅ | ❌ | ❌ |
+| Métrica              | Target | Atual | Status |
+| -------------------- | ------ | ----- | ------ |
+| Cobertura Unit       | 80%    | 0%    | ❌     |
+| Cobertura E2E        | 50%    | 0%    | ❌     |
+| Testes Críticos      | 100%   | 0%    | ❌     |
+| CI/CD                | ✅     | ❌    | ❌     |
+| Testes Automatizados | ✅     | ❌    | ❌     |
 
 ---
 

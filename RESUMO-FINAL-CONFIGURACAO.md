@@ -12,6 +12,7 @@
 **Arquivo:** `.env.local` (não commitado no Git)
 
 **Chaves configuradas:**
+
 - ✅ **Supabase URL:** `https://bbcwitnbnosyfpfjtzkr.supabase.co`
 - ✅ **Supabase Anon Key:** Configurada
 - ✅ **Supabase Functions URL:** Configurada
@@ -27,6 +28,7 @@
 **Arquivo:** `src/screens/OnboardingScreen.tsx`
 
 **Mudança:**
+
 ```typescript
 // ✅ ANTES (bugado):
 await AsyncStorage.setItem('onboarded', 'true');
@@ -34,7 +36,7 @@ await AsyncStorage.setItem('userProfile', JSON.stringify(profile));
 
 // ✅ DEPOIS (corrigido):
 await AsyncStorage.setItem('onboarded', 'true');
-await AsyncStorage.setItem('userId', user.id);  // ← FIX APLICADO
+await AsyncStorage.setItem('userId', user.id); // ← FIX APLICADO
 await AsyncStorage.setItem('userProfile', JSON.stringify(profile));
 ```
 
@@ -45,6 +47,7 @@ await AsyncStorage.setItem('userProfile', JSON.stringify(profile));
 ### ✅ 3. Guias Práticos Adicionados
 
 **Arquivos adicionados:**
+
 - ✅ `CHECKLIST-CONFIGURACAO.md` - Checklist de configuração
 - ✅ `COMO-DEIXAR-APP-FUNCIONAL.md` - Guia completo passo-a-passo
 - ✅ `INICIO-RAPIDO.md` - Guia de início rápido
@@ -58,6 +61,7 @@ await AsyncStorage.setItem('userProfile', JSON.stringify(profile));
 **Arquivo:** `package.json`
 
 **Scripts adicionados:**
+
 ```json
 "check": "node verificar-status.js",
 "verify": "node verificar-status.js"
@@ -66,6 +70,7 @@ await AsyncStorage.setItem('userProfile', JSON.stringify(profile));
 **Script:** `verificar-status.js` (ajustado para verificar `.env.local`)
 
 **Uso:**
+
 ```bash
 npm run check
 ```
@@ -120,16 +125,19 @@ Ou via Dashboard: **Edge Functions > Deploy**
 ## 🚀 Como Usar Agora
 
 ### 1. Instalar Dependências
+
 ```bash
 npm install
 ```
 
 ### 2. Verificar Configuração
+
 ```bash
 npm run check
 ```
 
 ### 3. Iniciar o App
+
 ```bash
 npm start
 ```
@@ -139,6 +147,7 @@ npm start
 ## 📋 Checklist Final
 
 ### Configuração Local ✅
+
 - [x] Arquivo `.env.local` criado
 - [x] Todas as chaves de API configuradas
 - [x] Fix do userId aplicado
@@ -147,6 +156,7 @@ npm start
 - [x] Script de verificação ajustado
 
 ### Configuração Supabase ⚠️
+
 - [ ] Schema SQL executado
 - [ ] Secret `GEMINI_API_KEY` configurado
 - [ ] Edge Function deployada (se necessário)

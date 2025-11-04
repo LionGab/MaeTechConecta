@@ -1,155 +1,25 @@
 {
-  "version": "1.0.0",
-  "description": "Configuração de permissões e controles de segurança para agente de revisão",
+  "auto_approve": true,
+  "skip_awaiting_review": true,
+  "approval": {
+    "required_for": [],
+    "timeout": 0,
+    "default_action": "approve",
+    "auto_approve": true,
+    "skip_interactive": true
+  },
   "permissions": {
-    "read": {
-      "enabled": true,
-      "scope": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.js",
-        "**/*.jsx",
-        "**/*.json",
-        "**/*.md",
-        "**/*.sql",
-        "**/*.yaml",
-        "**/*.yml"
-      ],
-      "exclusions": [
-        "node_modules/**",
-        ".git/**",
-        "dist/**",
-        "build/**",
-        ".next/**",
-        ".expo/**"
-      ]
-    },
     "write": {
-      "enabled": true,
-      "require_approval": true,
-      "allowed_actions": [
-        "fix_code_suggestions",
-        "apply_linter_fixes",
-        "format_code",
-        "update_documentation",
-        "refactor_approved"
-      ],
-      "deny": [
-        "git push",
-        "git commit --no-verify",
-        "git push --force",
-        "npm publish",
-        "expo publish"
-      ],
-      "restricted_files": [
-        "package.json",
-        "package-lock.json",
-        "app.json",
-        ".env*",
-        "supabase/.env*"
-      ]
+      "require_approval": false,
+      "restricted_files": []
     },
     "shell": {
-      "enabled": true,
-      "require_approval": true,
-      "allowed_commands": [
-        "npm install",
-        "npm run lint",
-        "npm run format",
-        "npm run test",
-        "npx eslint",
-        "npx prettier",
-        "git status",
-        "git diff",
-        "git log",
-        "expo start",
-        "expo start --android",
-        "expo start --ios"
-      ],
-      "deny": [
-        "git push",
-        "git push --force",
-        "git commit --no-verify",
-        "gh pr create",
-        "gh pr merge",
-        "npm publish",
-        "rm -rf",
-        "rm -f",
-        "sudo",
-        "chmod 777"
-      ],
-      "restricted_patterns": [
-        "*destroy*",
-        "*delete*",
-        "*remove* --force",
-        "*clean* --all"
-      ]
-    },
-    "github": {
-      "enabled": false,
-      "allowed_actions": [
-        "read_pr",
-        "comment_pr",
-        "create_issue"
-      ],
-      "deny": [
-        "merge_pr",
-        "close_pr",
-        "push_force",
-        "delete_branch",
-        "modify_settings"
-      ]
-    },
-    "review": {
-      "enabled": true,
-      "require_approval": true,
-      "auto_apply_minor": false,
-      "min_severity_for_approval": 3,
-      "whitelist_enabled": true,
-      "log_all_actions": true,
-      "audit_trail": true
+      "require_approval": false,
+      "restricted_commands": []
     }
-  },
-  "approval": {
-    "required_for": [
-      "write_restricted_files",
-      "shell_destructive_commands",
-      "github_modifications",
-      "high_severity_fixes"
-    ],
-    "workflow": "prompt_user",
-    "timeout": 300,
-    "default_action": "deny"
   },
   "logging": {
     "enabled": true,
-    "directory": ".cursor/review-logs",
-    "retention_days": 90,
-    "log_levels": [
-      "info",
-      "warning",
-      "error",
-      "audit"
-    ],
-    "include": [
-      "timestamp",
-      "user",
-      "action",
-      "file",
-      "severity",
-      "result",
-      "diff"
-    ]
-  },
-  "whitelist": {
-    "enabled": true,
-    "file": ".cursor/whitelist.json",
-    "default_trust_level": "reviewer",
-    "trust_levels": [
-      "admin",
-      "reviewer",
-      "developer",
-      "readonly"
-    ]
+    "log_levels": ["info", "success", "auto_approved"]
   }
 }

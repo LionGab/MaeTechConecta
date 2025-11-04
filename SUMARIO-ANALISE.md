@@ -3,19 +3,23 @@
 ## Arquivos Analisados
 
 ### Navegação (4 arquivos)
+
 - `/home/user/LionNath/src/navigation/index.tsx` - AppNavigator principal
 - `/home/user/LionNath/src/navigation/TabNavigator.tsx` - Bottom tab navigation com lazy loading
 - `/home/user/LionNath/src/navigation/types.ts` - Type definitions para rotas
 - `/home/user/LionNath/src/navigation/linking.ts` - Deep linking configuration
 
 ### Contextos (1 arquivo)
+
 - `/home/user/LionNath/src/contexts/ThemeContext.tsx` - Gerenciamento de tema
 
 ### Tema (2 arquivos - PROBLEMA!)
+
 - `/home/user/LionNath/src/theme/colors.ts` - Tema básico (usado na maioria das telas)
 - `/home/user/LionNath/src/constants/theme.ts` - Tema expandido (não usado)
 
 ### Hooks Customizados (5 arquivos)
+
 - `/home/user/LionNath/src/hooks/useChatOptimized.ts` - Gerenciamento de conversa com IA
 - `/home/user/LionNath/src/hooks/useUserProfile.ts` - Carregamento de perfil do usuário
 - `/home/user/LionNath/src/hooks/useOptimizedFlatList.ts`
@@ -23,6 +27,7 @@
 - `/home/user/LionNath/src/hooks/useDailyInteractions.ts`
 
 ### Screens e Componentes (27 arquivos)
+
 - 5 Screens principais (Home, Chat, Habits, Profile, Content)
 - 2 Screens do Stack (OnboardingScreen, DailyPlanScreen, ContentDetailScreen)
 - 8 Componentes reutilizáveis (Badge, Button, Card, Input, Text, Logo, etc)
@@ -35,6 +40,7 @@
 ### Status: ⚠️ CRÍTICO COM PROBLEMAS
 
 #### Positivos
+
 ✅ Arquitetura de navegação bem estruturada (Stack + Tab)
 ✅ Deep linking configurado
 ✅ Lazy loading implementado com Suspense
@@ -43,6 +49,7 @@
 ✅ Hooks customizados para lógica complexa
 
 #### Problemas Críticos
+
 ❌ **ThemeContext nunca é utilizado** - nenhum componente chama `useTheme()`
 ❌ **Dois arquivos de tema diferentes** - confusão no design system
 ❌ **Sem UserProfileContext** - estado disperso entre componentes
@@ -50,6 +57,7 @@
 ❌ **Deep linking subutilizado** - configurado mas não implementado
 
 #### Impacto nos Usuários
+
 🔴 Tema não muda dinamicamente quando usuário toca em "Aparência"
 🔴 Atualizar perfil em uma tela não reflete em outras
 🔴 Performance degradada por recarregamentos desnecessários
@@ -60,6 +68,7 @@
 ## PONTOS-CHAVE ENCONTRADOS
 
 ### 1. ThemeContext Morto
+
 ```
 Encontrado em:     src/contexts/ThemeContext.tsx
 Hook useTheme():   Definido mas NUNCA chamado
@@ -69,18 +78,20 @@ Solução:           Refatorar todas as telas para usar useTheme()
 ```
 
 ### 2. Duplicação de Código de Tema
+
 ```
 Arquivo 1:  src/theme/colors.ts (básico - USADO)
             - light, dark, colors, shadows, typography, spacing
-            
+
 Arquivo 2:  src/constants/theme.ts (expandido - NÃO USADO)
             - primaryScale, secondaryScale, themeScales
             - getTheme() também aqui
-            
+
 Problema:   Confusão qual usar, inconsistência, manutenção difícil
 ```
 
 ### 3. Estado de Usuário Disperso
+
 ```
 HomeScreen:     carrega userName, pregnancyWeek do AsyncStorage
 ProfileScreen:  carrega profile do AsyncStorage
@@ -91,6 +102,7 @@ Problema:  Sem sincronização, sem single source of truth
 ```
 
 ### 4. AsyncStorage Chamado Múltiplas Vezes
+
 ```
 Cada componente carrega independentemente:
 - AsyncStorage.getItem('userProfile')
@@ -104,6 +116,7 @@ Sem:
 ```
 
 ### 5. useChatOptimized Complexo
+
 ```
 4 diferentes useState em um hook:
 - state (useReducer)
@@ -120,14 +133,14 @@ Seria melhor:
 
 ## TABELA DE IMPACTO
 
-| Problema | Severidade | Afeta | Esforço Correção |
-|----------|-----------|-------|-----------------|
-| ThemeContext não utilizado | CRÍTICA | Dark mode, UX | Médio |
-| Dois arquivos de tema | ALTA | Confusão, manutenção | Baixo |
-| Sem UserProfileContext | CRÍTICA | Sincronização, performance | Alto |
-| Sem AuthContext | ALTA | Onboarding flow | Médio |
-| AsyncStorage múltiplo | ALTA | Performance | Médio |
-| Deep linking subutilizado | MÉDIA | Funcionalidade perdida | Baixo |
+| Problema                   | Severidade | Afeta                      | Esforço Correção |
+| -------------------------- | ---------- | -------------------------- | ---------------- |
+| ThemeContext não utilizado | CRÍTICA    | Dark mode, UX              | Médio            |
+| Dois arquivos de tema      | ALTA       | Confusão, manutenção       | Baixo            |
+| Sem UserProfileContext     | CRÍTICA    | Sincronização, performance | Alto             |
+| Sem AuthContext            | ALTA       | Onboarding flow            | Médio            |
+| AsyncStorage múltiplo      | ALTA       | Performance                | Médio            |
+| Deep linking subutilizado  | MÉDIA      | Funcionalidade perdida     | Baixo            |
 
 ---
 
@@ -139,7 +152,6 @@ Seria melhor:
    - Centraliza estado de usuário
    - Elimina duplicação
    - Sincroniza entre telas
-   
 2. **Criar AuthContext** (2-3h)
    - Limpa AppNavigator
    - Gerencia onboarding
@@ -238,42 +250,47 @@ App.tsx
 
 ## ESTIMATIVA DE TEMPO
 
-| Tarefa | Tempo | Complexidade |
-|--------|-------|-------------|
-| Criar AuthContext | 2-3h | Baixa |
-| Criar UserProfileContext | 4-6h | Média |
-| Usar ThemeContext (refatorar telas) | 6-8h | Média |
-| Consolidar tema | 1-2h | Baixa |
-| Refatorar useChatOptimized | 3-4h | Média |
-| Implementar deep linking | 2-3h | Baixa |
-| Testes | 4-5h | Média |
-| **TOTAL** | **22-31h** | ~4-5 dias de trabalho |
+| Tarefa                              | Tempo      | Complexidade          |
+| ----------------------------------- | ---------- | --------------------- |
+| Criar AuthContext                   | 2-3h       | Baixa                 |
+| Criar UserProfileContext            | 4-6h       | Média                 |
+| Usar ThemeContext (refatorar telas) | 6-8h       | Média                 |
+| Consolidar tema                     | 1-2h       | Baixa                 |
+| Refatorar useChatOptimized          | 3-4h       | Média                 |
+| Implementar deep linking            | 2-3h       | Baixa                 |
+| Testes                              | 4-5h       | Média                 |
+| **TOTAL**                           | **22-31h** | ~4-5 dias de trabalho |
 
 ---
 
 ## PRÓXIMOS PASSOS
 
 ### Imediatamente
+
 1. Ler análise completa em `/tmp/analise_navegacao.md`
 2. Ler exemplos práticos em `/tmp/exemplos_implementacao.md`
 3. Revisar recomendações com o time
 
 ### Semana 1
+
 - Criar AuthContext
 - Refatorar AppNavigator
 - Testes de onboarding
 
 ### Semana 2
+
 - Criar UserProfileContext
 - Refatorar HomeScreen, ProfileScreen, ChatScreen
 - Teste de sincronização
 
 ### Semana 3
+
 - Atualizar ThemeContext (adicionar spacing, typography)
 - Refatorar todas as telas para useTheme()
 - Testes de dark mode
 
 ### Semana 4
+
 - Consolidar arquivos de tema
 - Implementar deep linking
 - Cleanup e documentação
@@ -286,7 +303,7 @@ Esta análise foi gerada automaticamente em 01/11/2025.
 Todos os caminhos de arquivo são absolutos e podem ser verificados diretamente.
 
 Arquivos principais mencionados:
+
 - Análise completa: `/tmp/analise_navegacao.md`
 - Exemplos de implementação: `/tmp/exemplos_implementacao.md`
 - Este sumário: `/tmp/SUMARIO_EXECUTIVO.md`
-
