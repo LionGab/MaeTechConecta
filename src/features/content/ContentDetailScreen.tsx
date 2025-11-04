@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Alert, Share } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Alert, Share, Platform } from 'react-native';
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { Video, Audio, ResizeMode } from 'expo-av';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -121,13 +121,33 @@ export default function ContentDetailScreen() {
   const handleShare = async () => {
     if (!content) return;
 
+    const shareText = `${content.title}\n\n${content.description || ''}\n\nAcesse no app Nossa Maternidade`;
+
     try {
-      await Share.share({
-        message: `${content.title}\n\n${content.description || ''}\n\nAcesse no app Nossa Maternidade`,
-        title: content.title,
-      });
+      // Web: usar Web Share API se disponível, senão copiar para clipboard
+      if (Platform.OS === 'web') {
+        if (navigator.share) {
+          await navigator.share({
+            title: content.title,
+            text: shareText,
+          });
+        } else {
+          // Fallback: copiar para clipboard
+          await navigator.clipboard.writeText(shareText);
+          Alert.alert('Copiado!', 'Conteúdo copiado para a área de transferência');
+        }
+      } else {
+        // Mobile: usar Share API do React Native
+        await Share.share({
+          message: shareText,
+          title: content.title,
+        });
+      }
     } catch (error) {
-      console.error('Error sharing:', error);
+      // Ignorar erro se o usuário cancelar o compartilhamento
+      if ((error as Error).message !== 'User did not share') {
+        console.error('Error sharing:', error);
+      }
     }
   };
 
