@@ -17,7 +17,17 @@ if (-not (Test-Path .git)) {
 
 # Verificar status do git
 Write-Host "📋 Verificando status do Git..." -ForegroundColor Yellow
-$status = git status --porcelain
+try {
+    $status = git status --porcelain 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "❌ Erro ao verificar status do Git" -ForegroundColor Red
+        Write-Host $status
+        exit 1
+    }
+} catch {
+    Write-Host "❌ Erro ao verificar status: $_" -ForegroundColor Red
+    exit 1
+}
 
 if ([string]::IsNullOrWhiteSpace($status)) {
     Write-Host "ℹ️  Nenhuma mudança para commitar" -ForegroundColor Cyan
@@ -26,7 +36,11 @@ if ([string]::IsNullOrWhiteSpace($status)) {
 
 Write-Host ""
 Write-Host "Mudanças detectadas:" -ForegroundColor Green
-git status --short
+try {
+    git status --short
+} catch {
+    Write-Host "⚠️  Aviso: Não foi possível mostrar status detalhado" -ForegroundColor Yellow
+}
 
 Write-Host ""
 $confirm = Read-Host "Deseja continuar com o commit? (s/N)"
@@ -38,10 +52,15 @@ if ($confirm -ne "s" -and $confirm -ne "S") {
 # Adicionar todas as mudanças
 Write-Host ""
 Write-Host "📝 Adicionando arquivos ao staging..." -ForegroundColor Yellow
-git add .
-
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ Erro ao adicionar arquivos" -ForegroundColor Red
+try {
+    git add . 2>&1 | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "❌ Erro ao adicionar arquivos (exit code: $LASTEXITCODE)" -ForegroundColor Red
+        Write-Host "💡 Dica: Verifique se há arquivos muito grandes ou problemas de permissão" -ForegroundColor Yellow
+        exit 1
+    }
+} catch {
+    Write-Host "❌ Erro ao adicionar arquivos: $_" -ForegroundColor Red
     exit 1
 }
 
@@ -49,10 +68,26 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host ""
 Write-Host "💾 Fazendo commit..." -ForegroundColor Yellow
 Write-Host "Mensagem: $Message" -ForegroundColor Cyan
-git commit -m $Message
 
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ Erro ao fazer commit" -ForegroundColor Red
+try {
+    git commit -m "$Message" 2>&1 | Out-String | Write-Host
+    
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host ""
+        Write-Host "❌ Erro ao fazer commit (exit code: $LASTEXITCODE)" -ForegroundColor Red
+        Write-Host ""
+        Write-Host "💡 Possíveis causas:" -ForegroundColor Yellow
+        Write-Host "  - Nenhuma mudança foi adicionada (git add não funcionou)" -ForegroundColor Yellow
+        Write-Host "  - Configuração do Git não está completa (user.name ou user.email)" -ForegroundColor Yellow
+        Write-Host "  - Mensagem de commit muito longa ou com caracteres especiais" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "💡 Verifique com:" -ForegroundColor Cyan
+        Write-Host "  git config --list" -ForegroundColor Cyan
+        Write-Host "  git status" -ForegroundColor Cyan
+        exit 1
+    }
+} catch {
+    Write-Host "❌ Erro ao fazer commit: $_" -ForegroundColor Red
     exit 1
 }
 
