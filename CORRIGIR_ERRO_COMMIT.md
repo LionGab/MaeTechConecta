@@ -112,4 +112,3 @@ git commit -m "test"
 - [ ] Executou `git add .` antes de commitar
 - [ ] Mensagem de commit não tem caracteres problemáticos
 - [ ] Tentou fazer commit manualmente para ver o erro específico
-
