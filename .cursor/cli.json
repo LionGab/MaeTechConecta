@@ -1,25 +1,42 @@
 {
   "auto_approve": true,
   "skip_awaiting_review": true,
+  "keep_review_changes": true,
+  "auto_approve_all": true,
   "approval": {
     "required_for": [],
     "timeout": 0,
     "default_action": "approve",
     "auto_approve": true,
-    "skip_interactive": true
+    "skip_interactive": true,
+    "keep_all_changes": true,
+    "approve_on_review": true
   },
   "permissions": {
     "write": {
       "require_approval": false,
-      "restricted_files": []
+      "restricted_files": [],
+      "auto_approve": true
     },
     "shell": {
       "require_approval": false,
-      "restricted_commands": []
+      "restricted_commands": [],
+      "auto_approve": true
+    },
+    "read": {
+      "require_approval": false,
+      "auto_approve": true
     }
+  },
+  "review": {
+    "auto_approve": true,
+    "keep_changes": true,
+    "skip_awaiting": true,
+    "default_action": "approve"
   },
   "logging": {
     "enabled": true,
-    "log_levels": ["info", "success", "auto_approved"]
+    "log_levels": ["info", "success", "auto_approved"],
+    "log_approvals": true
   }
 }
