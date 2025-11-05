@@ -14,6 +14,8 @@ export * from './nat-ai/guardrails';
 export * from './nat-ai/risk-analyzer';
 export * from './nat-ai/context-manager';
 export * from './nat-ai/team-notifier';
+export * from './nat-ai/model-router';
+export * from './nat-ai/schemas';
 
 // Schemas Zod
 export * from './schemas/user-profile';

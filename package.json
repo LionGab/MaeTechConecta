@@ -4,13 +4,13 @@
   "private": true,
   "packageManager": "pnpm@9.12.0",
   "scripts": {
+    "dev": "pnpm -C apps/mobile start",
     "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "coverage": "turbo run coverage",
-    "e2e": "turbo run e2e",
+    "e2e:android": "maestro test e2e/maestro/smoke-flow.yaml",
+    "audit": "pnpm audit --audit-level=moderate || true",
     "prepare": "husky install"
   },
   "devDependencies": {

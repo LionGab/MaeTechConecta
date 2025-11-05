@@ -1,70 +1,173 @@
-# Arquitetura - Nossa Maternidade (1-página)
+# 🏗️ Arquitetura - Nossa Maternidade
 
-## Visão Geral
+## 📊 Diagrama de Arquitetura
 
-Sistema mobile-first (React Native/Expo) com backend Supabase, IA completa (NAT-AI) e múltiplas camadas de segurança.
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    MOBILE APP (Expo RN)                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   Screens    │  │  Components  │  │    Hooks     │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐  │
+│  │              @nossa-maternidade/shared                │  │
+│  │  (nat-ai, theme, utils, schemas)                      │  │
+│  └──────────────────────────────────────────────────────┘  │
+└───────────────────────┬─────────────────────────────────────┘
+                        │ HTTPS
+                        │ (ANON_KEY)
+                        ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    SUPABASE BACKEND                          │
+│  ┌──────────────────────────────────────────────────────┐  │
+│  │              Edge Functions (Deno)                    │  │
+│  │  - nathia-chat     - nat-ai-chat                     │  │
+│  │  - risk-classifier - moderation-service              │  │
+│  │  - transcribe-audio - behavior-analysis              │  │
+│  └──────────────────────────────────────────────────────┘  │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐  │
+│  │              PostgreSQL + RLS                         │  │
+│  │  - auth.users      - chat_messages                   │  │
+│  │  - user_profiles  - rate_limit_events              │  │
+│  └──────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+                        │
+                        │ External APIs
+                        ▼
+┌─────────────────────────────────────────────────────────────┐
+│              EXTERNAL SERVICES                              │
+│  - Gemini AI (Edge Functions)                               │
+│  - Sentry (Error Tracking)                                  │
+│  - Stripe (Payments)                                        │
+└─────────────────────────────────────────────────────────────┘
+```
 
-## Stack Tecnológico
+---
 
-- **Frontend**: React Native 0.74.5 + Expo SDK 52 + TypeScript
-- **Backend**: Supabase (PostgreSQL + RLS + Edge Functions)
-- **IA**: Anthropic Claude (Risk Analysis) + Google Gemini 2.0 Flash (Chat)
-- **State**: Zustand
-- **Testes**: Vitest (unit) + Maestro/Detox (E2E)
+## 🏛️ Estrutura do Monorepo
+
+```
+nossa-maternidade/
+├── apps/
+│   └── mobile/              # Expo React Native App
+│       ├── src/             # Código da aplicação
+│       ├── App.tsx          # Entry point
+│       ├── app.json         # Expo config
+│       └── package.json     # Dependências mobile
+│
+├── packages/
+│   ├── shared/              # Código compartilhado
+│   │   ├── src/
+│   │   │   ├── nat-ai/      # Lógica AI (guardrails, context, etc)
+│   │   │   ├── theme/       # Design system
+│   │   │   └── schemas/     # Zod schemas
+│   │   └── package.json
+│   │
+│   └── shared-types/        # Tipos TypeScript
+│       ├── src/
+│       └── package.json     # ESM+CJS via tsup
+│
+├── infra/
+│   └── supabase/
+│       ├── functions/       # Edge Functions
+│       │   ├── _shared/    # Rate limiting, Sentry
+│       │   ├── nathia-chat/
+│       │   └── ...
+│       └── migrations/      # SQL migrations
+│
+├── docs/                    # Documentação consolidada
+├── e2e/                     # Testes E2E (Maestro)
+└── .github/workflows/       # CI/CD
+```
+
+---
+
+## 🔐 Segurança
+
+### RLS (Row Level Security)
+
+- ✅ Todas as tabelas têm RLS habilitado
+- ✅ Policies por usuário autenticado
+- ✅ NUNCA usar `SERVICE_ROLE_KEY` em rotas de usuário
+
+### Rate Limiting
+
+- ✅ Event-based (sliding window)
+- ✅ Por endpoint e usuário
+- ✅ Configurável por endpoint
+
+### Autenticação
+
+- ✅ Supabase Auth (email/password)
+- ✅ JWT tokens via `Authorization` header
+- ✅ Refresh tokens automáticos
+
+---
+
+## 📊 Fluxo de Dados
+
+### Chat Flow
+
+```
+App → Edge Function (nathia-chat)
+  ↓
+Rate Limit Check
+  ↓
+RLS Query (chat_messages)
+  ↓
+Gemini AI Process
+  ↓
+Guardrails Check
+  ↓
+Risk Analysis
+  ↓
+Response → App
+```
+
+### Data Flow
+
+```
+App → Supabase Client (ANON_KEY)
+  ↓
+RLS Policies
+  ↓
+PostgreSQL
+  ↓
+Response → App
+```
+
+---
+
+## 🧪 Testes
+
+### Estrutura
+
+- **Unit Tests**: Jest (mobile) + Vitest (shared)
+- **E2E Tests**: Maestro (Android)
+- **Contract Tests**: RLS/Functions
+- **Coverage**: ≥ 70%
+
+---
+
+## 🚀 CI/CD
+
+### Workflows
+
+1. **CI** (PR): lint → typecheck → test → coverage
+2. **E2E** (PR): Maestro smoke flow
+3. **Release** (tag): EAS build → submit stores
+
+---
+
+## 📚 Tecnologias
+
+- **Mobile**: Expo/React Native
+- **Backend**: Supabase (Postgres + Edge Functions)
+- **AI**: Gemini API
+- **Auth**: Supabase Auth
+- **Monitoring**: Sentry
+- **Testing**: Jest + Vitest + Maestro
 - **CI/CD**: GitHub Actions
-- **Deploy**: Expo EAS Build
-
-## Arquitetura
-
-```
-┌─────────────────┐
-│  Mobile App     │ ← React Native + Expo
-│  (src/)         │
-└────────┬────────┘
-         │
-         ├──→ Supabase (Auth + DB + Edge Functions)
-         ├──→ Claude API (Risk Analysis)
-         └──→ Gemini API (Chat + Moderation)
-```
-
-## Componentes Principais
-
-### 1. Mobile App (`src/`)
-
-- **Screens**: Onboarding, Home, Chat, Habits, Content, Profile
-- **Navigation**: React Navigation 6.x
-- **State**: Zustand
-- **Design System**: Bubblegum Theme
-- **IA**: `src/lib/nat-ai/` (guardrails, risk-analyzer, context-manager)
-
-### 2. Backend (`supabase/functions/`)
-
-- **Edge Functions**: nathia-chat, moderation-service, risk-classifier, etc.
-- **Database**: PostgreSQL com RLS
-- **Migrations**: Versionamento de schema
-
-## Fluxo de Dados
-
-1. Usuário envia mensagem → App
-2. App chama Edge Function `nathia-chat`
-3. Moderation Service verifica conteúdo (3 camadas)
-4. Guardrails bloqueia conselhos médicos
-5. Risk Analyzer analisa risco emocional
-6. Gemini gera resposta empática
-7. Resposta salva no Supabase
-8. Resposta retornada ao app
-
-## Segurança
-
-- **RLS**: Row Level Security no Supabase
-- **Guardrails**: 40+ termos proibidos (conselhos médicos)
-- **Risk Detection**: Análise de risco 0-10 com Claude
-- **Moderation**: 3 camadas (Safety Settings + Contextual + Flag Queue)
-- **Rate Limiting**: 30 req/min por usuário
-
-## CI/CD
-
-- **CI**: Lint, types, tests, coverage (≥70%), npm audit
-- **Build**: EAS build Android/iOS
-- **Deploy**: Tag v*.*.\* → EAS submit + Edge Functions
-- **Observability**: Sentry releases automáticas
+- **Build**: EAS Build
+- **Monorepo**: pnpm + Turborepo

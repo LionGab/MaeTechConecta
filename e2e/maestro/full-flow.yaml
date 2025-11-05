@@ -1,0 +1,64 @@
+# Full Flow Test - Maestro
+# Fluxo completo: Login → Dashboard → Chat completo → Plano Diário → Perfil → Configurações
+
+appId: com.nossamaternidade.app
+---
+- launchApp
+- assertVisible: "Nossa Maternidade"
+
+# Login
+- tapOn: "Entrar"
+- tapOn: "Continuar com Google"
+- waitForAnimationToEnd
+- takeScreenshot: "01-login-success"
+
+# Dashboard - Verificação completa
+- assertVisible: "Dashboard"
+- assertVisible: "Olá"
+- scroll
+- assertVisible: "Plano Diário"
+- assertVisible: "Chat"
+- assertVisible: "Perfil"
+- takeScreenshot: "02-dashboard"
+
+# Chat - Conversa completa
+- tapOn: "Chat"
+- assertVisible: "Chat"
+- tapOn: "Digite sua mensagem"
+- inputText: "Estou me sentindo ansiosa hoje"
+- tapOn: "Enviar"
+- waitForAnimationToEnd
+- takeScreenshot: "03-chat-message-1"
+- waitForAnimationToEnd
+- assertVisible: "Estou me sentindo ansiosa hoje"
+- scroll
+- tapOn: "Digite sua mensagem"
+- inputText: "Como posso me acalmar?"
+- tapOn: "Enviar"
+- waitForAnimationToEnd
+- takeScreenshot: "04-chat-message-2"
+
+# Plano Diário - Visualização e interação
+- tapOn: "Plano Diário"
+- assertVisible: "Plano Diário"
+- scroll
+- scroll
+- takeScreenshot: "05-daily-plan-full"
+- tapOn: "Concluir" # Se existir botão de conclusão
+- takeScreenshot: "06-daily-plan-completed"
+
+# Perfil - Navegação e visualização
+- tapOn: "Perfil"
+- assertVisible: "Perfil"
+- scroll
+- takeScreenshot: "07-profile"
+- tapOn: "Configurações" # Se existir
+- assertVisible: "Configurações"
+- takeScreenshot: "08-settings"
+- tapOn: "Voltar" # Voltar ao perfil
+- takeScreenshot: "09-profile-return"
+
+# Logout (opcional)
+- tapOn: "Sair" # Se existir
+- assertVisible: "Nossa Maternidade"
+- takeScreenshot: "10-logout"

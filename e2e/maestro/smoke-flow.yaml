@@ -1,10 +1,38 @@
-appId: com.nossa.maternidade
+# Smoke Test Flow - Maestro
+# Teste básico: Login → Dashboard → Chat → Plano Diário → Perfil
+
+appId: com.nossamaternidade.app
 ---
 - launchApp
+- assertVisible: "Nossa Maternidade"
 - tapOn: "Entrar"
-- inputText: "user+smoke@nossamaternidade.app"
-- tapOn: "Continuar"
-- inputText: "123456"
-- tapOn: "Confirmar"
-- assertVisible: "Olá, Nath"
-- assertVisible: "Plano diário"
+- tapOn: "Continuar com Google"
+- waitForAnimationToEnd
+- takeScreenshot: "login-success"
+
+# Dashboard
+- assertVisible: "Dashboard"
+- assertVisible: "Olá"
+- scroll
+- assertVisible: "Plano Diário"
+
+# Chat
+- tapOn: "Chat"
+- takeScreenshot: "chat-initial"
+- assertVisible: "Chat"
+- tapOn: "Digite sua mensagem"
+- inputText: "Olá, preciso de ajuda"
+- tapOn: "Enviar"
+- waitForAnimationToEnd
+- takeScreenshot: "chat-message-sent"
+
+# Plano Diário
+- tapOn: "Plano Diário"
+- assertVisible: "Plano Diário"
+- scroll
+- takeScreenshot: "daily-plan"
+
+# Perfil
+- tapOn: "Perfil"
+- assertVisible: "Perfil"
+- takeScreenshot: "profile"

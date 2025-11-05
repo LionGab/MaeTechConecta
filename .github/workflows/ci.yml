@@ -2,18 +2,42 @@ name: CI
 
 on:
   pull_request:
+    branches: [main]
   push:
     branches: [main, develop]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '20'
 
 jobs:
-  ci:
+  install:
+    runs-on: ubuntu-latest
+    outputs:
+      pnpm_cache: ${{ steps.pnpm-cache.outputs.cache-hit }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      
+      - name: Get pnpm cache
+        id: pnpm-cache
+        run: echo "cache-hit=$(pnpm store path | grep -q . && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+      
+      - run: pnpm install --frozen-lockfile
+
+  quality:
+    needs: install
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,21 +51,62 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       
-      - name: Install dependencies
-        run: pnpm -w install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
       
-      - name: Lint
-        run: pnpm -w run lint
+      - run: pnpm lint && pnpm typecheck
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+  unit-tests:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       
-      - name: Typecheck
-        run: pnpm -w run typecheck
-      
-      - name: Test
-        run: pnpm -w run test
-      
-      - name: Upload coverage
-        if: always()
-        uses: actions/upload-artifact@v4
+      - uses: pnpm/action-setup@v3
         with:
-          name: coverage
-          path: "**/coverage/**"
+          version: 9
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      
+      - run: pnpm install --frozen-lockfile
+      
+      - run: pnpm test -- --coverage
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      
+      - uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+  security:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      
+      - run: pnpm install --frozen-lockfile
+      
+      - run: pnpm audit --audit-level=moderate || true
+      
+      - name: Snyk Security Scan
+        if: ${{ secrets.SNYK_TOKEN != '' }}
+        run: |
+          pnpm dlx snyk auth ${{ secrets.SNYK_TOKEN }}
+          pnpm dlx snyk test || true

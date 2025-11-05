@@ -1,70 +1,95 @@
-# Ambientes - Nossa Maternidade
+# Ambientes e Secrets - Nossa Maternidade
 
 ## Matriz de Ambientes
 
-| Ambiente    | URL Supabase            | Expo Profile  | App Store Track | Descrição             |
-| ----------- | ----------------------- | ------------- | --------------- | --------------------- |
-| **dev**     | `dev-*.supabase.co`     | `development` | -               | Desenvolvimento local |
-| **staging** | `staging-*.supabase.co` | `preview`     | `internal`      | Testes e validação    |
-| **prod**    | `prod-*.supabase.co`    | `production`  | `production`    | Produção              |
+| Ambiente | Origem        | Supabase     | Sentry   | EAS Channel  |
+|----------|---------------|--------------|----------|--------------|
+| dev      | local         | dev          | dev      | -            |
+| staging  | PR (preview)  | staging      | staging  | preview      |
+| prod     | tag v*.*.*    | prod         | prod     | production   |
 
-## Inventário de Segredos
+## Secrets GitHub (CI/CD)
 
-### GitHub Secrets
+### Obrigatórios
 
-| Secret                  | Ambiente         | Descrição                    |
-| ----------------------- | ---------------- | ---------------------------- |
-| `EXPO_TOKEN`            | All              | Token do Expo para EAS       |
-| `SENTRY_AUTH_TOKEN`     | All              | Token do Sentry              |
-| `SENTRY_ORG`            | All              | Organização Sentry           |
-| `SENTRY_PROJECT`        | All              | Projeto Sentry               |
-| `SUPABASE_ACCESS_TOKEN` | All              | Token do Supabase CLI        |
-| `SUPABASE_PROJECT_ID`   | All              | Project ID do Supabase       |
-| `SUPABASE_URL`          | dev/staging/prod | URL do Supabase por ambiente |
-| `SUPABASE_ANON_KEY`     | dev/staging/prod | Chave anônima por ambiente   |
-| `ANTHROPIC_API_KEY`     | All              | Chave Claude API             |
-| `GEMINI_API_KEY`        | All              | Chave Gemini API             |
-
-### Supabase Secrets
-
-Configurar no Dashboard → Edge Functions → Secrets:
-
-| Secret                      | Ambiente | Descrição                             |
-| --------------------------- | -------- | ------------------------------------- |
-| `GEMINI_API_KEY`            | All      | Para nathia-chat e moderation-service |
-| `ANTHROPIC_API_KEY`         | All      | Para risk-classifier                  |
-| `SUPABASE_SERVICE_ROLE_KEY` | All      | Para todas as Edge Functions          |
-
-## Rotação de Secrets (90 dias)
-
-### Processo
-
-1. **Gerar novos tokens/keys** (30 dias antes do vencimento)
-2. **Atualizar em todos os ambientes**
-3. **Validar funcionamento** (testar em staging)
-4. **Invalidar tokens antigos** (após 7 dias de validação)
-5. **Documentar data de rotação** neste arquivo
-
-## Mapeamento GitHub Environments
-
-Configurar em Settings → Environments:
-
-- **dev**: `SUPABASE_URL_DEV`, `SUPABASE_ANON_KEY_DEV`
-- **staging**: `SUPABASE_URL_STAGING`, `SUPABASE_ANON_KEY_STAGING`
-- **prod**: `SUPABASE_URL_PROD`, `SUPABASE_ANON_KEY_PROD`
-
-## Mapeamento Expo/EAS
-
-Configurar via `eas secret:create`:
-
-```bash
-eas secret:create --name EXPO_TOKEN --value <token> --scope project
+```
+EAS_TOKEN
+SUPABASE_URL
+SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY   # Usar somente em CI/functions, NUNCA no app
+ANTHROPIC_API_KEY
+GEMINI_API_KEY
+SENTRY_DSN
+SENTRY_AUTH_TOKEN
 ```
 
-## Checklist
+### Opcionais
 
-- [ ] GitHub Secrets configurados
-- [ ] Expo/EAS Secrets configurados
-- [ ] Supabase Secrets configurados
-- [ ] `.env.example` atualizado
-- [ ] Documentação de rotação atualizada
+```
+SUPABASE_ACCESS_TOKEN       # (opcional) para supabase CLI no CI
+SUPABASE_PROJECT_REF        # (opcional) para deploy de functions
+TURBO_TOKEN                 # (opcional)
+TURBO_TEAM                  # (opcional)
+CODECOV_TOKEN               # (opcional)
+SNYK_TOKEN                  # (opcional)
+SENTRY_ORG                  # (opcional)
+```
+
+## Secrets Expo EAS (Runtime)
+
+Espelha os secrets que o app mobile consome em runtime:
+
+```
+SUPABASE_URL
+SUPABASE_ANON_KEY
+ANTHROPIC_API_KEY
+GEMINI_API_KEY
+SENTRY_DSN
+```
+
+**IMPORTANTE**: Service Role Key NUNCA deve ser usado no app mobile, apenas em Edge Functions e CI.
+
+## Configuração Local (dev)
+
+Crie `.env.local` na raiz (gitignored) ou em `apps/mobile/.env.local`:
+
+```bash
+cp .env.example .env.local
+# Edite .env.local com valores reais
+```
+
+## Rotação de Secrets
+
+- **Supabase Keys**: Rotacionar a cada 90 dias (boas práticas)
+- **API Keys IA**: Monitorar uso, rotacionar se vazamento suspeito
+- **EAS Token**: Gerar novo se expirado ou comprometido
+- **Sentry DSN**: Rotacionar apenas se projeto recriado
+
+## Como Adicionar Secrets
+
+### GitHub
+
+1. Settings → Secrets and variables → Actions
+2. New repository secret
+3. Adicionar nome e valor
+
+### Expo EAS
+
+```bash
+cd apps/mobile
+eas secret:create --name SUPABASE_URL --value "https://..."
+eas secret:create --name SUPABASE_ANON_KEY --value "eyJ..."
+# ... etc
+```
+
+## Validação
+
+Verifique se todos os secrets estão configurados:
+
+```bash
+# Local (verificar .env.example)
+pnpm run validate:env
+
+# CI (verificar logs do workflow)
+# Os workflows devem falhar cedo se secrets faltando
+```

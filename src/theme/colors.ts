@@ -244,6 +244,8 @@ export const spacing = {
   xl: 20,
   '2xl': 24,
   '3xl': 32,
+  '4xl': 48,
+  '5xl': 64,
 };
 
 /**
@@ -253,8 +255,9 @@ export const spacing = {
 export const borderRadius = {
   sm: 2, // calc(0.4rem - 4px) ≈ 2px
   md: 4, // calc(0.4rem - 2px) ≈ 4px
-  lg: 6, // 0.4rem ≈ 6px (base)
-  xl: 10, // calc(0.4rem + 4px) ≈ 10px
+  lg: 8, // 0.4rem ≈ 8px (base melhorado)
+  xl: 12, // calc(0.4rem + 4px) ≈ 12px
+  '2xl': 16, // calc(0.4rem + 8px) ≈ 16px
   full: 999, // Fully rounded
 };
 

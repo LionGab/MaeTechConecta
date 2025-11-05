@@ -41,6 +41,23 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-notifications", "expo-av", "@react-native-voice/voice"]
+    "plugins": [
+      "expo-notifications",
+      "expo-av",
+      "@react-native-voice/voice",
+      [
+        "sentry-expo",
+        {
+          "organization": "nossa-maternidade",
+          "project": "nossa-maternidade-mobile",
+          "authToken": "process.env.SENTRY_AUTH_TOKEN"
+        }
+      ]
+    ],
+    "extra": {
+      "sentry": {
+        "dsn": "process.env.SENTRY_DSN || process.env.EXPO_PUBLIC_SENTRY_DSN"
+      }
+    }
   }
 }
