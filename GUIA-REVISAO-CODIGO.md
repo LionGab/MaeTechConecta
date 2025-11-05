@@ -27,11 +27,13 @@
 ### Exemplo 1: Revisão Completa de Arquivo
 
 **Comando:**
+
 ```
 Revisar código: src/components/Button.tsx
 ```
 
 **O que acontece:**
+
 1. ✅ Code Inspector analisa bugs, code smells, violações
 2. ✅ Test Runner verifica cobertura de testes
 3. ✅ Performance Analyzer identifica problemas de performance
@@ -46,11 +48,13 @@ Revisar código: src/components/Button.tsx
 ### Exemplo 2: Revisão Rápida
 
 **Comando:**
+
 ```
 Revisão rápida: src/screens/ChatScreen.tsx (apenas bugs críticos e alta severidade)
 ```
 
 **O que acontece:**
+
 - ✅ Foca em bugs severidade 4-5
 - ✅ Ignora melhorias de baixa prioridade
 - ✅ Retorno mais rápido
@@ -62,12 +66,14 @@ Revisão rápida: src/screens/ChatScreen.tsx (apenas bugs críticos e alta sever
 ### Exemplo 3: Revisão de Performance
 
 **Comando:**
+
 ```
 Analisar performance: src/features/content/ContentFeedScreen.tsx
 Identificar: re-renders desnecessários, FlatList não otimizada, problemas de memoização
 ```
 
 **O que acontece:**
+
 - ✅ Analisa re-renders
 - ✅ Verifica otimizações de FlatList
 - ✅ Sugere uso de memoização
@@ -80,11 +86,13 @@ Identificar: re-renders desnecessários, FlatList não otimizada, problemas de m
 ### Exemplo 4: Revisão de Acessibilidade
 
 **Comando:**
+
 ```
 Verificar acessibilidade WCAG 2.1 AA: src/components/Button.tsx
 ```
 
 **O que acontece:**
+
 - ✅ Verifica `accessibilityLabel`
 - ✅ Verifica `accessibilityRole`
 - ✅ Verifica contraste de cores
@@ -98,12 +106,14 @@ Verificar acessibilidade WCAG 2.1 AA: src/components/Button.tsx
 ### Exemplo 5: Sugestão de Testes
 
 **Comando:**
+
 ```
 Sugerir testes para: src/hooks/useChatOptimized.ts
 Casos: unitários e de integração necessários
 ```
 
 **O que acontece:**
+
 - ✅ Analisa funções/hooks
 - ✅ Identifica casos de teste necessários
 - ✅ Sugere estrutura de testes
@@ -116,12 +126,14 @@ Casos: unitários e de integração necessários
 ### Exemplo 6: Aplicar Correções Automáticas
 
 **Comando:**
+
 ```
 Revisar e aplicar correções automáticas: src/components/Button.tsx
 Aplicar apenas: severidade >= 3
 ```
 
 **O que acontece:**
+
 - ✅ Revisão completa
 - ✅ Aplica correções aprovadas
 - ✅ Mantém histórico de mudanças
@@ -134,6 +146,7 @@ Aplicar apenas: severidade >= 3
 ### Exemplo 7: Revisão de Feature Completa
 
 **Comando:**
+
 ```
 Revisar feature de chat completa:
 - src/screens/ChatScreen.tsx
@@ -143,6 +156,7 @@ Analisar: bugs, performance, testes, acessibilidade
 ```
 
 **O que acontece:**
+
 - ✅ Revisão multi-arquivo
 - ✅ Análise de dependências
 - ✅ Relatório consolidado
@@ -157,12 +171,14 @@ Analisar: bugs, performance, testes, acessibilidade
 ### STAGE 1: Code Inspector 🔍
 
 **Analisa:**
+
 - Bugs de lógica
 - Práticas inseguras
 - Code smells
 - Violações de estilo
 
 **Retorna:**
+
 ```json
 {
   "bugs": [...],
@@ -176,11 +192,13 @@ Analisar: bugs, performance, testes, acessibilidade
 ### STAGE 2: Test Runner 🧪
 
 **Analisa:**
+
 - Cobertura de testes
 - Testes faltantes
 - Casos de teste necessários
 
 **Retorna:**
+
 ```json
 {
   "test_coverage": {
@@ -196,12 +214,14 @@ Analisar: bugs, performance, testes, acessibilidade
 ### STAGE 3: Performance Analyzer ⚡
 
 **Analisa:**
+
 - Re-renders
 - FlatList otimização
 - Memoização
 - Bundle size
 
 **Retorna:**
+
 ```json
 {
   "problemas_performance": [...],
@@ -214,12 +234,14 @@ Analisar: bugs, performance, testes, acessibilidade
 ### STAGE 4: Accessibility Checker ♿
 
 **Analisa:**
+
 - WCAG 2.1 AA compliance
 - Labels e roles
 - Contraste
 - Área de toque
 
 **Retorna:**
+
 ```json
 {
   "problemas_acessibilidade": [...],
@@ -232,18 +254,22 @@ Analisar: bugs, performance, testes, acessibilidade
 ### STAGE 5: Fix Suggester 🔧
 
 **Gera:**
+
 - Código antes/depois
 - Explicação
 - Impacto
 - Severidade
 
 **Retorna:**
+
 ```json
 {
-  "bugs": [{
-    "correcao": "código...",
-    "explicacao": "..."
-  }]
+  "bugs": [
+    {
+      "correcao": "código...",
+      "explicacao": "..."
+    }
+  ]
 }
 ```
 
@@ -252,6 +278,7 @@ Analisar: bugs, performance, testes, acessibilidade
 ### STAGE 6: Explain Diff 📖
 
 **Explica:**
+
 - O que mudou
 - Por que mudou
 - Impacto
@@ -290,11 +317,13 @@ Analisar: bugs, performance, testes, acessibilidade
 ### Veredito Final
 
 **Status Possíveis:**
+
 - ✅ `aprovado` - Sem problemas críticos
 - ⚠️ `aprovado_com_sugestoes` - Melhorias sugeridas
 - ❌ `reprovado` - Problemas críticos que impedem merge
 
 **Score:**
+
 - 90-100: Excelente
 - 75-89: Bom
 - 60-74: Aceitável
@@ -356,6 +385,7 @@ Antes de considerar código "pronto", verificar:
 ### 1. Revisão Incremental
 
 Revisar apenas arquivos modificados:
+
 ```
 Revisar arquivos modificados no último commit
 ```
@@ -363,6 +393,7 @@ Revisar arquivos modificados no último commit
 ### 2. Revisão de Dependências
 
 Analisar impacto de mudanças:
+
 ```
 Revisar: src/components/Button.tsx
 Verificar impacto em: src/screens/ChatScreen.tsx src/features/habits/HabitsScreen.tsx
@@ -371,6 +402,7 @@ Verificar impacto em: src/screens/ChatScreen.tsx src/features/habits/HabitsScree
 ### 3. Comparação de Versões
 
 Revisar mudanças entre commits:
+
 ```
 Comparar: commit-abc vs commit-xyz
 Analisar: bugs introduzidos, regressões
@@ -379,6 +411,7 @@ Analisar: bugs introduzidos, regressões
 ### 4. Revisão de Performance Específica
 
 Focar em métricas específicas:
+
 ```
 Analisar: re-renders do componente Button
 Identificar: causas e soluções
@@ -398,16 +431,19 @@ Identificar: causas e soluções
 ## 🆘 Troubleshooting
 
 ### Agente não responde
+
 1. Verificar se Cursor 2.0 está atualizado
 2. Verificar se modo Agente está ativado
 3. Tentar comando direto: `Revisar código: {arquivo}`
 
 ### Resultados incompletos
+
 1. Especificar melhor o comando
 2. Mencionar @code-reviewer explicitamente
 3. Usar comandos mais específicos
 
 ### Correções não aplicadas
+
 1. Verificar permissões do arquivo
 2. Tentar aplicar manualmente
 3. Verificar conflitos de merge
@@ -417,6 +453,7 @@ Identificar: causas e soluções
 **Agente de revisão configurado e pronto para uso!** 🔍✨
 
 Para começar, abra o Composer (`Cmd+L`) e digite:
+
 ```
 Revisar código: src/components/Button.tsx
 ```

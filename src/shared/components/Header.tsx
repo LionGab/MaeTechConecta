@@ -5,16 +5,9 @@
  */
 
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { colors, spacing, typography, borderRadius } from '../../theme/colors';
+import { colors, spacing, typography, borderRadius } from '@/theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export interface HeaderProps {
@@ -60,12 +53,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <View
-      style={[
-        styles.container,
-        transparent && styles.transparent,
-        sticky && styles.sticky,
-        style,
-      ]}
+      style={[styles.container, transparent && styles.transparent, sticky && styles.sticky, style]}
       accessible={false}
     >
       <View style={styles.content}>
@@ -85,12 +73,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Title */}
         {title && (
-          <Text
-            style={styles.title}
-            numberOfLines={1}
-            accessible={true}
-            accessibilityRole="header"
-          >
+          <Text style={styles.title} numberOfLines={1} accessible={true} accessibilityRole="header">
             {title}
           </Text>
         )}
@@ -111,9 +94,7 @@ export const Header: React.FC<HeaderProps> = ({
             <Icon name={action.icon} size={24} color={colors.foreground} />
             {action.badge !== undefined && action.badge > 0 && (
               <View style={styles.badge}>
-                <Text style={styles.badgeText}>
-                  {action.badge > 99 ? '99+' : action.badge}
-                </Text>
+                <Text style={styles.badgeText}>{action.badge > 99 ? '99+' : action.badge}</Text>
               </View>
             )}
           </TouchableOpacity>

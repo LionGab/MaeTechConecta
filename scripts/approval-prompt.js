@@ -51,7 +51,7 @@ async function requestApproval(approvalData) {
   const config = loadConfig();
   const rl = readline.createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
   });
 
   console.log('\n⚠️  APROVAÇÃO REQUERIDA');
@@ -94,12 +94,15 @@ async function requestApproval(approvalData) {
     });
 
     // Timeout automático
-    setTimeout(() => {
-      rl.close();
-      console.log(`\n⏱️  Timeout: ${config.approval.timeout}s excedido`);
-      console.log(`Ação negada por padrão (config: ${config.approval.default_action})`);
-      resolve(false);
-    }, (config.approval.timeout || 300) * 1000);
+    setTimeout(
+      () => {
+        rl.close();
+        console.log(`\n⏱️  Timeout: ${config.approval.timeout}s excedido`);
+        console.log(`Ação negada por padrão (config: ${config.approval.default_action})`);
+        resolve(false);
+      },
+      (config.approval.timeout || 300) * 1000
+    );
   });
 }
 
@@ -126,7 +129,7 @@ if (fs.existsSync(APPROVALS_FILE)) {
   }
 }
 
-const approval = pendingApprovals.find(a => a.id === approvalId);
+const approval = pendingApprovals.find((a) => a.id === approvalId);
 
 if (!approval) {
   console.error(`Aprovação ${approvalId} não encontrada`);
@@ -134,6 +137,6 @@ if (!approval) {
 }
 
 // Solicitar aprovação
-requestApproval(approval).then(approved => {
+requestApproval(approval).then((approved) => {
   process.exit(approved ? 0 : 1);
 });

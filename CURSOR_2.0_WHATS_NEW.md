@@ -233,7 +233,6 @@ Cursor edita:
    ```
 
 3. **Agent trabalha sozinho:**
-
    - Planeja as etapas
    - Executa comandos
    - Cria/edita arquivos

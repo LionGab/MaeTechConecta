@@ -8,6 +8,6 @@ Adicione os seguintes arquivos nesta pasta:
 - `favicon.png` - Favicon (48x48)
 
 Você pode gerar esses assets usando ferramentas como:
+
 - [Expo Asset Generator](https://www.npmjs.com/package/expo-asset-generator)
 - [App Icon Generator](https://www.appicon.co/)
-

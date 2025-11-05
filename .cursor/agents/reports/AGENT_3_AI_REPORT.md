@@ -10,15 +10,15 @@
 
 ### Status Atual
 
-| Componente | Status | Qualidade | Observação |
-|------------|--------|-----------|------------|
-| **Chat Conversacional** | ✅ | ⭐⭐⭐⭐⭐ | Claude 3.5 Sonnet bem configurado |
-| **System Prompt** | ✅ | ⭐⭐⭐⭐⭐ | Restrições médicas explícitas |
-| **Context Management** | ⚠️ | ⭐⭐⭐ | Limitado a 20 mensagens |
-| **Memória Conversacional** | ❌ | ⭐ | Sem persistência |
-| **Validação Dupla** | ⚠️ | ⭐⭐⭐ | Implementada mas não crítica |
-| **Rate Limiting** | ❌ | ⭐ | Não implementado |
-| **Logging/Auditoria** | ✅ | ⭐⭐⭐⭐ | Logger integrado |
+| Componente                 | Status | Qualidade  | Observação                        |
+| -------------------------- | ------ | ---------- | --------------------------------- |
+| **Chat Conversacional**    | ✅     | ⭐⭐⭐⭐⭐ | Claude 3.5 Sonnet bem configurado |
+| **System Prompt**          | ✅     | ⭐⭐⭐⭐⭐ | Restrições médicas explícitas     |
+| **Context Management**     | ⚠️     | ⭐⭐⭐     | Limitado a 20 mensagens           |
+| **Memória Conversacional** | ❌     | ⭐         | Sem persistência                  |
+| **Validação Dupla**        | ⚠️     | ⭐⭐⭐     | Implementada mas não crítica      |
+| **Rate Limiting**          | ❌     | ⭐         | Não implementado                  |
+| **Logging/Auditoria**      | ✅     | ⭐⭐⭐⭐   | Logger integrado                  |
 
 **Score Geral:** 60/100
 
@@ -45,6 +45,7 @@ INSTRUÇÕES CRÍTICAS:
 ```
 
 **Análise:**
+
 - ✅ Personalidade bem definida (influenciadora jovem)
 - ✅ Restrições médicas explícitas
 - ✅ Disclaimer automático
@@ -61,9 +62,14 @@ INSTRUÇÕES CRÍTICAS:
 ```typescript
 export const detectUrgency = (message: string): boolean => {
   const urgencyKeywords = [
-    'sangrando', 'sangramento', 'sangue',
-    'dor forte', 'muita dor', 'dor insuportável',
-    'desmaio', 'desmaiei',
+    'sangrando',
+    'sangramento',
+    'sangue',
+    'dor forte',
+    'muita dor',
+    'dor insuportável',
+    'desmaio',
+    'desmaiei',
     'febre alta',
     'convulsão',
     'não me sinto bem',
@@ -72,11 +78,12 @@ export const detectUrgency = (message: string): boolean => {
   ];
 
   const lowerMessage = message.toLowerCase();
-  return urgencyKeywords.some(keyword => lowerMessage.includes(keyword));
+  return urgencyKeywords.some((keyword) => lowerMessage.includes(keyword));
 };
 ```
 
 **Integração:**
+
 ```typescript
 // src/hooks/useChatOptimized.ts:164-180
 const isUrgent = detectUrgency(content);
@@ -91,14 +98,15 @@ if (isUrgent) {
         style: 'destructive',
         onPress: () => {
           // Linking.openURL('tel:192'); // Será implementado
-        }
-      }
+        },
+      },
     ]
   );
 }
 ```
 
 **Análise:**
+
 - ✅ Keywords bem selecionadas
 - ✅ Alerta visual claro
 - ✅ Call-to-action (ligar SAMU 192)
@@ -111,19 +119,17 @@ if (isUrgent) {
 **Arquivo:** `src/services/ai.ts:42`
 
 ```typescript
-const response = await axios.post(
-  API_URLS.CLAUDE,
-  {
-    model: 'claude-3-5-sonnet-20241022',
-    max_tokens: 1024,
-    temperature: 0.4, // ✅ Baixa para evitar alucinações
-    system: systemPromptWithContext,
-    messages: [...history, { role: 'user', content: message }],
-  }
-);
+const response = await axios.post(API_URLS.CLAUDE, {
+  model: 'claude-3-5-sonnet-20241022',
+  max_tokens: 1024,
+  temperature: 0.4, // ✅ Baixa para evitar alucinações
+  system: systemPromptWithContext,
+  messages: [...history, { role: 'user', content: message }],
+});
 ```
 
 **Análise:**
+
 - ✅ 0.4 é temperatura ideal para respostas médicas
 - ✅ Reduz alucinações
 - ✅ Mantém naturalidade
@@ -143,13 +149,14 @@ const aiResponse = await smartRetry(
     initialDelay: 1000,
     onRetry: (attempt, error) => {
       logger.warn(`Retry ${attempt} de IA falhou`, { attempt, isRecoverable: isRecoverableError(error) }, error);
-    }
+    },
   },
   logger
 );
 ```
 
 **Análise:**
+
 - ✅ Integrado ao chat
 - ✅ Backoff exponencial
 - ✅ Logging de progresso
@@ -168,6 +175,7 @@ logger.info('Resposta da IA recebida com sucesso', { responseLength: aiResponse.
 ```
 
 **Análise:**
+
 - ✅ Auditoria de todas chamadas
 - ✅ Contexto estruturado
 - ✅ Níveis apropriados (DEBUG, INFO, WARN, ERROR)
@@ -187,9 +195,9 @@ logger.info('Resposta da IA recebida com sucesso', { responseLength: aiResponse.
 // src/hooks/useChatOptimized.ts:286-294
 const aiHistory = useMemo(() => {
   return state.messages
-    .filter(m => m.role !== 'system')
+    .filter((m) => m.role !== 'system')
     .slice(-20) // ⚠️ Apenas 20 mensagens
-    .map(msg => ({
+    .map((msg) => ({
       role: msg.role === 'user' ? 'user' : 'assistant',
       content: msg.content,
     }));
@@ -197,12 +205,14 @@ const aiHistory = useMemo(() => {
 ```
 
 **Limitações:**
+
 - ❌ Apenas 20 mensagens de contexto
 - ❌ Sem memória persistente entre sessões
 - ❌ Perde contexto de conversas antigas
 - ❌ Não usa histórico completo do banco
 
 **Recomendação:**
+
 ```typescript
 // Implementar memória de 50 mensagens + resumo comprimido
 const aiHistory = useMemo(() => {
@@ -213,10 +223,7 @@ const aiHistory = useMemo(() => {
     const olderMessages = state.messages.slice(0, -50);
     const summary = await createSummary(olderMessages);
 
-    return [
-      { role: 'system', content: `Contexto anterior: ${summary}` },
-      ...recentMessages
-    ];
+    return [{ role: 'system', content: `Contexto anterior: ${summary}` }, ...recentMessages];
   }
 
   return recentMessages;
@@ -228,6 +235,7 @@ const aiHistory = useMemo(() => {
 ### 2. Sem Memória Conversacional ❌
 
 **Problema Atual:**
+
 - Conversas são perdidas ao fechar o app
 - Histórico existe no Supabase mas não é usado para contexto
 - Sem lembrança de preferências da usuária
@@ -239,9 +247,9 @@ const aiHistory = useMemo(() => {
 // src/services/memory.ts
 interface ConversationMemory {
   userId: string;
-  keyPoints: string[];      // Pontos-chave da conversa
-  preferences: string[];    // Preferências identificadas
-  lastSummary: string;      // Último resumo
+  keyPoints: string[]; // Pontos-chave da conversa
+  preferences: string[]; // Preferências identificadas
+  lastSummary: string; // Último resumo
   createdAt: Date;
   updatedAt: Date;
 }
@@ -267,11 +275,7 @@ async function updateMemory(userId: string, messages: Message[]): Promise<void> 
 }
 
 async function loadMemory(userId: string): Promise<ConversationMemory | null> {
-  const { data } = await supabase
-    .from('conversation_memory')
-    .select('*')
-    .eq('user_id', userId)
-    .single();
+  const { data } = await supabase.from('conversation_memory').select('*').eq('user_id', userId).single();
 
   return data;
 }
@@ -287,23 +291,20 @@ async function loadMemory(userId: string): Promise<ConversationMemory | null> {
 // src/services/ai.ts:68-100
 export const validateWithGPT = async (message: string): Promise<boolean> => {
   try {
-    const response = await axios.post(
-      `${API_URLS.OPENAI}/chat/completions`,
-      {
-        model: 'gpt-4o',
-        messages: [
-          {
-            role: 'system',
-            content: 'Valide se esta resposta de IA sobre maternidade é segura e não contém diagnósticos médicos.',
-          },
-          {
-            role: 'user',
-            content: `Valide: ${message}`,
-          },
-        ],
-        max_tokens: 100,
-      }
-    );
+    const response = await axios.post(`${API_URLS.OPENAI}/chat/completions`, {
+      model: 'gpt-4o',
+      messages: [
+        {
+          role: 'system',
+          content: 'Valide se esta resposta de IA sobre maternidade é segura e não contém diagnósticos médicos.',
+        },
+        {
+          role: 'user',
+          content: `Valide: ${message}`,
+        },
+      ],
+      max_tokens: 100,
+    });
 
     const validation = response.data.choices[0].message.content.toLowerCase();
     return !validation.includes('inseguro') && !validation.includes('diagnóstico');
@@ -315,12 +316,14 @@ export const validateWithGPT = async (message: string): Promise<boolean> => {
 ```
 
 **Problemas:**
+
 - ⚠️ Não é usado em production
 - ⚠️ Permite resposta em caso de erro (fallback perigoso)
 - ⚠️ Custo duplicado de API
 - ⚠️ Sem logging de validações
 
 **Recomendação:**
+
 ```typescript
 // Tornar validação crítica
 export async function chatWithValidatedAI(message: string, context: ChatContext, history: any[]) {
@@ -344,6 +347,7 @@ export async function chatWithValidatedAI(message: string, context: ChatContext,
 ### 4. Rate Limiting Não Implementado ❌
 
 **Problema:**
+
 - Sem limite de requisições por usuário
 - Possível custo elevado com uso excessivo
 - Sem proteção contra abuso
@@ -360,7 +364,7 @@ class RateLimiter {
   async checkLimit(userId: string): Promise<void> {
     const now = Date.now();
     const userRequests = this.requests.get(userId) || [];
-    const recentRequests = userRequests.filter(time => now - time < this.windowMs);
+    const recentRequests = userRequests.filter((time) => now - time < this.windowMs);
 
     if (recentRequests.length >= this.limit) {
       logger.warn('Rate limit excedido', { userId, requests: recentRequests.length });
@@ -385,6 +389,7 @@ class RateLimiter {
 ### 5. Sem Análise de Sentimento ⚠️
 
 **Problema:**
+
 - Não detecta estresse emocional
 - Não adapta tom da resposta
 - Não identifica necessidades não declaradas
@@ -394,21 +399,19 @@ class RateLimiter {
 ```typescript
 // src/services/sentiment.ts
 export async function analyzeSentiment(message: string): Promise<SentimentAnalysis> {
-  const response = await axios.post(
-    `${API_URLS.CLAUDE}`,
-    {
-      model: 'claude-3-5-sonnet-20241022',
-      messages: [
-        {
-          role: 'system',
-          content: 'Analise o sentimento da mensagem e responda em JSON: {sentiment: "positive|neutral|negative|urgent", needs: string[]}',
-        },
-        { role: 'user', content: message },
-      ],
-      temperature: 0.1,
-      max_tokens: 200,
-    }
-  );
+  const response = await axios.post(`${API_URLS.CLAUDE}`, {
+    model: 'claude-3-5-sonnet-20241022',
+    messages: [
+      {
+        role: 'system',
+        content:
+          'Analise o sentimento da mensagem e responda em JSON: {sentiment: "positive|neutral|negative|urgent", needs: string[]}',
+      },
+      { role: 'user', content: message },
+    ],
+    temperature: 0.1,
+    max_tokens: 200,
+  });
 
   return JSON.parse(response.data.content[0].text);
 }
@@ -427,16 +430,16 @@ if (sentiment.sentiment === 'urgent') {
 
 ## 📊 Métricas de Performance
 
-| Métrica | Target | Atual | Status |
-|---------|--------|-------|--------|
-| Latência | < 2s | ~1.5s | ✅ |
-| Hallucinations | 0% | < 1% | ✅ |
-| Compliance Médico | 100% | 100% | ✅ |
-| Memória Conversacional | 30 dias | 0 dias | ❌ |
-| Context Window | 50 msg | 20 msg | ⚠️ |
-| Rate Limiting | ✅ | ❌ | ❌ |
-| Validação Dupla | ✅ | ⚠️ | ⚠️ |
-| Sentiment Analysis | ⚠️ | ❌ | ⚠️ |
+| Métrica                | Target  | Atual  | Status |
+| ---------------------- | ------- | ------ | ------ |
+| Latência               | < 2s    | ~1.5s  | ✅     |
+| Hallucinations         | 0%      | < 1%   | ✅     |
+| Compliance Médico      | 100%    | 100%   | ✅     |
+| Memória Conversacional | 30 dias | 0 dias | ❌     |
+| Context Window         | 50 msg  | 20 msg | ⚠️     |
+| Rate Limiting          | ✅      | ❌     | ❌     |
+| Validação Dupla        | ✅      | ⚠️     | ⚠️     |
+| Sentiment Analysis     | ⚠️      | ❌     | ⚠️     |
 
 ---
 
@@ -494,6 +497,7 @@ if (sentiment.sentiment === 'urgent') {
 ## 📋 Checklist de Implementação
 
 ### Fase 1: Foundation (1 semana)
+
 - [x] System prompt otimizado
 - [x] Detecção de urgência
 - [x] Retry system
@@ -502,6 +506,7 @@ if (sentiment.sentiment === 'urgent') {
 - [ ] Context window expandido
 
 ### Fase 2: Memory (2-4 semanas)
+
 - [ ] Tabela conversation_memory
 - [ ] Extração de pontos-chave
 - [ ] Resumos comprimidos
@@ -509,6 +514,7 @@ if (sentiment.sentiment === 'urgent') {
 - [ ] Carregamento de contexto
 
 ### Fase 3: Intelligence (1-3 meses)
+
 - [ ] Análise de sentimento
 - [ ] Validação crítica
 - [ ] Multimodal
@@ -520,6 +526,7 @@ if (sentiment.sentiment === 'urgent') {
 ## ✅ Conclusão
 
 ### Pontos Fortes
+
 - ✅ System prompt excelente (restrições médicas claras)
 - ✅ Temperatura otimizada (0.4)
 - ✅ Detecção de urgência implementada
@@ -528,6 +535,7 @@ if (sentiment.sentiment === 'urgent') {
 - ✅ Compliance médico 100%
 
 ### Áreas Críticas
+
 - ❌ Sem memória conversacional
 - ❌ Context window limitado (20 msg)
 - ❌ Sem rate limiting
@@ -535,6 +543,7 @@ if (sentiment.sentiment === 'urgent') {
 - ⚠️ Sem análise de sentimento
 
 ### Prioridades
+
 1. **Crítico:** Memória conversacional (30 dias)
 2. **Crítico:** Rate limiting
 3. **Alto:** Expandir context window (50 msg)

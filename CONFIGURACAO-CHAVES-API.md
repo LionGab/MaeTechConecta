@@ -5,10 +5,12 @@
 O arquivo `.env.local` foi criado com as seguintes chaves:
 
 ### Supabase
+
 - ✅ EXPO_PUBLIC_SUPABASE_URL
 - ✅ EXPO_PUBLIC_SUPABASE_ANON_KEY
 
 ### APIs de IA
+
 - ✅ EXPO_PUBLIC_GEMINI_API_KEY
 - ✅ EXPO_PUBLIC_CLAUDE_API_KEY
 - ✅ EXPO_PUBLIC_OPENAI_API_KEY
@@ -31,10 +33,17 @@ O arquivo `.env.local` foi criado com as seguintes chaves:
    - Clique em **Secrets** ou **Manage Secrets**
 
 3. **Adicione o Secret:**
+
    ```
    Nome: GEMINI_API_KEY
-   Valor: AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg
+   Valor: your-gemini-api-key-here
    ```
+
+   **Como obter a chave:**
+   - Acesse: https://aistudio.google.com/app/apikey
+   - Faça login com sua conta Google
+   - Clique em "Create API Key"
+   - Copie a chave gerada e cole no campo "Valor"
 
 4. **Salve**
 
@@ -43,6 +52,7 @@ O arquivo `.env.local` foi criado com as seguintes chaves:
 ## 📋 Chaves Configuradas
 
 ### ✅ Frontend (.env.local)
+
 - Supabase URL e Anon Key ✅
 - Gemini API Key ✅
 - Claude API Key ✅
@@ -50,6 +60,7 @@ O arquivo `.env.local` foi criado com as seguintes chaves:
 - Perplexity API Key ✅
 
 ### ⚠️ Pendente: Backend (Supabase Secrets)
+
 - [ ] GEMINI_API_KEY (configurar no Supabase Dashboard)
 
 ---
@@ -65,6 +76,7 @@ O arquivo `.env.local` foi criado com as seguintes chaves:
    - Executar: `supabase/schema-nossa-maternidade-completo.sql`
 
 3. **Deploy Edge Function:**
+
    ```bash
    supabase functions deploy nathia-chat
    ```
@@ -86,4 +98,3 @@ O arquivo `.env.local` foi criado com as seguintes chaves:
 ---
 
 **⚠️ IMPORTANTE:** O arquivo `.env.local` está no `.gitignore` e NÃO será commitado no Git.
-

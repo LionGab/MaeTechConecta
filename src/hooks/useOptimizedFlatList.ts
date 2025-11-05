@@ -41,9 +41,6 @@ export function useOptimizedFlatList<T>(
 /**
  * Key extractor otimizado (usar ID ou índice)
  */
-export const getOptimizedKeyExtractor = <T extends { id?: string | number }>(
-  item: T,
-  index: number
-): string => {
+export const getOptimizedKeyExtractor = <T extends { id?: string | number }>(item: T, index: number): string => {
   return item.id !== undefined ? String(item.id) : `item-${index}`;
 };

@@ -3,6 +3,7 @@
 ## Contexto
 
 O `ChatScreen.tsx` atual está parcialmente implementado com hook otimizado (`useChatOptimized`), mas falta:
+
 1. Integração com serviços reais (API de IA, Supabase)
 2. Input de mensagem funcional
 3. Ações rápidas (emojis, voz, etc.)
@@ -24,17 +25,19 @@ O `ChatScreen.tsx` atual está parcialmente implementado com hook otimizado (`us
 ## Passo 1: Integrar Hook useChatOptimized com Serviços Reais
 
 ### Estado Atual
+
 ```typescript
 // hooks/useChatOptimized.ts - linha 46-51
 const sendMessage = useCallback(async (content: string) => {
   dispatch({ type: 'SET_LOADING', payload: true });
-  dispatch({ type: 'ADD_MESSAGE', payload: { id: Date.now(), content, role: 'user' }});
+  dispatch({ type: 'ADD_MESSAGE', payload: { id: Date.now(), content, role: 'user' } });
   // TODO: lógica de comunicação com IA...
   dispatch({ type: 'SET_LOADING', payload: false });
 }, []);
 ```
 
 ### Ação Necessária
+
 1. Importar funções de `services/ai.ts` e `services/supabase.ts`
 2. Carregar perfil do usuário via `useUserProfile` ou `AsyncStorage`
 3. Implementar chamada real para `chatWithAI`
@@ -43,6 +46,7 @@ const sendMessage = useCallback(async (content: string) => {
 6. Carregar histórico ao montar componente
 
 ### Critérios de Sucesso
+
 - [ ] Mensagens são enviadas para Claude API
 - [ ] Respostas aparecem na UI
 - [ ] Mensagens são salvas no Supabase automaticamente
@@ -54,12 +58,16 @@ const sendMessage = useCallback(async (content: string) => {
 ## Passo 2: Adicionar Input de Mensagem Completo
 
 ### Estado Atual
+
 ```typescript
 // ChatScreen.tsx - linha 67
-{/* Campo de input e ações rápidas podem ser reimplementados abaixo ao integrar 100% do fluxo */}
+{
+  /* Campo de input e ações rápidas podem ser reimplementados abaixo ao integrar 100% do fluxo */
+}
 ```
 
 ### Ação Necessária
+
 1. Criar componente `ChatInput` ou adicionar diretamente no `ChatScreen`
 2. Incluir:
    - TextInput multi-linha com placeholder
@@ -70,6 +78,7 @@ const sendMessage = useCallback(async (content: string) => {
 4. Adicionar validação de mensagem vazia
 
 ### Critérios de Sucesso
+
 - [ ] Input aparece na parte inferior da tela
 - [ ] Usuário pode digitar e enviar mensagens
 - [ ] Botão de enviar desabilita quando mensagem vazia
@@ -81,6 +90,7 @@ const sendMessage = useCallback(async (content: string) => {
 ## Passo 3: Adicionar Ações Rápidas (Quick Actions)
 
 ### Ação Necessária
+
 1. Criar lista de ações rápidas contextuais
 2. Exemplos:
    - 🦷 "Enjoo está me incomodando"
@@ -93,6 +103,7 @@ const sendMessage = useCallback(async (content: string) => {
 5. Usar `detectUrgency` de `services/ai.ts` para alertas
 
 ### Critérios de Sucesso
+
 - [ ] 5+ ações rápidas configuráveis
 - [ ] Clicar em ação envia mensagem automaticamente
 - [ ] Chips variam conforme contexto (semana de gestação, tipo de usuário)
@@ -103,6 +114,7 @@ const sendMessage = useCallback(async (content: string) => {
 ## Passo 4: Melhorar UX com Indicadores Visuais
 
 ### Ação Necessária
+
 1. Adicionar indicador de "IA está digitando..." quando `loading === true`
 2. Botão SOS no header (linha 47) funcional (Alert + link para SAMU)
 3. Scroll automático para mensagem mais recente ao enviar
@@ -110,6 +122,7 @@ const sendMessage = useCallback(async (content: string) => {
 5. Pull-to-refresh para recarregar histórico
 
 ### Critérios de Sucesso
+
 - [ ] "IA está digitando..." aparece durante loading
 - [ ] Botão SOS abre alerta + ligação SAMU
 - [ ] Scroll automático funciona
@@ -120,6 +133,7 @@ const sendMessage = useCallback(async (content: string) => {
 ## Passo 5: Otimização Final e Acessibilidade
 
 ### Ação Necessária
+
 1. Adicionar `accessibilityLabel` e `accessibilityHint` em todos elementos
 2. Suporte a navegação por teclado (web)
 3. Feedback de voz ao tocar em ações
@@ -127,6 +141,7 @@ const sendMessage = useCallback(async (content: string) => {
 5. Loading skeletons ao carregar histórico
 
 ### Critérios de Sucesso
+
 - [ ] Todos elementos são acessíveis (testar com screen reader)
 - [ ] Navegação por teclado funciona
 - [ ] Dark mode aplicado corretamente
@@ -137,6 +152,7 @@ const sendMessage = useCallback(async (content: string) => {
 ## Passo 6: Adicionar Tratamento de Erros Robusto
 
 ### Ação Necessária
+
 1. Try-catch em todas chamadas de API
 2. Mostrar mensagens amigáveis ao usuário em caso de erro
 3. Retry automático em falhas de rede
@@ -144,6 +160,7 @@ const sendMessage = useCallback(async (content: string) => {
 5. Fallback para modo offline (mensagens salvas localmente)
 
 ### Critérios de Sucesso
+
 - [ ] Erros de API mostram mensagem amigável
 - [ ] Retry funciona após falha de rede
 - [ ] Mensagens são salvas localmente como backup
@@ -154,11 +171,13 @@ const sendMessage = useCallback(async (content: string) => {
 ## Checklist de Arquivos para Modificar/Criar
 
 ### Modificar:
+
 - [ ] `src/hooks/useChatOptimized.ts` - Integrar com serviços reais
 - [ ] `src/screens/ChatScreen.tsx` - Adicionar input e ações
 - [ ] `src/components/chat/MessageItem.tsx` - Melhorar estilos e acessibilidade
 
 ### Criar (se necessário):
+
 - [ ] `src/components/chat/ChatInput.tsx` - Componente de input
 - [ ] `src/components/chat/QuickActions.tsx` - Chips de ações rápidas
 - [ ] `src/components/chat/TypingIndicator.tsx` - Indicador de digitação

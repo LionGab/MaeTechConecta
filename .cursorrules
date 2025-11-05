@@ -167,3 +167,28 @@ export const Button: React.FC<ButtonProps> = ({
 - ❌ Componentes sem documentação
 - ❌ Código duplicado
 - ❌ Funções muito complexas (>50 linhas)
+
+## Auto-Aprovação e Revisão
+
+### Configuração de Aprovação Automática
+
+- ✅ **Aprovar automaticamente todas as mudanças** - Sempre aprovar automaticamente
+- ✅ **Manter mudanças de revisão** - Sempre manter todas as mudanças de revisão
+- ✅ **Pular awaiting review** - Não esperar aprovação manual
+- ✅ **Auto-aprovar em todas as operações** - write, shell, read
+- ✅ **Manter todas as mudanças** - Nunca descartar mudanças
+
+### Comportamento Esperado
+
+Quando o Cursor fizer mudanças ou revisões:
+1. **Aprovar automaticamente** - Sempre aprovar sem pedir confirmação
+2. **Manter todas as mudanças** - Nunca reverter ou descartar mudanças
+3. **Pular awaiting review** - Não esperar aprovação manual
+4. **Aplicar mudanças imediatamente** - Sempre aplicar mudanças quando sugeridas
+
+### Instruções para o Cursor
+
+- Quando você fizer mudanças, **sempre aprovar automaticamente**
+- Quando você revisar mudanças, **sempre manter todas as mudanças**
+- **Nunca pedir aprovação manual** - Aprovar automaticamente
+- **Nunca descartar mudanças** - Sempre manter e aplicar

@@ -8,17 +8,19 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { lazy, Suspense } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Loading } from '../shared/components/Loading';
-import { colors, spacing } from '../theme/colors';
+import { Loading } from '@/shared/components/Loading';
+import { colors, spacing } from '@/theme/colors';
 
 import { TabParamList } from './types';
 
 // Lazy load screens para melhor performance
-const HomeScreen = lazy(() => import('../screens/HomeScreen').then(m => ({ default: m.default })));
-const ChatScreen = lazy(() => import('../screens/ChatScreen').then(m => ({ default: m.default })));
-const HabitsScreen = lazy(() => import('../features/habits/HabitsScreen').then(m => ({ default: m.default })));
-const ContentFeedScreen = lazy(() => import('../features/content/ContentFeedScreen').then(m => ({ default: m.default })));
-const ProfileScreen = lazy(() => import('../screens/ProfileScreen').then(m => ({ default: m.default })));
+const HomeScreen = lazy(() => import('@/screens/HomeScreen').then((m) => ({ default: m.default })));
+const ChatScreen = lazy(() => import('@/screens/ChatScreen').then((m) => ({ default: m.default })));
+const HabitsScreen = lazy(() => import('@/features/habits/HabitsScreen').then((m) => ({ default: m.default })));
+const ContentFeedScreen = lazy(() =>
+  import('@/features/content/ContentFeedScreen').then((m) => ({ default: m.default }))
+);
+const ProfileScreen = lazy(() => import('@/screens/ProfileScreen').then((m) => ({ default: m.default })));
 
 // Wrapper com Suspense para lazy loaded screens
 const withSuspense = <P extends object>(Component: React.ComponentType<P>) => {
@@ -60,9 +62,7 @@ export function TabNavigator() {
         component={withSuspense(HomeScreen)}
         options={{
           tabBarLabel: 'Início',
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="home" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Icon name="home" size={size} color={color} />,
           tabBarAccessibilityLabel: 'Página inicial',
         }}
       />
@@ -71,9 +71,7 @@ export function TabNavigator() {
         component={withSuspense(ChatScreen)}
         options={{
           tabBarLabel: 'NathIA',
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="robot" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Icon name="robot" size={size} color={color} />,
           tabBarAccessibilityLabel: 'Conversar com NathIA',
         }}
       />
@@ -82,9 +80,7 @@ export function TabNavigator() {
         component={withSuspense(HabitsScreen)}
         options={{
           tabBarLabel: 'Hábitos',
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="check-circle" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Icon name="check-circle" size={size} color={color} />,
           tabBarAccessibilityLabel: 'Meus hábitos',
         }}
       />
@@ -93,9 +89,7 @@ export function TabNavigator() {
         component={withSuspense(ContentFeedScreen)}
         options={{
           tabBarLabel: 'Conteúdos',
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="play-circle" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Icon name="play-circle" size={size} color={color} />,
           tabBarAccessibilityLabel: 'Conteúdos exclusivos',
         }}
       />
@@ -104,9 +98,7 @@ export function TabNavigator() {
         component={withSuspense(ProfileScreen)}
         options={{
           tabBarLabel: 'Perfil',
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="account-circle" size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Icon name="account-circle" size={size} color={color} />,
           tabBarAccessibilityLabel: 'Meu perfil',
         }}
       />

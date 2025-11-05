@@ -1,16 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { Logo } from '../components/Logo';
-import { borderRadius, colors, shadows, spacing, typography } from '../theme/colors';
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Logo } from '@/components/Logo';
+import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -28,26 +21,22 @@ export default function ProfileScreen() {
   };
 
   const handleLogout = () => {
-    Alert.alert(
-      'Sair',
-      'Tem certeza que deseja sair?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Sair',
-          style: 'destructive',
-          onPress: async () => {
-            await AsyncStorage.removeItem('onboarded');
-            await AsyncStorage.removeItem('userProfile');
-            await AsyncStorage.removeItem('userId');
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Onboarding' }],
-            } as any);
-          },
+    Alert.alert('Sair', 'Tem certeza que deseja sair?', [
+      { text: 'Cancelar', style: 'cancel' },
+      {
+        text: 'Sair',
+        style: 'destructive',
+        onPress: async () => {
+          await AsyncStorage.removeItem('onboarded');
+          await AsyncStorage.removeItem('userProfile');
+          await AsyncStorage.removeItem('userId');
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Onboarding' }],
+          } as any);
         },
-      ]
-    );
+      },
+    ]);
   };
 
   return (
@@ -72,9 +61,7 @@ export default function ProfileScreen() {
             {profile?.type === 'mae' && '🤱 Mãe'}
             {profile?.type === 'tentante' && '💕 Tentante'}
           </Text>
-          {profile?.pregnancy_week && (
-            <Text style={styles.weekInfo}>Semana {profile.pregnancy_week}</Text>
-          )}
+          {profile?.pregnancy_week && <Text style={styles.weekInfo}>Semana {profile.pregnancy_week}</Text>}
         </View>
 
         {/* Stats */}
@@ -88,9 +75,7 @@ export default function ProfileScreen() {
             <Text style={styles.statLabel}>Interações hoje</Text>
           </View>
           <View style={styles.statItem}>
-            <Text style={styles.statNumber}>
-              {profile?.subscription_tier === 'premium' ? '⭐' : '🆓'}
-            </Text>
+            <Text style={styles.statNumber}>{profile?.subscription_tier === 'premium' ? '⭐' : '🆓'}</Text>
             <Text style={styles.statLabel}>Plano</Text>
           </View>
         </View>

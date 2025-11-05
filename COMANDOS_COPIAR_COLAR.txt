@@ -1,0 +1,31 @@
+COPIAR E COLAR ESTES COMANDOS NO POWERSHELL (UM POR VEZ)
+==========================================================
+
+1. VERIFICAR SE SCOOP ESTÁ INSTALADO:
+   scoop --version
+
+2. SE DER ERRO, INSTALE O SCOOP:
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+   Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+
+3. ADICIONAR BUCKET DO SUPABASE:
+   scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+
+4. INSTALAR SUPABASE CLI:
+   scoop install supabase
+
+5. VERIFICAR INSTALAÇÃO:
+   supabase --version
+
+6. FAZER LOGIN (abrirá o navegador):
+   supabase login
+
+7. LINK COM PROJETO (substitua SEU-PROJECT-REF pelo seu Reference ID):
+   supabase link --project-ref SEU-PROJECT-REF
+
+8. VERIFICAR PROJETOS LINKADOS:
+   supabase projects list
+
+9. CONFIGURAR SECRETS:
+   .\scripts\setup-secrets.ps1
+

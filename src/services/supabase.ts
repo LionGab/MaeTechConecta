@@ -1,21 +1,37 @@
 import { createClient } from '@supabase/supabase-js';
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SUPABASE_CONFIG } from '../config/api';
+import { SUPABASE_CONFIG } from '@/config/api';
 
 // ⚠️ CONFIGURE SUAS CREDENCIAIS DO SUPABASE
 // Substitua pelos valores do seu projeto Supabase no arquivo .env.local
 
-const supabaseUrl = SUPABASE_CONFIG.URL || '';
-const supabaseAnonKey = SUPABASE_CONFIG.ANON_KEY || '';
+// Obter valores das variáveis de ambiente (ou usar valores dummy)
+const rawUrl = SUPABASE_CONFIG.URL || '';
+const rawKey = SUPABASE_CONFIG.ANON_KEY || '';
 
-// Validação básica para evitar erros silenciosos
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('⚠️ Supabase não configurado. Configure EXPO_PUBLIC_SUPABASE_URL e EXPO_PUBLIC_SUPABASE_ANON_KEY no arquivo .env.local');
+// Valores dummy válidos do Supabase (apenas para evitar erro de inicialização)
+// Em produção, essas variáveis DEVE estar configuradas no Netlify
+const dummyUrl = 'https://placeholder.supabase.co';
+const dummyKey =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0';
+
+// Garantir que sempre temos valores não-vazios (usar dummy se necessário)
+const supabaseUrl = rawUrl.trim() || dummyUrl;
+const supabaseAnonKey = rawKey.trim() || dummyKey;
+
+// Avisar se usando valores dummy
+if (!rawUrl || !rawKey) {
+  console.warn('⚠️ Supabase não configurado. Configure EXPO_PUBLIC_SUPABASE_URL e EXPO_PUBLIC_SUPABASE_ANON_KEY');
+  console.warn('⚠️ Usando valores dummy para evitar erro. Configure as variáveis de ambiente no Netlify para produção');
 }
 
+// Criar cliente Supabase (sempre com valores válidos)
+// IMPORTANTE: Configure as variáveis de ambiente no Netlify para produção
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: AsyncStorage,
+    // Usar AsyncStorage apenas se não estiver no web (web usa localStorage automaticamente)
+    storage: Platform.OS === 'web' ? undefined : AsyncStorage,
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,
@@ -66,10 +82,7 @@ export const createTemporaryUser = async () => {
 
 // Função para salvar perfil
 export const saveUserProfile = async (profile: Partial<UserProfile>) => {
-  const { data, error } = await supabase
-    .from('user_profiles')
-    .upsert(profile)
-    .select();
+  const { data, error } = await supabase.from('user_profiles').upsert(profile).select();
 
   if (error) throw error;
   return data;
@@ -77,10 +90,7 @@ export const saveUserProfile = async (profile: Partial<UserProfile>) => {
 
 // Função para salvar mensagem de chat
 export const saveChatMessage = async (message: Partial<ChatMessage>) => {
-  const { data, error } = await supabase
-    .from('chat_messages')
-    .insert(message)
-    .select();
+  const { data, error } = await supabase.from('chat_messages').insert(message).select();
 
   if (error) throw error;
   return data;
@@ -101,10 +111,7 @@ export const getChatHistory = async (userId: string, limit: number = 50) => {
 
 // Função para salvar plano diário
 export const saveDailyPlan = async (plan: Partial<DailyPlan>) => {
-  const { data, error } = await supabase
-    .from('daily_plans')
-    .upsert(plan)
-    .select();
+  const { data, error } = await supabase.from('daily_plans').upsert(plan).select();
 
   if (error) throw error;
   return data;

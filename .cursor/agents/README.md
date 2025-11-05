@@ -13,12 +13,14 @@ O Cursor 2.0 permite orquestrar múltiplos agentes AI em workspaces isolados (gi
 ## 🤖 Agent Squad
 
 ### **Agent 1: Frontend Master** 🎨
+
 **Responsabilidade:** Componentes React Native, telas, navegação
 
 **Workspace:** `feature/frontend`
 **Focus:** UI/UX, animações, tema, acessibilidade
 
 **Prompt Template:**
+
 ```
 Você é o Agent Frontend Master, especialista em React Native + Expo.
 
@@ -41,12 +43,14 @@ ENTREGUE:
 ---
 
 ### **Agent 2: Backend Architect** 🗄️
+
 **Responsabilidade:** Supabase, database, Edge Functions
 
 **Workspace:** `feature/backend`
 **Focus:** Schemas, migrações, segurança, performance
 
 **Prompt Template:**
+
 ```
 Você é o Agent Backend Architect, especialista em Supabase + PostgreSQL.
 
@@ -69,12 +73,14 @@ ENTREGUE:
 ---
 
 ### **Agent 3: AI Integration** 🧠
+
 **Responsabilidade:** Integrações com IA (Claude, Gemini)
 
 **Workspace:** `feature/ai`
 **Focus:** Prompts, validação, contexto, memória
 
 **Prompt Template:**
+
 ```
 Você é o Agent AI Integration, especialista em LLM APIs e prompt engineering.
 
@@ -97,12 +103,14 @@ ENTREGUE:
 ---
 
 ### **Agent 4: Design System** 🎭
+
 **Responsabilidade:** Componentes reutilizáveis, tema, tokens
 
 **Workspace:** `feature/design-system`
 **Focus:** Consistência visual, dark mode, docs
 
 **Prompt Template:**
+
 ```
 Você é o Agent Design System, especialista em design tokens e componentes.
 
@@ -125,12 +133,14 @@ ENTREGUE:
 ---
 
 ### **Agent 5: QA & Testing** 🧪
+
 **Responsabilidade:** Testes E2E, unitários, integração
 
 **Workspace:** `feature/testing`
 **Focus:** Cobertura, performance, edge cases
 
 **Prompt Template:**
+
 ```
 Você é o Agent QA & Testing, especialista em testes automatizados.
 
@@ -153,12 +163,14 @@ ENTREGUE:
 ---
 
 ### **Agent 6: Documentation** 📚
+
 **Responsabilidade:** Docs técnicas, guias, README
 
 **Workspace:** `feature/docs`
 **Focus:** Clareza, exemplos, onboarding
 
 **Prompt Template:**
+
 ```
 Você é o Agent Documentation, especialista em documentação técnica.
 
@@ -181,12 +193,14 @@ ENTREGUE:
 ---
 
 ### **Agent 7: Performance** ⚡
+
 **Responsabilidade:** Otimização, profiling, métricas
 
 **Workspace:** `feature/performance`
 **Focus:** Bundle size, re-renders, memory leaks
 
 **Prompt Template:**
+
 ```
 Você é o Agent Performance, especialista em otimização React Native.
 
@@ -209,12 +223,14 @@ ENTREGUE:
 ---
 
 ### **Agent 8: Security & Compliance** 🔒
+
 **Responsabilidade:** LGPD, segurança, auditoria
 
 **Workspace:** `feature/security`
 **Focus:** Privacidade, logs, compliance
 
 **Prompt Template:**
+
 ```
 Você é o Agent Security & Compliance, especialista em LGPD e segurança.
 
@@ -329,11 +345,13 @@ Agent 8: Auditoria LGPD de permissões
 Os agentes produziram **7 relatórios completos** com análise detalhada do sistema:
 
 ### **📋 Como Usar**
+
 1. Leia [reports/README.md](reports/README.md) - Índice completo
 2. Leia [reports/EXECUTIVE_SUMMARY.md](reports/EXECUTIVE_SUMMARY.md) - Visão consolidada
 3. Revise relatórios específicos conforme necessário
 
 ### **🎯 Scores Atuais**
+
 - **QA & Testing:** 0/100 ❌ (Crítico)
 - **Performance:** 75/100 ✅ (Bom)
 - **Security & LGPD:** 65/100 ⚠️ (Atenção)
@@ -342,6 +360,7 @@ Os agentes produziram **7 relatórios completos** com análise detalhada do sist
 - **Média Ponderada:** 65/100 ⚠️ (Atenção)
 
 ### **🚨 5 Problemas Críticos**
+
 1. Sem testes automatizados
 2. Chaves de API hardcoded
 3. Sem rate limiting
@@ -355,6 +374,7 @@ Ver: [MULTI_AGENT_ANALYSIS_COMPLETE.md](../../MULTI_AGENT_ANALYSIS_COMPLETE.md)
 ## 🚀 Como Usar
 
 ### **1. Setup Inicial**
+
 ```bash
 # No terminal
 mkdir -p .cursor/agents/{prompts,workflows}
@@ -364,12 +384,14 @@ git worktree add ../nossa-maternidade-agent2 feature/backend
 ```
 
 ### **2. Ativar Agente**
+
 ```bash
 # No Cursor Composer, use o prompt:
 @agent-1-frontend.md "Implemente componente Button com variantes"
 ```
 
 ### **3. Orquestrar Múltiplos**
+
 ```bash
 # No Cursor Composer simultaneamente:
 @agent-1-frontend.md @agent-4-design-system.md "Feature X completa"

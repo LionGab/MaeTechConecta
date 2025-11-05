@@ -13,6 +13,7 @@ Uma descrição clara e concisa do bug.
 ## 🔄 Passos para Reproduzir
 
 Passos para reproduzir o comportamento:
+
 1. Vá para '...'
 2. Clique em '....'
 3. Role até '....'

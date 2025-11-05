@@ -34,11 +34,13 @@
 ## 📋 Permissões por Ação
 
 ### ✅ READ (Leitura)
+
 - **Permitido para:** Todos os agentes
 - **Aprovação:** Não requerida
 - **Log:** Sim (info)
 
 **Exemplo:**
+
 ```
 ✅ code-reviewer pode ler qualquer arquivo
 ✅ frontend-agent pode ler componentes
@@ -48,11 +50,13 @@
 ---
 
 ### ⚠️ WRITE (Escrita)
+
 - **Permitido para:** Developer+, com aprovação
 - **Aprovação:** Sempre requerida (exceto ações menores)
 - **Log:** Sim (audit)
 
 **Restrições:**
+
 - ❌ NUNCA modificar arquivos restritos:
   - `package.json`
   - `.env*`
@@ -60,6 +64,7 @@
   - Arquivos de configuração críticos
 
 **Exemplo:**
+
 ```
 ⚠️ code-reviewer pode SUGERIR correções, mas requer aprovação para aplicar
 ⚠️ frontend-agent pode modificar componentes, mas requer aprovação
@@ -69,11 +74,13 @@
 ---
 
 ### 🛡️ SHELL (Terminal)
+
 - **Permitido para:** Admin, com aprovação
 - **Aprovação:** Sempre requerida
 - **Log:** Sim (audit)
 
 **Comandos Permitidos:**
+
 - ✅ `npm install`
 - ✅ `npm run lint`
 - ✅ `npm run format`
@@ -82,6 +89,7 @@
 - ✅ `expo start`
 
 **Comandos BLOQUEADOS:**
+
 - ❌ `git push`
 - ❌ `git push --force`
 - ❌ `gh pr create`
@@ -91,6 +99,7 @@
 - ❌ `sudo *`
 
 **Exemplo:**
+
 ```
 ✅ code-reviewer pode executar npm run lint (após aprovação)
 ❌ code-reviewer NUNCA pode fazer git push
@@ -100,11 +109,13 @@
 ---
 
 ### 📊 REVIEW (Revisão)
+
 - **Permitido para:** Reviewer+, sem aprovação
 - **Aprovação:** Não requerida (apenas sugestões)
 - **Log:** Sim (info)
 
 **Ações:**
+
 - ✅ Ler código
 - ✅ Gerar relatórios
 - ✅ Sugerir correções
@@ -124,7 +135,7 @@ const whitelistCheck = checkWhitelist(agentId, action);
 if (!whitelistCheck.allowed) {
   // Negar ação e registrar log
   logAction(agentId, action, file, null, 'denied', {
-    reason: whitelistCheck.reason
+    reason: whitelistCheck.reason,
   });
   return { error: 'Not authorized', reason: whitelistCheck.reason };
 }
@@ -146,7 +157,7 @@ if (approvalCheck.requires) {
     severity,
     description,
     diff,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 
   // Solicitar aprovação via prompt
@@ -155,7 +166,7 @@ if (approvalCheck.requires) {
   if (!approved) {
     logAction(agentId, action, file, severity, 'denied', {
       approval_id: approvalId,
-      reason: 'User denied'
+      reason: 'User denied',
     });
     return { error: 'Action denied by user' };
   }
@@ -171,7 +182,7 @@ const result = await executeAction(action, file, ...args);
 // Registrar log
 logAction(agentId, action, file, severity, 'success', {
   result,
-  approved: approvalCheck.requires
+  approved: approvalCheck.requires,
 });
 ```
 
@@ -180,11 +191,13 @@ logAction(agentId, action, file, severity, 'success', {
 ## 📝 Comandos de Verificação
 
 ### Verificar Permissão
+
 ```bash
 node scripts/review-manager.js check code-reviewer write src/components/Button.tsx
 ```
 
 **Resposta:**
+
 ```json
 {
   "agent_id": "code-reviewer",
@@ -203,16 +216,19 @@ node scripts/review-manager.js check code-reviewer write src/components/Button.t
 ```
 
 ### Registrar Log
+
 ```bash
 node scripts/review-manager.js log code-reviewer review src/components/Button.tsx 3 success '{"bugs_found":2}'
 ```
 
 ### Gerar Relatório
+
 ```bash
 node scripts/review-manager.js report 2025-01-01 2025-01-30
 ```
 
 ### Aprovar Ação Pendente
+
 ```bash
 node scripts/review-manager.js approve <approval_id>
 ```
@@ -222,26 +238,31 @@ node scripts/review-manager.js approve <approval_id>
 ## 🔐 Regras de Segurança
 
 ### 1. NUNCA Auto-Aplicar Correções Críticas
+
 - Severidade 4-5: Sempre requer aprovação
 - Arquivos restritos: Sempre requer aprovação
 - Mudanças de configuração: Sempre requer aprovação
 
 ### 2. SEMPRE Registrar Logs
+
 - Todas as ações: Registrar
 - Aprovações/negações: Registrar
 - Erros: Registrar
 
 ### 3. NUNCA Fazer Push Automático
+
 - `git push`: Bloqueado para TODOS os agentes
 - `git push --force`: Bloqueado permanentemente
 - PRs automáticos: Desabilitado por padrão
 
 ### 4. SEMPRE Verificar Whitelist
+
 - Antes de qualquer ação: Verificar whitelist
 - Agentes não listados: Negar automaticamente
 - Trust level insuficiente: Negar automaticamente
 
 ### 5. Timeout de Aprovação
+
 - Timeout padrão: 300s (5 minutos)
 - Após timeout: Negar por padrão (configurável)
 - Ações críticas: Timeout menor (60s)

@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
-import { colors, spacing } from '../../theme/colors';
+import { colors, spacing } from '@/theme/colors';
 
 export interface LoadingProps {
   /** Tamanho do spinner */
@@ -22,12 +22,7 @@ export interface LoadingProps {
   message?: string;
 }
 
-export const Loading: React.FC<LoadingProps> = ({
-  size = 'large',
-  color = colors.primary,
-  style,
-  message,
-}) => {
+export const Loading: React.FC<LoadingProps> = ({ size = 'large', color = colors.primary, style, message }) => {
   return (
     <View style={[styles.container, style]}>
       <ActivityIndicator size={size} color={color} />
@@ -50,25 +45,10 @@ export interface SkeletonProps {
   borderRadius?: number;
 }
 
-export const Skeleton: React.FC<SkeletonProps> = ({
-  width = '100%',
-  height = 20,
-  style,
-  borderRadius = 8,
-}) => {
+export const Skeleton: React.FC<SkeletonProps> = ({ width = '100%', height = 20, style, borderRadius = 8 }) => {
   const widthStyle = typeof width === 'string' ? { width: width as any } : { width };
 
-  return (
-    <View
-      style={[
-        styles.skeleton,
-        widthStyle,
-        { height, borderRadius },
-        style,
-      ]}
-      accessible={false}
-    />
-  );
+  return <View style={[styles.skeleton, widthStyle, { height, borderRadius }, style]} accessible={false} />;
 };
 
 const styles = StyleSheet.create({

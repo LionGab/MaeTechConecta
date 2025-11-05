@@ -8,6 +8,7 @@
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { checkRateLimit } from '../_shared/rateLimiter.ts';
 
 // =====================================================
 // PROMPT SYSTEM - NathIA
@@ -47,36 +48,8 @@ Mantenha respostas concisas e empáticas (máximo 300 palavras).`;
 // =====================================================
 // RATE LIMITING
 // =====================================================
-
-interface RateLimitData {
-  count: number;
-  resetTime: number;
-}
-
-const rateLimiter = new Map<string, RateLimitData>();
-
-function checkRateLimit(userId: string): { allowed: boolean; remaining: number } {
-  const now = Date.now();
-  const windowMs = 60000; // 1 minuto
-  const maxRequests = 30; // 30 requisições por minuto por usuário
-
-  const userData = rateLimiter.get(userId);
-
-  // Reset ou criar novo registro
-  if (!userData || now > userData.resetTime) {
-    rateLimiter.set(userId, { count: 1, resetTime: now + windowMs });
-    return { allowed: true, remaining: maxRequests - 1 };
-  }
-
-  // Verificar limite
-  if (userData.count >= maxRequests) {
-    return { allowed: false, remaining: 0 };
-  }
-
-  // Incrementar contador
-  userData.count++;
-  return { allowed: true, remaining: maxRequests - userData.count };
-}
+// Rate limiting agora usa modelo event-based do banco
+// Ver: supabase/functions/_shared/rateLimiter.ts
 
 // =====================================================
 // SUPABASE AUTH CHECK
@@ -91,7 +64,10 @@ async function verifyAuth(req: Request, supabase: any): Promise<{ userId: string
 
   const token = authHeader.replace('Bearer ', '');
 
-  const { data: { user }, error } = await supabase.auth.getUser(token);
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser(token);
 
   if (error || !user) {
     return { userId: null, error: 'Invalid authentication token' };
@@ -198,8 +174,8 @@ async function callGeminiFlash(prompt: string): Promise<string> {
     body: JSON.stringify({
       contents: [
         {
-          parts: [{ text: prompt }]
-        }
+          parts: [{ text: prompt }],
+        },
       ],
       generationConfig: {
         temperature: 0.7,
@@ -208,22 +184,22 @@ async function callGeminiFlash(prompt: string): Promise<string> {
       safetySettings: [
         {
           category: 'HARM_CATEGORY_HARASSMENT',
-          threshold: 'BLOCK_LOW_AND_ABOVE'
+          threshold: 'BLOCK_LOW_AND_ABOVE',
         },
         {
           category: 'HARM_CATEGORY_HATE_SPEECH',
-          threshold: 'BLOCK_LOW_AND_ABOVE'
+          threshold: 'BLOCK_LOW_AND_ABOVE',
         },
         {
           category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-          threshold: 'BLOCK_MEDIUM_AND_ABOVE'
+          threshold: 'BLOCK_MEDIUM_AND_ABOVE',
         },
         {
           category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
-          threshold: 'BLOCK_MEDIUM_AND_ABOVE'
-        }
-      ]
-    })
+          threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+        },
+      ],
+    }),
   });
 
   if (!response.ok) {
@@ -247,24 +223,17 @@ async function callGeminiFlash(prompt: string): Promise<string> {
 // SALVAR MENSAGEM E RESPOSTA NO SUPABASE
 // =====================================================
 
-async function saveMessage(
-  userId: string,
-  message: string,
-  response: string,
-  supabase: any
-): Promise<void> {
+async function saveMessage(userId: string, message: string, response: string, supabase: any): Promise<void> {
   // Salvar uma única mensagem com user message e assistant response
-  const { error } = await supabase
-    .from('chat_messages')
-    .insert({
-      user_id: userId,
-      message: message,
-      response: response,
-      role: 'user',
-      context_data: {},
-      is_urgent: false,
-      created_at: new Date().toISOString()
-    });
+  const { error } = await supabase.from('chat_messages').insert({
+    user_id: userId,
+    message: message,
+    response: response,
+    role: 'user',
+    context_data: {},
+    is_urgent: false,
+    created_at: new Date().toISOString(),
+  });
 
   if (error) {
     console.error('Error saving message:', error);
@@ -296,35 +265,45 @@ serve(async (req: Request) => {
       throw new Error('Supabase environment variables not configured');
     }
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Criar cliente Supabase com ANON_KEY (não SERVICE_ROLE)
+    // Isso garante que RLS está ativo e não bypassa segurança
+    const authHeader = req.headers.get('Authorization');
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      global: {
+        headers: authHeader ? { Authorization: authHeader } : {},
+      },
+    });
 
     // Verificar autenticação
     const authResult = await verifyAuth(req, supabase);
 
     if (!authResult.userId) {
-      return new Response(
-        JSON.stringify({ error: authResult.error || 'Authentication failed' }),
-        {
-          status: 401,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      );
+      return new Response(JSON.stringify({ error: authResult.error || 'Authentication failed' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const userId = authResult.userId;
 
-    // Verificar rate limit
-    const rateCheck = checkRateLimit(userId);
+    // Verificar rate limit (event-based do banco)
+    const rateCheck = await checkRateLimit(userId, 'nathia-chat', authHeader);
     if (!rateCheck.allowed) {
       return new Response(
         JSON.stringify({
           error: 'Rate limit exceeded',
           message: 'Você fez muitas requisições. Aguarde um momento e tente novamente.',
-          remaining: 0
+          remaining: rateCheck.remaining,
+          resetAt: rateCheck.resetAt.toISOString(),
         }),
         {
           status: 429,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+            'X-RateLimit-Remaining': rateCheck.remaining.toString(),
+            'X-RateLimit-Reset': rateCheck.resetAt.toISOString(),
+          },
         }
       );
     }
@@ -333,13 +312,10 @@ serve(async (req: Request) => {
     const { message } = await req.json();
 
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
-      return new Response(
-        JSON.stringify({ error: 'Message is required and must be a non-empty string' }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      );
+      return new Response(JSON.stringify({ error: 'Message is required and must be a non-empty string' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     // Buscar contexto (perfil + últimas 20 mensagens)
@@ -359,29 +335,34 @@ serve(async (req: Request) => {
       JSON.stringify({
         response: aiResponse,
         rateLimit: {
-          remaining: rateCheck.remaining
-        }
+          remaining: rateCheck.remaining,
+          resetAt: rateCheck.resetAt.toISOString(),
+        },
       }),
       {
         status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'application/json',
+          'X-RateLimit-Remaining': rateCheck.remaining.toString(),
+          'X-RateLimit-Reset': rateCheck.resetAt.toISOString(),
+        },
       }
     );
-
   } catch (error: any) {
     console.error('Error in nathia-chat function:', error);
 
     return new Response(
       JSON.stringify({
         error: 'Internal server error',
-        message: error.message || 'An unexpected error occurred'
+        message: error.message || 'An unexpected error occurred',
       }),
       {
         status: 500,
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       }
     );
   }

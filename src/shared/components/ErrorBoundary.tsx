@@ -6,8 +6,8 @@
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { colors, spacing, typography } from '../../theme/colors';
-import { Button } from '../../components';
+import { colors, spacing, typography } from '@/theme/colors';
+import { Button } from '@/components';
 
 interface Props {
   children: ReactNode;
@@ -47,15 +47,37 @@ export class ErrorBoundary extends Component<Props, State> {
 
       return (
         <View style={styles.container}>
-          <Text style={styles.emoji}>💔</Text>
-          <Text style={styles.title}>Ops! Algo deu errado</Text>
-          <Text style={styles.message}>
+          <View
+            accessible={true}
+            accessibilityRole="image"
+            accessibilityLabel="Ícone de erro - coração partido"
+            style={styles.iconContainer}
+          >
+            <Text style={styles.emoji} accessibilityLabel="">
+              💔
+            </Text>
+          </View>
+          <Text style={styles.title} accessibilityRole="header">
+            Ops! Algo deu errado
+          </Text>
+          <Text style={styles.message} accessibilityRole="text">
             Desculpa pelo inconveniente. Tente novamente em instantes.
           </Text>
+          {__DEV__ && this.state.error && (
+            <Text
+              style={styles.error}
+              accessibilityRole="text"
+              accessibilityLabel={`Detalhes do erro: ${this.state.error.toString()}`}
+            >
+              {this.state.error.toString()}
+            </Text>
+          )}
           <Button
             variant="primary"
             onPress={this.handleReset}
             accessibilityLabel="Tentar novamente"
+            accessibilityHint="Recarrega a tela e tenta novamente"
+            accessibilityRole="button"
             style={styles.button}
           >
             Tentar Novamente
@@ -76,9 +98,21 @@ const styles = StyleSheet.create({
     padding: spacing.xl,
     backgroundColor: colors.background,
   },
+  iconContainer: {
+    marginBottom: spacing.md,
+  },
   emoji: {
     fontSize: 48,
+  },
+  error: {
+    fontSize: 12,
+    color: colors.mutedForeground,
     marginBottom: spacing.md,
+    fontFamily: 'monospace',
+    textAlign: 'center',
+    padding: spacing.sm,
+    backgroundColor: colors.muted,
+    borderRadius: 4,
   },
   title: {
     fontSize: typography.sizes.xl,

@@ -5,7 +5,8 @@
 ## 1. Templates por Tipo de Tarefa
 
 ### Criar Novo Componente
-```typescript
+
+````typescript
 Create [ComponentName] in src/components/:
 
 **Purpose:** [Breve descrição do componente]
@@ -38,8 +39,9 @@ interface [ComponentName]Props {
 **Example Usage:**
 ```tsx
 <[ComponentName] prop1={value1} prop2={value2} />
-```
-```
+````
+
+````
 
 ### Refatoração
 ```typescript
@@ -67,9 +69,10 @@ Refactor @[file.ts] to improve [aspect]:
 - [ ] Sem novos warnings do ESLint
 
 **Rollback Plan:**  Se der problema: [como reverter?]
-```
+````
 
 ### Bug Fix
+
 ```typescript
 Fix bug in @[file.ts]:
 
@@ -102,6 +105,7 @@ Actual: [Y]
 ```
 
 ### Otimização de Performance
+
 ```typescript
 Optimize performance of @[component.tsx]:
 
@@ -147,54 +151,58 @@ Optimize performance of @[component.tsx]:
 ### Exemplos de Estratégias:
 
 - **Contextualização Progressiva**
-    ```typescript
-    @Codebase Where is user profile data stored?
-    @src/hooks/useUserProfile.ts Explain how this hook works
-    @useUserProfile.ts @UserRepository.ts Refactor hook to use repository pattern
-    ```
+  ```typescript
+  @Codebase Where is user profile data stored?
+  @src/hooks/useUserProfile.ts Explain how this hook works
+  @useUserProfile.ts @UserRepository.ts Refactor hook to use repository pattern
+  ```
 - **Comparação de Padrões**
-    ```typescript
-    @Button.tsx @Input.tsx @Card.tsx 
-    Analyze common patterns in these components.
-    Create a base component that extracts shared logic.
-    ```
+  ```typescript
+  @Button.tsx @Input.tsx @Card.tsx
+  Analyze common patterns in these components.
+  Create a base component that extracts shared logic.
+  ```
 - **Validação de Consistência**
-    ```typescript
-    @src/theme/colors.ts @HomeScreen.tsx @ChatScreen.tsx 
-    Find all hardcoded colors not using theme system.
-    Generate list of files to fix.
-    ```
+  ```typescript
+  @src/theme/colors.ts @HomeScreen.tsx @ChatScreen.tsx
+  Find all hardcoded colors not using theme system.
+  Generate list of files to fix.
+  ```
 
 ---
 
 ## 3. Workflows Otimizados
 
 ### 3.1 Feature Completa
+
 Planeje no chat, implemente com Composer, refine com Inline Edit, gere e ajuste testes, documente, valide.
 
 ### 3.2 Bug Fix Rápido
+
 Identifique (chat) → Confirme (chat) → Corrija (inline) → Teste (chat) → Previna (inline).
 
 ### 3.3 Refatoração Massiva
+
 Avalie padrões com chat, planeje abordagem, execulte multi-arquivo com Composer, valide impactos.
 
 ### 3.4 Code Review
+
 Peça para o chat revisar commits focando em: qualidade, bugs, performance e segurança.
 
 ---
 
 ## 4. Atalhos Essenciais
 
-| Ação             | Mac     | Windows   | Uso                  |
-|------------------|---------|-----------|----------------------|
-| Inline Edit      | Cmd+K   | Ctrl+K    | Editar seleção       |
-| Chat             | Cmd+L   | Ctrl+L    | Abrir chat           |
-| Composer         | Cmd+I   | Ctrl+I    | Multi-file edit      |
-| Accept Suggestion| Tab     | Tab       | Autocomplete         |
-| Reject Suggestion| Esc     | Esc       | Rejeitar sugestão    |
-| Próxima Sugestão | Cmd+→   | Ctrl+→    | Sugerir próxima      |
-| Apply All        | Cmd+Shift+Enter | Ctrl+Shift+Enter | Aplicar todas  |
-| Terminal         | Cmd+J   | Ctrl+J    | Toggle terminal      |
+| Ação              | Mac             | Windows          | Uso               |
+| ----------------- | --------------- | ---------------- | ----------------- |
+| Inline Edit       | Cmd+K           | Ctrl+K           | Editar seleção    |
+| Chat              | Cmd+L           | Ctrl+L           | Abrir chat        |
+| Composer          | Cmd+I           | Ctrl+I           | Multi-file edit   |
+| Accept Suggestion | Tab             | Tab              | Autocomplete      |
+| Reject Suggestion | Esc             | Esc              | Rejeitar sugestão |
+| Próxima Sugestão  | Cmd+→           | Ctrl+→           | Sugerir próxima   |
+| Apply All         | Cmd+Shift+Enter | Ctrl+Shift+Enter | Aplicar todas     |
+| Terminal          | Cmd+J           | Ctrl+J           | Toggle terminal   |
 
 ---
 
@@ -208,6 +216,7 @@ Peça para o chat revisar commits focando em: qualidade, bugs, performance e seg
 ---
 
 ## 6. Dominei Cursor.AI?
+
 ```typescript
 ✅ Conheço modos (Edit, Chat, Composer, Autocomplete)
 ✅ Uso @mentions sempre que possível

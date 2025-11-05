@@ -111,11 +111,13 @@ class Logger {
         level: LogLevel.ERROR,
         message,
         context,
-        error: error ? {
-          message: error.message,
-          stack: error.stack,
-          name: error.name,
-        } : undefined,
+        error: error
+          ? {
+              message: error.message,
+              stack: error.stack,
+              name: error.name,
+            }
+          : undefined,
         user_id: this.userId,
       };
 

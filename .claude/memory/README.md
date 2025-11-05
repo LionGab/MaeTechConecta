@@ -51,6 +51,7 @@ Use o comando slash:
 ```
 
 Opções:
+
 - `/memory status` - Ver resumo do estado atual
 - `/memory decisions` - Listar todas as decisões
 - `/memory todos` - Ver tarefas pendentes
@@ -117,7 +118,9 @@ node sync-supabase.js pull  # Baixar do Supabase
 ## 📊 Arquivos Detalhados
 
 ### **context.json**
+
 Contém:
+
 - Visão geral do projeto
 - Stack tecnológica
 - Design System Bubblegum
@@ -126,7 +129,9 @@ Contém:
 - Navegação atual e planejada
 
 ### **decisions.json**
+
 Contém 9 decisões estratégicas:
+
 1. Migrar para Gemini 1.5 Pro
 2. Onboarding inteligente (4-5 perguntas)
 3. Navegação com 5 bottom tabs
@@ -138,7 +143,9 @@ Contém 9 decisões estratégicas:
 9. Personalização adaptativa
 
 ### **preferences.json**
+
 Contém:
+
 - Estilo de comunicação preferido
 - Prioridades do projeto
 - Preferências da stakeholder (Nathália Valente)
@@ -146,14 +153,18 @@ Contém:
 - Workflow preferido
 
 ### **conversation_log.md**
+
 Histórico completo da sessão 001:
+
 - Todas as fases da conversa
 - Frases marcantes do usuário
 - Estatísticas da sessão
 - Próximos passos
 
 ### **todo_history.json**
+
 Contém:
+
 - 12 tarefas pendentes (Sprint 1-3)
 - 13 tarefas completas (Sprint 0)
 - Estimativas de tempo (134 horas totais)
@@ -174,22 +185,26 @@ Contém:
 ## 🛠️ Comandos Úteis
 
 ### **Verificar Integridade**
+
 ```bash
 cd .claude/memory
 ls -lh  # Ver tamanho dos arquivos
 ```
 
 ### **Buscar em Memórias**
+
 ```bash
 grep -r "keyword" .claude/memory/
 ```
 
 ### **Ver Decisões Recentes**
+
 ```bash
 cat .claude/memory/decisions.json | jq '.decisions[-3:]'
 ```
 
 ### **Ver TODOs Pendentes**
+
 ```bash
 cat .claude/memory/todo_history.json | jq '.active_todos[] | select(.priority=="critical")'
 ```
@@ -199,6 +214,7 @@ cat .claude/memory/todo_history.json | jq '.active_todos[] | select(.priority=="
 ## 📈 Estatísticas
 
 **Sessão 001 (2025-10-29)**:
+
 - 📝 5 arquivos de memória criados
 - 💬 1 sessão completa registrada
 - 🎯 9 decisões estratégicas documentadas
@@ -213,6 +229,7 @@ cat .claude/memory/todo_history.json | jq '.active_todos[] | select(.priority=="
 ## 🔄 Workflow de Sincronização
 
 ### **Ao Finalizar Sessão (Computador A)**:
+
 1. Sistema salva automaticamente tudo em `.claude/memory/`
 2. Você faz commit:
    ```bash
@@ -222,6 +239,7 @@ cat .claude/memory/todo_history.json | jq '.active_todos[] | select(.priority=="
    ```
 
 ### **Ao Iniciar Sessão (Computador B)**:
+
 1. Você faz pull:
    ```bash
    git pull

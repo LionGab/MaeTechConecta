@@ -10,7 +10,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { borderRadius, colors, shadows, spacing, typography } from '../theme/colors';
+import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
 
 // Haptics é opcional - só funciona se expo-haptics estiver instalado
 let Haptics: any = null;
@@ -147,23 +147,13 @@ export const Button: React.FC<ButtonProps> = ({
       ) : (
         <View style={styles.content}>
           {icon && iconPosition === 'left' && (
-            <Icon
-              name={icon}
-              size={iconSize}
-              color={iconColor}
-              style={styles.iconLeft}
-            />
+            <Icon name={icon} size={iconSize} color={iconColor} style={styles.iconLeft} />
           )}
 
           <Text style={textStyleCombined}>{children}</Text>
 
           {icon && iconPosition === 'right' && (
-            <Icon
-              name={icon}
-              size={iconSize}
-              color={iconColor}
-              style={styles.iconRight}
-            />
+            <Icon name={icon} size={iconSize} color={iconColor} style={styles.iconRight} />
           )}
         </View>
       )}

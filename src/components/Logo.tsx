@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, View, ViewStyle } from 'react-native';
-import { borderRadius } from '../theme/colors';
+import { borderRadius } from '@/theme/colors';
 
 export interface LogoProps {
   size?: number;

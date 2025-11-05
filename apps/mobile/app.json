@@ -1,0 +1,63 @@
+{
+  "expo": {
+    "name": "Nossa Maternidade",
+    "slug": "nossa-maternidade",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFE5F1"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nossa.maternidade"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFE5F1"
+      },
+      "package": "com.nossa.maternidade",
+      "permissions": ["RECORD_AUDIO", "INTERNET"],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "nossa-maternidade",
+              "host": "auth"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    },
+    "scheme": "nossa-maternidade",
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-notifications",
+      "expo-av",
+      "@react-native-voice/voice",
+      [
+        "sentry-expo",
+        {
+          "organization": "nossa-maternidade",
+          "project": "nossa-maternidade-mobile",
+          "authToken": "process.env.SENTRY_AUTH_TOKEN"
+        }
+      ]
+    ],
+    "extra": {
+      "sentry": {
+        "dsn": "process.env.SENTRY_DSN || process.env.EXPO_PUBLIC_SENTRY_DSN"
+      }
+    }
+  }
+}

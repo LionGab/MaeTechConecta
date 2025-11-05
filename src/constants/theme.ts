@@ -5,7 +5,7 @@
  * Adaptado para maternidade com foco em acolhimento visual
  */
 
-import { light, dark, shadows, typography, spacing, borderRadius } from '../theme/colors';
+import { light, dark, shadows, typography, spacing, borderRadius } from '@/theme/colors';
 
 /**
  * Cores expandidas do tema

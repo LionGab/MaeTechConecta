@@ -76,6 +76,7 @@ docs/governanca/ (A CRIAR)
 ## 🎯 Roadmap de Conformidade
 
 ### FASE 1 - IMEDIATO (7 dias) - R$ 10.000
+
 - Documentação legal (Política, Termos, Consentimento)
 - Implementar tela de consentimento
 - Criptografar AsyncStorage
@@ -83,6 +84,7 @@ docs/governanca/ (A CRIAR)
 - Mover credenciais para secrets
 
 ### FASE 2 - URGENTE (30 dias) - R$ 30.000
+
 - Implementar direitos dos titulares (Meus Dados, Exclusão, Portabilidade)
 - Assinar DPAs com terceiros
 - Anonimização antes de enviar para IAs
@@ -90,12 +92,14 @@ docs/governanca/ (A CRIAR)
 - RIPD e Registro de Atividades
 
 ### FASE 3 - IMPORTANTE (90 dias) - R$ 25.000
+
 - Política de retenção de dados
 - Plano de resposta a incidentes
 - Auditoria de segurança
 - Rate limiting
 
 ### FASE 4 - OTIMIZAÇÕES (180 dias) - R$ 15.000
+
 - Autenticação 2FA
 - Transparência pública
 - Privacy by Design
@@ -110,6 +114,7 @@ docs/governanca/ (A CRIAR)
 **NÃO LANCE O APP EM PRODUÇÃO** até conclusão das Fases 1 e 2.
 
 Como aplicativo que trata **dados sensíveis de saúde de gestantes**, a responsabilidade é ENORME. Um vazamento ou uso indevido pode causar:
+
 - Danos irreversíveis às usuárias
 - Multas milionárias
 - Processo judicial

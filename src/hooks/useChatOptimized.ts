@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { Alert } from 'react-native';
-import { ChatContext, chatWithNATIA, chatWithAI, detectUrgency } from '../services/ai';
-import { getChatHistory, saveChatMessage } from '../services/supabase';
-import { logger } from '../utils/logger';
-import { hasPendingMessages, saveOfflineMessage, syncPendingMessages } from '../utils/offlineStorage';
-import { isRecoverableError, smartRetry } from '../utils/retry';
+import { ChatContext, chatWithNATIA, chatWithAI, detectUrgency } from '@/services/ai';
+import { getChatHistory, saveChatMessage } from '@/services/supabase';
+import { logger } from '@/utils/logger';
+import { hasPendingMessages, saveOfflineMessage, syncPendingMessages } from '@/utils/offlineStorage';
+import { isRecoverableError, smartRetry } from '@/utils/retry';
 
 // Tipos
 export type Message = {
@@ -128,7 +128,7 @@ export function useChatOptimized() {
         try {
           const history = await getChatHistory(storedUserId, 50);
           if (history && history.length > 0) {
-            const formattedMessages = history.flatMap(msg => [
+            const formattedMessages = history.flatMap((msg) => [
               { id: `${msg.id}-user`, content: msg.message, role: 'user', createdAt: new Date(msg.created_at) },
               { id: `${msg.id}-ai`, content: msg.response, role: 'assistant', createdAt: new Date(msg.created_at) },
             ]);
@@ -145,175 +145,178 @@ export function useChatOptimized() {
     }
   };
 
-  const sendMessage = useCallback(async (content: string) => {
-    if (!content.trim()) return;
+  const sendMessage = useCallback(
+    async (content: string) => {
+      if (!content.trim()) return;
 
-    const userMessage: Message = {
-      id: Date.now(),
-      content,
-      role: 'user',
-      createdAt: new Date()
-    };
-
-    // Adicionar mensagem do usuário imediatamente
-    dispatch({ type: 'ADD_MESSAGE', payload: userMessage });
-    dispatch({ type: 'SET_LOADING', payload: true });
-    dispatch({ type: 'SET_ERROR', payload: null });
-
-    try {
-      // Detectar urgência
-      const isUrgent = detectUrgency(content);
-      if (isUrgent) {
-        Alert.alert(
-          '🚨 Atenção',
-          'Detectamos que você pode estar com sintomas graves. Procure ajuda médica IMEDIATAMENTE. Ligue para o SAMU: 192',
-          [
-            { text: 'OK', style: 'default' },
-            {
-              text: 'Ligar SAMU',
-              style: 'destructive',
-              onPress: () => {
-                // Linking.openURL('tel:192'); // Será implementado no ChatScreen
-              }
-            }
-          ]
-        );
-      }
-
-      // Preparar contexto para IA
-      const context: ChatContext = userContext || {};
-
-      // Converter mensagens para formato esperado pela IA
-      const aiMessages = state.messages.slice(-10).map(msg => ({
-        role: msg.role === 'user' ? 'user' : 'assistant',
-        content: msg.content,
-      }));
-
-      // Chamar Edge Function NAT-IA (Gemini 2.0 Flash) com retry inteligente
-      logger.debug('Iniciando chamada de NAT-IA via Edge Function', { messageLength: content.length, userId });
-
-      if (!userId) {
-        throw new Error('userId é obrigatório para chat com NAT-IA');
-      }
-
-      let aiResponse: string;
-
-      try {
-        // Tentar usar Edge Function primeiro (produção)
-        aiResponse = await smartRetry(
-          () => chatWithNATIA(content, context, userId),
-          {
-            maxRetries: 3,
-            initialDelay: 1000,
-            onRetry: (attempt, error) => {
-              logger.warn(`Retry ${attempt} de NAT-IA falhou`, { attempt, isRecoverable: isRecoverableError(error) }, error);
-            }
-          },
-          logger
-        );
-      } catch (edgeFunctionError: any) {
-        // Fallback para Claude se Edge Function falhar (desenvolvimento)
-        logger.warn('Edge Function falhou, usando fallback Claude', {}, edgeFunctionError);
-        aiResponse = await smartRetry(
-          () => chatWithAI(content, context, aiMessages),
-          {
-            maxRetries: 2,
-            initialDelay: 1000,
-          },
-          logger
-        );
-      }
-
-      logger.info('Resposta da IA recebida com sucesso', { responseLength: aiResponse.length });
-
-      const aiMessage: Message = {
-        id: Date.now() + 1,
-        content: aiResponse,
-        role: 'assistant',
-        createdAt: new Date()
+      const userMessage: Message = {
+        id: Date.now(),
+        content,
+        role: 'user',
+        createdAt: new Date(),
       };
 
-      // Adicionar resposta da IA
-      dispatch({ type: 'ADD_MESSAGE', payload: aiMessage });
-      dispatch({ type: 'SET_LOADING', payload: false });
+      // Adicionar mensagem do usuário imediatamente
+      dispatch({ type: 'ADD_MESSAGE', payload: userMessage });
+      dispatch({ type: 'SET_LOADING', payload: true });
+      dispatch({ type: 'SET_ERROR', payload: null });
 
-      // A Edge Function já salva automaticamente, mas garantimos backup
-      // Se Edge Function usou fallback Claude, precisamos salvar manualmente
-      if (userId) {
-        try {
-          // Verificar se já foi salvo pela Edge Function
-          // Se não, salvar manualmente (fallback)
-          await smartRetry(
-            () => saveChatMessage({
-              user_id: userId,
-              message: content,
-              response: aiResponse,
-              context_data: {
-                is_urgent: isUrgent,
-                timestamp: new Date().toISOString(),
+      try {
+        // Detectar urgência
+        const isUrgent = detectUrgency(content);
+        if (isUrgent) {
+          Alert.alert(
+            '🚨 Atenção',
+            'Detectamos que você pode estar com sintomas graves. Procure ajuda médica IMEDIATAMENTE. Ligue para o SAMU: 192',
+            [
+              { text: 'OK', style: 'default' },
+              {
+                text: 'Ligar SAMU',
+                style: 'destructive',
+                onPress: () => {
+                  // Linking.openURL('tel:192'); // Será implementado no ChatScreen
+                },
               },
-            }),
-            { maxRetries: 2, initialDelay: 500 },
+            ]
+          );
+        }
+
+        // Preparar contexto para IA
+        const context: ChatContext = userContext || {};
+
+        // Converter mensagens para formato esperado pela IA
+        const aiMessages = state.messages.slice(-10).map((msg) => ({
+          role: msg.role === 'user' ? 'user' : 'assistant',
+          content: msg.content,
+        }));
+
+        // Chamar Edge Function NAT-IA (Gemini 2.0 Flash) com retry inteligente
+        logger.debug('Iniciando chamada de NAT-IA via Edge Function', { messageLength: content.length, userId });
+
+        if (!userId) {
+          throw new Error('userId é obrigatório para chat com NAT-IA');
+        }
+
+        let aiResponse: string;
+
+        try {
+          // Tentar usar Edge Function primeiro (produção)
+          aiResponse = await smartRetry(
+            () => chatWithNATIA(content, context, userId),
+            {
+              maxRetries: 3,
+              initialDelay: 1000,
+              onRetry: (attempt, error) => {
+                logger.warn(
+                  `Retry ${attempt} de NAT-IA falhou`,
+                  { attempt, isRecoverable: isRecoverableError(error) },
+                  error
+                );
+              },
+            },
             logger
           );
-          logger.debug('Mensagem salva no Supabase', { userId: userId.substring(0, 8), isUrgent });
-        } catch (dbError: any) {
-          // Se erro for "duplicate" ou "já existe", ignorar (Edge Function já salvou)
-          if (!dbError.message?.includes('duplicate') && !dbError.code?.includes('23505')) {
-            logger.error('Erro ao salvar mensagem no banco', { userId }, dbError);
+        } catch (edgeFunctionError: any) {
+          // Fallback para Claude se Edge Function falhar (desenvolvimento)
+          logger.warn('Edge Function falhou, usando fallback Claude', {}, edgeFunctionError);
+          aiResponse = await smartRetry(
+            () => chatWithAI(content, context, aiMessages),
+            {
+              maxRetries: 2,
+              initialDelay: 1000,
+            },
+            logger
+          );
+        }
 
-            // Fallback: salvar offline
-            try {
-              await saveOfflineMessage(content, 'user', { userId });
-              await saveOfflineMessage(aiResponse, 'assistant', { userId });
-              logger.info('Mensagens salvas offline como backup');
-            } catch (offlineError) {
-              logger.error('Falha ao salvar offline', {}, offlineError);
+        logger.info('Resposta da IA recebida com sucesso', { responseLength: aiResponse.length });
+
+        const aiMessage: Message = {
+          id: Date.now() + 1,
+          content: aiResponse,
+          role: 'assistant',
+          createdAt: new Date(),
+        };
+
+        // Adicionar resposta da IA
+        dispatch({ type: 'ADD_MESSAGE', payload: aiMessage });
+        dispatch({ type: 'SET_LOADING', payload: false });
+
+        // A Edge Function já salva automaticamente, mas garantimos backup
+        // Se Edge Function usou fallback Claude, precisamos salvar manualmente
+        if (userId) {
+          try {
+            // Verificar se já foi salvo pela Edge Function
+            // Se não, salvar manualmente (fallback)
+            await smartRetry(
+              () =>
+                saveChatMessage({
+                  user_id: userId,
+                  message: content,
+                  response: aiResponse,
+                  context_data: {
+                    is_urgent: isUrgent,
+                    timestamp: new Date().toISOString(),
+                  },
+                }),
+              { maxRetries: 2, initialDelay: 500 },
+              logger
+            );
+            logger.debug('Mensagem salva no Supabase', { userId: userId.substring(0, 8), isUrgent });
+          } catch (dbError: any) {
+            // Se erro for "duplicate" ou "já existe", ignorar (Edge Function já salvou)
+            if (!dbError.message?.includes('duplicate') && !dbError.code?.includes('23505')) {
+              logger.error('Erro ao salvar mensagem no banco', { userId }, dbError);
+
+              // Fallback: salvar offline
+              try {
+                await saveOfflineMessage(content, 'user', { userId });
+                await saveOfflineMessage(aiResponse, 'assistant', { userId });
+                logger.info('Mensagens salvas offline como backup');
+              } catch (offlineError) {
+                logger.error('Falha ao salvar offline', {}, offlineError);
+              }
             }
           }
         }
-      }
+      } catch (error: any) {
+        logger.error('Erro ao processar mensagem completa', { userId, contentLength: content.length }, error);
 
-    } catch (error: any) {
-      logger.error('Erro ao processar mensagem completa', { userId, contentLength: content.length }, error);
+        dispatch({ type: 'SET_LOADING', payload: false });
 
-      dispatch({ type: 'SET_LOADING', payload: false });
+        // Determinar mensagem de erro apropriada
+        let errorMessage = 'Desculpa, estou com um probleminha técnico. Pode tentar novamente? 💕';
 
-      // Determinar mensagem de erro apropriada
-      let errorMessage = 'Desculpa, estou com um probleminha técnico. Pode tentar novamente? 💕';
+        if (isRecoverableError(error)) {
+          errorMessage = 'Sem conexão com a internet. Sua mensagem será enviada quando voltar online.';
 
-      if (isRecoverableError(error)) {
-        errorMessage = 'Sem conexão com a internet. Sua mensagem será enviada quando voltar online.';
-
-        // Salvar offline
-        try {
-          await saveOfflineMessage(content, 'user', { userId: userId || undefined });
-          logger.info('Mensagem salva offline devido a erro de rede');
-        } catch (offlineError) {
-          logger.error('Falha ao salvar offline após erro de rede', {}, offlineError);
+          // Salvar offline
+          try {
+            await saveOfflineMessage(content, 'user', { userId: userId || undefined });
+            logger.info('Mensagem salva offline devido a erro de rede');
+          } catch (offlineError) {
+            logger.error('Falha ao salvar offline após erro de rede', {}, offlineError);
+          }
         }
+
+        dispatch({
+          type: 'SET_ERROR',
+          payload: errorMessage,
+        });
+
+        // Mostrar mensagem de erro amigável para o usuário
+        Alert.alert('Ops!', errorMessage, [{ text: 'OK' }]);
       }
-
-      dispatch({
-        type: 'SET_ERROR',
-        payload: errorMessage
-      });
-
-      // Mostrar mensagem de erro amigável para o usuário
-      Alert.alert(
-        'Ops!',
-        errorMessage,
-        [{ text: 'OK' }]
-      );
-    }
-  }, [userId, userContext, state.messages]);
+    },
+    [userId, userContext, state.messages]
+  );
 
   // Memoização do histórico da IA
   const aiHistory = useMemo(() => {
     return state.messages
-      .filter(m => m.role !== 'system')
+      .filter((m) => m.role !== 'system')
       .slice(-20) // Limitar a últimas 20 mensagens
-      .map(msg => ({
+      .map((msg) => ({
         role: msg.role === 'user' ? 'user' : 'assistant',
         content: msg.content,
       }));

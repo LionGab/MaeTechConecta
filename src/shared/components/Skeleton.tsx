@@ -6,7 +6,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated, ViewStyle } from 'react-native';
-import { colors, spacing, borderRadius } from '../../theme/colors';
+import { colors, spacing, borderRadius } from '@/theme/colors';
 
 export interface SkeletonProps {
   /** Largura do skeleton */
@@ -82,7 +82,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
           width: widthValue,
           height,
           borderRadius: borderRadiusValue,
-          opacity,
+          opacity: opacity as any,
           backgroundColor: colors.muted,
         },
         style,
@@ -103,12 +103,14 @@ const styles = StyleSheet.create({
  */
 export const SkeletonPresets = {
   /** Avatar circular */
-  Avatar: (size: number = 40) => (
-    <Skeleton variant="circle" width={size} height={size} />
-  ),
+  Avatar: (size: number = 40) => <Skeleton variant="circle" width={size} height={size} />,
 
   /** Linha de texto */
-  Text: ({ width = '100%', height = 16, style }: { width?: number | string; height?: number; style?: ViewStyle } = {}) => (
+  Text: ({
+    width = '100%',
+    height = 16,
+    style,
+  }: { width?: number | string; height?: number; style?: ViewStyle } = {}) => (
     <Skeleton variant="text" width={width} height={height} style={style} />
   ),
 

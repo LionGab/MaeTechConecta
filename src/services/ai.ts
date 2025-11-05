@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_CONFIG, API_URLS } from '../config/api';
+import { API_CONFIG, API_URLS } from '@/config/api';
 
 const SYSTEM_PROMPT = `Você é a assistente virtual "Nossa Maternidade", inspirada na personalidade de uma influenciadora brasileira jovem e empática. Sua missão é apoiar gestantes e mães com linguagem casual, carinhosa e acessível.
 
@@ -26,11 +26,7 @@ export interface ChatContext {
  * Chat com NAT-IA via Edge Function (Gemini 2.0 Flash)
  * Usa nathia-chat Edge Function do Supabase
  */
-export const chatWithNATIA = async (
-  message: string,
-  context: ChatContext,
-  userId: string
-): Promise<string> => {
+export const chatWithNATIA = async (message: string, context: ChatContext, userId: string): Promise<string> => {
   try {
     const { supabase } = await import('./supabase');
 
@@ -61,11 +57,7 @@ export const chatWithNATIA = async (
  * Chat com IA (Fallback para Claude se Edge Function falhar)
  * @deprecated Use chatWithNATIA para produção
  */
-export const chatWithAI = async (
-  message: string,
-  context: ChatContext,
-  history: any[] = []
-): Promise<string> => {
+export const chatWithAI = async (message: string, context: ChatContext, history: any[] = []): Promise<string> => {
   try {
     const contextString = context.type
       ? `Perfil: ${context.type}, Semana: ${context.pregnancy_week || 'N/A'}, Bebê: ${context.baby_name || 'Aguardando...'}`
@@ -147,7 +139,8 @@ export const generateDailyPlan = async (context: ChatContext): Promise<any> => {
         messages: [
           {
             role: 'system',
-            content: 'Você é um assistente de maternidade. Crie um plano diário personalizado para gestantes/mães em PT-BR casual.',
+            content:
+              'Você é um assistente de maternidade. Crie um plano diário personalizado para gestantes/mães em PT-BR casual.',
           },
           {
             role: 'user',
@@ -167,7 +160,11 @@ export const generateDailyPlan = async (context: ChatContext): Promise<any> => {
     const content = response.data.choices[0].message.content;
 
     // Parse simples do conteúdo
-    const priorities = content.match(/(?<=Prioridades:)(.*?)(?=Dica)/s)?.[0]?.split('\n').filter(Boolean) || [];
+    const priorities =
+      content
+        .match(/(?<=Prioridades:)(.*?)(?=Dica)/s)?.[0]
+        ?.split('\n')
+        .filter(Boolean) || [];
     const tip = content.match(/(?<=Dica do Dia:)(.*?)(?=Receita)/s)?.[0]?.trim() || '';
     const recipe = content.match(/(?<=Receita:)(.*?)$/s)?.[0]?.trim() || '';
 
@@ -209,9 +206,14 @@ export const generateImage = async (prompt: string): Promise<string> => {
 
 export const detectUrgency = (message: string): boolean => {
   const urgencyKeywords = [
-    'sangrando', 'sangramento', 'sangue',
-    'dor forte', 'muita dor', 'dor insuportável',
-    'desmaio', 'desmaiei',
+    'sangrando',
+    'sangramento',
+    'sangue',
+    'dor forte',
+    'muita dor',
+    'dor insuportável',
+    'desmaio',
+    'desmaiei',
     'febre alta',
     'convulsão',
     'não me sinto bem',
@@ -220,5 +222,5 @@ export const detectUrgency = (message: string): boolean => {
   ];
 
   const lowerMessage = message.toLowerCase();
-  return urgencyKeywords.some(keyword => lowerMessage.includes(keyword));
+  return urgencyKeywords.some((keyword) => lowerMessage.includes(keyword));
 };

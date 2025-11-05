@@ -1,4 +1,5 @@
 # 🎯 Sistema de Agentes Multi-Agent - Club Valente
+
 ## Configuração para Cursor 2.0 Multi-Agent Interface
 
 **Data de criação:** 30/10/2025
@@ -10,41 +11,49 @@
 ## 🏗️ Arquitetura de Agentes
 
 ### **Agent 1: Frontend Architect**
+
 **Workspace:** `agent-frontend/`
 **Responsabilidade:** React Native + Expo + UI Components
 **Skills:** TypeScript, React Native, Expo SDK 52, Zustand, Design Systems
 
 ### **Agent 2: Backend Engineer**
+
 **Workspace:** `agent-backend/`
 **Responsabilidade:** Supabase + Edge Functions + Database
 **Skills:** Supabase, PostgreSQL, Deno, Edge Functions, RLS
 
 ### **Agent 3: IA Integration Specialist**
+
 **Workspace:** `agent-ia/`
 **Responsabilidade:** Gemini 2.0 Flash + Prompt System + Moderation
 **Skills:** Gemini API, Prompt Engineering, LLM Safety, Vector DB
 
 ### **Agent 4: Design System Engineer**
+
 **Workspace:** `agent-design/`
 **Responsabilidade:** Component Library + Acessibilidade + UX
 **Skills:** Design Tokens, WCAG 2.1, React Native Components, Animations
 
 ### **Agent 5: QA & Testing**
+
 **Workspace:** `agent-qa/`
 **Responsabilidade:** E2E Tests + Unit Tests + Accessibility
 **Skills:** Playwright, Jest, React Native Testing Library, Browser E2E
 
 ### **Agent 6: Security & Compliance**
+
 **Workspace:** `agent-security/`
 **Responsabilidade:** LGPD + Security + Privacy
 **Skills:** LGPD Compliance, Security Audits, Privacy by Design, RIPD
 
 ### **Agent 7: DevOps & Performance**
+
 **Workspace:** `agent-devops/`
 **Responsabilidade:** Build + Deploy + Monitoring + Optimization
 **Skills:** Expo EAS, GitHub Actions, Performance Optimization, Monitoring
 
 ### **Agent 8: Documentation & UX Writer**
+
 **Workspace:** `agent-docs/`
 **Responsabilidade:** Docs + UX Copy + User Guides
 **Skills:** Technical Writing, UX Copy, User Guides, API Documentation

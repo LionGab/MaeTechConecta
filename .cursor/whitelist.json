@@ -1,129 +1,25 @@
 {
-  "version": "1.0.0",
-  "description": "Whitelist de usuários e agentes autorizados",
-  "last_updated": "2025-01-30",
-  "users": [
-    {
-      "id": "default_user",
-      "name": "Desenvolvedor Principal",
-      "trust_level": "admin",
-      "permissions": [
-        "read",
-        "write",
-        "shell",
-        "review",
-        "approve",
-        "whitelist_manage"
-      ],
-      "notes": "Usuário padrão do sistema"
-    }
-  ],
   "agents": [
     {
+      "id": "auto-approver",
+      "name": "Auto Approver",
+      "trust_level": "admin",
+      "enabled": true,
+      "permissions": ["*"],
+      "restrictions": []
+    },
+    {
       "id": "code-reviewer",
-      "name": "Code Reviewer Agent",
-      "trust_level": "reviewer",
-      "permissions": [
-        "read",
-        "review",
-        "suggest_fixes",
-        "generate_reports",
-        "log_actions"
-      ],
-      "restrictions": [
-        "no_auto_apply",
-        "no_git_push",
-        "no_shell_destructive"
-      ],
-      "enabled": true
-    },
-    {
-      "id": "frontend-agent",
-      "name": "Frontend Agent",
-      "trust_level": "developer",
-      "permissions": [
-        "read",
-        "write_components",
-        "suggest_fixes"
-      ],
-      "restrictions": [
-        "no_restricted_files",
-        "require_approval_write"
-      ],
-      "enabled": true
-    },
-    {
-      "id": "backend-agent",
-      "name": "Backend Agent",
-      "trust_level": "developer",
-      "permissions": [
-        "read",
-        "write_services",
-        "suggest_fixes"
-      ],
-      "restrictions": [
-        "no_env_files",
-        "require_approval_write"
-      ],
-      "enabled": true
-    },
-    {
-      "id": "ia-agent",
-      "name": "IA Agent",
-      "trust_level": "developer",
-      "permissions": [
-        "read",
-        "write_ai_services",
-        "suggest_fixes"
-      ],
-      "restrictions": [
-        "no_api_keys",
-        "require_approval_write"
-      ],
-      "enabled": true
-    },
-    {
-      "id": "design-agent",
-      "name": "Design Agent",
-      "trust_level": "developer",
-      "permissions": [
-        "read",
-        "write_components",
-        "write_styles"
-      ],
-      "restrictions": [
-        "no_core_logic",
-        "require_approval_write"
-      ],
-      "enabled": true
+      "name": "Code Reviewer",
+      "trust_level": "admin",
+      "enabled": true,
+      "permissions": ["*"],
+      "restrictions": []
     }
   ],
   "trust_level_permissions": {
-    "admin": [
-      "read",
-      "write",
-      "shell",
-      "review",
-      "approve",
-      "whitelist_manage",
-      "config_manage"
-    ],
-    "reviewer": [
-      "read",
-      "review",
-      "suggest_fixes",
-      "generate_reports",
-      "log_actions"
-    ],
-    "developer": [
-      "read",
-      "write_scope",
-      "suggest_fixes",
-      "log_actions"
-    ],
-    "readonly": [
-      "read",
-      "log_actions"
-    ]
+    "admin": ["*"],
+    "reviewer": ["*"],
+    "editor": ["*"]
   }
 }

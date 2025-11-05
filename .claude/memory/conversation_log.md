@@ -24,6 +24,7 @@ Criar o **melhor aplicativo de maternidade do Brasil**, focado em mães, gestant
 ### **Fase 1: Solicitação Inicial (Design Agent)**
 
 **Usuário solicitou**:
+
 - Agir como agente especialista em UI/UX Design para apps mobile
 - Foco em público: mães brasileiras classe C-D
 - Analisar/gerar telas seguindo Bubblegum Design System
@@ -32,6 +33,7 @@ Criar o **melhor aplicativo de maternidade do Brasil**, focado em mães, gestant
 - Sempre referenciar variáveis do tema
 
 **Contexto adicional fornecido pelo usuário**:
+
 > "Você está atuando de forma excelente, parabéns, só não esqueça que isso é um aplicativo para mães/gestantes, onde vamos ser muito bons e ser um dos apps mais vendidos do país. iOS/Android. Foque nisso. Não se esqueça disso."
 
 ---
@@ -39,6 +41,7 @@ Criar o **melhor aplicativo de maternidade do Brasil**, focado em mães, gestant
 ### **Fase 2: Exploração e Auditoria**
 
 **Ações realizadas**:
+
 1. ✅ Explorei estrutura do projeto com Task/Explore agent
 2. ✅ Identifiquei 8+ cores hardcoded no código
 3. ✅ Identifiquei 3+ tamanhos de fonte hardcoded
@@ -46,6 +49,7 @@ Criar o **melhor aplicativo de maternidade do Brasil**, focado em mães, gestant
 5. ✅ Analisei 5 telas (Onboarding, Home, Chat, DailyPlan, Profile)
 
 **Descobertas principais**:
+
 - Design System Bubblegum já implementado em `src/theme/colors.ts`
 - Faltavam componentes reutilizáveis (Button, Card, Input)
 - Emojis sendo usados em vez de ícones profissionais
@@ -84,6 +88,7 @@ Criar o **melhor aplicativo de maternidade do Brasil**, focado em mães, gestant
 ### **Fase 4: Refatoração de Telas**
 
 **OnboardingScreen.tsx** (100% migrado):
+
 - ✅ 4 TextInput → Input component
 - ✅ 2 TouchableOpacity → Button component
 - ✅ Emojis → MaterialCommunityIcons
@@ -91,6 +96,7 @@ Criar o **melhor aplicativo de maternidade do Brasil**, focado em mães, gestant
 - ✅ Preferências convertidas para objetos com ícones
 
 **HomeScreen.tsx** (100% migrado):
+
 - ✅ 3 cards manuais → Card component
 - ✅ 2 TouchableOpacity → Button component
 - ✅ Botão de emergência agora funcional (liga para SAMU 192)
@@ -98,6 +104,7 @@ Criar o **melhor aplicativo de maternidade do Brasil**, focado em mães, gestant
 - ✅ Integração com Linking API
 
 **Telas pendentes**:
+
 - ⏳ ChatScreen
 - ⏳ DailyPlanScreen
 - ⏳ ProfileScreen
@@ -163,6 +170,7 @@ Criar o **melhor aplicativo de maternidade do Brasil**, focado em mães, gestant
    - Horários de notificação inteligentes
 
 **Pergunta crítica do usuário**:
+
 > "Como poderíamos ser extremamente assertivos nisso?"
 
 ---
@@ -172,18 +180,21 @@ Criar o **melhor aplicativo de maternidade do Brasil**, focado em mães, gestant
 **Plano detalhado em 6 partes** (aprovado pelo usuário):
 
 #### **Sprint 1-2: Fundação**
+
 1. Onboarding inteligente com 4-5 perguntas estratégicas
 2. Migração para Gemini 1.5 Pro
 3. Sistema de memória vetorial (30 dias)
 4. Nova navegação (5 bottom tabs)
 
 #### **Sprint 3-4: Funcionalidades Core**
+
 5. Sistema de moderação em 3 camadas
 6. Tela Início ultra-personalizada
 7. Tela Comunidade com moderação
 8. Tela Conteúdos Nath
 
 #### **Sprint 5-6: Polimento**
+
 9. Personalização adaptativa
 10. Testes com usuárias reais
 11. Otimizações de performance
@@ -193,9 +204,11 @@ Criar o **melhor aplicativo de maternidade do Brasil**, focado em mães, gestant
 ### **Fase 8: Implementação do Agente "Memória Universal"**
 
 **Usuário solicitou**:
+
 > "Implemente um agente chamado 'Memória Universal' que memorize absolutamente todo o contexto e detalhes: conversas, instruções, parâmetros, arquivos, decisões, pendências, preferências, frameworks, histórico completo de interação — sem perder nenhum detalhe."
 
 **Funcionalidades implementadas**:
+
 - ✅ Estrutura de diretórios `.claude/memory/`
 - ✅ `context.json` (estado atual do projeto)
 - ✅ `decisions.json` (todas as decisões tomadas)
@@ -213,12 +226,15 @@ Criar o **melhor aplicativo de maternidade do Brasil**, focado em mães, gestant
 ## 🗣️ Frases Marcantes do Usuário
 
 1. **Sobre o objetivo**:
+
    > "só não esqueça que isso é um aplicativo para mães/gestantes, onde vamos ser muito bons e ser um dos apps mais vendidos do país"
 
 2. **Sobre assertividade**:
+
    > "Como poderíamos ser extremamente assertivos nisso? --ultrathink"
 
 3. **Sobre memória**:
+
    > "Memorize absolutamente todo o contexto e detalhes: conversas, instruções, parâmetros, arquivos, decisões, pendências, preferências, frameworks, histórico completo de interação — sem perder nenhum detalhe."
 
 4. **Despedida**:
@@ -242,18 +258,21 @@ Criar o **melhor aplicativo de maternidade do Brasil**, focado em mães, gestant
 ## 🎯 Próximos Passos (Próxima Sessão)
 
 ### **Prioridade Máxima**:
+
 1. Finalizar sistema "Memória Universal" (scripts, comando /memory)
 2. Refatorar OnboardingScreen com 4-5 perguntas inteligentes
 3. Implementar Gemini 1.5 Pro como NathIA
 4. Criar sistema de memória vetorial (Supabase)
 
 ### **Prioridade Alta**:
+
 5. Implementar navegação com 5 bottom tabs
 6. Criar sistema de moderação em 3 camadas
 7. Refatorar tela Início (ultra-personalizada)
 8. Criar tela Comunidade
 
 ### **Prioridade Média**:
+
 9. Criar tela Conteúdos Nath
 10. Implementar personalização adaptativa
 11. Migrar telas pendentes (Chat, DailyPlan, Profile)

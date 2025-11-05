@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_CONFIG, API_URLS } from '../config/api';
+import { API_CONFIG, API_URLS } from '@/config/api';
 
 // Gerar vídeo com avatar usando HeyGen
 export const generateVideoWithAvatar = async (script: string): Promise<string> => {
@@ -89,15 +89,10 @@ export const generateListContent = async (topic: string, context: string): Promi
 };
 
 // Gerar exercícios personalizados
-export const generateExercises = async (
-  pregnancyWeek: number,
-  preferences: string[] = []
-): Promise<any[]> => {
+export const generateExercises = async (pregnancyWeek: number, preferences: string[] = []): Promise<any[]> => {
   try {
     const stage =
-      pregnancyWeek <= 12 ? 'primeiro trimestre' :
-      pregnancyWeek <= 27 ? 'segundo trimestre' :
-      'terceiro trimestre';
+      pregnancyWeek <= 12 ? 'primeiro trimestre' : pregnancyWeek <= 27 ? 'segundo trimestre' : 'terceiro trimestre';
 
     const response = await axios.post(
       `${API_URLS.OPENAI}/chat/completions`,

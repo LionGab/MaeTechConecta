@@ -62,7 +62,7 @@ export async function createNatAIChat(
 ): Promise<GeminiChat> {
   try {
     // Converter histórico para formato Gemini
-    const chatHistory: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }> = history.map(msg => {
+    const chatHistory: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }> = history.map((msg) => {
       const role: 'user' | 'model' = msg.role === 'user' ? 'user' : 'model';
       if (typeof msg.parts === 'string') {
         return {
@@ -89,11 +89,7 @@ export async function createNatAIChat(
 /**
  * Envia mensagem para o chat e retorna resposta
  */
-export async function sendMessage(
-  chat: GeminiChat,
-  message: string,
-  maxRetries = 3
-): Promise<string> {
+export async function sendMessage(chat: GeminiChat, message: string, maxRetries = 3): Promise<string> {
   let lastError: Error | null = null;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -103,10 +99,7 @@ export async function sendMessage(
       }
 
       // Construir histórico completo
-      const allMessages = [
-        ...chat.history,
-        { role: 'user' as const, parts: [{ text: message }] },
-      ];
+      const allMessages = [...chat.history, { role: 'user' as const, parts: [{ text: message }] }];
 
       // Chamar API Gemini
       const url = `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`;
@@ -116,7 +109,7 @@ export async function sendMessage(
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          contents: allMessages.map(msg => ({
+          contents: allMessages.map((msg) => ({
             role: msg.role,
             parts: msg.parts,
           })),
@@ -151,7 +144,7 @@ export async function sendMessage(
       // Backoff exponencial: 1s, 2s, 4s
       if (attempt < maxRetries) {
         const delay = Math.pow(2, attempt - 1) * 1000;
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
   }
@@ -179,7 +172,7 @@ export async function summarizeOldMessages(
 
     // Formatar mensagens para resumo
     const messagesText = messages
-      .map(msg => `${msg.role === 'user' ? 'Usuária' : 'NAT-AI'}: ${msg.content}`)
+      .map((msg) => `${msg.role === 'user' ? 'Usuária' : 'NAT-AI'}: ${msg.content}`)
       .join('\n\n');
 
     const prompt = `Por favor, resuma as seguintes conversas anteriores de forma concisa (máximo 300 palavras), mantendo apenas informações emocionalmente relevantes e contexto importante sobre a usuária (nome, desafios, conquistas, contexto familiar).

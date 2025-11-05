@@ -35,13 +35,7 @@ export async function retryWithBackoff<T>(
   options: RetryOptions = {},
   logger: Logger | null = null
 ): Promise<T> {
-  const {
-    maxRetries = 3,
-    initialDelay = 1000,
-    maxDelay = 10000,
-    backoffMultiplier = 2,
-    onRetry,
-  } = options;
+  const { maxRetries = 3, initialDelay = 1000, maxDelay = 10000, backoffMultiplier = 2, onRetry } = options;
 
   let lastError: any;
 
@@ -58,15 +52,9 @@ export async function retryWithBackoff<T>(
       lastError = error;
 
       if (attempt < maxRetries) {
-        const delay = Math.min(
-          initialDelay * Math.pow(backoffMultiplier, attempt),
-          maxDelay
-        );
+        const delay = Math.min(initialDelay * Math.pow(backoffMultiplier, attempt), maxDelay);
 
-        logger?.warn(
-          `Tentativa ${attempt + 1}/${maxRetries + 1} falhou. Retry em ${delay}ms`,
-          error
-        );
+        logger?.warn(`Tentativa ${attempt + 1}/${maxRetries + 1} falhou. Retry em ${delay}ms`, error);
 
         if (onRetry) {
           onRetry(attempt + 1, error);
@@ -86,7 +74,7 @@ export async function retryWithBackoff<T>(
  * Sleep helper function
  */
 function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**

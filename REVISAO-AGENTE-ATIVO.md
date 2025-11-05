@@ -52,6 +52,7 @@
 ### Método 3: Comando Direto
 
 No Composer, digite diretamente:
+
 ```
 Revisar código: {caminho-do-arquivo}
 ```
@@ -61,26 +62,31 @@ Revisar código: {caminho-do-arquivo}
 ## 🎯 Exemplos Prontos
 
 ### Revisão Completa
+
 ```
 Revisar código: src/screens/ChatScreen.tsx
 ```
 
 ### Revisão Rápida (apenas críticos)
+
 ```
 Revisão rápida: src/components/Button.tsx
 ```
 
 ### Revisão de Performance
+
 ```
 Analisar performance: src/features/content/ContentFeedScreen.tsx
 ```
 
 ### Revisão de Acessibilidade
+
 ```
 Verificar acessibilidade: src/components/Button.tsx
 ```
 
 ### Aplicar Correções
+
 ```
 Revisar e aplicar correções: src/components/Button.tsx (severidade >= 3)
 ```
@@ -90,23 +96,27 @@ Revisar e aplicar correções: src/components/Button.tsx (severidade >= 3)
 ## 📊 O Que o Agente Analisa
 
 ### ✅ Code Inspector
+
 - Bugs de lógica
 - Práticas inseguras
 - Code smells
 - Violações de estilo
 
 ### ✅ Test Runner
+
 - Cobertura de testes
 - Testes faltantes
 - Casos de teste necessários
 
 ### ✅ Performance Analyzer
+
 - Re-renders desnecessários
 - FlatList não otimizada
 - Memoização inadequada
 - Bundle size
 
 ### ✅ Accessibility Checker
+
 - WCAG 2.1 AA compliance
 - accessibilityLabel
 - accessibilityRole
@@ -114,12 +124,14 @@ Revisar e aplicar correções: src/components/Button.tsx (severidade >= 3)
 - Área de toque
 
 ### ✅ Fix Suggester
+
 - Código antes/depois
 - Explicação detalhada
 - Impacto da correção
 - Severidade
 
 ### ✅ Explain Diff
+
 - O que mudou
 - Por que mudou
 - Impacto
@@ -155,16 +167,19 @@ O agente retorna JSON estruturado com:
 ## 🎓 Próximos Passos
 
 1. **Testar o Agente**
+
    ```
    Revisar código: src/components/Button.tsx
    ```
 
 2. **Revisar Arquivo Específico**
+
    ```
    Revisar código: src/screens/ChatScreen.tsx
    ```
 
 3. **Aplicar Correções**
+
    ```
    Aplicar correções: src/components/Button.tsx
    ```
@@ -208,6 +223,7 @@ O agente retorna JSON estruturado com:
 **🎉 Agente de Revisão de Código ATIVO e pronto para uso!**
 
 Para começar AGORA:
+
 1. Pressione `Cmd+L` (ou `Ctrl+L`)
 2. Digite: `Revisar código: src/components/Button.tsx`
 3. Aguarde análise completa
@@ -215,6 +231,7 @@ Para começar AGORA:
 ---
 
 **Documentação Completa:**
+
 - 📖 `GUIA-REVISAO-CODIGO.md` - Guia completo
 - 🤖 `.cursor/agents/code-reviewer.md` - Instruções do agente
 - 📋 `.cursorrules` - Regras do projeto

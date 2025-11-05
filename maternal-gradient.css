@@ -1,0 +1,139 @@
+/**
+ * Maternal Gradient - CSS Puro
+ * 
+ * Gradiente acolhedor do tema Bubblegum para Nossa Maternidade
+ * Use este arquivo se não estiver usando Tailwind CSS
+ */
+
+/* Classe principal - Gradiente maternal acolhedor */
+.maternal-gradient {
+  /* Gradiente diagonal suave usando cores do tema Bubblegum */
+  background-image: linear-gradient(
+    135deg,
+    /* Rosa muito claro (background base) */
+    #F0E7F0 0%,
+    /* Rosa pastel suave */
+    #F5E8F0 25%,
+    /* Rosa maternal com toque de azul */
+    #F0E8F5 50%,
+    /* Azul pastel calmo */
+    #E8F0F5 75%,
+    /* Azul calma (secondary) */
+    #B8D8E8 100%
+  );
+  
+  /* Garante que o gradiente cubra toda a área */
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  
+  /* Gradiente fixo ao scroll (opcional - remover se não quiser) */
+  background-attachment: fixed;
+  
+  /* Fallback para navegadores antigos */
+  background-color: #F0E7F0;
+}
+
+/* Variação vertical (topo para baixo) */
+.maternal-gradient-vertical {
+  background-image: linear-gradient(
+    180deg,
+    #F0E7F0 0%,
+    #F5E8F0 50%,
+    #B8D8E8 100%
+  );
+  background-color: #F0E7F0;
+}
+
+/* Variação radial (circular do centro) */
+.maternal-gradient-radial {
+  background-image: radial-gradient(
+    circle at center,
+    rgba(221, 91, 154, 0.1) 0%,    /* Primary com 10% opacidade */
+    #F0E7F0 50%,                     /* Background */
+    rgba(184, 216, 232, 0.2) 100%  /* Secondary com 20% opacidade */
+  );
+  background-color: #F0E7F0;
+}
+
+/* Gradiente suave (mais sutil, menos contraste) */
+.maternal-gradient-soft {
+  background-image: linear-gradient(
+    135deg,
+    #F0E7F0 0%,
+    #F5F1F5 50%,
+    #F0E7F0 100%
+  );
+  background-color: #F0E7F0;
+}
+
+/* Gradiente com animação sutil */
+.maternal-gradient-animated {
+  background-image: linear-gradient(
+    135deg,
+    #F0E7F0 0%,
+    #F5E8F0 25%,
+    #E8F0F5 50%,
+    #F5E8F0 75%,
+    #F0E7F0 100%
+  );
+  background-size: 400% 400%;
+  background-position: 0% 50%;
+  background-color: #F0E7F0;
+  animation: maternalGradientShift 15s ease infinite;
+}
+
+@keyframes maternalGradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Versão usando HSL (compatível com variáveis CSS) */
+.maternal-gradient-hsl {
+  background-image: linear-gradient(
+    135deg,
+    hsl(30, 15%, 94%) 0%,
+    hsl(346, 45%, 95%) 25%,
+    hsl(200, 35%, 93%) 50%,
+    hsl(346, 45%, 95%) 75%,
+    hsl(150, 25%, 85%) 100%
+  );
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  background-attachment: fixed;
+  background-color: hsl(30, 15%, 94%);
+}
+
+/* Responsive - ajustar para mobile */
+@media (max-width: 768px) {
+  .maternal-gradient,
+  .maternal-gradient-vertical,
+  .maternal-gradient-radial,
+  .maternal-gradient-soft,
+  .maternal-gradient-animated,
+  .maternal-gradient-hsl {
+    /* Remover background-attachment: fixed em mobile para melhor performance */
+    background-attachment: scroll;
+    background-size: 100% 100%;
+  }
+}
+
+/* Print - remover gradiente na impressão */
+@media print {
+  .maternal-gradient,
+  .maternal-gradient-vertical,
+  .maternal-gradient-radial,
+  .maternal-gradient-soft,
+  .maternal-gradient-animated,
+  .maternal-gradient-hsl {
+    background-image: none;
+    background-color: white;
+  }
+}
+

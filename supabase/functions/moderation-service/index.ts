@@ -36,8 +36,8 @@ async function checkSafetySettings(message: string): Promise<ModerationResult> {
           generationConfig: {
             temperature: 0.1,
             maxOutputTokens: 100,
-          }
-        })
+          },
+        }),
       }
     );
 
@@ -48,7 +48,7 @@ async function checkSafetySettings(message: string): Promise<ModerationResult> {
         safe: !blocked,
         category: blocked ? 'safety_block' : 'unknown',
         severity: blocked ? 4 : 0,
-        action: blocked ? 'block' : 'allow'
+        action: blocked ? 'block' : 'allow',
       };
     }
 
@@ -73,9 +73,11 @@ async function analyzeContext(message: string): Promise<ModerationResult> {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `Analise esta mensagem para moderação. Responda APENAS JSON:
+          contents: [
+            {
+              parts: [
+                {
+                  text: `Analise esta mensagem para moderação. Responda APENAS JSON:
 {
   "safe": boolean,
   "category": "spam|harassment|hate_speech|sexual|medical_advice|other",
@@ -84,14 +86,16 @@ async function analyzeContext(message: string): Promise<ModerationResult> {
   "reason": "string curta"
 }
 
-Mensagem: ${message}`
-            }]
-          }],
+Mensagem: ${message}`,
+                },
+              ],
+            },
+          ],
           generationConfig: {
             temperature: 0.1,
             maxOutputTokens: 200,
-          }
-        })
+          },
+        }),
       }
     );
 
@@ -127,10 +131,10 @@ serve(async (req) => {
     const { message, userId } = await req.json();
 
     if (!message) {
-      return new Response(
-        JSON.stringify({ error: 'message is required' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'message is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Camada 1: Safety Settings (instantâneo)
@@ -140,14 +144,14 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({
           ...safetyResult,
-          layer: 'safety_settings'
+          layer: 'safety_settings',
         }),
         {
           status: 200,
           headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
-          }
+          },
         }
       );
     }
@@ -169,29 +173,28 @@ serve(async (req) => {
         category: finalResult.category,
         severity: finalResult.severity,
         reviewed: false,
-        action: 'flagged'
+        action: 'flagged',
       });
     }
 
     return new Response(
       JSON.stringify({
         ...finalResult,
-        layer: 'contextual_analysis'
+        layer: 'contextual_analysis',
       }),
       {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
-        }
+        },
       }
     );
-
   } catch (error) {
     console.error('Error:', error);
-    return new Response(
-      JSON.stringify({ error: error.message || 'Internal server error' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ error: error.message || 'Internal server error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 });

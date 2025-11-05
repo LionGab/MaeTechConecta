@@ -1,0 +1,51 @@
+{
+  "version": "1.0.0",
+  "description": "Configuração de auto-aprovação do Cursor - Aprova automaticamente todas as mudanças e mantém mudanças de revisão",
+  "enabled": true,
+  "auto_approve": {
+    "enabled": true,
+    "all_changes": true,
+    "review_changes": true,
+    "write_operations": true,
+    "shell_commands": true,
+    "read_operations": true
+  },
+  "skip_awaiting_review": {
+    "enabled": true,
+    "for_all_operations": true
+  },
+  "keep_review_changes": {
+    "enabled": true,
+    "auto_approve": true,
+    "default_action": "keep_all"
+  },
+  "approval_rules": {
+    "default_action": "approve",
+    "timeout": 0,
+    "skip_interactive": true,
+    "auto_approve_on_review": true
+  },
+  "permissions": {
+    "write": {
+      "require_approval": false,
+      "auto_approve": true,
+      "keep_changes": true
+    },
+    "shell": {
+      "require_approval": false,
+      "auto_approve": true,
+      "keep_changes": true
+    },
+    "read": {
+      "require_approval": false,
+      "auto_approve": true
+    }
+  },
+  "review_workflow": {
+    "auto_approve": true,
+    "keep_all_changes": true,
+    "skip_awaiting": true,
+    "approve_on_review": true,
+    "default_action": "approve_and_keep"
+  }
+}

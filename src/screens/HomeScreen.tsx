@@ -13,13 +13,13 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { generateDailyPlan, ChatContext } from '../services/ai';
-import { getDailyPlan, saveDailyPlan } from '../services/supabase';
+import { generateDailyPlan, ChatContext } from '@/services/ai';
+import { getDailyPlan, saveDailyPlan } from '@/services/supabase';
 import { format } from 'date-fns';
-import { Logo } from '../components/Logo';
-import { Button } from '../components/Button';
-import { Card } from '../components/Card';
-import { colors, shadows, spacing, borderRadius, typography } from '../theme/colors';
+import { Logo } from '@/components/Logo';
+import { Button } from '@/components/Button';
+import { Card } from '@/components/Card';
+import { colors, shadows, spacing, borderRadius, typography } from '@/theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function HomeScreen() {
@@ -46,7 +46,7 @@ export default function HomeScreen() {
   const loadDailyPlan = async () => {
     const userId = await AsyncStorage.getItem('userId');
     const today = format(new Date(), 'yyyy-MM-dd');
-    
+
     if (userId) {
       try {
         const plan = await getDailyPlan(userId, today);
@@ -69,7 +69,7 @@ export default function HomeScreen() {
       // Salvar no Supabase
       const userId = await AsyncStorage.getItem('userId');
       const today = format(new Date(), 'yyyy-MM-dd');
-      
+
       if (userId) {
         await saveDailyPlan({
           user_id: userId,
@@ -104,10 +104,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={colors.background}
-      />
+      <StatusBar barStyle="dark-content" backgroundColor={colors.background} />
       <ScrollView style={styles.container}>
         <View style={styles.header}>
           <View style={styles.logoHeader}>
@@ -153,164 +150,151 @@ export default function HomeScreen() {
           />
         </View>
 
-      {/* Plano Diário */}
-      <Card
-        title="Seu Plano de Hoje"
-        icon="target"
-        variant="elevated"
-        style={styles.dailyPlanCard}
-      >
-        <View style={styles.dailyPlanHeader}>
-          <Button
-            variant="outline"
-            size="sm"
-            onPress={generateTodaysPlan}
-            loading={loading}
-            disabled={loading}
-            icon="refresh"
-            accessibilityLabel="Atualizar plano diário"
-            accessibilityHint="Gera um novo plano personalizado para hoje"
-          >
-            Atualizar
-          </Button>
-        </View>
-
-        {dailyPlan ? (
-          <View>
-            <View style={styles.sectionTitleContainer}>
-              <Icon name="checkbox-marked-circle-outline" size={20} color={colors.primary} />
-              <Text style={styles.sectionTitle}>Prioridades:</Text>
-            </View>
-            {dailyPlan.priorities?.map((priority: string, index: number) => (
-              <Text key={index} style={styles.priorityItem}>• {priority}</Text>
-            ))}
-
-            <View style={[styles.sectionTitleContainer, { marginTop: spacing.lg }]}>
-              <Icon name="lightbulb-outline" size={20} color={colors.primary} />
-              <Text style={styles.sectionTitle}>Dica do Dia:</Text>
-            </View>
-            <Text style={styles.tip}>{dailyPlan.tip}</Text>
-
-            <View style={[styles.sectionTitleContainer, { marginTop: spacing.lg }]}>
-              <Icon name="food-variant" size={20} color={colors.primary} />
-              <Text style={styles.sectionTitle}>Receita:</Text>
-            </View>
-            <Text style={styles.recipe}>{dailyPlan.recipe}</Text>
-          </View>
-        ) : (
-          <View style={styles.emptyStateContainer}>
-            <Icon name="calendar-blank-outline" size={48} color={colors.muted} />
-            <Text style={styles.emptyState}>Nenhum plano gerado ainda para hoje.</Text>
+        {/* Plano Diário */}
+        <Card title="Seu Plano de Hoje" icon="target" variant="elevated" style={styles.dailyPlanCard}>
+          <View style={styles.dailyPlanHeader}>
             <Button
-              variant="primary"
-              size="md"
-              fullWidth
+              variant="outline"
+              size="sm"
               onPress={generateTodaysPlan}
               loading={loading}
               disabled={loading}
-              icon="sparkles"
-              accessibilityLabel="Gerar plano diário"
-              accessibilityHint="Cria um plano personalizado baseado no seu perfil"
+              icon="refresh"
+              accessibilityLabel="Atualizar plano diário"
+              accessibilityHint="Gera um novo plano personalizado para hoje"
             >
-              {loading ? 'Gerando...' : 'Gerar Plano Agora'}
+              Atualizar
             </Button>
           </View>
-        )}
-      </Card>
 
-      {/* Dicas Rápidas */}
-      <Card
-        title="Você sabia?"
-        icon="lightbulb-on"
-        variant="outlined"
-        style={styles.tipsCard}
-      >
-        <View style={styles.tipContainer}>
-          <Icon name="sleep" size={24} color={colors.accent} />
-          <Text style={styles.tipText}>
-            Durante a gravidez, é normal sentir cansaço. Ouça seu corpo e descanse sempre que possível!
-          </Text>
-        </View>
-      </Card>
+          {dailyPlan ? (
+            <View>
+              <View style={styles.sectionTitleContainer}>
+                <Icon name="checkbox-marked-circle-outline" size={20} color={colors.primary} />
+                <Text style={styles.sectionTitle}>Prioridades:</Text>
+              </View>
+              {dailyPlan.priorities?.map((priority: string, index: number) => (
+                <Text key={index} style={styles.priorityItem}>
+                  • {priority}
+                </Text>
+              ))}
 
-      {/* FAQ Rápido */}
-      <Card
-        title="Perguntas Frequentes"
-        icon="help-circle-outline"
-        variant="elevated"
-        style={styles.faqCard}
-      >
-        <TouchableOpacity
-          style={styles.faqItem}
-          onPress={() => navigation.navigate('Chat' as never)}
-          accessible={true}
-          accessibilityLabel="Perguntar: Como aliviar enjoo matinal?"
-          accessibilityRole="button"
-          activeOpacity={0.7}
-        >
-          <View style={styles.faqQuestionContainer}>
-            <Icon name="stomach" size={20} color={colors.primary} style={styles.faqIcon} />
-            <Text style={styles.faqQuestion}>Como aliviar enjoo matinal?</Text>
-          </View>
-          <Icon name="chevron-right" size={24} color={colors.primary} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.faqItem}
-          onPress={() => navigation.navigate('Chat' as never)}
-          accessible={true}
-          accessibilityLabel="Perguntar: Quais exercícios posso fazer?"
-          accessibilityRole="button"
-          activeOpacity={0.7}
-        >
-          <View style={styles.faqQuestionContainer}>
-            <Icon name="run" size={20} color={colors.primary} style={styles.faqIcon} />
-            <Text style={styles.faqQuestion}>Quais exercícios posso fazer?</Text>
-          </View>
-          <Icon name="chevron-right" size={24} color={colors.primary} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.faqItem}
-          onPress={() => navigation.navigate('Chat' as never)}
-          accessible={true}
-          accessibilityLabel="Perguntar: Quando devo ir ao médico?"
-          accessibilityRole="button"
-          activeOpacity={0.7}
-        >
-          <View style={styles.faqQuestionContainer}>
-            <Icon name="stethoscope" size={20} color={colors.primary} style={styles.faqIcon} />
-            <Text style={styles.faqQuestion}>Quando devo ir ao médico?</Text>
-          </View>
-          <Icon name="chevron-right" size={24} color={colors.primary} />
-        </TouchableOpacity>
-      </Card>
+              <View style={[styles.sectionTitleContainer, { marginTop: spacing.lg }]}>
+                <Icon name="lightbulb-outline" size={20} color={colors.primary} />
+                <Text style={styles.sectionTitle}>Dica do Dia:</Text>
+              </View>
+              <Text style={styles.tip}>{dailyPlan.tip}</Text>
 
-      {/* Emergency Button */}
-      <Button
-        variant="destructive"
-        size="lg"
-        fullWidth
-        icon="phone-alert"
-        onPress={() => {
-          Alert.alert(
-            '🚨 Emergência',
-            'Você será direcionado para ligar para o SAMU (192).\n\nSe você está com sintomas graves, ligue imediatamente ou procure um hospital!',
-            [
-              { text: 'Cancelar', style: 'cancel' },
-              {
-                text: 'Ligar Agora',
-                style: 'destructive',
-                onPress: () => Linking.openURL('tel:192')
-              }
-            ]
-          );
-        }}
-        accessibilityLabel="Botão de emergência"
-        accessibilityHint="Ligar para SAMU 192 em caso de emergência médica"
-        style={styles.emergencyButton}
-      >
-        Emergência - SAMU 192
-      </Button>
-    </ScrollView>
+              <View style={[styles.sectionTitleContainer, { marginTop: spacing.lg }]}>
+                <Icon name="food-variant" size={20} color={colors.primary} />
+                <Text style={styles.sectionTitle}>Receita:</Text>
+              </View>
+              <Text style={styles.recipe}>{dailyPlan.recipe}</Text>
+            </View>
+          ) : (
+            <View style={styles.emptyStateContainer}>
+              <Icon name="calendar-blank-outline" size={48} color={colors.muted} />
+              <Text style={styles.emptyState}>Nenhum plano gerado ainda para hoje.</Text>
+              <Button
+                variant="primary"
+                size="md"
+                fullWidth
+                onPress={generateTodaysPlan}
+                loading={loading}
+                disabled={loading}
+                icon="sparkles"
+                accessibilityLabel="Gerar plano diário"
+                accessibilityHint="Cria um plano personalizado baseado no seu perfil"
+              >
+                {loading ? 'Gerando...' : 'Gerar Plano Agora'}
+              </Button>
+            </View>
+          )}
+        </Card>
+
+        {/* Dicas Rápidas */}
+        <Card title="Você sabia?" icon="lightbulb-on" variant="outlined" style={styles.tipsCard}>
+          <View style={styles.tipContainer}>
+            <Icon name="sleep" size={24} color={colors.accent} />
+            <Text style={styles.tipText}>
+              Durante a gravidez, é normal sentir cansaço. Ouça seu corpo e descanse sempre que possível!
+            </Text>
+          </View>
+        </Card>
+
+        {/* FAQ Rápido */}
+        <Card title="Perguntas Frequentes" icon="help-circle-outline" variant="elevated" style={styles.faqCard}>
+          <TouchableOpacity
+            style={styles.faqItem}
+            onPress={() => navigation.navigate('Chat' as never)}
+            accessible={true}
+            accessibilityLabel="Perguntar: Como aliviar enjoo matinal?"
+            accessibilityRole="button"
+            activeOpacity={0.7}
+          >
+            <View style={styles.faqQuestionContainer}>
+              <Icon name="stomach" size={20} color={colors.primary} style={styles.faqIcon} />
+              <Text style={styles.faqQuestion}>Como aliviar enjoo matinal?</Text>
+            </View>
+            <Icon name="chevron-right" size={24} color={colors.primary} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.faqItem}
+            onPress={() => navigation.navigate('Chat' as never)}
+            accessible={true}
+            accessibilityLabel="Perguntar: Quais exercícios posso fazer?"
+            accessibilityRole="button"
+            activeOpacity={0.7}
+          >
+            <View style={styles.faqQuestionContainer}>
+              <Icon name="run" size={20} color={colors.primary} style={styles.faqIcon} />
+              <Text style={styles.faqQuestion}>Quais exercícios posso fazer?</Text>
+            </View>
+            <Icon name="chevron-right" size={24} color={colors.primary} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.faqItem}
+            onPress={() => navigation.navigate('Chat' as never)}
+            accessible={true}
+            accessibilityLabel="Perguntar: Quando devo ir ao médico?"
+            accessibilityRole="button"
+            activeOpacity={0.7}
+          >
+            <View style={styles.faqQuestionContainer}>
+              <Icon name="stethoscope" size={20} color={colors.primary} style={styles.faqIcon} />
+              <Text style={styles.faqQuestion}>Quando devo ir ao médico?</Text>
+            </View>
+            <Icon name="chevron-right" size={24} color={colors.primary} />
+          </TouchableOpacity>
+        </Card>
+
+        {/* Emergency Button */}
+        <Button
+          variant="destructive"
+          size="lg"
+          fullWidth
+          icon="phone-alert"
+          onPress={() => {
+            Alert.alert(
+              '🚨 Emergência',
+              'Você será direcionado para ligar para o SAMU (192).\n\nSe você está com sintomas graves, ligue imediatamente ou procure um hospital!',
+              [
+                { text: 'Cancelar', style: 'cancel' },
+                {
+                  text: 'Ligar Agora',
+                  style: 'destructive',
+                  onPress: () => Linking.openURL('tel:192'),
+                },
+              ]
+            );
+          }}
+          accessibilityLabel="Botão de emergência"
+          accessibilityHint="Ligar para SAMU 192 em caso de emergência médica"
+          style={styles.emergencyButton}
+        >
+          Emergência - SAMU 192
+        </Button>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -374,7 +358,7 @@ const styles = StyleSheet.create({
     ...shadows.light.sm,
   },
   quickActionTitle: {
-    fontSize: typography.sizes.sm,  // 14px agora
+    fontSize: typography.sizes.sm, // 14px agora
     color: colors.foreground,
     textAlign: 'center',
     marginTop: spacing.sm,
@@ -484,4 +468,3 @@ const styles = StyleSheet.create({
     marginBottom: spacing['3xl'],
   },
 });
-

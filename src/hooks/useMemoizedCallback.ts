@@ -10,10 +10,7 @@ import React, { useCallback, useMemo, useRef, useEffect } from 'react';
  * useMemoizedCallback - Garante que callback só muda se dependências mudarem
  * Útil para passar callbacks para componentes memoizados
  */
-export function useMemoizedCallback<T extends (...args: any[]) => any>(
-  callback: T,
-  deps: React.DependencyList
-): T {
+export function useMemoizedCallback<T extends (...args: any[]) => any>(callback: T, deps: React.DependencyList): T {
   const callbackRef = useRef(callback);
 
   useEffect(() => {
@@ -70,12 +67,15 @@ export function useThrottle<T>(value: T, limit: number): T {
   const lastRan = useRef(Date.now());
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      if (Date.now() - lastRan.current >= limit) {
-        setThrottledValue(value);
-        lastRan.current = Date.now();
-      }
-    }, limit - (Date.now() - lastRan.current));
+    const handler = setTimeout(
+      () => {
+        if (Date.now() - lastRan.current >= limit) {
+          setThrottledValue(value);
+          lastRan.current = Date.now();
+        }
+      },
+      limit - (Date.now() - lastRan.current)
+    );
 
     return () => {
       clearTimeout(handler);

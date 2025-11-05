@@ -6,25 +6,16 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  Alert,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Card } from '../../components/Card';
-import { Badge } from '../../components/Badge';
-import { Input } from '../../components/Input';
-import { colors, spacing, typography, borderRadius } from '../../theme/colors';
-import { supabase } from '../../services/supabase';
-import { EmptyState } from '../../shared/components/EmptyState';
-import { SkeletonPresets } from '../../shared/components/Skeleton';
+import { Card } from '@/components/Card';
+import { Badge } from '@/components/Badge';
+import { Input } from '@/components/Input';
+import { colors, spacing, typography, borderRadius } from '@/theme/colors';
+import { supabase } from '@/services/supabase';
+import { EmptyState } from '@/shared/components/EmptyState';
+import { SkeletonPresets } from '@/shared/components/Skeleton';
 
 interface ContentItem {
   id: string;
@@ -40,13 +31,7 @@ interface ContentItem {
   is_favorite: boolean;
 }
 
-const CATEGORIES = [
-  'Bem-estar',
-  'Alimentação',
-  'Exercícios',
-  'Relacionamento',
-  'Preparação para o parto',
-];
+const CATEGORIES = ['Bem-estar', 'Alimentação', 'Exercícios', 'Relacionamento', 'Preparação para o parto'];
 
 export default function ContentFeedScreen() {
   const navigation = useNavigation();
@@ -67,7 +52,9 @@ export default function ContentFeedScreen() {
 
   const loadContent = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) return;
 
       // Buscar conteúdos
@@ -80,14 +67,11 @@ export default function ContentFeedScreen() {
       if (!items) return;
 
       // Buscar favoritos do usuário
-      const { data: favorites } = await supabase
-        .from('content_favorites')
-        .select('content_id')
-        .eq('user_id', user.id);
+      const { data: favorites } = await supabase.from('content_favorites').select('content_id').eq('user_id', user.id);
 
-      const favoriteIds = new Set(favorites?.map(f => f.content_id) || []);
+      const favoriteIds = new Set(favorites?.map((f) => f.content_id) || []);
 
-      const contentWithFavorites = items.map(item => ({
+      const contentWithFavorites = items.map((item) => ({
         ...item,
         is_favorite: favoriteIds.has(item.id),
       }));
@@ -106,24 +90,22 @@ export default function ContentFeedScreen() {
 
     // Filtro por categoria
     if (selectedCategory) {
-      filtered = filtered.filter(
-        item => item.category?.toLowerCase() === selectedCategory.toLowerCase()
-      );
+      filtered = filtered.filter((item) => item.category?.toLowerCase() === selectedCategory.toLowerCase());
     }
 
     // Filtro por favoritos
     if (showFavoritesOnly) {
-      filtered = filtered.filter(item => item.is_favorite);
+      filtered = filtered.filter((item) => item.is_favorite);
     }
 
     // Busca por texto
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
-        item =>
+        (item) =>
           item.title.toLowerCase().includes(query) ||
           item.description?.toLowerCase().includes(query) ||
-          item.tags?.some(tag => tag.toLowerCase().includes(query))
+          item.tags?.some((tag) => tag.toLowerCase().includes(query))
       );
     }
 
@@ -132,16 +114,14 @@ export default function ContentFeedScreen() {
 
   const toggleFavorite = async (contentId: string, isFavorite: boolean) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) return;
 
       if (isFavorite) {
         // Remover dos favoritos
-        await supabase
-          .from('content_favorites')
-          .delete()
-          .eq('user_id', user.id)
-          .eq('content_id', contentId);
+        await supabase.from('content_favorites').delete().eq('user_id', user.id).eq('content_id', contentId);
       } else {
         // Adicionar aos favoritos
         await supabase.from('content_favorites').insert({
@@ -164,20 +144,10 @@ export default function ContentFeedScreen() {
       onPress={() => navigation.navigate('ContentDetail' as any, { contentId: item.id })}
       accessibilityLabel={`${item.title} - ${item.type}`}
     >
-      {item.thumbnail_url && (
-        <Image
-          source={{ uri: item.thumbnail_url }}
-          style={styles.thumbnail}
-          resizeMode="cover"
-        />
-      )}
+      {item.thumbnail_url && <Image source={{ uri: item.thumbnail_url }} style={styles.thumbnail} resizeMode="cover" />}
       <View style={styles.contentInfo}>
         <View style={styles.headerRow}>
-          <Badge
-            variant="info"
-            size="sm"
-            style={styles.typeBadge}
-          >
+          <Badge variant="info" size="sm" style={styles.typeBadge}>
             {item.type === 'article' && '📄 Artigo'}
             {item.type === 'video' && '🎥 Vídeo'}
             {item.type === 'audio' && '🎧 Áudio'}
@@ -202,9 +172,7 @@ export default function ContentFeedScreen() {
             {item.description}
           </Text>
         )}
-        {item.category && (
-          <Text style={styles.contentCategory}>{item.category}</Text>
-        )}
+        {item.category && <Text style={styles.contentCategory}>{item.category}</Text>}
       </View>
     </Card>
   );
@@ -230,30 +198,19 @@ export default function ContentFeedScreen() {
         contentContainerStyle={styles.filtersContent}
       >
         <TouchableOpacity
-          style={[
-            styles.filterChip,
-            !showFavoritesOnly && !selectedCategory && styles.filterChipActive,
-          ]}
+          style={[styles.filterChip, !showFavoritesOnly && !selectedCategory && styles.filterChipActive]}
           onPress={() => {
             setShowFavoritesOnly(false);
             setSelectedCategory(null);
           }}
         >
-          <Text
-            style={[
-              styles.filterChipText,
-              !showFavoritesOnly && !selectedCategory && styles.filterChipTextActive,
-            ]}
-          >
+          <Text style={[styles.filterChipText, !showFavoritesOnly && !selectedCategory && styles.filterChipTextActive]}>
             Todos
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[
-            styles.filterChip,
-            showFavoritesOnly && styles.filterChipActive,
-          ]}
+          style={[styles.filterChip, showFavoritesOnly && styles.filterChipActive]}
           onPress={() => setShowFavoritesOnly(!showFavoritesOnly)}
         >
           <Icon
@@ -262,33 +219,16 @@ export default function ContentFeedScreen() {
             color={showFavoritesOnly ? colors.primary : colors.mutedForeground}
             style={styles.filterIcon}
           />
-          <Text
-            style={[
-              styles.filterChipText,
-              showFavoritesOnly && styles.filterChipTextActive,
-            ]}
-          >
-            Favoritos
-          </Text>
+          <Text style={[styles.filterChipText, showFavoritesOnly && styles.filterChipTextActive]}>Favoritos</Text>
         </TouchableOpacity>
 
-        {CATEGORIES.map(category => (
+        {CATEGORIES.map((category) => (
           <TouchableOpacity
             key={category}
-            style={[
-              styles.filterChip,
-              selectedCategory === category && styles.filterChipActive,
-            ]}
-            onPress={() =>
-              setSelectedCategory(selectedCategory === category ? null : category)
-            }
+            style={[styles.filterChip, selectedCategory === category && styles.filterChipActive]}
+            onPress={() => setSelectedCategory(selectedCategory === category ? null : category)}
           >
-            <Text
-              style={[
-                styles.filterChipText,
-                selectedCategory === category && styles.filterChipTextActive,
-              ]}
-            >
+            <Text style={[styles.filterChipText, selectedCategory === category && styles.filterChipTextActive]}>
               {category}
             </Text>
           </TouchableOpacity>
@@ -308,25 +248,21 @@ export default function ContentFeedScreen() {
           title="Nenhum conteúdo encontrado"
           description={
             showFavoritesOnly
-              ? "Você ainda não favoritou nenhum conteúdo. Explore e marque seus favoritos!"
+              ? 'Você ainda não favoritou nenhum conteúdo. Explore e marque seus favoritos!'
               : searchQuery
-              ? "Não encontramos conteúdos com essa busca. Tente outro termo!"
-              : "Nenhum conteúdo disponível no momento. Em breve teremos novidades!"
+                ? 'Não encontramos conteúdos com essa busca. Tente outro termo!'
+                : 'Nenhum conteúdo disponível no momento. Em breve teremos novidades!'
           }
-          actionLabel={showFavoritesOnly ? "Ver todos" : searchQuery ? "Limpar busca" : undefined}
+          actionLabel={showFavoritesOnly ? 'Ver todos' : searchQuery ? 'Limpar busca' : undefined}
           onAction={
-            showFavoritesOnly
-              ? () => setShowFavoritesOnly(false)
-              : searchQuery
-              ? () => setSearchQuery("")
-              : undefined
+            showFavoritesOnly ? () => setShowFavoritesOnly(false) : searchQuery ? () => setSearchQuery('') : undefined
           }
         />
       ) : (
         <FlatList
           data={filteredContent}
           renderItem={renderContentItem}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           ListEmptyComponent={
             <EmptyState
               emoji="📚"

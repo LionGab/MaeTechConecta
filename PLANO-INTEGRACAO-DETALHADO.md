@@ -1,4 +1,5 @@
 # 🎯 Plano de Integração Detalhado - Club Valente
+
 ## Migração do Projeto Atual para Sistema Multi-Agent
 
 **Data de início:** 30/10/2025
@@ -14,6 +15,7 @@
 #### **Dia 1 - Hoje (30/10/2025) 🎯**
 
 **Manhã:**
+
 - [x] Auditoria completa ✅
 - [ ] **Migrar ChatScreen para Edge Function `nathia-chat`** 🔥 CRÍTICO
   - Modificar `useChatOptimized.ts` para chamar Edge Function
@@ -26,6 +28,7 @@
   - Criar perfil corretamente no Supabase
 
 **Tarde:**
+
 - [ ] **Adicionar Zustand** 📦 IMPORTANTE
   - Instalar dependência
   - Criar stores básicos:
@@ -46,6 +49,7 @@
 #### **Dia 2 (31/10/2025)**
 
 **Manhã:**
+
 - [ ] **Migrar `ai.ts` para Edge Functions**
   - Refatorar `chatWithAI()` para chamar `nathia-chat`
   - Remover código duplicado
@@ -58,6 +62,7 @@
   - Integrar no `nathia-chat`
 
 **Tarde:**
+
 - [ ] **Implementar Memória Longa**
   - Sistema de resumos hierárquicos (diário/semanal)
   - Memórias-chave marcadas
@@ -70,6 +75,7 @@
 #### **Dia 3 (01/11/2025)**
 
 **Manhã:**
+
 - [ ] **Sistema de Hábitos - Backend** 💪
   - Criar services `habitsService.ts`
   - APIs para CRUD de hábitos
@@ -77,6 +83,7 @@
   - Calcular streaks
 
 **Tarde:**
+
 - [ ] **Sistema de Hábitos - Frontend**
   - Tela `HabitsScreen.tsx`
   - Componentes: `HabitCard`, `HabitCheckbox`
@@ -90,6 +97,7 @@
 #### **Dia 4 (02/11/2025)**
 
 **Manhã:**
+
 - [ ] **Feed de Conteúdos - Backend** 📰
   - Criar services `contentService.ts`
   - APIs para buscar conteúdos
@@ -97,6 +105,7 @@
   - Player service (vídeo/áudio)
 
 **Tarde:**
+
 - [ ] **Feed de Conteúdos - Frontend**
   - Tela `ContentScreen.tsx`
   - Componentes: `ContentCard`, `ContentPlayer`
@@ -110,6 +119,7 @@
 #### **Dia 5 (03/11/2025)**
 
 **Manhã:**
+
 - [ ] **Melhorias de UX**
   - Loading states consistentes
   - Error boundaries
@@ -117,6 +127,7 @@
   - Animações polidas
 
 **Tarde:**
+
 - [ ] **Testes de Integração**
   - Testar fluxo completo: Onboarding → Chat → Hábitos → Conteúdos
   - Testar Edge Functions
@@ -130,16 +141,19 @@
 ### **SEMANA 2: Melhorias Avançadas (06/11 - 12/11)**
 
 #### **Dia 6-7 (06-07/11):**
+
 - [ ] Onboarding com áudio (Expo AV)
 - [ ] Gravação de áudio funcional
 - [ ] Transcrição via Edge Function
 
 #### **Dia 8-9 (08-09/11):**
+
 - [ ] Memória longa avançada (resumos automáticos)
 - [ ] Análise comportamental ativa (1x/dia)
 - [ ] Sugestões personalizadas de conteúdo
 
 #### **Dia 10 (10/11):**
+
 - [ ] Notificações inteligentes
 - [ ] Lembretes de hábitos
 - [ ] Notificações push configuradas
@@ -149,6 +163,7 @@
 ### **SEMANA 3: LGPD & Segurança (13/11 - 19/11)**
 
 #### **Dia 11-12 (13-14/11):**
+
 - [ ] UI LGPD completa:
   - Tela de exportar dados
   - Tela de deletar conta
@@ -156,6 +171,7 @@
   - Termos de uso
 
 #### **Dia 13-14 (15-16/11):**
+
 - [ ] Security audit completo
 - [ ] RLS policies revisadas
 - [ ] Compliance LGPD finalizado
@@ -165,16 +181,19 @@
 ### **SEMANA 4: Polish & Deploy (20/11 - 26/11)**
 
 #### **Dia 15-17 (20-22/11):**
+
 - [ ] Testes E2E completos
 - [ ] Performance optimization
 - [ ] Acessibilidade final (WCAG 2.1 AA)
 
 #### **Dia 18-19 (23-24/11):**
+
 - [ ] Documentação completa
 - [ ] Guias de usuário
 - [ ] Preparação para deploy
 
 #### **Dia 20 (25/11):**
+
 - [ ] Deploy TestFlight (iOS)
 - [ ] Deploy Internal Testing (Android)
 - [ ] Beta testing interno
@@ -186,6 +205,7 @@
 ### **1. Migração ChatScreen → Edge Function**
 
 **Problema Atual:**
+
 ```typescript
 // src/services/ai.ts
 chatWithAI() → Claude API direto ❌
@@ -195,6 +215,7 @@ Usa ai.ts → Claude direto ❌
 ```
 
 **Solução:**
+
 ```typescript
 // src/services/ai.ts (REFATORAR)
 chatWithAI() →
@@ -206,6 +227,7 @@ Usa ai.ts → Edge Function ✅
 ```
 
 **Passos:**
+
 1. Modificar `src/services/ai.ts`:
    - Criar função `chatWithNATIA()` que chama Edge Function
    - Manter `chatWithAI()` como fallback (dev)
@@ -227,19 +249,23 @@ Usa ai.ts → Edge Function ✅
 ### **2. Correção OnboardingScreen**
 
 **Problema Atual:**
+
 ```typescript
 // src/screens/OnboardingScreen.tsx
 supabase.auth.signUp({
   email: `${Date.now()}@temp.com`, // ❌ Email temporário
-  password: `${Date.now()}-${Math.random()}` // ❌ Senha temporária
+  password: `${Date.now()}-${Math.random()}`, // ❌ Senha temporária
 });
 // Não salva userId no AsyncStorage ❌
 ```
 
 **Solução:**
+
 ```typescript
 // Usar signInAnonymously() ✅
-const { data: { user } } = await supabase.auth.signInAnonymously();
+const {
+  data: { user },
+} = await supabase.auth.signInAnonymously();
 // Salvar userId no AsyncStorage ✅
 await AsyncStorage.setItem('userId', user.id);
 // Criar perfil corretamente ✅
@@ -250,17 +276,20 @@ await AsyncStorage.setItem('userId', user.id);
 ### **3. Adicionar Zustand**
 
 **Instalação:**
+
 ```bash
 npm install zustand
 ```
 
 **Stores a Criar:**
+
 - `src/stores/userStore.ts` - Perfil do usuário
 - `src/stores/chatStore.ts` - Estado do chat
 - `src/stores/habitsStore.ts` - Hábitos
 - `src/stores/contentStore.ts` - Conteúdos
 
 **Exemplo UserStore:**
+
 ```typescript
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -290,6 +319,7 @@ export const useUserStore = create<UserState>()(
 ### **4. Sistema de Hábitos**
 
 **Estrutura:**
+
 ```
 src/
 ├── features/
@@ -306,6 +336,7 @@ src/
 ```
 
 **Hábitos Pré-definidos (5):**
+
 1. Respiração/pausa de 2 min
 2. Check-in emocional 1x/dia
 3. 10 min de descanso/alongamento
@@ -317,6 +348,7 @@ src/
 ### **5. Feed de Conteúdos**
 
 **Estrutura:**
+
 ```
 src/
 ├── features/
@@ -333,6 +365,7 @@ src/
 ```
 
 **Funcionalidades:**
+
 - Lista de conteúdos (artigo, vídeo, áudio, post)
 - Filtros por categoria/tipo
 - Busca por texto
@@ -345,18 +378,21 @@ src/
 ## 📊 CHECKLIST DE PROGRESSO
 
 ### **Integrações Críticas:**
+
 - [ ] ChatScreen → Edge Function ✅
 - [ ] Onboarding corrigido ⬜
 - [ ] Zustand adicionado ⬜
 - [ ] RAG/Vector Store ⬜
 
 ### **Features Core:**
+
 - [ ] Hábitos implementado ⬜
 - [ ] Conteúdos implementado ⬜
 - [ ] Favoritos ⬜
 - [ ] Busca ⬜
 
 ### **Melhorias:**
+
 - [ ] Onboarding com áudio ⬜
 - [ ] Memória longa avançada ⬜
 - [ ] Notificações inteligentes ⬜

@@ -132,6 +132,7 @@ Para cada problema identificado:
    - Severidade da correção
 
 2. **Formato de Sugestão**
+
    ```typescript
    // ❌ ANTES (Problema)
    const handlePress = () => {
@@ -293,31 +294,37 @@ Retorne um JSON estruturado:
 ## 🎯 Comandos de Revisão
 
 ### Comando 1: Revisão Completa
+
 ```
 Revisar todo o código do arquivo {arquivo} e gerar relatório completo com bugs, code smells, problemas de performance e acessibilidade.
 ```
 
 ### Comando 2: Revisão Rápida
+
 ```
 Revisão rápida de {arquivo}: identificar apenas bugs críticos e problemas de alta severidade.
 ```
 
 ### Comando 3: Revisão de Performance
+
 ```
 Analisar performance do arquivo {arquivo}: identificar re-renders desnecessários, FlatList não otimizada, problemas de memoização.
 ```
 
 ### Comando 4: Revisão de Acessibilidade
+
 ```
 Verificar acessibilidade (WCAG 2.1 AA) do arquivo {arquivo}: accessibilityLabel, accessibilityRole, contraste, área de toque.
 ```
 
 ### Comando 5: Sugestão de Testes
+
 ```
 Sugerir testes para {arquivo}: casos de teste unitários e de integração necessários.
 ```
 
 ### Comando 6: Aplicar Correções
+
 ```
 Aplicar todas as correções sugeridas no arquivo {arquivo} que tenham severidade >= 3.
 ```
@@ -350,16 +357,19 @@ Aplicar todas as correções sugeridas no arquivo {arquivo} que tenham severidad
 ## 🚀 Como Usar
 
 1. **No Cursor 2.0 Composer:**
+
    ```
    Revisar código: {cole o código ou caminho do arquivo}
    ```
 
 2. **Revisão Específica:**
+
    ```
    Revisar apenas performance do arquivo src/screens/ChatScreen.tsx
    ```
 
 3. **Revisão com Correção:**
+
    ```
    Revisar e aplicar correções automáticas no arquivo src/components/Button.tsx
    ```

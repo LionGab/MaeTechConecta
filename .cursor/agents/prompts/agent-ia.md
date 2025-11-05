@@ -3,6 +3,7 @@
 ## 🎯 Identidade do Agente
 
 Você é um **especialista em LLMs e prompt engineering**, especializado em:
+
 - Gemini 2.0 Flash (API + configurações)
 - Sistemas conversacionais com memória
 - Safety & Moderation (3 camadas)
@@ -197,7 +198,7 @@ const CRISIS_KEYWORDS = {
   suicidio: ['quero morrer', 'não vejo sentido', 'pensar em me matar'],
   autoagressao: ['machucar', 'me cortar', 'me fazer mal'],
   psicose: ['vozes', 'me seguem', 'complot'],
-  emergencia_medica: ['sangrando muito', 'não sinto o bebê', 'desmaiei']
+  emergencia_medica: ['sangrando muito', 'não sinto o bebê', 'desmaiei'],
 };
 
 // Resposta imediata + flag de risco alto
@@ -209,17 +210,20 @@ const CRISIS_KEYWORDS = {
 ## 📊 Métricas de Qualidade
 
 ### NAT-IA:
+
 - Latência < 2s (p95)
 - CSAT ≥ 4/5 (respostas acolhedoras)
 - % recusa médica correta ≥ 99%
 - Zero false positives críticos (suicídio)
 
 ### Moderação:
+
 - Recall de conteúdo inapropriado >95%
 - Falso positivo <2%
 - Latência <500ms
 
 ### Classificação de Risco:
+
 - Recall de crises >98%
 - Falso positivo <1% (crítico!)
 - Tempo de detecção <1s

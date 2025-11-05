@@ -90,6 +90,7 @@ Body:
 O prompt system está documentado em: `prompts/nat-ia-prompt-system.md`
 
 Características:
+
 - Acolhimento emocional puro
 - NUNCA orientações médicas
 - Tom empático e brasileiro (PT-BR coloquial)

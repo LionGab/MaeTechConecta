@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#FFE5F1"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nossa.maternidade"
@@ -24,10 +22,7 @@
         "backgroundColor": "#FFE5F1"
       },
       "package": "com.nossa.maternidade",
-      "permissions": [
-        "RECORD_AUDIO",
-        "INTERNET"
-      ],
+      "permissions": ["RECORD_AUDIO", "INTERNET"],
       "intentFilters": [
         {
           "action": "VIEW",
@@ -38,10 +33,7 @@
               "host": "auth"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ]
     },
@@ -49,10 +41,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-notifications",
-      "expo-av",
-      "@react-native-voice/voice"
-    ]
+    "plugins": ["expo-notifications", "expo-av", "@react-native-voice/voice"]
   }
 }

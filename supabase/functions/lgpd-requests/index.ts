@@ -20,10 +20,10 @@ serve(async (req) => {
     const { userId, action } = await req.json();
 
     if (!userId || !action) {
-      return new Response(
-        JSON.stringify({ error: 'userId and action are required' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'userId and action are required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -49,16 +49,13 @@ serve(async (req) => {
         riskAlerts: alerts.data,
       };
 
-      return new Response(
-        JSON.stringify(exportData),
-        {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          }
-        }
-      );
+      return new Response(JSON.stringify(exportData), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
     }
 
     if (action === 'delete') {
@@ -73,51 +70,35 @@ serve(async (req) => {
         .eq('id', userId);
 
       // Deletar mensagens (cascade já faz isso)
-      await supabase
-        .from('chat_messages')
-        .delete()
-        .eq('user_id', userId);
+      await supabase.from('chat_messages').delete().eq('user_id', userId);
 
       // Deletar planos
-      await supabase
-        .from('daily_plans')
-        .delete()
-        .eq('user_id', userId);
+      await supabase.from('daily_plans').delete().eq('user_id', userId);
 
       // Deletar memória
-      await supabase
-        .from('conversation_memory')
-        .delete()
-        .eq('user_id', userId);
+      await supabase.from('conversation_memory').delete().eq('user_id', userId);
 
       // Deletar alertas
-      await supabase
-        .from('risk_alerts')
-        .delete()
-        .eq('user_id', userId);
+      await supabase.from('risk_alerts').delete().eq('user_id', userId);
 
-      return new Response(
-        JSON.stringify({ success: true, message: 'Dados deletados com sucesso' }),
-        {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          }
-        }
-      );
+      return new Response(JSON.stringify({ success: true, message: 'Dados deletados com sucesso' }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
     }
 
-    return new Response(
-      JSON.stringify({ error: 'Invalid action' }),
-      { status: 400, headers: { 'Content-Type': 'application/json' } }
-    );
-
+    return new Response(JSON.stringify({ error: 'Invalid action' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error) {
     console.error('Error:', error);
-    return new Response(
-      JSON.stringify({ error: error.message || 'Internal server error' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    return new Response(JSON.stringify({ error: error.message || 'Internal server error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 });

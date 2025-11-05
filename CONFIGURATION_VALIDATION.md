@@ -105,7 +105,6 @@
 ### Setup Guides
 
 - [x] `MCP_SETUP.md` - 400+ lines
-
   - Overview & concepts
   - Environment setup steps
   - Recommended servers (GitHub, Sentry, Filesystem)
@@ -123,7 +122,6 @@
 ### Reference Guides
 
 - [x] `QUICK_REFERENCE.md` - 150+ lines
-
   - Quick start commands
   - Essential keyboard shortcuts
   - Common commands
@@ -131,7 +129,6 @@
   - MCP configuration
 
 - [x] `CONFIGURATION_SUMMARY.md` - 250+ lines
-
   - Complete feature overview
   - File descriptions
   - Getting started steps

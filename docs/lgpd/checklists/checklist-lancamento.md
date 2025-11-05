@@ -1,4 +1,5 @@
 # Checklist de Lançamento LGPD-Compliant
+
 ## Nossa Maternidade
 
 **Use este checklist antes de lançar em produção (beta ou público)**
@@ -8,6 +9,7 @@
 ## 📄 DOCUMENTAÇÃO LEGAL
 
 ### Política de Privacidade
+
 - [ ] Documento criado e aprovado por advogado LGPD
 - [ ] Publicado em URL acessível: https://nossa-maternidade.com.br/privacidade
 - [ ] Contém seção destacada sobre dados sensíveis de saúde
@@ -19,6 +21,7 @@
 - [ ] Link no footer de todas as telas do app
 
 ### Termos de Uso
+
 - [ ] Documento criado e aprovado
 - [ ] Publicado em URL acessível
 - [ ] Disclaimer médico destacado
@@ -27,6 +30,7 @@
 - [ ] Link no footer do app
 
 ### Termo de Consentimento
+
 - [ ] Documento específico para dados sensíveis
 - [ ] Linguagem clara e simples
 - [ ] Checkboxes separados implementados
@@ -37,6 +41,7 @@
 ## ✅ CONSENTIMENTO
 
 ### Tela de Consentimento (ConsentScreen.tsx)
+
 - [ ] Implementada e funcional
 - [ ] Exibida ANTES do onboarding
 - [ ] Scroll obrigatório (botão só ativa após scroll completo)
@@ -50,6 +55,7 @@
 - [ ] Versão da política exibida
 
 ### Registro de Consentimentos
+
 - [ ] Tabela `user_consents` criada no Supabase
 - [ ] Consentimentos registrados com:
   - [ ] user_id
@@ -61,6 +67,7 @@
 - [ ] RLS habilitado na tabela
 
 ### Migração Retroativa
+
 - [ ] Tela `RetroactiveConsentScreen.tsx` implementada
 - [ ] Detecta usuários sem consentimento
 - [ ] Exibe "O que mudou" comparado com versão antiga
@@ -73,6 +80,7 @@
 ## 🔒 SEGURANÇA
 
 ### Criptografia
+
 - [ ] `expo-secure-store` instalado
 - [ ] `src/services/secureStorage.ts` implementado
 - [ ] Todos `AsyncStorage` substituídos por `SecureStore`
@@ -80,6 +88,7 @@
 - [ ] Migração de dados antigos concluída
 
 ### Logging Seguro
+
 - [ ] `src/utils/logger.ts` implementado
 - [ ] Função `sanitize()` remove dados sensíveis
 - [ ] Todos `console.log/error/warn` substituídos por `logger.x()`
@@ -87,6 +96,7 @@
 - [ ] (Opcional) Integração com Sentry configurada
 
 ### Credenciais
+
 - [ ] `.env.local` removido do repositório
 - [ ] `.env.local` adicionado ao `.gitignore`
 - [ ] Secrets configurados no Expo EAS:
@@ -98,6 +108,7 @@
 - [ ] Erro claro se credencial faltando
 
 ### Links de Privacidade
+
 - [ ] Componente `PrivacyFooter.tsx` criado
 - [ ] Footer adicionado em:
   - [ ] OnboardingScreen
@@ -114,6 +125,7 @@
 ## 🔑 AUTENTICAÇÃO
 
 ### Email Real (não temporário)
+
 - [ ] Email temporário `${Date.now()}@temp.com` REMOVIDO
 - [ ] Opção 1: Magic Link (Supabase OTP) implementado OU
 - [ ] Opção 2: Email + Senha com validação (mín 8 chars)
@@ -126,6 +138,7 @@
 ## 👤 DIREITOS DOS TITULARES
 
 ### Tela "Meus Dados" (MyDataScreen.tsx)
+
 - [ ] Implementada e acessível via Perfil
 - [ ] Exibe TODOS os dados:
   - [ ] Dados cadastrais (nome, email, tipo, semana)
@@ -139,6 +152,7 @@
   - [ ] "Solicitar Exclusão Total"
 
 ### Portabilidade (Exportação)
+
 - [ ] `src/services/dataExport.ts` implementado
 - [ ] Função `exportUserData()` retorna JSON completo
 - [ ] JSON inclui: profile, chats, plans, consents, audit_logs
@@ -146,6 +160,7 @@
 - [ ] Formato legível e estruturado
 
 ### Exclusão Completa
+
 - [ ] `src/services/dataSubjectRights.ts` implementado
 - [ ] Função `requestDataDeletion()` implementada
 - [ ] Período de carência: 7 dias
@@ -162,6 +177,7 @@
 - [ ] Email de confirmação após exclusão
 
 ### Correção de Dados
+
 - [ ] UI de edição no ProfileScreen
 - [ ] Validação de inputs
 - [ ] Atualização em tempo real
@@ -172,6 +188,7 @@
 ## 🌍 TRANSFERÊNCIA INTERNACIONAL
 
 ### Data Processing Agreements (DPAs)
+
 - [ ] DPA com Anthropic assinado
 - [ ] DPA com OpenAI assinado
 - [ ] DPA com Supabase assinado
@@ -180,6 +197,7 @@
 - [ ] Documentos arquivados em `docs/legal/contratos-processadores/`
 
 ### Pseudonimização
+
 - [ ] `src/utils/dataPseudonymization.ts` implementado
 - [ ] Função `pseudonymizeForAI()` implementada
 - [ ] Remove: nome, email, ID real, semana exata, nome do bebê
@@ -192,6 +210,7 @@
 - [ ] Função `forgetSession()` deleta mapeamento após uso
 
 ### Opt-out para IAs Internacionais
+
 - [ ] Checkbox na ConsentScreen: "Permitir IAs avançadas (EUA)"
 - [ ] Se negado:
   - [ ] Chat desabilitado OU usa IA brasileira/local
@@ -204,6 +223,7 @@
 ## 🏛️ GOVERNANÇA
 
 ### Encarregado de Dados (DPO)
+
 - [ ] DPO designado (pessoa física ou terceirizado)
 - [ ] Email criado: dpo@nossa-maternidade.com.br
 - [ ] Contato publicado na Política de Privacidade
@@ -211,6 +231,7 @@
 - [ ] DPO responde em até 48h
 
 ### Registro de Atividades de Tratamento
+
 - [ ] Documento `docs/governanca/registro-atividades-tratamento.xlsx` criado
 - [ ] Listadas TODAS as operações:
   - [ ] Cadastro de usuário
@@ -222,6 +243,7 @@
 - [ ] Atualizado mensalmente
 
 ### Relatório de Impacto (RIPD)
+
 - [ ] Documento `docs/governanca/ripd-nossa-maternidade.pdf` elaborado
 - [ ] Contém:
   - [ ] Descrição do tratamento
@@ -237,6 +259,7 @@
 ## 📊 AUDITORIA
 
 ### Tabela de Auditoria
+
 - [ ] `supabase/migrations/004_audit_logs.sql` executado
 - [ ] Tabela `audit_logs` criada
 - [ ] Campos: user_id, action, resource, resource_id, timestamp, ip_address, user_agent, metadata
@@ -244,6 +267,7 @@
 - [ ] RLS habilitado
 
 ### Logging de Acessos
+
 - [ ] `src/services/auditLogger.ts` implementado
 - [ ] Registra:
   - [ ] Login/logout
@@ -256,6 +280,7 @@
 - [ ] Retenção: 5 anos
 
 ### Alertas de Segurança
+
 - [ ] `src/services/securityAlerts.ts` implementado
 - [ ] Alertas para:
   - [ ] Múltiplas tentativas de login (>5 em 10min)
@@ -270,6 +295,7 @@
 ## 🗄️ RETENÇÃO E ELIMINAÇÃO
 
 ### Política de Retenção
+
 - [ ] `supabase/migrations/005_retention_policy.sql` executado
 - [ ] Funções criadas:
   - [ ] `delete_old_chats()` - 30 dias
@@ -286,12 +312,14 @@
 - [ ] Política documentada na Política de Privacidade
 
 ### Anonimização em Massa
+
 - [ ] Script `scripts/anonymize-inactive-users.sql` criado
 - [ ] Função `anonymize_user()` implementada
 - [ ] Roda mensalmente (cron)
 - [ ] Anonimiza usuários inativos há 1+ ano
 
 ### Atualização de Atividade
+
 - [ ] Campo `last_activity_at` em `user_profiles`
 - [ ] Middleware `src/middleware/activityTracker.ts`
 - [ ] Atualiza em: login, chat, gerar plano, qualquer interação
@@ -301,6 +329,7 @@
 ## 🚨 PLANO DE RESPOSTA A INCIDENTES
 
 ### Documentação
+
 - [ ] `docs/governanca/plano-resposta-incidentes.md` criado
 - [ ] Contém:
   - [ ] Definição de incidente
@@ -313,6 +342,7 @@
 - [ ] Revisado anualmente
 
 ### Testes
+
 - [ ] Simulação tabletop realizada
 - [ ] Equipe treinada no plano
 - [ ] Identificados gaps e corrigidos
@@ -322,12 +352,14 @@
 ## 🛡️ SEGURANÇA DE INFRAESTRUTURA
 
 ### Backups
+
 - [ ] Supabase Point-in-Time Recovery (PITR) habilitado
 - [ ] Backups diários automáticos
 - [ ] Criptografia AES-256 em repouso
 - [ ] Teste de restauração mensal documentado
 
 ### Row Level Security (RLS)
+
 - [ ] RLS habilitado em TODAS as tabelas:
   - [ ] user_profiles
   - [ ] chat_messages
@@ -339,6 +371,7 @@
 - [ ] Relatório de auditoria arquivado
 
 ### Rate Limiting
+
 - [ ] `src/middleware/rateLimit.ts` implementado
 - [ ] Limites configurados:
   - [ ] Chat: 10 mensagens/minuto
@@ -347,6 +380,7 @@
 - [ ] Aplicado nas rotas corretas
 
 ### Segregação de Ambientes
+
 - [ ] Ambientes separados:
   - [ ] Produção (dados reais)
   - [ ] Staging (dados anonimizados)
@@ -359,6 +393,7 @@
 ## ⚕️ DISCLAIMERS MÉDICOS
 
 ### Termos de Uso
+
 - [ ] Seção "AVISO MÉDICO IMPORTANTE" adicionada
 - [ ] Explica que app NÃO substitui médico
 - [ ] Lista o que o app É e NÃO É
@@ -367,18 +402,21 @@
 - [ ] Limitação de responsabilidade
 
 ### HomeScreen
+
 - [ ] Card de disclaimer visível
 - [ ] Ícone de alerta
 - [ ] Texto: "Este app é informativo. Em caso de emergência, ligue 192."
 - [ ] Link "Leia mais" → MedicalDisclaimerScreen
 
 ### MedicalDisclaimerScreen.tsx
+
 - [ ] Tela criada
 - [ ] Texto completo dos disclaimers
 - [ ] Botão "Ligue 192 (SAMU)" funcional (Linking.openURL('tel:192'))
 - [ ] Botão "Entendi"
 
 ### Integração com Canais Oficiais
+
 - [ ] Botões na HomeScreen:
   - [ ] 192 - SAMU (Emergências) → tel:192
   - [ ] 136 - Disque Saúde → tel:136
@@ -390,6 +428,7 @@
 ## 🧪 TESTES DE CONFORMIDADE
 
 ### Teste com Usuárias Reais - Consentimento
+
 - [ ] 10 usuárias beta testaram fluxo
 - [ ] Perguntas respondidas:
   1. Entendeu quais dados são coletados? (>80% sim)
@@ -401,6 +440,7 @@
 - [ ] Critério de sucesso atingido
 
 ### Teste de Exercício de Direitos
+
 - [ ] 5 usuárias testaram:
   - [ ] Solicitar exclusão → Email recebido em <24h ✅
   - [ ] Exportar dados → JSON completo e legível ✅
@@ -409,12 +449,14 @@
 - [ ] 100% de sucesso
 
 ### Teste de Estresse - Auditoria
+
 - [ ] Simuladas 1.000 ações simultâneas
 - [ ] Todos os logs registrados corretamente
 - [ ] Latência <100ms
 - [ ] Sem perda de dados
 
 ### Revisão por Escritório Externo
+
 - [ ] Escritório especializado contratado
 - [ ] Escopo: documentação, RIPD, fluxos, testes
 - [ ] Relatório de auditoria recebido
@@ -426,17 +468,20 @@
 ## 🎯 OPCIONAL (FASE 4)
 
 ### Segurança Avançada
+
 - [ ] Autenticação 2FA implementada (opcional no perfil)
 - [ ] Certificado pinning (SSL) configurado
 - [ ] Web Application Firewall (WAF) ativo (Cloudflare/AWS)
 
 ### Transparência
+
 - [ ] Página pública de transparência criada
 - [ ] Estatísticas de privacidade publicadas
 - [ ] Dashboard de compliance para admin
 - [ ] Relatório de Transparência trimestral
 
 ### Privacy by Design
+
 - [ ] IA brasileira/europeia como fallback (Maritaca, Mistral)
 - [ ] Minimização de dados implementada
 - [ ] Arquitetura redesenhada com privacidade nativa
@@ -446,6 +491,7 @@
 ## ✅ APROVAÇÃO FINAL
 
 ### Stakeholders
+
 - [ ] DPO aprovou toda a documentação
 - [ ] Advogado LGPD aprovou Política e Termos
 - [ ] CTO aprovou implementação técnica
@@ -453,6 +499,7 @@
 - [ ] Nathália Valente (stakeholder) aprovou lançamento
 
 ### Última Verificação
+
 - [ ] Todos os itens deste checklist marcados ✅
 - [ ] Score de conformidade estimado: >65/100
 - [ ] Nenhuma violação crítica pendente
@@ -463,16 +510,19 @@
 
 ## 🚀 LANÇAMENTO
 
-Data prevista: ___/___/_____
+Data prevista: **_/_**/**\_**
 
-Responsável: _____________________
+Responsável: \***\*\*\*\*\***\_\***\*\*\*\*\***
 
-Aprovado por DPO: [ ] Sim  [ ] Não
+Aprovado por DPO: [ ] Sim [ ] Não
 
 Observações:
-_________________________________________________
-_________________________________________________
-_________________________________________________
+
+---
+
+---
+
+---
 
 ---
 

@@ -7,9 +7,11 @@ Este documento descreve o schema completo do database da Nossa Maternidade, cria
 ## 🗄️ Tabelas Criadas (10 no total)
 
 ### 1. `user_profiles`
+
 Perfis das usuárias da Nossa Maternidade.
 
 **Campos principais:**
+
 - `id` (UUID, PK)
 - `email` (TEXT, UNIQUE)
 - `name` (TEXT)
@@ -23,9 +25,11 @@ Perfis das usuárias da Nossa Maternidade.
 - `risk_level` (INTEGER, default 0)
 
 ### 2. `conversation_history`
+
 Histórico completo de conversas com NAT-IA.
 
 **Campos principais:**
+
 - `id` (UUID, PK)
 - `user_id` (UUID, FK → user_profiles.id)
 - `messages` (JSONB) - Array de mensagens
@@ -34,9 +38,11 @@ Histórico completo de conversas com NAT-IA.
 - `key_memories` (JSONB, nullable)
 
 ### 3. `chat_messages`
+
 Mensagens individuais do chat.
 
 **Campos principais:**
+
 - `id` (UUID, PK)
 - `user_id` (UUID, FK → user_profiles.id)
 - `message` (TEXT)
@@ -47,9 +53,11 @@ Mensagens individuais do chat.
 - `risk_flag` (INTEGER, nullable)
 
 ### 4. `habits`
+
 Hábitos das usuárias (pré-definidos e customizados).
 
 **Campos principais:**
+
 - `id` (UUID, PK)
 - `user_id` (UUID, FK → user_profiles.id)
 - `name` (TEXT)
@@ -59,9 +67,11 @@ Hábitos das usuárias (pré-definidos e customizados).
 - `is_active` (BOOLEAN, default true)
 
 ### 5. `habit_completions`
+
 Registro de completions diárias de hábitos.
 
 **Campos principais:**
+
 - `id` (UUID, PK)
 - `habit_id` (UUID, FK → habits.id)
 - `user_id` (UUID, FK → user_profiles.id)
@@ -69,9 +79,11 @@ Registro de completions diárias de hábitos.
 - `date` (DATE)
 
 ### 6. `content_items`
+
 Conteúdos exclusivos da Natália Valente.
 
 **Campos principais:**
+
 - `id` (UUID, PK)
 - `title` (TEXT)
 - `description` (TEXT, nullable)
@@ -84,17 +96,21 @@ Conteúdos exclusivos da Natália Valente.
 - `is_featured` (BOOLEAN, default false)
 
 ### 7. `content_favorites`
+
 Conteúdos favoritados pelas usuárias.
 
 **Campos principais:**
+
 - `id` (UUID, PK)
 - `user_id` (UUID, FK → user_profiles.id)
 - `content_id` (UUID, FK → content_items.id)
 
 ### 8. `moderation_queue`
+
 Fila de moderação para mensagens que precisam revisão.
 
 **Campos principais:**
+
 - `id` (UUID, PK)
 - `user_id` (UUID, FK → user_profiles.id)
 - `message` (TEXT)
@@ -106,9 +122,11 @@ Fila de moderação para mensagens que precisam revisão.
 - `reviewed_at` (TIMESTAMPTZ, nullable)
 
 ### 9. `risk_alerts`
+
 Alertas de risco médico ou psicológico.
 
 **Campos principais:**
+
 - `id` (UUID, PK)
 - `user_id` (UUID, FK → user_profiles.id)
 - `risk_type` ('medical' | 'psychological')
@@ -119,9 +137,11 @@ Alertas de risco médico ou psicológico.
 - `resolved_at` (TIMESTAMPTZ, nullable)
 
 ### 10. `vector_embeddings`
+
 Embeddings vetoriais para RAG (busca semântica).
 
 **Campos principais:**
+
 - `id` (UUID, PK)
 - `user_id` (UUID, FK → user_profiles.id)
 - `content` (TEXT)
@@ -179,9 +199,11 @@ Todas as foreign keys usam `ON DELETE CASCADE`:
 ## 🔧 Functions & Triggers
 
 ### Função: `update_updated_at_column()`
+
 Atualiza automaticamente o campo `updated_at` quando uma linha é modificada.
 
 ### Triggers:
+
 - `update_user_profiles_updated_at`
 - `update_conversation_history_updated_at`
 

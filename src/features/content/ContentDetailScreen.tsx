@@ -5,26 +5,17 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Alert,
-  Share,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Alert, Share, Platform } from 'react-native';
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { Video, Audio, ResizeMode } from 'expo-av';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Card } from '../../components/Card';
-import { Badge } from '../../components/Badge';
-import { Button } from '../../components/Button';
-import { Loading } from '../../shared/components/Loading';
-import { colors, spacing, typography, borderRadius } from '../../theme/colors';
-import { supabase } from '../../services/supabase';
-import { RootStackParamList } from '../../navigation/types';
+import { Card } from '@/components/Card';
+import { Badge } from '@/components/Badge';
+import { Button } from '@/components/Button';
+import { Loading } from '@/shared/components/Loading';
+import { colors, spacing, typography, borderRadius } from '@/theme/colors';
+import { supabase } from '@/services/supabase';
+import { RootStackParamList } from '@/navigation/types';
 
 type ContentDetailRouteProp = RouteProp<RootStackParamList, 'ContentDetail'>;
 
@@ -67,15 +58,13 @@ export default function ContentDetailScreen() {
 
   const loadContent = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) return;
 
       // Buscar conteúdo
-      const { data: item } = await supabase
-        .from('content_items')
-        .select('*')
-        .eq('id', contentId)
-        .single();
+      const { data: item } = await supabase.from('content_items').select('*').eq('id', contentId).single();
 
       if (!item) {
         Alert.alert('Erro', 'Conteúdo não encontrado');
@@ -106,16 +95,14 @@ export default function ContentDetailScreen() {
 
   const toggleFavorite = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user || !content) return;
 
       if (content.is_favorite) {
         // Remover dos favoritos
-        await supabase
-          .from('content_favorites')
-          .delete()
-          .eq('user_id', user.id)
-          .eq('content_id', contentId);
+        await supabase.from('content_favorites').delete().eq('user_id', user.id).eq('content_id', contentId);
         setContent({ ...content, is_favorite: false });
       } else {
         // Adicionar aos favoritos
@@ -134,12 +121,52 @@ export default function ContentDetailScreen() {
   const handleShare = async () => {
     if (!content) return;
 
+    const shareText = `${content.title}\n\n${content.description || ''}\n\nAcesse no app Nossa Maternidade`;
+
     try {
-      await Share.share({
-        message: `${content.title}\n\n${content.description || ''}\n\nAcesse no app Nossa Maternidade`,
-        title: content.title,
-      });
+      // Web: usar Web Share API se disponível, senão copiar para clipboard
+      if (Platform.OS === 'web') {
+        // Verificar se navegador suporta Web Share API
+        if (typeof (window as any)?.navigator !== 'undefined' && (window as any).navigator.share) {
+          try {
+            await (window as any).navigator.share({
+              title: content.title,
+              text: shareText,
+            });
+          } catch (shareError: any) {
+            // Se o usuário cancelar, não fazer nada
+            if (shareError.name === 'AbortError') {
+              return;
+            }
+            throw shareError;
+          }
+        } else if (typeof (window as any)?.navigator !== 'undefined' && (window as any).navigator.clipboard) {
+          // Fallback: copiar para clipboard
+          await (window as any).navigator.clipboard.writeText(shareText);
+          Alert.alert('Copiado!', 'Conteúdo copiado para a área de transferência');
+        } else {
+          // Último fallback: mostrar texto para copiar manualmente
+          Alert.alert('Compartilhar', shareText);
+        }
+      } else {
+        // Mobile: usar Share API do React Native
+        try {
+          await Share.share({
+            message: shareText,
+            title: content.title,
+          });
+        } catch (shareError: any) {
+          // Ignorar erro se o usuário cancelar o compartilhamento
+          if (
+            shareError.message !== 'User did not share' &&
+            shareError.message !== 'User cancelled'
+          ) {
+            throw shareError;
+          }
+        }
+      }
     } catch (error) {
+      // Log apenas se não for cancelamento do usuário
       console.error('Error sharing:', error);
     }
   };
@@ -186,10 +213,7 @@ export default function ContentDetailScreen() {
 
   useEffect(() => {
     if (content?.type === 'audio' && content.content_url) {
-      Audio.Sound.createAsync(
-        { uri: content.content_url },
-        { shouldPlay: false }
-      ).then(({ sound }) => {
+      Audio.Sound.createAsync({ uri: content.content_url }, { shouldPlay: false }).then(({ sound }) => {
         setAudioRef(sound);
       });
     }
@@ -220,40 +244,26 @@ export default function ContentDetailScreen() {
           }}
         />
       ) : content.thumbnail_url ? (
-        <Image
-          source={{ uri: content.thumbnail_url }}
-          style={styles.thumbnail}
-          resizeMode="cover"
-        />
+        <Image source={{ uri: content.thumbnail_url }} style={styles.thumbnail} resizeMode="cover" />
       ) : null}
 
       {/* Conteúdo */}
       <View style={styles.content}>
         <View style={styles.header}>
-          <Badge
-            variant="info"
-            size="md"
-            style={styles.typeBadge}
-          >
+          <Badge variant="info" size="md" style={styles.typeBadge}>
             {content.type === 'article' && '📄 Artigo'}
             {content.type === 'video' && '🎥 Vídeo'}
             {content.type === 'audio' && '🎧 Áudio'}
             {content.type === 'post' && '📝 Post'}
           </Badge>
-          {content.category && (
-            <Text style={styles.category}>{content.category}</Text>
-          )}
+          {content.category && <Text style={styles.category}>{content.category}</Text>}
         </View>
 
         <Text style={styles.title}>{content.title}</Text>
 
-        {content.author && (
-          <Text style={styles.author}>Por {content.author}</Text>
-        )}
+        {content.author && <Text style={styles.author}>Por {content.author}</Text>}
 
-        {content.description && (
-          <Text style={styles.description}>{content.description}</Text>
-        )}
+        {content.description && <Text style={styles.description}>{content.description}</Text>}
 
         {/* Player de Áudio */}
         {content.type === 'audio' && content.content_url && (
@@ -264,11 +274,7 @@ export default function ContentDetailScreen() {
               accessible={true}
               accessibilityLabel={isPlaying ? 'Pausar áudio' : 'Reproduzir áudio'}
             >
-              <Icon
-                name={isPlaying ? 'pause-circle' : 'play-circle'}
-                size={48}
-                color={colors.primary}
-              />
+              <Icon name={isPlaying ? 'pause-circle' : 'play-circle'} size={48} color={colors.primary} />
             </TouchableOpacity>
           </Card>
         )}
@@ -290,11 +296,7 @@ export default function ContentDetailScreen() {
             variant={content.is_favorite ? 'primary' : 'outline'}
             icon={content.is_favorite ? 'heart' : 'heart-outline'}
             onPress={toggleFavorite}
-            accessibilityLabel={
-              content.is_favorite
-                ? 'Remover dos favoritos'
-                : 'Adicionar aos favoritos'
-            }
+            accessibilityLabel={content.is_favorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
             style={styles.actionButton}
           >
             {content.is_favorite ? 'Favoritado' : 'Favoritar'}

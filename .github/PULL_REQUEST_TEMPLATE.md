@@ -1,43 +1,21 @@
-# 🔄 Pull Request
+# Pull Request
 
-## 📝 Descrição
+## Objetivo
+<!-- Descreva o objetivo deste PR -->
 
-Descreva brevemente as mudanças propostas neste PR.
+## Checklist
+- [ ] Testes passam no CI
+- [ ] Cobertura não caiu (< 70%)
+- [ ] VARs .env documentadas/atualizadas
+- [ ] Logs sem PII (LGPD)
+- [ ] RLS/Policies afetadas? Atualizar testes
+- [ ] Documentação atualizada (se necessário)
 
-## 🎯 Tipo de Mudança
+## Mudanças
+<!-- Lista de mudanças principais -->
 
-- [ ] 🐛 Bug fix
-- [ ] ✨ Nova funcionalidade
-- [ ] 🔧 Refatoração
-- [ ] 📝 Documentação
-- [ ] 🎨 Design/UI
-- [ ] ⚡ Performance
-- [ ] 🔒 Segurança
+## Testes
+<!-- Como testar? -->
 
-## 🧪 Como Testar
-
-Descreva os passos para testar as mudanças:
-
-1. Passo 1
-2. Passo 2
-3. Passo 3
-
-## 📸 Screenshots (se aplicável)
-
-Adicione screenshots das mudanças visuais aqui.
-
-## ✅ Checklist
-
-- [ ] Código foi testado localmente
-- [ ] Não há erros de lint ou TypeScript
-- [ ] Documentação foi atualizada (se necessário)
-- [ ] Não quebrou funcionalidades existentes
-- [ ] Segue as convenções de código do projeto
-
-## 🔗 Issues Relacionadas
-
-Closes #[número da issue]
-
-## 📝 Notas Adicionais
-
-Adicione qualquer informação adicional relevante aqui.
+## Screenshots (se aplicável)
+<!-- Screenshots de mudanças visuais -->

@@ -157,21 +157,28 @@ export const NAT_AI_RESPONSE_TEMPLATES = {
   /**
    * Primeira mensagem da usuária
    */
-  FIRST_MESSAGE: (userName: string) => `Oi ${userName}! 💝 Que bom ter você aqui! Estou aqui para te ouvir e te apoiar na sua jornada.
+  FIRST_MESSAGE: (
+    userName: string
+  ) => `Oi ${userName}! 💝 Que bom ter você aqui! Estou aqui para te ouvir e te apoiar na sua jornada.
 
 Como você está se sentindo hoje? O que trouxe você até aqui? Estou toda ouvidos (bem, digitalmente, mas você entendeu! 😊)`,
 
   /**
    * Retorno após dias de ausência
    */
-  WELCOME_BACK: (userName: string, daysSince: number) => `Oi ${userName}! 💕 Que bom te ver de volta! Faz ${daysSince} dia${daysSince > 1 ? 's' : ''} que não conversávamos.
+  WELCOME_BACK: (
+    userName: string,
+    daysSince: number
+  ) => `Oi ${userName}! 💕 Que bom te ver de volta! Faz ${daysSince} dia${daysSince > 1 ? 's' : ''} que não conversávamos.
 
 Como você está? Como tem sido esse tempo? Estou aqui para te ouvir, seja o que for. 🤗`,
 
   /**
    * Usuária em crise emocional
    */
-  CRISIS_SUPPORT: (userName: string) => `Oi querida ${userName}! 💝 Estou aqui com você neste momento difícil. Sinto muito que você esteja passando por isso.
+  CRISIS_SUPPORT: (
+    userName: string
+  ) => `Oi querida ${userName}! 💝 Estou aqui com você neste momento difícil. Sinto muito que você esteja passando por isso.
 
 Seus sentimentos são válidos e compreensíveis. Ser mãe não é fácil, e é completamente normal ter momentos assim.
 
@@ -180,7 +187,10 @@ O que você precisa neste momento? Estou aqui para te ouvir e te apoiar. Você n
   /**
    * Celebração de conquista
    */
-  CELEBRATION: (userName: string, achievement: string) => `Que maravilha, ${userName}! 🎉 Parabéns! Isso é uma conquista e tanto!
+  CELEBRATION: (
+    userName: string,
+    achievement: string
+  ) => `Que maravilha, ${userName}! 🎉 Parabéns! Isso é uma conquista e tanto!
 
 ${achievement} - você conseguiu isso! Como você está se sentindo? Compartilhar essas vitórias é tão importante.
 

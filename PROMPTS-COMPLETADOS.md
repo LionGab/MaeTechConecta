@@ -43,6 +43,7 @@
    - App.tsx refatorado
 
 **Arquivos Criados:**
+
 - `.eslintrc.js`
 - `.prettierrc.js`
 - `.prettierignore`
@@ -79,6 +80,7 @@
    - Todas com CASCADE onde apropriado
 
 **Arquivos Criados:**
+
 - `supabase/schema-nossa-maternidade-completo.sql`
 - `supabase/README-SCHEMA.md`
 
@@ -109,6 +111,7 @@
    - Contexto personalizado
 
 4. ✅ **Configuração Gemini:**
+
    ```typescript
    {
      model: "gemini-2.0-flash-exp",
@@ -122,6 +125,7 @@
    - GEMINI_API_KEY (documentado no README)
 
 **Arquivos Criados:**
+
 - `supabase/functions/nathia-chat/index.ts`
 - `supabase/functions/nathia-chat/README.md`
 
@@ -173,6 +177,7 @@
 - ✅ Acessibilidade (WCAG 2.1 AA compliant)
 
 **Arquivos Criados/Atualizados:**
+
 - `src/components/Button.tsx` (já existia, validado)
 - `src/components/Input.tsx` (já existia, validado)
 - `src/components/Card.tsx` (já existia, validado)
@@ -267,16 +272,19 @@
 ## 🎯 Resumo
 
 ### ✅ Completos (4/8):
+
 1. ✅ PROMPT 1: Setup Inicial
 2. ✅ PROMPT 2: Supabase Database
 3. ✅ PROMPT 3: Gemini 2.0 Flash
 4. ✅ PROMPT 4: Design System Base
 
 ### ⚠️ Parcialmente Implementados (2/8):
+
 5. ⚠️ PROMPT 5: Onboarding (já existe, precisa validação)
 6. ⚠️ PROMPT 6: Chat Screen (já existe, precisa validação)
 
 ### ⏳ Aguardando (2/8):
+
 7. ⏳ PROMPT 7: Checklist de Hábitos
 8. ⏳ PROMPT 8: Feed de Conteúdos
 

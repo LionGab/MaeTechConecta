@@ -6,7 +6,8 @@
 
 import React from 'react';
 import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from 'react-native';
-import { colors, typography } from '../theme/colors';
+import { colors, typography } from '@/theme/colors';
+import { theme } from '@/constants/theme';
 
 export type TextVariant =
   | 'h1'
@@ -100,14 +101,14 @@ const getVariantStyles = (variant: TextVariant): TextStyle => {
         fontSize: typography.sizes.sm,
         fontWeight: typography.weights.medium,
         lineHeight: typography.sizes.sm * 1.5,
-        color: '#81C784',
+        color: theme.colors.success,
       };
     case 'warning':
       return {
         fontSize: typography.sizes.sm,
         fontWeight: typography.weights.medium,
         lineHeight: typography.sizes.sm * 1.5,
-        color: '#FFB74D',
+        color: theme.colors.warning,
       };
     default:
       return {
@@ -119,27 +120,13 @@ const getVariantStyles = (variant: TextVariant): TextStyle => {
   }
 };
 
-export const Text: React.FC<TextProps> = ({
-  variant = 'body',
-  color,
-  style,
-  children,
-  ...props
-}) => {
+export const Text: React.FC<TextProps> = ({ variant = 'body', color, style, children, ...props }) => {
   const variantStyles = getVariantStyles(variant);
 
-  const finalStyle = [
-    styles.base,
-    variantStyles,
-    color ? { color } : null,
-    style,
-  ].filter(Boolean);
+  const finalStyle = [styles.base, variantStyles, color ? { color } : null, style].filter(Boolean);
 
   return (
-    <RNText
-      style={finalStyle}
-      {...props}
-    >
+    <RNText style={finalStyle} {...props}>
       {children}
     </RNText>
   );
@@ -152,22 +139,12 @@ const styles = StyleSheet.create({
 });
 
 // Exportar variantes como componentes separados para conveniência
-export const H1: React.FC<Omit<TextProps, 'variant'>> = (props) => (
-  <Text variant="h1" {...props} />
-);
+export const H1: React.FC<Omit<TextProps, 'variant'>> = (props) => <Text variant="h1" {...props} />;
 
-export const H2: React.FC<Omit<TextProps, 'variant'>> = (props) => (
-  <Text variant="h2" {...props} />
-);
+export const H2: React.FC<Omit<TextProps, 'variant'>> = (props) => <Text variant="h2" {...props} />;
 
-export const H3: React.FC<Omit<TextProps, 'variant'>> = (props) => (
-  <Text variant="h3" {...props} />
-);
+export const H3: React.FC<Omit<TextProps, 'variant'>> = (props) => <Text variant="h3" {...props} />;
 
-export const Body: React.FC<Omit<TextProps, 'variant'>> = (props) => (
-  <Text variant="body" {...props} />
-);
+export const Body: React.FC<Omit<TextProps, 'variant'>> = (props) => <Text variant="body" {...props} />;
 
-export const Caption: React.FC<Omit<TextProps, 'variant'>> = (props) => (
-  <Text variant="caption" {...props} />
-);
+export const Caption: React.FC<Omit<TextProps, 'variant'>> = (props) => <Text variant="caption" {...props} />;
