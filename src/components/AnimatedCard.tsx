@@ -66,10 +66,6 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
     <Animated.View style={[animatedStyle, style]}>
       <Card
         {...cardProps}
-        style={[
-          enhancedPress && styles.enhanced,
-          cardProps.style,
-        ]}
       />
     </Animated.View>
   );

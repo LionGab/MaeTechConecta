@@ -14,7 +14,8 @@ import { ThemeName } from '@/theme/themes';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const ThemeSelector: React.FC = () => {
-  const { themeName, setThemeName, colors, spacing, borderRadius, typography } = useTheme();
+  const { themeName, setThemeName, theme } = useTheme();
+  const { colors, spacing, borderRadius, typography } = theme;
 
   const themes: Array<{ name: ThemeName; label: string; description: string }> = [
     {

@@ -21,10 +21,11 @@ export function initSentry() {
 
   Sentry.init({
     dsn,
-    enableInExpoDevelopment: false,
     debug: false,
     tracesSampleRate: 1.0,
     environment: process.env.NODE_ENV || 'development',
+    enableNative: true,
+    enableNativeNagger: false,
     beforeSend(event, hint) {
       // Filtrar erros sensíveis ou não importantes
       if (event.exception) {

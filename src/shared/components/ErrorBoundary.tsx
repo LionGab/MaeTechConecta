@@ -57,7 +57,7 @@ export class ErrorBoundary extends Component<Props, State> {
               💔
             </Text>
           </View>
-          <Text style={styles.title} accessibilityRole="header" accessibilityLevel={1}>
+          <Text style={styles.title} accessibilityRole="header">
             Ops! Algo deu errado
           </Text>
           <Text style={styles.message} accessibilityRole="text">

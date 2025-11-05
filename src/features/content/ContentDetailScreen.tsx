@@ -127,22 +127,22 @@ export default function ContentDetailScreen() {
       // Web: usar Web Share API se disponível, senão copiar para clipboard
       if (Platform.OS === 'web') {
         // Verificar se navegador suporta Web Share API
-        if (typeof navigator !== 'undefined' && navigator.share) {
+        if (typeof (window as any)?.navigator !== 'undefined' && (window as any).navigator.share) {
           try {
-            await navigator.share({
+            await (window as any).navigator.share({
               title: content.title,
               text: shareText,
             });
-          } catch (shareError) {
+          } catch (shareError: any) {
             // Se o usuário cancelar, não fazer nada
-            if ((shareError as Error).name === 'AbortError') {
+            if (shareError.name === 'AbortError') {
               return;
             }
             throw shareError;
           }
-        } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        } else if (typeof (window as any)?.navigator !== 'undefined' && (window as any).navigator.clipboard) {
           // Fallback: copiar para clipboard
-          await navigator.clipboard.writeText(shareText);
+          await (window as any).navigator.clipboard.writeText(shareText);
           Alert.alert('Copiado!', 'Conteúdo copiado para a área de transferência');
         } else {
           // Último fallback: mostrar texto para copiar manualmente
@@ -155,11 +155,11 @@ export default function ContentDetailScreen() {
             message: shareText,
             title: content.title,
           });
-        } catch (shareError) {
+        } catch (shareError: any) {
           // Ignorar erro se o usuário cancelar o compartilhamento
           if (
-            (shareError as Error).message !== 'User did not share' &&
-            (shareError as Error).message !== 'User cancelled'
+            shareError.message !== 'User did not share' &&
+            shareError.message !== 'User cancelled'
           ) {
             throw shareError;
           }
