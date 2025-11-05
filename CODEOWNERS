@@ -1,0 +1,6 @@
+# CODEOWNERS
+* @LionGab
+
+infra/** @LionGab
+supabase/** @LionGab
+
