@@ -105,7 +105,11 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor={colors.background} />
-      <ScrollView style={styles.container}>
+      <ScrollView 
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.header}>
           <View style={styles.logoHeader}>
             <Logo size={50} />
@@ -307,9 +311,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  contentContainer: {
+    paddingBottom: spacing['2xl'],
+  },
   header: {
     padding: spacing.lg,
-    paddingTop: spacing.md,
+    paddingTop: spacing.xl,
+    paddingBottom: spacing.lg,
   },
   logoHeader: {
     alignItems: 'center',
@@ -322,11 +330,12 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   greeting: {
-    fontSize: typography.sizes['2xl'],
+    fontSize: typography.sizes['3xl'],
     fontWeight: typography.weights.bold as any,
     color: colors.primary,
     textAlign: 'center',
     fontFamily: typography.fontFamily.sans,
+    letterSpacing: -0.5,
   },
   subGreetingContainer: {
     flexDirection: 'row',
@@ -344,18 +353,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    marginBottom: spacing.xl,
+    marginBottom: spacing['2xl'],
     gap: spacing.md,
+    flexWrap: 'wrap',
   },
   quickAction: {
     flex: 1,
+    minWidth: '45%',
     alignItems: 'center',
     backgroundColor: colors.card,
     padding: spacing.lg,
     paddingVertical: spacing.xl,
-    borderRadius: borderRadius.lg,
-    minHeight: 100,
-    ...shadows.light.sm,
+    borderRadius: borderRadius.xl,
+    minHeight: 110,
+    ...shadows.light.md,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   quickActionTitle: {
     fontSize: typography.sizes.sm, // 14px agora
@@ -366,7 +379,7 @@ const styles = StyleSheet.create({
   },
   dailyPlanCard: {
     marginHorizontal: spacing.lg,
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xl,
   },
   dailyPlanHeader: {
     flexDirection: 'row',
@@ -418,7 +431,7 @@ const styles = StyleSheet.create({
   },
   tipsCard: {
     marginHorizontal: spacing.lg,
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xl,
   },
   tipContainer: {
     flexDirection: 'row',
@@ -434,7 +447,7 @@ const styles = StyleSheet.create({
   },
   faqCard: {
     marginHorizontal: spacing.lg,
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xl,
   },
   faqItem: {
     flexDirection: 'row',
@@ -465,6 +478,7 @@ const styles = StyleSheet.create({
   },
   emergencyButton: {
     marginHorizontal: spacing.lg,
+    marginTop: spacing.lg,
     marginBottom: spacing['3xl'],
   },
 });

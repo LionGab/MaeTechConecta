@@ -43,6 +43,12 @@ REVOGAR*.md
 *.secret
 *.key
 
+# Credenciais de produção (lojas)
+service-account-key.json
+*.p12
+*.mobileprovision
+.env.production
+
 # TypeScript
 *.tsbuildinfo
 

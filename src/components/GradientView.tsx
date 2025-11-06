@@ -40,33 +40,34 @@ export interface GradientViewProps {
 }
 
 /**
- * Cores dos gradientes baseados no tema Bubblegum
+ * 🎨 Cores dos Gradientes Acolhedores - Terracota, Sage, Lavanda
+ * Design System Superior - Paleta Mobile-First
  */
 const gradientColors = {
   maternal: {
-    start: '#F0E7F0', // background (rosa muito claro)
-    middle: '#FFF5F7', // rosa pastel
-    end: '#E0F0F5', // azul calma claro
+    start: '#FCFAF8', // Creme suave (background)
+    middle: '#F5F0E8', // Creme médio
+    end: '#F0E8E0', // Creme quente
   },
   soft: {
-    start: '#FFF5F7', // rosa pastel
-    middle: '#FFE3E8', // rosa suave
-    end: '#FFFFFF', // branco
+    start: '#FCFAF8', // Creme suave
+    middle: '#F8E8E8', // Rosa muito claro
+    end: '#F0D8E8', // Lavanda claro
   },
   warm: {
-    start: '#FFF5F7', // rosa pastel
-    middle: '#FFE3E8', // rosa suave
-    end: '#EDD8B1', // amarelo pastel
+    start: '#FCFAF8', // Creme suave
+    middle: '#F8E8E8', // Rosa muito claro
+    end: '#F0D8B8', // Pêssego suave
   },
   calm: {
-    start: '#E0F0F5', // azul calma claro
-    middle: '#B8D8E8', // azul pastel
-    end: '#F0E7F0', // rosa muito claro
+    start: '#F0F8F5', // Verde muito claro
+    middle: '#E8F0ED', // Sage claro
+    end: '#F0E8E8', // Rosa muito claro
   },
   sunset: {
-    start: '#EDD8B1', // amarelo pastel
-    middle: '#FFE3E8', // rosa suave
-    end: '#DD5B9A', // rosa vibrante
+    start: '#F0D8B8', // Pêssego suave
+    middle: '#F8E8E8', // Rosa muito claro
+    end: '#E891B5', // Terracota (primary)
   },
 };
 

@@ -72,7 +72,7 @@ function generateNeutralScale(isDark: boolean) {
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const systemColorScheme = useColorScheme();
-  const [themeMode, setThemeModeState] = useState<ThemeMode>('auto');
+  const [themeMode, setThemeModeState] = useState<ThemeMode>('light'); // ✅ Forçar light mode
   const [themeName, setThemeNameState] = useState<ThemeName>(defaultTheme);
   const [isDark, setIsDark] = useState<boolean>(false);
 

@@ -471,15 +471,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.muted,
     opacity: 0.5,
   },
-  typingContainer: {
-    padding: spacing.md,
-    alignItems: 'center',
-  },
-  typingText: {
-    fontSize: typography.sizes.sm,
-    color: colors.mutedForeground,
-    fontStyle: 'italic',
-  },
   errorContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -562,5 +553,14 @@ const styles = StyleSheet.create({
     height: 16,
     backgroundColor: colors.muted,
     borderRadius: borderRadius.sm,
+  },
+  typingContainer: {
+    padding: spacing.md,
+    alignItems: 'center',
+  },
+  typingText: {
+    fontSize: typography.sizes.sm,
+    color: colors.mutedForeground,
+    fontStyle: 'italic',
   },
 });

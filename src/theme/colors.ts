@@ -6,118 +6,122 @@
  * Light mode + Dark mode
  */
 
-// Cores Light Mode (padrão)
-export const light = {
-  // Backgrounds
-  background: '#F0E7F0', // oklch(0.9399 0.0203 345.6985) - Rosa muito claro
-  foreground: '#121212', // oklch(0.4712 0 0) - Preto
+// 🎨 Paleta Acolhedora Mobile-First - Terracota, Sage, Lavanda
+// Design System Superior ao projeto web
+// Cores HSL convertidas para RGB para React Native
 
-  // Cards
-  card: '#F2F1E8', // oklch(0.9498 0.0500 86.8891) - Bege claro
-  cardForeground: '#121212',
+// Cores Light Mode (padrão) - Acolhedoras e Suaves
+export const light = {
+  // Backgrounds - Creme suave (#FCFAF8)
+  background: '#FCFAF8', // Creme suave acolhedor
+  foreground: '#1A1A1A', // Preto suave para melhor legibilidade
+
+  // Cards - Branco com toque creme
+  card: '#FFFFFF', // Branco puro para cards
+  cardForeground: '#1A1A1A',
 
   // Popover
-  popover: '#FFFFFF', // oklch(1.0000 0 0) - Branco puro
-  popoverForeground: '#121212',
+  popover: '#FFFFFF',
+  popoverForeground: '#1A1A1A',
 
-  // Primary (destaque principal - rosa)
-  primary: '#DD5B9A', // oklch(0.6209 0.1801 348.1385) - Rosa vibrante
+  // Primary - Terracota Maternal (#E891B5) - Rosa suave acolhedor
+  primary: '#E891B5', // Terracota - Rosa suave acolhedor
   primaryForeground: '#FFFFFF',
 
-  // Secondary (azul)
-  secondary: '#B8D8E8', // oklch(0.8095 0.0694 198.1863) - Azul pastel
-  secondaryForeground: '#1A1A1A',
+  // Secondary - Sage Suave (#C8E0D4) - Verde acolhedor
+  secondary: '#C8E0D4', // Sage - Verde suave acolhedor
+  secondaryForeground: '#1A4A3A', // Verde escuro para contraste
 
-  // Muted (cinza neutro)
-  muted: '#E1E5EC', // oklch(0.8800 0.0504 212.0952) - Cinza claro
-  mutedForeground: '#696969',
+  // Accent - Lavanda Delicado (#E8C4E8) - Suave e diferenciado
+  accent: '#E8C4E8', // Lavanda - Roxo suave
+  accentForeground: '#4A2A4A', // Roxo escuro para contraste
 
-  // Accent (amarelo/verde)
-  accent: '#EDD8B1', // oklch(0.9195 0.0801 87.6670) - Amarelo pastel
-  accentForeground: '#1A1A1A',
+  // Muted - Creme Suave (melhor contraste)
+  muted: '#F5F0E8', // Creme suave
+  mutedForeground: '#6B6660', // Cinza médio para texto secundário
 
-  // Destructive (vermelho)
-  destructive: '#D65152', // oklch(0.7091 0.1697 21.9551) - Vermelho
+  // Destructive - Vermelho Suave (menos agressivo)
+  destructive: '#E67E7E', // Vermelho suave acolhedor
   destructiveForeground: '#FFFFFF',
 
-  // Border
-  border: '#DD5B9A', // Rosa para bordas
-  input: '#F5F1F5', // oklch(0.9189 0 0) - Branco com toque de rosa
-  ring: '#D94A7B', // oklch(0.7002 0.1597 350.7532) - Rosa escuro
+  // Border - Bege Suave
+  border: '#E5DCD0', // Bege suave para bordas
+  input: '#F5F0E8', // Creme suave para inputs
+  ring: '#E891B5', // Rosa suave para focus (consistente com primary)
 
   // Sidebar
-  sidebar: '#F0D9F0', // oklch(0.9140 0.0424 343.0913)
-  sidebarForeground: '#1A1A1A', // oklch(0.3211 0 0)
-  sidebarPrimary: '#E44B7A', // oklch(0.6559 0.2118 354.3084)
+  sidebar: '#F5F0E8', // Creme suave
+  sidebarForeground: '#1A1A1A',
+  sidebarPrimary: '#E891B5', // Terracota
   sidebarPrimaryForeground: '#FFFFFF',
-  sidebarAccent: '#D8A5C8', // oklch(0.8228 0.1095 346.0184)
-  sidebarAccentForeground: '#1A1A1A',
-  sidebarBorder: '#F5F0F5', // oklch(0.9464 0.0327 307.1745)
-  sidebarRing: '#E44B7A', // oklch(0.6559 0.2118 354.3084)
+  sidebarAccent: '#E8C4E8', // Lavanda
+  sidebarAccentForeground: '#4A2A4A',
+  sidebarBorder: '#E5DCD0', // Bege suave
+  sidebarRing: '#E891B5', // Terracota
 
-  // Charts (cores para gráficos)
-  chart1: '#D94A7B', // oklch(0.7002 0.1597 350.7532)
-  chart2: '#B0D4E0', // oklch(0.8189 0.0799 212.0892)
-  chart3: '#EDD8B1', // oklch(0.9195 0.0801 87.6670)
-  chart4: '#E8C8D0', // oklch(0.7998 0.1110 348.1791)
-  chart5: '#DD6B9A', // oklch(0.6197 0.1899 353.9091)
+  // Charts (cores suaves e harmoniosas)
+  chart1: '#E891B5', // Terracota
+  chart2: '#E8C4E8', // Lavanda
+  chart3: '#C8E0D4', // Sage
+  chart4: '#B8D4E8', // Azul suave
+  chart5: '#F0D8B8', // Pêssego suave
 };
 
-// Cores Dark Mode
+// 🌙 Dark Mode com Tons Quentes - Não usa preto puro (reduz fadiga visual)
 export const dark = {
-  // Backgrounds
-  background: '#3C3C4D', // oklch(0.2497 0.0305 234.1628) - Azul escuro
-  foreground: '#EDE3EE', // oklch(0.9306 0.0197 349.0785) - Branco/rosa claro
+  // Backgrounds - Marrom escuro suave (#1F1C1A)
+  background: '#1F1C1A', // Marrom escuro suave (não preto puro)
+  foreground: '#F5F0E8', // Creme claro para texto
 
   // Cards
-  card: '#474A5E', // oklch(0.2902 0.0299 233.5352) - Azul-cinza
-  cardForeground: '#EDE3EE',
+  card: '#2A2623', // Marrom escuro mais claro
+  cardForeground: '#F5F0E8',
 
   // Popover
-  popover: '#474A5E',
-  popoverForeground: '#EDE3EE',
+  popover: '#2A2623',
+  popoverForeground: '#F5F0E8',
 
-  // Primary (amarelo/verde - contraste com fundo escuro)
-  primary: '#E8D8B1', // oklch(0.9195 0.0801 87.6670) - Amarelo claro
-  primaryForeground: '#3C3C4D',
+  // Primary - Terracota mais claro para dark mode
+  primary: '#F0A8C4', // Terracota mais claro para contraste
+  primaryForeground: '#1F1C1A',
 
-  // Secondary (vermelho suave)
-  secondary: '#D4999D', // oklch(0.7794 0.0803 4.1330) - Rosa avermelhado
-  secondaryForeground: '#3C3C4D',
+  // Secondary - Sage adaptado para dark
+  secondary: '#A0C5B4', // Sage mais claro
+  secondaryForeground: '#1F1C1A',
 
-  // Muted
-  muted: '#565969', // oklch(0.2713 0.0086 255.5780) - Cinza escuro
-  mutedForeground: '#D4999D',
+  // Accent - Lavanda suave
+  accent: '#D8B4D8', // Lavanda suave
+  accentForeground: '#1F1C1A',
 
-  // Accent (rosa)
-  accent: '#D45B82', // oklch(0.6699 0.0988 356.9762) - Rosa
-  accentForeground: '#EDE3EE',
+  // Muted - Escuro Suave com contraste adequado
+  muted: '#3A3530', // Marrom escuro suave
+  mutedForeground: '#B8B0A8', // Creme médio para texto secundário
 
   // Destructive
-  destructive: '#D84860', // oklch(0.6702 0.1806 350.3599) - Vermelho
-  destructiveForeground: '#3C3C4D',
+  destructive: '#E67E7E', // Vermelho suave (mesmo do light)
+  destructiveForeground: '#FFFFFF',
 
-  // Border
-  border: '#565969',
-  input: '#4F525D', // oklch(0.3093 0.0305 232.0027)
-  ring: '#93B7D8', // oklch(0.6998 0.0896 201.8672) - Azul claro
+  // Border - Mais visíveis
+  border: '#4A4540', // Marrom médio para bordas
+  input: '#3A3530', // Marrom escuro para inputs
+  ring: '#F0A8C4', // Terracota claro para focus
 
   // Sidebar
-  sidebar: '#353542', // oklch(0.2303 0.0270 235.9743)
-  sidebarForeground: '#F5F3F7', // oklch(0.9670 0.0029 264.5419)
-  sidebarPrimary: '#E44B7A', // oklch(0.6559 0.2118 354.3084)
-  sidebarPrimaryForeground: '#FFFFFF',
-  sidebarAccent: '#D8A5C8', // oklch(0.8228 0.1095 346.0184)
-  sidebarAccentForeground: '#565969', // oklch(0.2781 0.0296 256.8480)
-  sidebarBorder: '#565969', // oklch(0.3729 0.0306 259.7328)
-  sidebarRing: '#E44B7A', // oklch(0.6559 0.2118 354.3084)
+  sidebar: '#2A2623',
+  sidebarForeground: '#F5F0E8',
+  sidebarPrimary: '#F0A8C4', // Terracota claro
+  sidebarPrimaryForeground: '#1F1C1A',
+  sidebarAccent: '#D8B4D8', // Lavanda
+  sidebarAccentForeground: '#1F1C1A',
+  sidebarBorder: '#4A4540',
+  sidebarRing: '#F0A8C4',
 
-  // Charts (cores para gráficos)
-  chart1: '#93B7D8', // oklch(0.6998 0.0896 201.8672)
-  chart2: '#D4999D', // oklch(0.7794 0.0803 4.1330)
-  chart3: '#D45B82', // oklch(0.6699 0.0988 356.9762)
-  chart4: '#5B7A9D', // oklch(0.4408 0.0702 217.0848)
-  chart5: '#565969', // oklch(0.2713 0.0086 255.5780)
+  // Charts - Ajustados para dark mode com melhor visibilidade
+  chart1: '#F0A8C4', // Terracota claro
+  chart2: '#D8B4D8', // Lavanda
+  chart3: '#A0C5B4', // Sage
+  chart4: '#B8D4E8', // Azul suave
+  chart5: '#F0D8B8', // Pêssego
 };
 
 /**
@@ -132,60 +136,68 @@ export const colors = light;
 export const getTheme = (isDark: boolean) => (isDark ? dark : light);
 
 /**
- * Sombras (shadows) do tema
+ * 🎨 Sombras Elegantes - Material Design Inspired
+ * Elevações mais suaves e acolhedoras
  */
 export const shadows = {
   light: {
     xs: {
-      shadowColor: 'rgba(0,0,0,0.12)',
+      shadowColor: 'rgba(0,0,0,0.05)',
       shadowOffset: { width: 0, height: 1 },
       shadowOpacity: 1,
       shadowRadius: 2,
       elevation: 1,
-      // Web (react-native-web)
-      boxShadow: '0px 1px 2px rgba(0,0,0,0.12)',
+      boxShadow: '0px 1px 2px 0px rgba(0,0,0,0.05)',
     },
     sm: {
-      shadowColor: 'rgba(0,0,0,0.14)',
+      shadowColor: 'rgba(0,0,0,0.06)',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 1,
       shadowRadius: 4,
       elevation: 2,
-      boxShadow: '0px 2px 4px rgba(0,0,0,0.14)',
+      boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.06), 0px 1px 2px -1px rgba(0,0,0,0.06)',
     },
     md: {
-      shadowColor: 'rgba(0,0,0,0.16)',
+      shadowColor: 'rgba(0,0,0,0.08)',
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 1,
       shadowRadius: 6,
       elevation: 4,
-      boxShadow: '0px 4px 12px rgba(0,0,0,0.16)',
+      boxShadow: '0px 4px 6px -1px rgba(0,0,0,0.08), 0px 2px 4px -2px rgba(0,0,0,0.06)',
     },
     lg: {
-      shadowColor: 'rgba(0,0,0,0.20)',
-      shadowOffset: { width: 0, height: 8 },
+      shadowColor: 'rgba(0,0,0,0.10)',
+      shadowOffset: { width: 0, height: 10 },
       shadowOpacity: 1,
-      shadowRadius: 12,
+      shadowRadius: 15,
       elevation: 8,
-      boxShadow: '0px 8px 24px rgba(0,0,0,0.20)',
+      boxShadow: '0px 10px 15px -3px rgba(0,0,0,0.10), 0px 4px 6px -4px rgba(0,0,0,0.08)',
+    },
+    xl: {
+      shadowColor: 'rgba(0,0,0,0.12)',
+      shadowOffset: { width: 0, height: 20 },
+      shadowOpacity: 1,
+      shadowRadius: 25,
+      elevation: 12,
+      boxShadow: '0px 20px 25px -5px rgba(0,0,0,0.12), 0px 8px 10px -6px rgba(0,0,0,0.08)',
     },
   },
   dark: {
     xs: {
-      shadowColor: 'rgba(0,0,0,0.40)',
+      shadowColor: 'rgba(0,0,0,0.30)',
       shadowOffset: { width: 0, height: 1 },
       shadowOpacity: 1,
       shadowRadius: 2,
       elevation: 1,
-      boxShadow: '0px 1px 2px rgba(0,0,0,0.40)',
+      boxShadow: '0px 1px 2px 0px rgba(0,0,0,0.30)',
     },
     sm: {
-      shadowColor: 'rgba(0,0,0,0.45)',
+      shadowColor: 'rgba(0,0,0,0.40)',
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 1,
       shadowRadius: 4,
       elevation: 2,
-      boxShadow: '0px 2px 4px rgba(0,0,0,0.45)',
+      boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.40), 0px 1px 2px -1px rgba(0,0,0,0.30)',
     },
     md: {
       shadowColor: 'rgba(0,0,0,0.50)',
@@ -193,72 +205,90 @@ export const shadows = {
       shadowOpacity: 1,
       shadowRadius: 6,
       elevation: 4,
-      boxShadow: '0px 4px 12px rgba(0,0,0,0.50)',
+      boxShadow: '0px 4px 6px -1px rgba(0,0,0,0.50), 0px 2px 4px -2px rgba(0,0,0,0.40)',
     },
     lg: {
-      shadowColor: 'rgba(0,0,0,0.55)',
-      shadowOffset: { width: 0, height: 8 },
+      shadowColor: 'rgba(0,0,0,0.60)',
+      shadowOffset: { width: 0, height: 10 },
       shadowOpacity: 1,
-      shadowRadius: 12,
+      shadowRadius: 15,
       elevation: 8,
-      boxShadow: '0px 8px 24px rgba(0,0,0,0.55)',
+      boxShadow: '0px 10px 15px -3px rgba(0,0,0,0.60), 0px 4px 6px -4px rgba(0,0,0,0.50)',
+    },
+    xl: {
+      shadowColor: 'rgba(0,0,0,0.70)',
+      shadowOffset: { width: 0, height: 20 },
+      shadowOpacity: 1,
+      shadowRadius: 25,
+      elevation: 12,
+      boxShadow: '0px 20px 25px -5px rgba(0,0,0,0.70), 0px 8px 10px -6px rgba(0,0,0,0.60)',
     },
   },
 };
 
 /**
- * Tipografia do tema
+ * 📱 Tipografia Mobile-First - Elegante e Legível
  */
 export const typography = {
   fontFamily: {
-    sans: 'Poppins',
-    serif: 'Lora',
-    mono: 'Fira Code',
+    sans: 'System', // Usa fonte do sistema (melhor performance)
+    serif: 'System', // Fallback para serif
+    mono: 'Courier', // Fallback para mono
   },
   sizes: {
-    xs: 12,
-    sm: 14,
-    base: 16,
-    lg: 18,
-    xl: 20,
-    '2xl': 24,
-    '3xl': 28,
-    '4xl': 32,
+    xs: 12,    // 0.75rem
+    sm: 14,    // 0.875rem
+    base: 16,  // 1rem (mínimo para evitar zoom no iOS)
+    lg: 18,    // 1.125rem
+    xl: 20,    // 1.25rem
+    '2xl': 24, // 1.5rem
+    '3xl': 28, // 1.75rem
+    '4xl': 32, // 2rem
+    '5xl': 36, // 2.25rem (novo)
+    '6xl': 48, // 3rem (novo)
   },
   weights: {
+    light: '300' as const,
     normal: '400' as const,
     medium: '500' as const,
     semibold: '600' as const,
     bold: '700' as const,
+    extrabold: '800' as const,
+  },
+  lineHeight: {
+    tight: 1.2,
+    normal: 1.5,
+    relaxed: 1.6,
+    loose: 1.8,
   },
 };
 
 /**
- * Espaçamento (spacing)
+ * 📱 Espaçamento Mobile-First - Mais Generoso e Acolhedor
  */
 export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 20,
-  '2xl': 24,
-  '3xl': 32,
-  '4xl': 48,
-  '5xl': 64,
+  xs: 4,   // 0.25rem - 4px
+  sm: 8,   // 0.5rem - 8px
+  md: 16,  // 1rem - 16px (melhorado de 12px)
+  lg: 24,  // 1.5rem - 24px (melhorado de 16px)
+  xl: 32,  // 2rem - 32px (melhorado de 20px)
+  '2xl': 48,  // 3rem - 48px (melhorado de 24px)
+  '3xl': 64,  // 4rem - 64px (melhorado de 32px)
+  '4xl': 96,  // 6rem - 96px (novo)
+  '5xl': 128, // 8rem - 128px (novo)
 };
 
 /**
- * Border radius (base: 0.4rem = 6.4px ≈ 6px)
- * Seguindo o tema oficial do tweakcn
+ * 🎨 Border Radius Mobile-Friendly - Mais Suave e Acolhedor
  */
 export const borderRadius = {
-  sm: 2, // calc(0.4rem - 4px) ≈ 2px
-  md: 4, // calc(0.4rem - 2px) ≈ 4px
-  lg: 8, // 0.4rem ≈ 8px (base melhorado)
-  xl: 12, // calc(0.4rem + 4px) ≈ 12px
-  '2xl': 16, // calc(0.4rem + 8px) ≈ 16px
-  full: 999, // Fully rounded
+  sm: 4,      // 0.25rem - 4px (melhorado)
+  md: 8,      // 0.5rem - 8px (melhorado)
+  lg: 12,     // 0.75rem - 12px (melhorado, padrão mobile)
+  xl: 16,     // 1rem - 16px
+  '2xl': 24,  // 1.5rem - 24px (melhorado)
+  '3xl': 32,  // 2rem - 32px (novo)
+  full: 999,  // Fully rounded
 };
 
 export default {
