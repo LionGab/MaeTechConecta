@@ -68,3 +68,52 @@ nul
 # Turbo cache
 .turbo/
 
+# Screenshots and images (temporary)
+.playwright-mcp/
+*.screenshot.png
+*.screenshot.jpg
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Temporary documentation (should be in docs/)
+/ANALISE*.md
+/DESIGN-REVIEW*.md
+/RELATORIO*.md
+/RESUMO*.md
+/MIGRACAO*.md
+/MIGRATION*.md
+/CONFIGURACAO*.md
+/CONFIGURAR*.md
+/COMANDOS*.md
+/GIT_*.md
+/AUTO_*.md
+/PLANO*.md
+/CHECKLIST*.md
+/VALIDACAO*.md
+/IMPLEMENTACAO*.md
+/STATUS*.md
+/SETUP*.md
+/GUIA*.md
+/COMO*.md
+/CONSOLIDACAO*.md
+
+# Temporary files in root
+/*.txt
+/*.html
+/*.css
+/*.ps1
+/*.bat
+/check-*.js
+/monitor-*.js
+/verificar-*.js
+/debug-*.js
+/debug-*.html
+/*.sql
+
+# Demo and test directories
+/demo/
+/MIGRACAO_ARQUIVOS/
+
