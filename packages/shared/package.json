@@ -15,14 +15,17 @@
     "dev": "tsc --noEmit --watch",
     "lint": "eslint . --ext .ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@amplitude/analytics-browser": "^2.3.0",
     "@nossa-maternidade/shared-types": "workspace:*",
+    "axios": "^1.6.2",
     "zod": "^3.22.0"
   },
   "devDependencies": {
+    "@types/node": "^20.10.0",
     "typescript": "^5.7.0",
     "vitest": "^1.0.0",
     "@vitest/coverage-v8": "^1.0.0",

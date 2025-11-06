@@ -8,7 +8,9 @@
  * - Context manager
  * - Team notifier
  * - Model router
- * - Schemas Zod
+ * 
+ * Note: Schemas are exported from individual modules that define them,
+ * not from schemas.ts to avoid duplicate exports
  */
 
 export * from './system-prompt';
@@ -17,4 +19,3 @@ export * from './risk-analyzer';
 export * from './context-manager';
 export * from './team-notifier';
 export * from './model-router';
-export * from './schemas';

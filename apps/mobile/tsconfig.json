@@ -2,7 +2,7 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "jsx": "react-native",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -17,16 +17,15 @@
     "baseUrl": ".",
     "typeRoots": [
       "../../node_modules/@types",
-      "./node_modules/@types"
+      "./node_modules/@types",
+      "./node_modules"
     ],
     "paths": {
       "@nossa-maternidade/shared": ["../../packages/shared/src/index.ts"],
       "@nossa-maternidade/shared/*": ["../../packages/shared/src/*"],
       "@nossa-maternidade/shared-types": ["../../packages/shared-types/src/index.ts"],
       "@nossa-maternidade/shared-types/*": ["../../packages/shared-types/src/*"],
-      "@/*": ["../../src/*"],
-      "react": ["../../node_modules/@types/react"],
-      "react-native": ["../../node_modules/react-native"]
+      "@/*": ["../../src/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "*.ts", "*.tsx", "../../src/**/*.ts", "../../src/**/*.tsx"],
