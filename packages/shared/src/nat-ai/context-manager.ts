@@ -10,6 +10,12 @@
  * em runtime. Para uso em packages/shared, considere criar uma interface abstrata.
  */
 
+export interface OnboardingData {
+  challenges?: string[] | string;
+  goals?: string[] | string;
+  [key: string]: unknown;
+}
+
 export interface UserProfile {
   id: string;
   full_name: string;
@@ -17,7 +23,7 @@ export interface UserProfile {
   pregnancy_week?: number;
   baby_name?: string;
   preferences?: string[];
-  onboarding_data?: any;
+  onboarding_data?: OnboardingData;
 }
 
 export interface Message {
@@ -50,7 +56,21 @@ export class ContextManager {
   }
 
   /**
-   * Formata contexto para Gemini (enriquece system prompt)
+   * Formata o contexto da usuária para uso com Gemini AI
+   *
+   * Enriquece o system prompt com informações sobre a usuária (perfil, preferências)
+   * e histórico de conversas anteriores (resumido).
+   *
+   * @param {LoadedContext} context - Contexto carregado da usuária
+   * @param {string} systemPrompt - Prompt base do sistema
+   * @returns {string} System prompt enriquecido com contexto da usuária
+   *
+   * @example
+   * ```typescript
+   * const manager = new ContextManager('user-123');
+   * const enrichedPrompt = manager.formatForGemini(context, 'Você é Nat-AI...');
+   * // Retorna prompt com informações da usuária incluídas
+   * ```
    */
   formatForGemini(context: LoadedContext, systemPrompt: string): string {
     const profileText = this.humanizeProfile(context.userProfile);

@@ -60,7 +60,22 @@ Retorne JSON no formato:
 }`;
 
 /**
- * Analisa risco emocional da mensagem usando Claude API
+ * Analisa o risco emocional de uma mensagem usando Claude API para detectar crises
+ *
+ * Utiliza Claude 3.5 Sonnet especializado em saúde mental materna para identificar
+ * sinais de crise emocional, ideação suicida, depressão pós-parto e outros riscos.
+ *
+ * @param {string} message - Mensagem da usuária a ser analisada
+ * @returns {Promise<RiskAnalysis>} Análise de risco com nível (0-10), flags e recursos sugeridos
+ *
+ * @example
+ * ```typescript
+ * const analysis = await analyzeRisk("Não aguento mais, não consigo cuidar do bebê");
+ * if (analysis.requires_intervention) {
+ *   console.log('ALERTA: Intervenção necessária!');
+ *   console.log('Recursos:', analysis.suggested_resources);
+ * }
+ * ```
  */
 export async function analyzeRisk(message: string): Promise<RiskAnalysis> {
   try {
@@ -129,15 +144,27 @@ export async function analyzeRisk(message: string): Promise<RiskAnalysis> {
     }
 
     return analysis;
-  } catch (error: any) {
-    console.error('Erro ao analisar risco com Claude:', error);
+  } catch (error) {
+    console.error('Erro ao analisar risco com Claude:', error instanceof Error ? error.message : String(error));
     // Usar fallback em caso de erro
     return fallbackRiskAnalysis(message);
   }
 }
 
 /**
- * Análise de risco usando fallback (regex-based)
+ * Análise de risco usando fallback baseado em regex quando Claude API não está disponível
+ *
+ * Sistema de detecção de padrões que identifica palavras-chave relacionadas a crises
+ * emocionais, ideação suicida, depressão pós-parto e outros riscos.
+ *
+ * @param {string} message - Mensagem da usuária a ser analisada
+ * @returns {RiskAnalysis} Análise de risco com nível, flags e recursos sugeridos
+ *
+ * @example
+ * ```typescript
+ * const analysis = fallbackRiskAnalysis("Quero me matar");
+ * // Retorna: { level: 10, flags: ['suicidal_ideation'], requires_intervention: true, ... }
+ * ```
  */
 export function fallbackRiskAnalysis(message: string): RiskAnalysis {
   const lowerMessage = message.toLowerCase();
@@ -235,7 +262,21 @@ export function fallbackRiskAnalysis(message: string): RiskAnalysis {
 }
 
 /**
- * Gera resposta de intervenção baseada na análise
+ * Gera uma resposta de intervenção apropriada baseada no nível de risco detectado
+ *
+ * Cria mensagens empáticas e direcionadas com recursos de ajuda profissional
+ * adaptados à gravidade da situação (CVV, SAMU, CAPS, etc).
+ *
+ * @param {RiskAnalysis} analysis - Análise de risco da mensagem
+ * @param {string} [userName='querida'] - Nome da usuária para personalizar a resposta
+ * @returns {string} Mensagem de intervenção formatada (vazio se nível < 7)
+ *
+ * @example
+ * ```typescript
+ * const analysis = { level: 9, flags: ['suicidal_ideation'], ... };
+ * const response = generateInterventionResponse(analysis, 'Maria');
+ * // Retorna mensagem urgente com contatos de emergência
+ * ```
  */
 export function generateInterventionResponse(analysis: RiskAnalysis, userName: string = 'querida'): string {
   if (analysis.level >= 9) {

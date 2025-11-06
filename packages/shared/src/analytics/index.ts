@@ -5,11 +5,35 @@
  */
 
 // Client-side only (browser/mobile)
-let amplitudeClient: any = null;
+interface AmplitudeClient {
+  track: (eventName: string, properties?: Record<string, unknown>) => void;
+  setUserId: (userId: string) => void;
+  identify: (identify: unknown) => void;
+  Identify?: new () => { set: (properties: Record<string, unknown>) => unknown };
+}
+
+let amplitudeClient: AmplitudeClient | null = null;
 let isInitialized = false;
 
 /**
- * Inicializa o cliente Amplitude
+ * Inicializa o cliente Amplitude para tracking de eventos
+ *
+ * @param {string} apiKey - API key do Amplitude
+ * @param {string} [userId] - ID do usuário (opcional)
+ * @param {object} [options] - Opções de configuração
+ * @param {boolean} [options.enableLogging] - Habilitar logs de debug
+ * @param {object} [options.defaultTracking] - Configurações de tracking padrão
+ * @param {boolean} [options.defaultTracking.pageViews] - Tracking automático de page views
+ * @param {boolean} [options.defaultTracking.sessions] - Tracking automático de sessões
+ * @param {boolean} [options.defaultTracking.formInteractions] - Tracking automático de formulários
+ *
+ * @example
+ * ```typescript
+ * initAnalytics('your-api-key', 'user-123', {
+ *   enableLogging: true,
+ *   defaultTracking: { pageViews: true }
+ * });
+ * ```
  */
 export function initAnalytics(
   apiKey: string,
@@ -31,7 +55,7 @@ export function initAnalytics(
   try {
     // Dynamic import para evitar bundle no server
     import('@amplitude/analytics-browser').then((Amplitude) => {
-      amplitudeClient = Amplitude.init(apiKey, userId, {
+      const client = Amplitude.init(apiKey, userId, {
         defaultTracking: {
           pageViews: options?.defaultTracking?.pageViews ?? true,
           sessions: options?.defaultTracking?.sessions ?? true,
@@ -39,6 +63,7 @@ export function initAnalytics(
         },
         ...options,
       });
+      amplitudeClient = client as unknown as AmplitudeClient;
       isInitialized = true;
     });
   } catch (error) {
@@ -47,9 +72,20 @@ export function initAnalytics(
 }
 
 /**
- * Rastreia um evento
+ * Rastreia um evento customizado no Amplitude
+ *
+ * @param {string} eventName - Nome do evento a ser rastreado
+ * @param {Record<string, unknown>} [properties] - Propriedades adicionais do evento
+ *
+ * @example
+ * ```typescript
+ * trackEvent('button_clicked', {
+ *   button_name: 'sign_up',
+ *   location: 'home_page'
+ * });
+ * ```
  */
-export function trackEvent(eventName: string, properties?: Record<string, any>) {
+export function trackEvent(eventName: string, properties?: Record<string, unknown>) {
   if (!isInitialized || !amplitudeClient) {
     console.warn('Amplitude not initialized. Event not tracked:', eventName);
     return;
@@ -104,7 +140,7 @@ export const ConversionEvents = {
 /**
  * Rastreia um evento de conversão
  */
-export function trackConversion(event: keyof typeof ConversionEvents | string, properties?: Record<string, any>) {
+export function trackConversion(event: keyof typeof ConversionEvents | string, properties?: Record<string, unknown>) {
   const eventName = ConversionEvents[event as keyof typeof ConversionEvents] || event;
   trackEvent(eventName, {
     ...properties,
@@ -115,7 +151,7 @@ export function trackConversion(event: keyof typeof ConversionEvents | string, p
 /**
  * Rastreia visualização de tela
  */
-export function trackScreenView(screenName: string, properties?: Record<string, any>) {
+export function trackScreenView(screenName: string, properties?: Record<string, unknown>) {
   trackEvent(ConversionEvents.SCREEN_VIEWED, {
     screen: screenName,
     ...properties,
@@ -125,7 +161,7 @@ export function trackScreenView(screenName: string, properties?: Record<string, 
 /**
  * Rastreia erro (combinado com Sentry)
  */
-export function trackError(error: Error, context?: Record<string, any>) {
+export function trackError(error: Error, context?: Record<string, unknown>) {
   trackEvent('error_occurred', {
     error_name: error.name,
     error_message: error.message,
@@ -135,7 +171,14 @@ export function trackError(error: Error, context?: Record<string, any>) {
 }
 
 /**
- * Define identificador do usuário
+ * Define o identificador único do usuário no Amplitude
+ *
+ * @param {string} userId - ID único do usuário
+ *
+ * @example
+ * ```typescript
+ * setUserId('user-123-abc');
+ * ```
  */
 export function setUserId(userId: string) {
   if (!isInitialized || !amplitudeClient) return;
@@ -148,13 +191,27 @@ export function setUserId(userId: string) {
 }
 
 /**
- * Define propriedades do usuário
+ * Define propriedades persistentes do usuário no Amplitude
+ *
+ * @param {Record<string, unknown>} properties - Objeto com propriedades do usuário
+ *
+ * @example
+ * ```typescript
+ * setUserProperties({
+ *   plan: 'premium',
+ *   pregnancy_week: 32,
+ *   user_type: 'gestante'
+ * });
+ * ```
  */
-export function setUserProperties(properties: Record<string, any>) {
+export function setUserProperties(properties: Record<string, unknown>) {
   if (!isInitialized || !amplitudeClient) return;
 
   try {
-    amplitudeClient.identify(new (amplitudeClient as any).Identify().set(properties));
+    if (amplitudeClient.Identify) {
+      const identify = new amplitudeClient.Identify();
+      amplitudeClient.identify(identify.set(properties));
+    }
   } catch (error) {
     console.error('Failed to set user properties:', error);
   }

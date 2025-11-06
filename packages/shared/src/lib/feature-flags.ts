@@ -25,7 +25,21 @@ export interface UserFeatureFlags {
 }
 
 /**
- * Obtém feature flags de uma usuária
+ * Obtém as feature flags configuradas para uma usuária específica
+ *
+ * Se a usuária não tiver flags configuradas, cria automaticamente um registro
+ * com flags padrão (todas desabilitadas) e grupo de controle.
+ *
+ * @param {string} userId - ID único da usuária
+ * @returns {Promise<UserFeatureFlags | null>} Flags da usuária ou null em caso de erro
+ *
+ * @example
+ * ```typescript
+ * const flags = await getUserFeatureFlags('user-123');
+ * if (flags?.flags.use_grok) {
+ *   // Usar Grok AI
+ * }
+ * ```
  */
 export async function getUserFeatureFlags(userId: string): Promise<UserFeatureFlags | null> {
   try {
@@ -103,7 +117,18 @@ async function createDefaultFeatureFlags(userId: string): Promise<UserFeatureFla
 }
 
 /**
- * Verifica se uma flag está habilitada para uma usuária
+ * Verifica se uma feature flag específica está habilitada para a usuária
+ *
+ * @param {string} userId - ID único da usuária
+ * @param {FeatureFlag} flag - Nome da flag a verificar
+ * @returns {Promise<boolean>} true se a flag estiver habilitada, false caso contrário
+ *
+ * @example
+ * ```typescript
+ * if (await isFeatureEnabled('user-123', 'use_grok')) {
+ *   // Usar Grok AI para esta usuária
+ * }
+ * ```
  */
 export async function isFeatureEnabled(userId: string, flag: FeatureFlag): Promise<boolean> {
   const flags = await getUserFeatureFlags(userId);
@@ -127,7 +152,13 @@ export async function updateFeatureFlags(
       ...flags,
     };
 
-    const updateData: any = {
+    interface UpdateData {
+      flags: Partial<Record<FeatureFlag, boolean>>;
+      updated_at: string;
+      ab_test_group?: ABTestGroup;
+    }
+
+    const updateData: UpdateData = {
       flags: updatedFlags,
       updated_at: new Date().toISOString(),
     };
@@ -164,7 +195,23 @@ export async function updateFeatureFlags(
 }
 
 /**
- * Atribui usuária a um grupo de A/B testing
+ * Atribui uma usuária a um grupo específico de A/B testing
+ *
+ * Automaticamente habilita as flags correspondentes ao grupo:
+ * - control: Nenhuma flag especial
+ * - grok: Habilita use_grok
+ * - gemini: Habilita use_gemini_pro
+ * - smart: Habilita smart_routing + use_grok + use_gemini_pro
+ *
+ * @param {string} userId - ID único da usuária
+ * @param {ABTestGroup} group - Grupo de teste ('control' | 'grok' | 'gemini' | 'smart')
+ * @returns {Promise<boolean>} true se atribuição foi bem-sucedida
+ *
+ * @example
+ * ```typescript
+ * await assignToABTestGroup('user-123', 'grok');
+ * // Usuária agora usa Grok AI
+ * ```
  */
 export async function assignToABTestGroup(userId: string, group: ABTestGroup): Promise<boolean> {
   try {
