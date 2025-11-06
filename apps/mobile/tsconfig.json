@@ -15,6 +15,7 @@
     "noEmit": true,
     "isolatedModules": true,
     "baseUrl": ".",
+    "types": ["node"],
     "typeRoots": [
       "../../node_modules/@types",
       "./node_modules/@types"
@@ -24,9 +25,7 @@
       "@nossa-maternidade/shared/*": ["../../packages/shared/src/*"],
       "@nossa-maternidade/shared-types": ["../../packages/shared-types/src/index.ts"],
       "@nossa-maternidade/shared-types/*": ["../../packages/shared-types/src/*"],
-      "@/*": ["../../src/*"],
-      "react": ["../../node_modules/@types/react"],
-      "react-native": ["../../node_modules/react-native"]
+      "@/*": ["../../src/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "*.ts", "*.tsx", "../../src/**/*.ts", "../../src/**/*.tsx"],
