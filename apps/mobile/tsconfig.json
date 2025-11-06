@@ -31,10 +31,6 @@
   "exclude": [
     "node_modules",
     "dist",
-    "build",
-    "../../src/components/ThemeSelector.tsx",
-    "../../src/contexts/ThemeContext.tsx",
-    "../../src/services/notifications.ts",
-    "../../src/shared/components/Skeleton.tsx"
+    "build"
   ]
 }
