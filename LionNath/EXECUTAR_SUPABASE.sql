@@ -9,13 +9,13 @@ CREATE EXTENSION IF NOT EXISTS vector;
 -- 2. Criar tabela de conversas com embedding vetorial
 CREATE TABLE IF NOT EXISTS conversations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL,
   message TEXT NOT NULL,
   response TEXT NOT NULL,
   embedding vector(768), -- Embedding do Gemini text-embedding-004 (768 dimensões)
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   
-  -- Índices para performance
+  -- Foreign key constraint nomeada
   CONSTRAINT conversations_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE
 );
 
