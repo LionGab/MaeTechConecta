@@ -12,7 +12,12 @@
       "Bash(mkdir:*)",
       "Bash(pnpm typecheck:*)",
       "Bash(pnpm install:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(git log:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(pnpm check:*)",
+      "Bash(node verificar-status.js:*)",
+      "Bash(git restore:*)"
     ],
     "deny": [],
     "ask": []

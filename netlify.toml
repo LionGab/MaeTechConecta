@@ -1,0 +1,96 @@
+# Netlify configuration for Nossa Maternidade
+# Deploy from GitHub to www.nossamaternidade.com.br
+
+[build]
+  # Base directory for the build - raiz do monorepo para resolver dependências do workspace
+  base = "."
+
+  # Build command - instalar dependências da raiz e buildar o app mobile
+  command = "pnpm install && cd apps/mobile && pnpm run build:web"
+
+  # Publish directory - onde o Expo exporta o build web
+  # Expo export cria o diretório 'dist' dentro de apps/mobile
+  publish = "apps/mobile/dist"
+
+  # Ignore builds if no changes in these paths
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- apps/mobile packages/ src/"
+
+[build.environment]
+  # Node version
+  NODE_VERSION = "20"
+
+  # Use pnpm for package management
+  NPM_FLAGS = "--prefer-offline --no-audit"
+
+  # Skip Husky install in CI
+  HUSKY = "0"
+
+# Redirect rules for SPA routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+
+# Headers for security and caching
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept = "image/webp,image/avif,image/*"
+    Vary = "Accept"
+
+# Otimização de imagens - Servir formatos modernos quando disponíveis
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept = "image/webp,image/avif,image/jpeg"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Accept = "image/webp,image/avif,image/png"
+
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Context-specific builds
+[context.production]
+  command = "pnpm install && cd apps/mobile && pnpm run build:web"
+
+[context.deploy-preview]
+  command = "pnpm install && cd apps/mobile && pnpm run build:web"
+
+[context.branch-deploy]
+  command = "pnpm install && cd apps/mobile && pnpm run build:web"
+
+# Functions (if needed in the future)
+[functions]
+  directory = "netlify/functions"

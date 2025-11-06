@@ -20,6 +20,10 @@ export default function ProfileScreen() {
     }
   };
 
+  const handleComingSoon = (feature: string) => {
+    Alert.alert('Em Breve', `A funcionalidade "${feature}" estará disponível em breve! ✨`);
+  };
+
   const handleLogout = () => {
     Alert.alert('Sair', 'Tem certeza que deseja sair?', [
       { text: 'Cancelar', style: 'cancel' },
@@ -96,22 +100,46 @@ export default function ProfileScreen() {
         <View style={styles.sectionCard}>
           <Text style={styles.sectionTitle}>Configurações</Text>
 
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => handleComingSoon('Notificações')}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="Notificações - Em breve"
+          >
             <Text style={styles.settingText}>🔔 Notificações</Text>
             <Text style={styles.settingArrow}>→</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => handleComingSoon('Aparência')}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="Aparência - Em breve"
+          >
             <Text style={styles.settingText}>🎨 Aparência</Text>
             <Text style={styles.settingArrow}>→</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => handleComingSoon('Privacidade')}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="Privacidade - Em breve"
+          >
             <Text style={styles.settingText}>🔒 Privacidade</Text>
             <Text style={styles.settingArrow}>→</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingItem}>
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => handleComingSoon('Ajuda & Suporte')}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="Ajuda & Suporte - Em breve"
+          >
             <Text style={styles.settingText}>❓ Ajuda & Suporte</Text>
             <Text style={styles.settingArrow}>→</Text>
           </TouchableOpacity>
