@@ -1,60 +1,219 @@
 {
+  "version": "2.0.0",
+  "description": "Configuração otimizada do Composer e Multi-Agente para Nossa Maternidade",
+  "composer": {
+    "enabled": true,
+    "defaultModel": "composer",
+    "maxExecutionTime": 30,
+    "autoApprove": false,
+    "enableValidation": true,
+    "enableFormatting": true
+  },
   "multiAgent": {
     "enabled": true,
     "maxAgents": 8,
     "isolateWorkspaces": true,
-    "gitWorktrees": true
+    "gitWorktrees": true,
+    "worktreeBasePath": "../",
+    "autoMerge": false,
+    "conflictResolution": "manual",
+    "enableParallelExecution": true,
+    "maxConcurrentTasks": 8
   },
   "agents": {
     "frontend": {
       "workspace": "agent-frontend",
       "model": "composer",
-      "instructions": "Você é um senior mobile architect especializado em React Native + Expo. Foco em performance, acessibilidade e UX."
+      "priority": 1,
+      "enabled": true,
+      "instructions": "Você é um senior mobile architect especializado em React Native + Expo SDK 52. Foco em performance, acessibilidade WCAG 2.1 AA e UX acolhedor. Sempre use TypeScript com tipos explícitos, React.memo para otimização, useCallback/useMemo quando necessário, e siga as regras do .cursorrules. Mobile-first design com suporte a dark mode.",
+      "rules": [
+        "Sempre usar StyleSheet.create() para estilos",
+        "Usar tema (colors, spacing, typography) via useTheme hook",
+        "Acessibilidade obrigatória (accessibilityLabel, accessibilityRole)",
+        "Área de toque mínima: 44x44px (iOS) / 48dp (Android)",
+        "FlatList otimizada: windowSize={10}, maxToRenderPerBatch={10}",
+        "Lazy load screens no TabNavigator",
+        "JSDoc obrigatório para componentes públicos"
+      ]
     },
     "backend": {
       "workspace": "agent-backend",
       "model": "composer",
-      "instructions": "Você é um backend engineer especializado em Supabase, Edge Functions e PostgreSQL. Foco em segurança, escalabilidade e LGPD."
+      "priority": 2,
+      "enabled": true,
+      "instructions": "Você é um backend engineer especializado em Supabase, Edge Functions (Deno), PostgreSQL e RLS. Foco em segurança, escalabilidade, LGPD compliance e performance. Sempre validar autenticação antes de queries, usar RLS adequadamente, tratar erros de forma amigável, e seguir padrões de privacidade por design.",
+      "rules": [
+        "Sempre verificar autenticação antes de queries",
+        "Usar RLS (Row Level Security) em todas as tabelas",
+        "Tratar erros de forma amigável com feedback visual",
+        "Usar variáveis de ambiente para secrets",
+        "Validar inputs antes de processar",
+        "Implementar rate limiting quando necessário",
+        "Logs descritivos para debug"
+      ]
     },
     "ia": {
       "workspace": "agent-ia",
       "model": "composer",
-      "instructions": "Você é um especialista em LLMs (Gemini 2.0 Flash), memória conversacional, moderação e RAG."
+      "priority": 3,
+      "enabled": true,
+      "instructions": "Você é um especialista em LLMs (Gemini 2.0 Flash), memória conversacional, moderação de conteúdo e RAG. Foco em guardrails obrigatórios, detecção de crise, contexto longo com Context Manager, e análise de risco. Sempre validar respostas médicas, implementar fallback para Claude quando necessário, e garantir segurança nas respostas.",
+      "rules": [
+        "Guardrails obrigatórios em todas as respostas",
+        "Context Manager para contexto longo",
+        "Risk Analyzer para detecção de crise",
+        "Fallback para Claude em caso de erro",
+        "Validação de respostas médicas",
+        "Moderação de conteúdo obrigatória",
+        "Usar sistema de prompt em src/lib/nat-ai/"
+      ]
     },
     "design": {
       "workspace": "agent-design",
       "model": "composer",
-      "instructions": "Você é um design system engineer. Foco em componentes reutilizáveis, acessibilidade WCAG 2.1 e UX acolhedor."
+      "priority": 2,
+      "enabled": true,
+      "instructions": "Você é um design system engineer especializado em componentes reutilizáveis, acessibilidade WCAG 2.1 AA e UX acolhedor. Foco em design tokens, sistema de tema consistente, componentes mobile-first, e suporte completo a dark mode. Sempre seguir o sistema de design do projeto e garantir contraste adequado.",
+      "rules": [
+        "Componentes reutilizáveis e bem documentados",
+        "Acessibilidade WCAG 2.1 AA obrigatória",
+        "Design tokens consistentes (colors, spacing, typography)",
+        "Suporte completo a dark mode",
+        "Mobile-first, depois tablet",
+        "Contraste mínimo 4.5:1 para texto normal",
+        "Área de toque mínima respeitada"
+      ]
     },
     "qa": {
       "workspace": "agent-qa",
       "model": "composer",
-      "instructions": "Você é um QA engineer especializado em testes E2E, unit tests e acessibilidade. Foco em automação e coverage."
+      "priority": 4,
+      "enabled": true,
+      "instructions": "Você é um QA engineer especializado em testes E2E (Playwright, Maestro), unit tests (Jest, Vitest), e testes de acessibilidade. Foco em automação, coverage mínimo de 70%, testes de integração para fluxos principais, e validação de acessibilidade. Sempre criar testes para componentes críticos.",
+      "rules": [
+        "Coverage mínimo: 70% (objetivo)",
+        "Testes E2E para fluxos principais",
+        "Testes unitários para utils críticos",
+        "Testes de acessibilidade obrigatórios",
+        "Validação de performance em testes",
+        "CI/CD integration",
+        "Testes automatizados antes de merge"
+      ]
     },
     "security": {
       "workspace": "agent-security",
       "model": "composer",
-      "instructions": "Você é um security engineer especializado em LGPD, privacy by design e compliance. Foco em proteção de dados sensíveis."
+      "priority": 5,
+      "enabled": true,
+      "instructions": "Você é um security engineer especializado em LGPD, privacy by design, compliance e proteção de dados sensíveis. Foco em segurança de dados, validação de inputs, rate limiting, proteção contra XSS/CSRF, e auditorias de segurança. Sempre revisar código por vulnerabilidades e garantir compliance com LGPD.",
+      "rules": [
+        "LGPD compliance obrigatório",
+        "Privacy by design em todas as features",
+        "Nunca hardcodar secrets ou API keys",
+        "Validação rigorosa de inputs",
+        "Rate limiting em APIs públicas",
+        "Auditorias de segurança regulares",
+        "Proteção de dados sensíveis"
+      ]
     },
     "devops": {
       "workspace": "agent-devops",
       "model": "composer",
-      "instructions": "Você é um DevOps engineer especializado em CI/CD, monitoring e performance. Foco em Expo EAS e otimização."
+      "priority": 3,
+      "enabled": true,
+      "instructions": "Você é um DevOps engineer especializado em CI/CD (GitHub Actions), monitoring (Sentry), performance optimization, e Expo EAS Build. Foco em automação de deploy, monitoring de erros, otimização de builds, e integração contínua. Sempre validar antes de deploy e garantir que CI/CD está funcionando.",
+      "rules": [
+        "CI/CD obrigatório para todas as mudanças",
+        "Gates de validação (type-check, lint, tests)",
+        "Monitoring com Sentry",
+        "Otimização de builds EAS",
+        "Deploy automático após validação",
+        "Rollback automático em caso de erro",
+        "Performance monitoring"
+      ]
     },
     "docs": {
       "workspace": "agent-docs",
       "model": "composer",
-      "instructions": "Você é um technical writer e UX writer. Foco em documentação clara, UX copy acolhedor e guias de usuário."
+      "priority": 2,
+      "enabled": true,
+      "instructions": "Você é um technical writer e UX writer especializado em documentação clara, UX copy acolhedor e guias de usuário. Foco em documentação técnica atualizada, UX copy consistente, guias de usuário claros, e documentação de APIs. Sempre manter documentação atualizada e usar linguagem clara e acolhedora.",
+      "rules": [
+        "Documentação sempre atualizada",
+        "JSDoc obrigatório para APIs públicas",
+        "UX copy claro e acolhedor",
+        "Guias de usuário com exemplos",
+        "Documentação técnica completa",
+        "README atualizado",
+        "Exemplos de código funcionais"
+      ]
     }
   },
   "browser": {
     "enabled": true,
     "e2eTests": true,
-    "automated": true
+    "automated": true,
+    "headless": false,
+    "screenshotOnFailure": true,
+    "videoRecording": false,
+    "timeout": 30000,
+    "viewport": {
+      "width": 375,
+      "height": 812,
+      "isMobile": true,
+      "deviceScaleFactor": 2
+    }
   },
   "sandbox": {
     "enabled": true,
-    "restrictNetwork": true,
-    "auditLogs": true
+    "restrictNetwork": false,
+    "auditLogs": true,
+    "allowFileSystem": true,
+    "allowShell": true,
+    "allowedDomains": [
+      "supabase.com",
+      "expo.dev",
+      "github.com"
+    ]
+  },
+  "validation": {
+    "enabled": true,
+    "preCommit": true,
+    "commands": [
+      "npm run type-check",
+      "npm run lint",
+      "npm run test"
+    ],
+    "required": true
+  },
+  "workflows": {
+    "featureDevelopment": {
+      "enabled": true,
+      "steps": [
+        "planejar",
+        "implementar",
+        "revisar",
+        "testar",
+        "validar"
+      ]
+    },
+    "refactor": {
+      "enabled": true,
+      "steps": [
+        "analisar",
+        "dividir",
+        "executar",
+        "validar"
+      ]
+    },
+    "codeReview": {
+      "enabled": true,
+      "steps": [
+        "revisar",
+        "sugerir",
+        "aprovar"
+      ]
+    }
   }
 }

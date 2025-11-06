@@ -23,6 +23,7 @@ import { Message, useChatOptimized } from '@/hooks/useChatOptimized';
 import { borderRadius, colors, spacing, typography, shadows } from '@/theme/colors';
 import { EmptyState } from '@/shared/components/EmptyState';
 import { SkeletonPresets } from '@/shared/components/Skeleton';
+import { logger } from '@/utils/logger';
 
 // Blue Theme Constants
 const BLUE_THEME = {
@@ -143,7 +144,7 @@ export default function ChatScreen() {
     try {
       await reloadHistory();
     } catch (error) {
-      console.error('Erro ao recarregar histórico:', error);
+      logger.error('Erro ao recarregar histórico', {}, error);
     } finally {
       setRefreshing(false);
     }

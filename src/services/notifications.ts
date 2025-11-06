@@ -97,8 +97,17 @@ export async function getPushToken(): Promise<string | null> {
       return null;
     }
 
+    // Obter projectId do Expo via Constants
+    const Constants = require('expo-constants').default;
+    const projectId = Constants.expoConfig?.extra?.eas?.projectId || Constants.expoConfig?.extra?.projectId;
+
+    if (!projectId) {
+      console.warn('Expo projectId não configurado. Configure via EAS ou app.config.js');
+      return null;
+    }
+
     const tokenData = await Notifications.getExpoPushTokenAsync({
-      projectId: 'your-project-id', // TODO: Configurar projectId do Expo
+      projectId,
     });
 
     return tokenData.data;

@@ -32,7 +32,7 @@ export interface BadgeProps {
   style?: ViewStyle;
 }
 
-export const Badge: React.FC<BadgeProps> = ({ children, variant = 'info', size = 'md', style }) => {
+const BadgeComponent: React.FC<BadgeProps> = ({ children, variant = 'info', size = 'md', style }) => {
   const containerStyle = [styles.base, styles[`${variant}Container`], styles[`${size}Container`], style];
 
   const textStyle = [styles.baseText, styles[`${variant}Text`], styles[`${size}Text`]];
@@ -123,3 +123,6 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.sm,
   },
 });
+
+// Memoizar componente para evitar re-renders desnecessários
+export const Badge = React.memo(BadgeComponent);

@@ -73,7 +73,42 @@ class Logger {
     }
 
     // Em produção: enviar para serviço de logging
-    // TODO: Integrar com Sentry, Datadog, etc.
+    // Integrar com Sentry para erros críticos
+    if (level >= LogLevel.ERROR && !__DEV__) {
+      try {
+        const Sentry = require('@sentry/react-native').default;
+        if (Sentry && Sentry.captureException) {
+          if (error) {
+            Sentry.captureException(error, {
+              tags: {
+                logLevel: LogLevel[level],
+                component: context?.component || 'unknown',
+              },
+              extra: {
+                message,
+                context,
+                userId: this.userId,
+              },
+            });
+          } else {
+            Sentry.captureMessage(message, {
+              level: level === LogLevel.ERROR ? 'error' : level === LogLevel.CRITICAL ? 'fatal' : 'warning',
+              tags: {
+                logLevel: LogLevel[level],
+                component: context?.component || 'unknown',
+              },
+              extra: {
+                context,
+                userId: this.userId,
+              },
+            });
+          }
+        }
+      } catch (sentryError) {
+        // Silenciosamente falhar se Sentry não estiver disponível
+        console.error('Erro ao enviar para Sentry:', sentryError);
+      }
+    }
 
     // Se for erro crítico, salvar localmente para debug
     if (level >= LogLevel.ERROR) {

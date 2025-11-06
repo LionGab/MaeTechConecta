@@ -11,18 +11,19 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Loading } from '@/shared/components/Loading';
+import { useTheme } from '@/contexts/ThemeContext';
 
 import { RootStackParamList } from './types';
 import { TabNavigator } from './TabNavigator';
 import OnboardingScreen from '@/screens/OnboardingScreen';
 import DailyPlanScreen from '@/screens/DailyPlanScreen';
 import ContentDetailScreen from '@/features/content/ContentDetailScreen';
-import { colors } from '@/theme/colors';
 import { linking } from './linking';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export function AppNavigator() {
+  const { isDark, colors } = useTheme();
   const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -52,7 +53,7 @@ export function AppNavigator() {
   return (
     <SafeAreaProvider>
       <NavigationContainer linking={linking}>
-        <StatusBar style="auto" />
+        <StatusBar style={isDark ? 'light' : 'dark'} />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {!isOnboarded ? (
             <Stack.Screen

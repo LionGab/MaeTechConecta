@@ -2,15 +2,25 @@
   "cursor.general.enableCommandK": true,
   "cursor.general.enableChat": true,
   "cursor.general.enableComposer": true,
-  "cursor.cpp.enableCodeActions": true,
-  "cursor.cpp.completionsEnabled": true,
-  "cursor.cpp.longCompletionsEnabled": true,
-  // Performance
-  "cursor.general.requestsPerSecond": 10,
+  "cursor.general.enableMultiAgent": true,
+  "cursor.general.enableBrowser": true,
+  "cursor.general.enableVoiceMode": true,
+  "cursor.general.requestsPerSecond": 15,
   "cursor.general.tokenLimit": 200000,
-  // Privacy
+  "cursor.general.maxConcurrentAgents": 8,
+  "cursor.general.autoSave": true,
+  "cursor.general.formatOnSave": true,
   "cursor.privacy.enableTelemetry": false,
-  // Model preferences
-  "cursor.models.default": "claude-3.5-sonnet",
-  "cursor.models.long": "claude-3.5-sonnet"
+  "cursor.models.default": "composer",
+  "cursor.models.long": "claude-3.5-sonnet",
+  "cursor.models.composer": "composer",
+  "cursor.models.plan": "claude-3.5-sonnet",
+  "cursor.models.review": "claude-3.5-sonnet",
+  "cursor.performance.enableCodebaseIndexing": true,
+  "cursor.performance.codebaseIndexDelay": 1000,
+  "cursor.performance.maxFileSize": 100000,
+  "cursor.ai.enableAutoApproval": false,
+  "cursor.ai.enableCodeActions": true,
+  "cursor.ai.enableInlineCompletion": true,
+  "cursor.ai.inlineCompletionDelay": 300
 }

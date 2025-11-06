@@ -58,6 +58,12 @@ module.exports = {
       // Outras variáveis de ambiente para acesso via Constants.expoConfig.extra
       supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL || '',
       supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '',
+      // Expo Project ID para notificações push
+      projectId: process.env.EXPO_PUBLIC_PROJECT_ID || process.env.EAS_PROJECT_ID || '',
+      // EAS Project ID (se configurado)
+      eas: {
+        projectId: process.env.EAS_PROJECT_ID || process.env.EXPO_PUBLIC_PROJECT_ID || '',
+      },
     },
   },
 };

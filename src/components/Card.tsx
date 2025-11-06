@@ -68,7 +68,7 @@ export interface CardProps {
   padding?: keyof typeof spacing;
 }
 
-export const Card: React.FC<CardProps> = ({
+const CardComponent: React.FC<CardProps> = ({
   children,
   title,
   subtitle,
@@ -191,3 +191,6 @@ const styles = StyleSheet.create({
     // Estilos customizados podem ser aplicados via contentStyle prop
   },
 });
+
+// Memoizar componente para evitar re-renders desnecessários
+export const Card = React.memo(CardComponent);

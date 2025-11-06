@@ -78,7 +78,7 @@ export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   accessibilityHint?: string;
 }
 
-export const Button: React.FC<ButtonProps> = ({
+const ButtonComponent: React.FC<ButtonProps> = ({
   children,
   variant = 'primary',
   size = 'md',
@@ -315,3 +315,6 @@ const styles = StyleSheet.create({
     marginLeft: spacing.sm,
   },
 });
+
+// Memoizar componente para evitar re-renders desnecessários
+export const Button = React.memo(ButtonComponent);

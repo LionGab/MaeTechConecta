@@ -5,7 +5,7 @@
  * Artigos, vídeos, áudios, posts com filtros e favoritos
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -46,10 +46,9 @@ interface ContentItem {
 
 const CATEGORIES = ['Bem-estar', 'Alimentação', 'Exercícios', 'Relacionamento', 'Preparação para o parto'];
 
-export default function ContentFeedScreen() {
+function ContentFeedScreen() {
   const navigation = useNavigation();
   const [content, setContent] = useState<ContentItem[]>([]);
-  const [filteredContent, setFilteredContent] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -59,8 +58,32 @@ export default function ContentFeedScreen() {
     loadContent();
   }, []);
 
-  useEffect(() => {
-    filterContent();
+  // Memoizar filtro de conteúdo para evitar recálculos desnecessários
+  const filteredContent = useMemo(() => {
+    let filtered = [...content];
+
+    // Filtro por categoria
+    if (selectedCategory) {
+      filtered = filtered.filter((item) => item.category?.toLowerCase() === selectedCategory.toLowerCase());
+    }
+
+    // Filtro por favoritos
+    if (showFavoritesOnly) {
+      filtered = filtered.filter((item) => item.is_favorite);
+    }
+
+    // Busca por texto
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (item) =>
+          item.title.toLowerCase().includes(query) ||
+          item.description?.toLowerCase().includes(query) ||
+          item.tags?.some((tag) => tag.toLowerCase().includes(query))
+      );
+    }
+
+    return filtered;
   }, [content, searchQuery, selectedCategory, showFavoritesOnly]);
 
   const loadContent = async () => {
@@ -98,34 +121,7 @@ export default function ContentFeedScreen() {
     }
   };
 
-  const filterContent = () => {
-    let filtered = [...content];
-
-    // Filtro por categoria
-    if (selectedCategory) {
-      filtered = filtered.filter((item) => item.category?.toLowerCase() === selectedCategory.toLowerCase());
-    }
-
-    // Filtro por favoritos
-    if (showFavoritesOnly) {
-      filtered = filtered.filter((item) => item.is_favorite);
-    }
-
-    // Busca por texto
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(
-        (item) =>
-          item.title.toLowerCase().includes(query) ||
-          item.description?.toLowerCase().includes(query) ||
-          item.tags?.some((tag) => tag.toLowerCase().includes(query))
-      );
-    }
-
-    setFilteredContent(filtered);
-  };
-
-  const toggleFavorite = async (contentId: string, isFavorite: boolean) => {
+  const toggleFavorite = useCallback(async (contentId: string, isFavorite: boolean) => {
     try {
       const {
         data: { user },
@@ -148,9 +144,11 @@ export default function ContentFeedScreen() {
       console.error('Error toggling favorite:', error);
       Alert.alert('Erro', 'Não foi possível atualizar os favoritos');
     }
-  };
+  }, []);
 
-  const renderContentItem = ({ item }: { item: ContentItem }) => (
+  // Memoizar renderItem para evitar recriação em cada render
+  const renderContentItem = useCallback(
+    ({ item }: { item: ContentItem }) => (
     <Card
       variant="elevated"
       style={styles.contentCard}
@@ -188,7 +186,26 @@ export default function ContentFeedScreen() {
         {item.category && <Text style={styles.contentCategory}>{item.category}</Text>}
       </View>
     </Card>
+    ),
+    [navigation, toggleFavorite]
   );
+
+  // Memoizar keyExtractor
+  const keyExtractor = useCallback((item: ContentItem) => item.id, []);
+
+  // Memoizar handlers de filtro
+  const handleCategoryFilter = useCallback((category: string | null) => {
+    setSelectedCategory(selectedCategory === category ? null : category);
+  }, [selectedCategory]);
+
+  const handleToggleFavorites = useCallback(() => {
+    setShowFavoritesOnly(!showFavoritesOnly);
+  }, [showFavoritesOnly]);
+
+  const handleClearFilters = useCallback(() => {
+    setShowFavoritesOnly(false);
+    setSelectedCategory(null);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -212,10 +229,7 @@ export default function ContentFeedScreen() {
       >
         <TouchableOpacity
           style={[styles.filterChip, !showFavoritesOnly && !selectedCategory && styles.filterChipActive]}
-          onPress={() => {
-            setShowFavoritesOnly(false);
-            setSelectedCategory(null);
-          }}
+          onPress={handleClearFilters}
         >
           <Text style={[styles.filterChipText, !showFavoritesOnly && !selectedCategory && styles.filterChipTextActive]}>
             Todos
@@ -224,7 +238,7 @@ export default function ContentFeedScreen() {
 
         <TouchableOpacity
           style={[styles.filterChip, showFavoritesOnly && styles.filterChipActive]}
-          onPress={() => setShowFavoritesOnly(!showFavoritesOnly)}
+          onPress={handleToggleFavorites}
         >
           <Icon
             name="heart"
@@ -239,7 +253,7 @@ export default function ContentFeedScreen() {
           <TouchableOpacity
             key={category}
             style={[styles.filterChip, selectedCategory === category && styles.filterChipActive]}
-            onPress={() => setSelectedCategory(selectedCategory === category ? null : category)}
+            onPress={() => handleCategoryFilter(category)}
           >
             <Text style={[styles.filterChipText, selectedCategory === category && styles.filterChipTextActive]}>
               {category}
@@ -275,7 +289,7 @@ export default function ContentFeedScreen() {
         <FlatList
           data={filteredContent}
           renderItem={renderContentItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={keyExtractor}
           ListEmptyComponent={
             <EmptyState
               emoji="📚"
@@ -394,3 +408,6 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
 });
+
+// Memoizar componente para evitar re-renders desnecessários
+export default React.memo(ContentFeedScreen);

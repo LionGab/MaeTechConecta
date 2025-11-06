@@ -7,7 +7,9 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { getTheme } from '@/constants/theme';
+
 import { getThemeColors, ThemeName, defaultTheme } from '@/theme/themes';
 import type { ThemeColors } from '@/theme/themes';
 import { shadows, typography, spacing, borderRadius } from '@/theme/colors';
@@ -80,9 +82,9 @@ function generateNeutralScale(isDark: boolean) {
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const systemColorScheme = useColorScheme();
-  const [themeMode, setThemeModeState] = useState<ThemeMode>('light'); // ✅ Forçar light mode
+  const [themeMode, setThemeModeState] = useState<ThemeMode>('dark'); // ✅ Modo escuro habilitado
   const [themeName, setThemeNameState] = useState<ThemeName>(defaultTheme);
-  const [isDark, setIsDark] = useState<boolean>(false);
+  const [isDark, setIsDark] = useState<boolean>(true);
 
   // Carregar preferências salvas
   useEffect(() => {
@@ -97,10 +99,19 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const loadThemePreferences = async () => {
     try {
-      // Carregar theme mode (light/dark/auto)
+      // Forçar modo escuro por padrão - salvar 'dark' se não existir
       const savedMode = await AsyncStorage.getItem(THEME_STORAGE_KEY);
-      if (savedMode && ['light', 'dark', 'auto'].includes(savedMode)) {
+      if (!savedMode) {
+        // Se não há preferência salva, forçar modo escuro
+        await AsyncStorage.setItem(THEME_STORAGE_KEY, 'dark');
+        setThemeModeState('dark');
+      } else if (['light', 'dark', 'auto'].includes(savedMode)) {
+        // Se há preferência salva, usar ela (mas padrão é 'dark')
         setThemeModeState(savedMode as ThemeMode);
+      } else {
+        // Se preferência inválida, forçar modo escuro
+        await AsyncStorage.setItem(THEME_STORAGE_KEY, 'dark');
+        setThemeModeState('dark');
       }
 
       // Carregar theme name (bubblegum/v0-app)
@@ -110,6 +121,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
     } catch (error) {
       console.error('Erro ao carregar preferências de tema:', error);
+      // Em caso de erro, garantir modo escuro
+      setThemeModeState('dark');
     }
   };
 

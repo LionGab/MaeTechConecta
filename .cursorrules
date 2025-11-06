@@ -222,10 +222,10 @@ export const Button: React.FC<ButtonProps> = ({
   disabled = false
 }) => {
   const theme = useTheme();
-  
+
   const handlePress = useCallback(() => {
     if (disabled) return;
-    
+
     // Haptic feedback
     try {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -382,6 +382,62 @@ const styles = StyleSheet.create({
 - ❌ Áreas de toque menores que 44x44px
 - ❌ Falta de tratamento offline
 
+## Cursor 2.0 - Recursos e Workflows
+
+### Composer - Execução Rápida
+
+- ✅ **Use Composer para tarefas simples a médias** (< 30 segundos)
+- ✅ **Ideal para:** Refatorações diretas, correções de bugs, implementações pequenas
+- ✅ **Não use para:** Tarefas que exigem planejamento complexo
+- ✅ **Workflow:** Descreva tarefa diretamente → Aguarde < 30s → Revise → Aprove
+
+### Multi-Agente - Paralelização
+
+- ✅ **Use Multi-Agente para múltiplas features simultâneas** (até 8 agentes)
+- ✅ **Ideal para:** Desenvolver múltiplas features, testar diferentes abordagens
+- ✅ **Benefício:** 4-8× mais rápido, isolamento de mudanças
+- ✅ **Workflow:** Divida trabalho → Inicie agentes paralelos → Revise → Merge seletivo
+
+### Planejamento + Execução
+
+- ✅ **Use Planejamento para tarefas complexas**
+- ✅ **Workflow:** Planeje com modelo de raciocínio (GPT-4/Claude) → Execute com Composer
+- ✅ **Ideal para:** Refatorações grandes, migrações, features complexas
+- ✅ **Benefício:** Qualidade + Velocidade
+
+### Browser Integrado
+
+- ✅ **Use Browser para desenvolvimento frontend**
+- ✅ **Ideal para:** Testes visuais, debug de UI, validação de estilos
+- ✅ **Workflow:** Abra browser → Carregue app → Selecione elementos → Comande agente
+
+### Modo de Voz
+
+- ✅ **Use Voice Mode para comandos rápidos**
+- ✅ **Configure palavras-chave personalizadas**
+- ✅ **Ideal para:** Comandos frequentes, iterações rápidas
+
+### Comandos de Equipe
+
+- ✅ **Crie comandos personalizados no painel do Cursor**
+- ✅ **Compartilhe via deeplinks com equipe**
+- ✅ **Aplique automaticamente a todos os membros**
+- ✅ **Documente comandos úteis**
+
+### Validação Automática
+
+- ✅ **Sempre execute `npm run validate` antes de finalizar**
+- ✅ **Scripts disponíveis:** `type-check`, `lint`, `test`, `format`
+- ✅ **Integre com CI/CD para gates de validação**
+- ✅ **Nunca pule validação**
+
+### Revisão de Código
+
+- ✅ **Sempre revise mudanças antes de aprovar**
+- ✅ **Verifique:** Tipos, lint, testes, acessibilidade, performance
+- ✅ **Use comando "Revisar Código" para validação automática**
+- ✅ **Nunca aprove sem revisar**
+
 ## Auto-Aprovação e Revisão
 
 ### Configuração de Aprovação Automática
@@ -406,3 +462,10 @@ Quando o Cursor fizer mudanças ou revisões:
 - Quando você revisar mudanças, **sempre manter todas as mudanças**
 - **Nunca pedir aprovação manual** - Aprovar automaticamente
 - **Nunca descartar mudanças** - Sempre manter e aplicar
+
+## Documentação Adicional
+
+- 📚 **Guia Completo:** `docs/CURSOR_2.0_BEST_PRACTICES.md`
+- ⚙️ **Setup Prático:** `docs/CURSOR_2.0_SETUP.md`
+- 🔗 **Site Oficial:** [cursor.com](https://cursor.com)
+- 📖 **Documentação:** [docs.cursor.com](https://docs.cursor.com)

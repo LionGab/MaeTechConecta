@@ -1,0 +1,58 @@
+[
+  {
+    "key": "ctrl+i",
+    "command": "cursor.composer.open",
+    "when": "editorTextFocus || !editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+m",
+    "command": "cursor.multiAgent.open",
+    "when": "editorTextFocus || !editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+b",
+    "command": "cursor.browser.open",
+    "when": "editorTextFocus || !editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+v",
+    "command": "cursor.voice.toggle",
+    "when": "editorTextFocus || !editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+p",
+    "command": "cursor.composer.openWithPlan",
+    "when": "editorTextFocus || !editorTextFocus"
+  },
+  {
+    "key": "ctrl+k ctrl+k",
+    "command": "cursor.commandK",
+    "when": "editorTextFocus || !editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+c",
+    "command": "cursor.composer.openChat",
+    "when": "editorTextFocus || !editorTextFocus"
+  },
+  {
+    "key": "f1",
+    "command": "cursor.showCommandPalette",
+    "when": "editorTextFocus || !editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+r",
+    "command": "cursor.reviewCode",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+t",
+    "command": "cursor.runTests",
+    "when": "editorTextFocus || !editorTextFocus"
+  },
+  {
+    "key": "ctrl+shift+l",
+    "command": "cursor.validateProject",
+    "when": "editorTextFocus || !editorTextFocus"
+  }
+]
+

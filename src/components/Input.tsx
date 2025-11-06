@@ -58,7 +58,7 @@ export interface InputProps extends TextInputProps {
   labelStyle?: TextStyle;
 }
 
-export const Input: React.FC<InputProps> = ({
+const InputComponent: React.FC<InputProps> = ({
   label,
   error,
   helperText,
@@ -227,3 +227,6 @@ const styles = StyleSheet.create({
     color: colors.destructive,
   },
 });
+
+// Memoizar componente para evitar re-renders desnecessários
+export const Input = React.memo(InputComponent);
