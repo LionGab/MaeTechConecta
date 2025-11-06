@@ -185,6 +185,35 @@ npm install -g expo-cli
 npx expo start
 ```
 
+### "Unknown error. exp://192.168.x.x:8081" (iOS)
+
+**Problema:** iOS não consegue conectar ao servidor de desenvolvimento.
+
+**Soluções:**
+
+1. **Usar TUNNEL (Recomendado):**
+```powershell
+cd apps/mobile
+pnpm dev:tunnel
+```
+
+2. **Verificar rede Wi-Fi:**
+   - Certifique-se de que iOS e PC estão na mesma rede Wi-Fi
+   - Verifique IP: `ipconfig | findstr IPv4`
+
+3. **Configurar Firewall:**
+```powershell
+# Como Administrador
+New-NetFirewallRule -DisplayName "Expo Metro Bundler" -Direction Inbound -LocalPort 8081 -Protocol TCP -Action Allow
+```
+
+4. **Usar script de ajuda:**
+```powershell
+.\scripts\fix-ios-connection.ps1
+```
+
+**Mais detalhes:** Veja `docs/IOS_CONNECTION_FIX.md`
+
 ---
 
 ## ✅ Verificação Final

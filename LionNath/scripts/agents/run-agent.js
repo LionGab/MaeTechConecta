@@ -24,7 +24,7 @@ const child = spawn('npx', ['tsx', agentRunnerScript, agentType], {
   cwd: projectRoot,
   stdio: 'inherit',
   shell: true,
-  env: { ...process.env, AGENT_TYPE: agentType }
+  env: { ...process.env, AGENT_TYPE: agentType },
 });
 
 child.on('error', (error) => {

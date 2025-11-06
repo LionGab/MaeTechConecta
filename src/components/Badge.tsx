@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { borderRadius, colors, spacing, typography } from '@/theme/colors';
 
@@ -33,9 +33,16 @@ export interface BadgeProps {
 }
 
 const BadgeComponent: React.FC<BadgeProps> = ({ children, variant = 'info', size = 'md', style }) => {
-  const containerStyle = [styles.base, styles[`${variant}Container`], styles[`${size}Container`], style];
+  // Memoizar estilos
+  const containerStyle = useMemo(
+    () => [styles.base, styles[`${variant}Container`], styles[`${size}Container`], style],
+    [variant, size, style]
+  );
 
-  const textStyle = [styles.baseText, styles[`${variant}Text`], styles[`${size}Text`]];
+  const textStyle = useMemo(
+    () => [styles.baseText, styles[`${variant}Text`], styles[`${size}Text`]],
+    [variant, size]
+  );
 
   return (
     <View
@@ -59,7 +66,7 @@ const styles = StyleSheet.create({
 
   baseText: {
     fontFamily: typography.fontFamily.sans,
-    fontWeight: typography.weights.semibold as any,
+    fontWeight: typography.weights.semibold,
     textAlign: 'center',
   },
 

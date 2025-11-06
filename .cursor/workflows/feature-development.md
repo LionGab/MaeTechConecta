@@ -5,12 +5,15 @@ Workflow otimizado para desenvolvimento de features usando Cursor 2.0.
 ## Fase 1: Planejamento
 
 ### Passo 1: Analisar Requisitos
+
 - Entender completamente o que precisa ser implementado
 - Identificar dependências e integrações necessárias
 - Verificar padrões similares no codebase
 
 ### Passo 2: Criar Plano
+
 Use o Plan Mode do Cursor:
+
 ```
 Planeje a implementação da feature X:
 1. Análise de requisitos
@@ -21,6 +24,7 @@ Planeje a implementação da feature X:
 ```
 
 ### Passo 3: Dividir em Tarefas
+
 - Dividir feature em tarefas menores
 - Identificar tarefas que podem ser paralelizadas
 - Definir ordem de implementação
@@ -28,13 +32,17 @@ Planeje a implementação da feature X:
 ## Fase 2: Implementação
 
 ### Opção A: Composer (Tarefas Simples)
+
 Para tarefas simples a médias (< 30 segundos):
+
 ```
 Use Ctrl+I (Composer) e descreva a tarefa diretamente
 ```
 
 ### Opção B: Multi-Agente (Tarefas Paralelas)
+
 Para múltiplas tarefas simultâneas:
+
 ```
 Use Ctrl+Shift+M (Multi-Agente) e divida o trabalho:
 
@@ -45,7 +53,9 @@ Agente QA: Criar testes
 ```
 
 ### Opção C: Browser Integrado (UI)
+
 Para desenvolvimento de UI:
+
 ```
 Use Ctrl+Shift+B (Browser) e:
 1. Carregue o app
@@ -56,18 +66,23 @@ Use Ctrl+Shift+B (Browser) e:
 ## Fase 3: Revisão
 
 ### Passo 1: Revisão de Código
+
 Use o comando de revisão:
+
 ```
 @revisar-codigo
 ```
 
 ### Passo 2: Validar Projeto
+
 Execute validação completa:
+
 ```
 @validar-projeto
 ```
 
 ### Passo 3: Correções
+
 - Corrigir problemas identificados
 - Re-executar validação
 - Garantir que tudo passa
@@ -75,16 +90,19 @@ Execute validação completa:
 ## Fase 4: Testes
 
 ### Passo 1: Testes Unitários
+
 - Criar testes para componentes críticos
 - Executar `npm run test`
 - Garantir coverage >= 70%
 
 ### Passo 2: Testes E2E
+
 - Criar testes E2E para fluxos principais
 - Executar `npm run e2e:android` (se aplicável)
 - Validar comportamento completo
 
 ### Passo 3: Testes Manuais
+
 - Testar no dispositivo/emulador
 - Verificar acessibilidade
 - Validar dark mode
@@ -93,11 +111,13 @@ Execute validação completa:
 ## Fase 5: Documentação
 
 ### Passo 1: JSDoc
+
 - Adicionar JSDoc em componentes públicos
 - Documentar props e métodos
 - Incluir exemplos de uso
 
 ### Passo 2: README
+
 - Atualizar README se necessário
 - Documentar nova feature
 - Adicionar exemplos
@@ -158,4 +178,3 @@ npm run format
 3. Use Browser para ajustes visuais
 4. Valide frequentemente
 5. Documente enquanto desenvolve
-

@@ -1,58 +1,101 @@
 [
+  // ============================================
+  // ATALHOS OTIMIZADOS CURSOR 2.0
+  // Baseado em cursor.com/docs - Melhores Práticas
+  // ============================================
+
+  // Composer e Multi-Agente
   {
     "key": "ctrl+i",
     "command": "cursor.composer.open",
-    "when": "editorTextFocus || !editorTextFocus"
-  },
-  {
-    "key": "ctrl+shift+m",
-    "command": "cursor.multiAgent.open",
-    "when": "editorTextFocus || !editorTextFocus"
-  },
-  {
-    "key": "ctrl+shift+b",
-    "command": "cursor.browser.open",
-    "when": "editorTextFocus || !editorTextFocus"
-  },
-  {
-    "key": "ctrl+shift+v",
-    "command": "cursor.voice.toggle",
-    "when": "editorTextFocus || !editorTextFocus"
-  },
-  {
-    "key": "ctrl+shift+p",
-    "command": "cursor.composer.openWithPlan",
-    "when": "editorTextFocus || !editorTextFocus"
-  },
-  {
-    "key": "ctrl+k ctrl+k",
-    "command": "cursor.commandK",
-    "when": "editorTextFocus || !editorTextFocus"
-  },
-  {
-    "key": "ctrl+shift+c",
-    "command": "cursor.composer.openChat",
-    "when": "editorTextFocus || !editorTextFocus"
-  },
-  {
-    "key": "f1",
-    "command": "cursor.showCommandPalette",
-    "when": "editorTextFocus || !editorTextFocus"
-  },
-  {
-    "key": "ctrl+shift+r",
-    "command": "cursor.reviewCode",
     "when": "editorTextFocus"
   },
   {
+    "key": "ctrl+shift+m",
+    "command": "cursor.multiAgent.open"
+  },
+  {
+    "key": "ctrl+shift+p",
+    "command": "cursor.composer.openWithPlan"
+  },
+  {
+    "key": "ctrl+shift+c",
+    "command": "cursor.composer.openChat"
+  },
+  {
+    "key": "ctrl+shift+d",
+    "command": "cursor.composer.openWithDebug"
+  },
+  {
+    "key": "ctrl+shift+f",
+    "command": "cursor.composer.openWithFiles"
+  },
+  {
+    "key": "ctrl+shift+g",
+    "command": "cursor.composer.openWithGit"
+  },
+  {
+    "key": "ctrl+shift+e",
+    "command": "cursor.composer.openWithErrors"
+  },
+
+  // Browser Integrado
+  {
+    "key": "ctrl+shift+b",
+    "command": "cursor.browser.open"
+  },
+  {
+    "key": "ctrl+shift+n",
+    "command": "cursor.browser.newTab"
+  },
+  {
+    "key": "ctrl+shift+w",
+    "command": "cursor.browser.close"
+  },
+  {
+    "key": "ctrl+shift+u",
+    "command": "cursor.browser.screenshot"
+  },
+
+  // Validação e Testes
+  {
+    "key": "ctrl+shift+r",
+    "command": "cursor.reviewCode"
+  },
+  {
     "key": "ctrl+shift+t",
-    "command": "cursor.runTests",
-    "when": "editorTextFocus || !editorTextFocus"
+    "command": "cursor.runTests"
   },
   {
     "key": "ctrl+shift+l",
-    "command": "cursor.validateProject",
-    "when": "editorTextFocus || !editorTextFocus"
+    "command": "cursor.validateProject"
+  },
+
+  // Voice Mode
+  {
+    "key": "ctrl+shift+v",
+    "command": "cursor.voice.toggle"
+  },
+  {
+    "key": "ctrl+shift+s",
+    "command": "cursor.voice.start"
+  },
+
+  // Command K
+  {
+    "key": "ctrl+k ctrl+k",
+    "command": "cursor.commandK"
+  },
+
+  // Command Palette
+  {
+    "key": "f1",
+    "command": "cursor.showCommandPalette"
+  },
+
+  // Ajuda
+  {
+    "key": "ctrl+shift+h",
+    "command": "cursor.showHelp"
   }
 ]
-

@@ -28,6 +28,7 @@ export const linking: LinkingOptions<RootStackParamList> = {
           contentId: (contentId: string) => contentId,
         },
       },
+      ComponentValidation: 'component-validation',
     },
   },
 };

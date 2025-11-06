@@ -31,8 +31,8 @@ async function main() {
     if (status.agents && Object.keys(status.agents).length > 0) {
       console.log('📋 Agentes:');
       console.log('─'.repeat(80));
-      
-      for (const [type, agentStatus: any] of Object.entries(status.agents)) {
+
+      for (const [type, agentStatus] of Object.entries(status.agents)) {
         console.log(`\n🤖 ${type}-agent:`);
         console.log(`   Última execução: ${agentStatus.lastRun || 'Nunca'}`);
         console.log(`   Sucesso: ${agentStatus.success ? '✅' : '❌'}`);
@@ -65,7 +65,7 @@ async function main() {
       const pending = queue.tasks?.filter((t: any) => t.status === 'pending').length || 0;
       const inProgress = queue.tasks?.filter((t: any) => t.status === 'in_progress').length || 0;
       const completed = queue.tasks?.filter((t: any) => t.status === 'completed').length || 0;
-      
+
       if (queue.tasks && queue.tasks.length > 0) {
         console.log(`\n📋 Fila de tarefas:`);
         console.log(`   Pendentes: ${pending}`);
@@ -77,7 +77,6 @@ async function main() {
     }
 
     console.log('');
-
   } catch (error: any) {
     console.error('❌ Erro ao obter status:', error);
     process.exit(1);
@@ -85,4 +84,3 @@ async function main() {
 }
 
 main();
-

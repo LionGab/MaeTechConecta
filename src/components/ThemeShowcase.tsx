@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold as any,
+    fontWeight: typography.weights.bold,
     color: colors.primary,
     marginBottom: spacing.lg,
   },
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   colorBoxName: {
     fontSize: typography.sizes.base,
-    fontWeight: typography.weights.bold as any,
+    fontWeight: typography.weights.bold,
     color: colors.foreground,
   },
   colorBoxHex: {
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
   },
   shadowText: {
     color: colors.foreground,
-    fontWeight: typography.weights.bold as any,
+    fontWeight: typography.weights.bold,
   },
 
   // Buttons
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
   buttonPrimaryText: {
     color: colors.primaryForeground,
     fontSize: typography.sizes.base,
-    fontWeight: typography.weights.bold as any,
+    fontWeight: typography.weights.bold,
   },
   buttonSecondary: {
     backgroundColor: colors.secondary,
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
   buttonSecondaryText: {
     color: colors.secondaryForeground,
     fontSize: typography.sizes.base,
-    fontWeight: typography.weights.bold as any,
+    fontWeight: typography.weights.bold,
   },
 
   // Card
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: typography.sizes.base,
-    fontWeight: typography.weights.bold as any,
+    fontWeight: typography.weights.bold,
     color: colors.foreground,
     marginBottom: spacing.md,
   },

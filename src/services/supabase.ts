@@ -73,14 +73,45 @@ export interface DailyPlan {
   created_at: string;
 }
 
-// Função auxiliar para criar usuário temporário
+/**
+ * Cria um usuário temporário/anônimo para testes ou uso sem autenticação
+ *
+ * Usa autenticação anônima do Supabase para criar um usuário temporário
+ * que pode ser usado para testes ou funcionalidades que não requerem login.
+ *
+ * @returns Dados do usuário criado (incluindo id, access_token, etc)
+ * @throws {Error} Se a criação do usuário anônimo falhar
+ *
+ * @example
+ * const user = await createTemporaryUser();
+ * console.log("Usuário temporário criado:", user.id);
+ */
 export const createTemporaryUser = async () => {
   const { data, error } = await supabase.auth.signInAnonymously();
   if (error) throw error;
   return data.user;
 };
 
-// Função para salvar perfil
+/**
+ * Salva ou atualiza o perfil do usuário
+ *
+ * Usa upsert para criar um novo perfil ou atualizar um existente.
+ * Se o perfil já existir (baseado no id), será atualizado.
+ * Caso contrário, será criado um novo perfil.
+ *
+ * @param profile - Dados parciais do perfil do usuário para salvar/atualizar
+ * @returns Array com o perfil salvo/atualizado
+ * @throws {Error} Se a operação de upsert falhar
+ *
+ * @example
+ * const profile = await saveUserProfile({
+ *   id: userId,
+ *   name: "Maria",
+ *   type: "gestante",
+ *   pregnancy_week: 20
+ * });
+ * console.log("Perfil salvo:", profile[0]);
+ */
 export const saveUserProfile = async (profile: Partial<UserProfile>) => {
   const { data, error } = await supabase.from('user_profiles').upsert(profile).select();
 
@@ -88,7 +119,25 @@ export const saveUserProfile = async (profile: Partial<UserProfile>) => {
   return data;
 };
 
-// Função para salvar mensagem de chat
+/**
+ * Salva uma mensagem de chat no banco de dados
+ *
+ * Insere uma nova mensagem de chat (pergunta do usuário e resposta da NAT-IA)
+ * na tabela chat_messages do Supabase.
+ *
+ * @param message - Dados parciais da mensagem de chat (user_id, message, response, context_data)
+ * @returns Array com a mensagem salva
+ * @throws {Error} Se a inserção falhar
+ *
+ * @example
+ * const chatMessage = await saveChatMessage({
+ *   user_id: userId,
+ *   message: "Olá!",
+ *   response: "Olá! Como posso ajudar?",
+ *   context_data: { pregnancy_week: 20 }
+ * });
+ * console.log("Mensagem salva:", chatMessage[0].id);
+ */
 export const saveChatMessage = async (message: Partial<ChatMessage>) => {
   const { data, error } = await supabase.from('chat_messages').insert(message).select();
 
@@ -96,7 +145,22 @@ export const saveChatMessage = async (message: Partial<ChatMessage>) => {
   return data;
 };
 
-// Função para buscar histórico de chat
+/**
+ * Busca o histórico de mensagens de chat do usuário
+ *
+ * Retorna as mensagens de chat ordenadas cronologicamente (mais antigas primeiro).
+ * Por padrão, retorna até 50 mensagens, mas o limite pode ser customizado.
+ *
+ * @param userId - ID do usuário para buscar o histórico
+ * @param limit - Número máximo de mensagens a retornar (padrão: 50)
+ * @returns Array de mensagens de chat ordenadas cronologicamente (mais antigas primeiro)
+ * @throws {Error} Se a busca falhar
+ *
+ * @example
+ * const history = await getChatHistory(userId, 20);
+ * console.log(`Histórico com ${history.length} mensagens`);
+ * history.forEach(msg => console.log(msg.message));
+ */
 export const getChatHistory = async (userId: string, limit: number = 50) => {
   const { data, error } = await supabase
     .from('chat_messages')
@@ -109,7 +173,27 @@ export const getChatHistory = async (userId: string, limit: number = 50) => {
   return data?.reverse() || [];
 };
 
-// Função para salvar plano diário
+/**
+ * Salva ou atualiza o plano diário do usuário
+ *
+ * Usa upsert para criar um novo plano diário ou atualizar um existente.
+ * O plano diário contém prioridades, dicas, receitas e outras informações
+ * personalizadas para o dia específico.
+ *
+ * @param plan - Dados parciais do plano diário (user_id, date, priorities, tip, recipe, etc)
+ * @returns Array com o plano diário salvo/atualizado
+ * @throws {Error} Se a operação de upsert falhar
+ *
+ * @example
+ * const dailyPlan = await saveDailyPlan({
+ *   user_id: userId,
+ *   date: "2025-01-15",
+ *   priorities: ["Descansar", "Hidratar"],
+ *   tip: "Dica do dia",
+ *   recipe: "Receita saudável"
+ * });
+ * console.log("Plano diário salvo:", dailyPlan[0].id);
+ */
 export const saveDailyPlan = async (plan: Partial<DailyPlan>) => {
   const { data, error } = await supabase.from('daily_plans').upsert(plan).select();
 
@@ -117,7 +201,25 @@ export const saveDailyPlan = async (plan: Partial<DailyPlan>) => {
   return data;
 };
 
-// Função para buscar plano diário
+/**
+ * Busca o plano diário do usuário para uma data específica
+ *
+ * Retorna o plano diário do usuário para a data especificada.
+ * Se não houver plano para a data, retorna null (sem lançar erro).
+ *
+ * @param userId - ID do usuário para buscar o plano
+ * @param date - Data no formato YYYY-MM-DD para buscar o plano
+ * @returns Plano diário encontrado ou null se não existir
+ * @throws {Error} Se a busca falhar (exceto quando não encontrar registro)
+ *
+ * @example
+ * const plan = await getDailyPlan(userId, "2025-01-15");
+ * if (plan) {
+ *   console.log("Prioridades:", plan.priorities);
+ * } else {
+ *   console.log("Nenhum plano encontrado para esta data");
+ * }
+ */
 export const getDailyPlan = async (userId: string, date: string) => {
   const { data, error } = await supabase
     .from('daily_plans')

@@ -5,6 +5,7 @@ Crie um componente React Native seguindo todas as regras do .cursorrules e os pa
 ## Requisitos Obrigatórios
 
 ### 1. TypeScript com Tipos Explícitos
+
 - Sempre usar tipos explícitos (evitar `any`)
 - Preferir `interfaces` sobre `type` para objetos
 - Props tipadas com interface exportada
@@ -12,12 +13,14 @@ Crie um componente React Native seguindo todas as regras do .cursorrules e os pa
 - Sem type assertions desnecessárias (`as`, `!`)
 
 ### 2. Performance e Otimização
+
 - Usar `React.memo` quando o componente é puro e renderiza frequentemente
 - Usar `useCallback` para handlers passados como props
 - Usar `useMemo` para computações pesadas ou objetos/arrays recriados
 - Avaliar necessidade caso a caso (não aplicar cegamente)
 
 ### 3. Acessibilidade (WCAG 2.1 AA)
+
 - **Obrigatório**: `accessibilityLabel` descritivo em elementos interativos
 - `accessibilityRole` correto (button, text, header, etc.)
 - `accessibilityHint` quando a ação não é óbvia
@@ -29,17 +32,20 @@ Crie um componente React Native seguindo todas as regras do .cursorrules e os pa
 ### 4. Estilização Mobile-First
 
 #### Importar Tema (Padrão do Projeto)
+
 ```typescript
 import { colors, spacing, typography, borderRadius, shadows } from '@/theme/colors';
 ```
 
 **OU** usar `useTheme()` quando necessário reagir a mudanças de tema:
+
 ```typescript
 import { useTheme } from '@/contexts/ThemeContext';
 const { theme } = useTheme();
 ```
 
 #### Regras de Estilo
+
 - **SEMPRE** usar `StyleSheet.create()` para estilos
 - **NUNCA** usar cores hardcoded - sempre usar `colors.*` do tema
 - Usar `spacing`, `typography`, `borderRadius` do tema
@@ -48,6 +54,7 @@ const { theme } = useTheme();
 - Mobile-first design (otimizar para mobile, depois tablet)
 
 ### 5. Haptic Feedback (Opcional)
+
 ```typescript
 // Haptics é opcional - só funciona se expo-haptics estiver instalado
 let Haptics: any = null;
@@ -68,6 +75,7 @@ try {
 ```
 
 ### 6. Estrutura de Arquivo
+
 1. **Imports** (ordenados: React → RN → Expo → Externos → Internos)
 2. **Interfaces/Types** exportadas
 3. **Componente** principal exportado
@@ -104,8 +112,8 @@ try {
  * Componente acessível e responsivo seguindo WCAG 2.1 AA.
  *
  * @example
- * <ComponentName 
- *   title="Título" 
+ * <ComponentName
+ *   title="Título"
  *   onPress={handlePress}
  *   accessibilityLabel="Ação do componente"
  * />
@@ -198,17 +206,20 @@ const styles = StyleSheet.create({
 ## Checklist Final
 
 ### TypeScript
+
 - [ ] Tipos explícitos (sem `any` desnecessário)
 - [ ] Interface exportada para props
 - [ ] `React.FC<PropsInterface>` usado
 - [ ] Sem type assertions desnecessárias
 
 ### Performance
+
 - [ ] `React.memo` usado quando apropriado
 - [ ] `useCallback` para handlers passados como props
 - [ ] `useMemo` para computações pesadas (quando necessário)
 
 ### Acessibilidade
+
 - [ ] `accessibilityLabel` presente e descritivo
 - [ ] `accessibilityRole` correto
 - [ ] `accessibilityHint` quando necessário
@@ -217,6 +228,7 @@ const styles = StyleSheet.create({
 - [ ] Contraste adequado (via tema)
 
 ### Estilização
+
 - [ ] `StyleSheet.create()` usado
 - [ ] Tema importado de `@/theme/colors` (ou `useTheme()` quando necessário)
 - [ ] **NUNCA** cores hardcoded - sempre `colors.*`
@@ -226,6 +238,7 @@ const styles = StyleSheet.create({
 - [ ] Mobile-first design
 
 ### Estrutura
+
 - [ ] JSDoc completo com exemplos
 - [ ] Estrutura: imports → interfaces → componente → helpers → styles
 - [ ] Imports organizados
@@ -233,7 +246,7 @@ const styles = StyleSheet.create({
 
 ## Instruções para o Cursor
 
-Crie o componente seguindo **TODOS** os requisitos acima. 
+Crie o componente seguindo **TODOS** os requisitos acima.
 
 1. **Siga os padrões do projeto**: Importe de `@/theme/colors` (não use `useTheme()` a menos que necessário)
 2. **Acessibilidade é obrigatória**: Sempre inclua `accessibilityLabel` em elementos interativos
@@ -242,4 +255,3 @@ Crie o componente seguindo **TODOS** os requisitos acima.
 5. **Se algo não for aplicável**, explique o motivo no código
 
 **Referências**: Ver componentes em `src/components/` (Button.tsx, Card.tsx) como exemplos do padrão do projeto.
-

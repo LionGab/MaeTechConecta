@@ -3,8 +3,12 @@
  * Apresenta as principais features do app de forma visual e interativa
  */
 
+import { Button } from '@/components/Button';
+import { Logo } from '@/components/Logo';
+import { borderRadius, shadows, spacing, typography } from '@/theme/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useRef, useState } from 'react';
 import {
   Alert,
@@ -21,11 +25,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Button } from '@/components/Button';
-import { Logo } from '@/components/Logo';
-import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
-import { LinearGradient } from 'expo-linear-gradient';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -162,11 +161,19 @@ const ONBOARDING_SLIDES: OnboardingSlide[] = [
   },
 ];
 
-const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
+const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete, route }) => {
   const navigation = useNavigation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const scrollX = useRef(new Animated.Value(0)).current;
+
+  // Mobile-first: Usar navigation listener ao invés de params não-serializáveis
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Screen focada - callback será gerenciado via navigation
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const handleNext = () => {
     if (currentIndex < ONBOARDING_SLIDES.length - 1) {
@@ -193,11 +200,16 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
   const handleComplete = async () => {
     try {
       await AsyncStorage.setItem('onboarded', 'true');
+      // Mobile-first: Usar navigation para atualizar estado
+      // O AppNavigator detectará a mudança no AsyncStorage e atualizará automaticamente
       if (onComplete) {
         onComplete();
       } else {
-        // Se não tiver callback, navegar para Home
-        (navigation as any).navigate('Home');
+        // Fallback: navegar diretamente para Home
+        (navigation as any).reset({
+          index: 0,
+          routes: [{ name: 'Home' }],
+        });
       }
     } catch (error) {
       console.error('Erro ao completar onboarding:', error);
@@ -212,9 +224,9 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
       outputRange: [0.3, 1, 0.3],
     });
 
-    // Tamanhos responsivos
-    const iconSize = getResponsiveValue(60, 70, 80);
-    const iconContainerSize = getResponsiveValue(120, 140, 160);
+    // Tamanhos responsivos - Reduzidos para melhor proporção
+    const iconSize = getResponsiveValue(48, 56, 64);
+    const iconContainerSize = getResponsiveValue(96, 112, 128);
 
     return (
       <View style={styles.slide}>
@@ -224,19 +236,9 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
           bounces={false}
         >
           <Animated.View style={[styles.slideContent, { opacity }]}>
-            {/* Icon/Logo */}
-            <View
-              style={[
-                styles.iconContainer,
-                {
-                  width: iconContainerSize,
-                  height: iconContainerSize,
-                  borderRadius: iconContainerSize / 2,
-                  backgroundColor: `${item.color}20`,
-                },
-              ]}
-            >
-              <Icon name={item.icon} size={iconSize} color={item.color} />
+            {/* Logo completa */}
+            <View style={styles.logoContainerSlide}>
+              <Logo size={getResponsiveValue(SCREEN_WIDTH * 0.2, SCREEN_WIDTH * 0.25, SCREEN_WIDTH * 0.3)} />
             </View>
 
             {/* Optional Image */}
@@ -328,22 +330,15 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
       <SafeAreaView style={styles.safeArea}>
         {/* Header com Skip */}
         <View style={styles.header}>
-          {/* Espaçador esquerdo para centralizar logo */}
+          {/* Espaçador flexível */}
           <View style={styles.headerSpacer} />
 
-          {/* Logo centralizada */}
-          <View style={styles.logoContainer}>
-            <Logo size={getResponsiveValue(32, 36, 40)} />
-          </View>
-
           {/* Botão Skip à direita */}
-          <View style={styles.headerSpacer}>
-            {currentIndex < ONBOARDING_SLIDES.length - 1 && (
-              <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
-                <Text style={styles.skipText}>Pular</Text>
-              </TouchableOpacity>
-            )}
-          </View>
+          {currentIndex < ONBOARDING_SLIDES.length - 1 && (
+            <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
+              <Text style={styles.skipText}>Pular</Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Slides */}
@@ -444,6 +439,12 @@ const baseStyles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center' as const,
     justifyContent: 'center' as const,
+    position: 'absolute' as const,
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    pointerEvents: 'none' as const, // Permitir toque nos elementos abaixo
   },
   skipButton: {
     padding: spacing.sm,
@@ -457,6 +458,7 @@ const baseStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
+    overflow: 'hidden' as const, // Prevenir overflow
   },
   pagination: {
     flexDirection: 'row' as const,
@@ -483,14 +485,14 @@ const getStyles = () => ({
     justifyContent: 'space-between' as const,
     alignItems: 'center' as const,
     paddingHorizontal: getResponsiveValue(spacing.md, spacing.lg, spacing.lg),
-    paddingTop: Platform.OS === 'ios' ? spacing.md : spacing.sm,
+    paddingTop: Platform.OS === 'ios' ? spacing.sm : spacing.xs,
     paddingBottom: spacing.sm,
-    minHeight: getResponsiveValue(50, 56, 60),
+    minHeight: getResponsiveValue(48, 52, 56),
+    width: '100%' as const, // Garantir largura total
+    maxWidth: '100%' as const, // Não ultrapassar largura
   },
   headerSpacer: {
     flex: 1,
-    justifyContent: 'center' as const,
-    alignItems: 'center' as const,
   },
   skipText: {
     fontSize: getResponsiveValue(typography.sizes.sm, typography.sizes.base, typography.sizes.base),
@@ -502,20 +504,31 @@ const getStyles = () => ({
     justifyContent: 'center' as 'center',
     alignItems: 'center' as 'center',
     paddingHorizontal: getResponsiveValue(spacing.md, spacing.lg, spacing.xl),
-    paddingVertical: getResponsiveValue(spacing.md, spacing.lg, spacing.xl),
+    paddingVertical: getResponsiveValue(spacing.sm, spacing.md, spacing.lg),
+    width: SCREEN_WIDTH, // Garantir largura total
   },
   slideContent: {
     alignItems: 'center' as const,
     width: '100%' as const,
-    maxWidth: getResponsiveValue(SCREEN_WIDTH - spacing.lg * 2, 400, 450),
+    maxWidth: SCREEN_WIDTH - getResponsiveValue(spacing.md * 2, spacing.lg * 2, spacing.xl * 2), // Largura total menos padding
+    paddingHorizontal: 0, // Padding já está no container pai
   },
   iconContainer: {
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
-    marginBottom: getResponsiveValue(spacing.lg, spacing.xl, spacing.xl),
+    marginBottom: getResponsiveValue(spacing.md, spacing.lg, spacing.lg),
     borderWidth: 2,
-    borderColor: 'rgba(147, 197, 253, 0.2)',
+    borderColor: 'rgba(147, 197, 253, 0.25)',
     ...shadows.dark.lg,
+  },
+  logoContainerSlide: {
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+    marginBottom: getResponsiveValue(spacing.md, spacing.lg, spacing.lg), // Espaçamento otimizado
+    marginTop: 0, // Remover margin top para melhor espaçamento
+    paddingVertical: getResponsiveValue(spacing.xs, spacing.sm, spacing.md), // Padding ao invés de margin
+    width: '100%' as const,
+    maxWidth: getResponsiveValue(SCREEN_WIDTH * 0.3, SCREEN_WIDTH * 0.3, SCREEN_WIDTH * 0.35), // Proporção melhor
   },
   slideImageContainer: {
     width: '100%' as const,
@@ -529,78 +542,84 @@ const getStyles = () => ({
     maxHeight: 220,
   },
   title: {
-    fontSize: getResponsiveValue(typography.sizes['2xl'], typography.sizes['3xl'], typography.sizes['3xl']),
+    fontSize: getResponsiveValue(22, 26, 28), // Tamanhos mais adequados para mobile
     fontWeight: typography.weights.bold as any,
     color: BLUE_THEME.white,
     textAlign: 'center' as const,
-    marginBottom: spacing.sm,
+    marginBottom: getResponsiveValue(spacing.xs, spacing.sm, spacing.sm),
+    marginTop: 0, // Remover margin top
     fontFamily: typography.fontFamily.sans,
-    paddingHorizontal: spacing.sm,
+    paddingHorizontal: spacing.md,
+    lineHeight: getResponsiveValue(28, 32, 36), // Line-height proporcional
+    width: '100%' as const,
+    flexShrink: 1,
   },
   subtitle: {
-    fontSize: getResponsiveValue(typography.sizes.lg, typography.sizes.xl, typography.sizes.xl),
+    fontSize: getResponsiveValue(14, 16, 18), // Tamanhos mais proporcionais
     fontWeight: typography.weights.semibold as any,
     color: BLUE_THEME.skyBlue,
     textAlign: 'center' as const,
-    marginBottom: spacing.md,
+    marginBottom: getResponsiveValue(spacing.xs, spacing.sm, spacing.md),
     fontFamily: typography.fontFamily.sans,
-    paddingHorizontal: spacing.sm,
+    paddingHorizontal: spacing.md,
+    lineHeight: getResponsiveValue(20, 22, 26), // Line-height proporcional
+    width: '100%' as const,
+    flexShrink: 1,
   },
   description: {
-    fontSize: getResponsiveValue(typography.sizes.sm, typography.sizes.base, typography.sizes.base),
+    fontSize: getResponsiveValue(13, 14, 15), // Tamanhos mais legíveis
     color: BLUE_THEME.darkGray,
     textAlign: 'center' as const,
-    lineHeight: getResponsiveValue(
-      typography.lineHeight.normal * typography.sizes.sm,
-      typography.lineHeight.relaxed * typography.sizes.base,
-      typography.lineHeight.relaxed * typography.sizes.base
-    ),
-    marginBottom: getResponsiveValue(spacing.lg, spacing.xl, spacing.xl),
+    lineHeight: getResponsiveValue(20, 22, 24), // Line-height mais confortável
+    marginBottom: getResponsiveValue(spacing.md, spacing.lg, spacing.lg),
     fontFamily: typography.fontFamily.sans,
-    paddingHorizontal: spacing.sm,
+    paddingHorizontal: spacing.md,
+    width: '100%' as const,
+    flexShrink: 1,
   },
   featuresContainer: {
     width: '100%' as const,
     gap: getResponsiveValue(spacing.sm, spacing.md, spacing.md),
+    alignSelf: 'stretch' as const, // Garantir que ocupa toda largura disponível
   },
   featureItem: {
     flexDirection: 'row' as const,
     alignItems: 'center' as const,
-    backgroundColor: 'rgba(255, 255, 255, 0.08)', // White overlay for card effect
-    padding: getResponsiveValue(spacing.md, spacing.md + 2, spacing.lg),
-    borderRadius: borderRadius.xl,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    padding: getResponsiveValue(spacing.sm, spacing.sm + 2, spacing.md), // Padding otimizado
+    borderRadius: borderRadius.md, // Border radius reduzido para mobile
     borderWidth: 1,
-    borderColor: 'rgba(147, 197, 253, 0.15)',
-    ...shadows.dark.lg,
-    minHeight: getResponsiveValue(52, 56, 60), // Larger touch target
-    gap: getResponsiveValue(spacing.sm, spacing.md, spacing.md),
+    borderColor: 'rgba(147, 197, 253, 0.12)',
+    ...shadows.dark.md,
+    minHeight: getResponsiveValue(52, 56, 60), // Touch target melhorado
+    gap: getResponsiveValue(spacing.sm, spacing.sm + 2, spacing.md),
+    width: '100%' as const,
+    maxWidth: '100%' as const,
   },
   featureIconContainer: {
-    width: getResponsiveValue(40, 44, 48),
-    height: getResponsiveValue(40, 44, 48),
-    borderRadius: getResponsiveValue(10, 11, 12),
+    width: getResponsiveValue(36, 40, 44),
+    height: getResponsiveValue(36, 40, 44),
+    borderRadius: getResponsiveValue(9, 10, 11),
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
     borderWidth: 1,
-    borderColor: 'rgba(147, 197, 253, 0.2)',
-    ...shadows.dark.md,
+    borderColor: 'rgba(147, 197, 253, 0.15)',
+    ...shadows.dark.sm,
   },
   featureEmoji: {
-    fontSize: getResponsiveValue(20, 22, 24),
+    fontSize: getResponsiveValue(18, 20, 22),
     textAlign: 'center' as const,
-    lineHeight: getResponsiveValue(24, 26, 28),
+    lineHeight: getResponsiveValue(22, 24, 26),
   },
   featureText: {
-    fontSize: getResponsiveValue(typography.sizes.sm, typography.sizes.base, typography.sizes.base),
+    fontSize: getResponsiveValue(13, 14, 15), // Tamanhos mais legíveis
     color: BLUE_THEME.white,
     flex: 1,
+    flexShrink: 1,
     fontFamily: typography.fontFamily.sans,
     fontWeight: typography.weights.medium as any,
-    lineHeight: getResponsiveValue(
-      typography.lineHeight.relaxed * typography.sizes.sm,
-      typography.lineHeight.relaxed * typography.sizes.base,
-      typography.lineHeight.relaxed * typography.sizes.base
-    ),
+    lineHeight: getResponsiveValue(18, 20, 22), // Line-height confortável
+    letterSpacing: 0.2, // Espaçamento entre letras para melhor legibilidade
   },
   paginationDot: {
     height: getResponsiveValue(6, 8, 8),

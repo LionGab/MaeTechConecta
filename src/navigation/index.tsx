@@ -4,7 +4,7 @@
  * AppNavigator - Navegador principal da aplicação
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
@@ -15,10 +15,26 @@ import { useTheme } from '@/contexts/ThemeContext';
 
 import { RootStackParamList } from './types';
 import { TabNavigator } from './TabNavigator';
-import OnboardingScreen from '@/screens/OnboardingScreen';
-import DailyPlanScreen from '@/screens/DailyPlanScreen';
-import ContentDetailScreen from '@/features/content/ContentDetailScreen';
 import { linking } from './linking';
+
+// Lazy load screens para melhor performance
+const OnboardingScreen = lazy(() => import('@/screens/OnboardingScreen').then((m) => ({ default: m.default })));
+const DailyPlanScreen = lazy(() => import('@/screens/DailyPlanScreen').then((m) => ({ default: m.default })));
+const ContentDetailScreen = lazy(() =>
+  import('@/features/content/ContentDetailScreen').then((m) => ({ default: m.default }))
+);
+const ComponentValidationScreen = lazy(() =>
+  import('@/screens/ComponentValidationScreen').then((m) => ({ default: m.default }))
+);
+
+// Wrapper com Suspense para lazy loaded screens
+const withSuspense = <P extends object>(Component: React.ComponentType<P>) => {
+  return (props: P) => (
+    <Suspense fallback={<Loading message="Carregando..." />}>
+      <Component {...props} />
+    </Suspense>
+  );
+};
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -58,15 +74,19 @@ export function AppNavigator() {
           {!isOnboarded ? (
             <Stack.Screen
               name="Onboarding"
-              component={OnboardingScreen}
-              initialParams={{ onComplete: () => setIsOnboarded(true) }}
+              component={withSuspense(OnboardingScreen)}
+              listeners={{
+                focus: () => {
+                  // Callback será gerenciado via navigation listener
+                },
+              }}
             />
           ) : (
             <>
               <Stack.Screen name="Home" component={TabNavigator} />
               <Stack.Screen
                 name="DailyPlan"
-                component={DailyPlanScreen}
+                component={withSuspense(DailyPlanScreen)}
                 options={{
                   headerShown: true,
                   title: 'Plano Diário',
@@ -76,10 +96,20 @@ export function AppNavigator() {
               />
               <Stack.Screen
                 name="ContentDetail"
-                component={ContentDetailScreen}
+                component={withSuspense(ContentDetailScreen)}
                 options={{
                   headerShown: true,
                   title: 'Conteúdo',
+                  headerStyle: { backgroundColor: colors.background },
+                  headerTintColor: colors.foreground,
+                }}
+              />
+              <Stack.Screen
+                name="ComponentValidation"
+                component={withSuspense(ComponentValidationScreen)}
+                options={{
+                  headerShown: true,
+                  title: 'Validação de Componentes',
                   headerStyle: { backgroundColor: colors.background },
                   headerTintColor: colors.foreground,
                 }}

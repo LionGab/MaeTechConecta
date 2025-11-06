@@ -1,13 +1,16 @@
 # Status da Configuração de Notificações
 
 ## Status Geral
+
 ✅ **Serviço de notificações implementado**
 ⏳ **ProjectId precisa ser configurado**
 
 ## Implementação
 
 ### 1. Serviço de Notificações (`src/services/notifications.ts`)
+
 ✅ **Completo** - Implementa:
+
 - ✅ Solicitar permissões de notificação
 - ✅ Obter token de push notification
 - ✅ Agendar notificações de hábitos
@@ -18,19 +21,24 @@
 - ✅ Salvar token no Supabase
 
 ### 2. Configuração do Expo
+
 ✅ **Completo** - Configurado em:
+
 - ✅ `apps/mobile/app.config.js` - Suporte para projectId
 - ✅ `apps/mobile/app.json` - Plugin expo-notifications
 - ✅ `apps/mobile/package.json` - Dependência expo-notifications
 
 ### 3. ProjectId do Expo
+
 ⏳ **Pendente** - Precisa ser configurado:
+
 - ⏳ Variável de ambiente `EXPO_PUBLIC_PROJECT_ID` ou `EAS_PROJECT_ID`
 - ⏳ Ou configurar via EAS CLI: `eas project:init`
 
 ## Como Configurar ProjectId
 
 ### Opção 1: Via EAS CLI (Recomendado)
+
 ```bash
 cd apps/mobile
 npx eas project:init
@@ -39,7 +47,9 @@ npx eas project:init
 Isso criará o arquivo `eas.json` com o projectId automaticamente.
 
 ### Opção 2: Via Variável de Ambiente
+
 Adicione ao arquivo `.env` do mobile:
+
 ```env
 EXPO_PUBLIC_PROJECT_ID=seu-project-id-aqui
 # ou
@@ -47,7 +57,9 @@ EAS_PROJECT_ID=seu-project-id-aqui
 ```
 
 ### Opção 3: Manualmente no app.config.js
+
 Se você já tem o projectId do Expo, pode adicionar diretamente:
+
 ```javascript
 extra: {
   projectId: 'seu-project-id-aqui',
@@ -60,6 +72,7 @@ extra: {
 ## Verificação
 
 Para verificar se está funcionando:
+
 1. Execute o app
 2. Chame `requestNotificationPermissions()`
 3. Chame `getPushToken()`
@@ -78,4 +91,3 @@ Para verificar se está funcionando:
 - Notificações só funcionam em dispositivos físicos (não em simulador)
 - ProjectId é necessário para gerar tokens de push
 - O serviço já está pronto, só falta configurar o projectId
-

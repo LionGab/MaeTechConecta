@@ -7,41 +7,51 @@ Execute validação completa do projeto antes de finalizar mudanças:
 Execute na seguinte ordem:
 
 1. **Type Check**
+
    ```bash
    npm run type-check
    ```
+
    - Verifica erros de tipo TypeScript
    - Deve passar sem erros
 
 2. **Lint**
+
    ```bash
    npm run lint
    ```
+
    - Verifica padrões de código
    - Deve passar sem warnings críticos
 
 3. **Testes**
+
    ```bash
    npm run test
    ```
+
    - Executa todos os testes
    - Coverage deve ser >= 70%
 
 4. **Format Check**
+
    ```bash
    npm run format:check
    ```
+
    - Verifica formatação do código
    - Deve passar sem erros
 
 ## Validação Completa
 
 Execute o comando completo:
+
 ```bash
 npm run validate
 ```
 
 Isso executa:
+
 - Type check
 - Lint
 - Testes
@@ -50,6 +60,7 @@ Isso executa:
 ## Validação com Coverage
 
 Para validação completa com coverage:
+
 ```bash
 npm run validate:full
 ```
@@ -59,6 +70,7 @@ npm run validate:full
 Se houver problemas:
 
 1. **Corrigir formatação automaticamente:**
+
    ```bash
    npm run format
    ```
@@ -88,6 +100,7 @@ Se houver problemas:
 ## Integração CI/CD
 
 Esta validação deve ser executada:
+
 - Antes de cada commit (pre-commit hook)
 - No CI/CD pipeline
 - Antes de fazer merge para main
@@ -95,6 +108,7 @@ Esta validação deve ser executada:
 ## Relatório Final
 
 Após validação, forneça:
+
 ```
 ## Validação do Projeto
 
@@ -122,4 +136,3 @@ Após validação, forneça:
 ## Instruções para o Cursor
 
 Execute a validação completa e corrija todos os erros antes de finalizar. Não pule nenhum passo.
-

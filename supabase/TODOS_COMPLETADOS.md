@@ -1,14 +1,17 @@
 # TODOs Críticos Completados
 
 ## Status Geral
+
 ✅ **TODOs críticos completados**
 
 ## Implementações Realizadas
 
 ### 1. Integração Sentry no Logger ✅
+
 **Arquivo:** `src/utils/logger.ts`
 
 **Implementado:**
+
 - ✅ Integração com Sentry para erros críticos (ERROR e CRITICAL)
 - ✅ Envio automático de exceções para Sentry em produção
 - ✅ Envio de mensagens de erro com contexto
@@ -16,6 +19,7 @@
 - ✅ Fallback silencioso se Sentry não estiver disponível
 
 **Código:**
+
 ```typescript
 // Integrar com Sentry para erros críticos
 if (level >= LogLevel.ERROR && !__DEV__) {
@@ -42,15 +46,18 @@ if (level >= LogLevel.ERROR && !__DEV__) {
 ```
 
 ### 2. Configuração ProjectId do Expo para Notificações ✅
+
 **Arquivo:** `src/services/notifications.ts`
 
 **Implementado:**
+
 - ✅ Leitura do projectId via Constants.expoConfig.extra
 - ✅ Suporte para EAS_PROJECT_ID e EXPO_PUBLIC_PROJECT_ID
 - ✅ Validação e warning se não configurado
 - ✅ Fallback gracioso se projectId não estiver disponível
 
 **Código:**
+
 ```typescript
 // Obter projectId do Expo via Constants
 const Constants = require('expo-constants').default;
@@ -67,14 +74,17 @@ const tokenData = await Notifications.getExpoPushTokenAsync({
 ```
 
 ### 3. Configuração app.config.js ✅
+
 **Arquivo:** `apps/mobile/app.config.js`
 
 **Adicionado:**
+
 - ✅ Suporte para EXPO_PUBLIC_PROJECT_ID
 - ✅ Suporte para EAS_PROJECT_ID
 - ✅ Configuração em extra.projectId e extra.eas.projectId
 
 **Código:**
+
 ```javascript
 extra: {
   // ... outras configurações
@@ -90,7 +100,9 @@ extra: {
 ## Configurações Necessárias
 
 ### 1. Variáveis de Ambiente
+
 Adicione ao arquivo `.env` do mobile:
+
 ```env
 EXPO_PUBLIC_PROJECT_ID=seu-project-id-aqui
 # ou
@@ -98,7 +110,9 @@ EAS_PROJECT_ID=seu-project-id-aqui
 ```
 
 ### 2. Sentry DSN
+
 Adicione ao arquivo `.env` do mobile:
+
 ```env
 EXPO_PUBLIC_SENTRY_DSN=https://xxx@sentry.io/xxx
 ```
@@ -116,4 +130,3 @@ EXPO_PUBLIC_SENTRY_DSN=https://xxx@sentry.io/xxx
 - Sentry só envia erros em produção (não em desenvolvimento)
 - Notificações precisam de projectId configurado para funcionar
 - Tudo está pronto, só falta configurar as variáveis de ambiente
-

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
+import React, { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, Text, TextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
 
 /**
  * Input Component - Sistema de Design Bubblegum
@@ -79,12 +79,38 @@ const InputComponent: React.FC<InputProps> = ({
   const hasError = !!error;
   const isDisabled = !editable;
 
-  // Determinar cor da borda
-  const borderColor = hasError ? colors.destructive : isFocused ? colors.primary : colors.border;
+  // Memoizar cor da borda
+  const borderColor = useMemo(
+    () => (hasError ? colors.destructive : isFocused ? colors.primary : colors.border),
+    [hasError, isFocused]
+  );
 
-  // Determinar cor do ícone
-  const finalIconColor =
-    iconColor || (hasError ? colors.destructive : isFocused ? colors.primary : colors.mutedForeground);
+  // Memoizar cor do ícone
+  const finalIconColor = useMemo(
+    () => iconColor || (hasError ? colors.destructive : isFocused ? colors.primary : colors.mutedForeground),
+    [iconColor, hasError, isFocused]
+  );
+
+  // Callbacks para focus/blur
+  const handleFocus = useCallback(() => {
+    setIsFocused(true);
+  }, []);
+
+  const handleBlur = useCallback(() => {
+    setIsFocused(false);
+  }, []);
+
+  // Memoizar estilo do container do input
+  const inputContainerStyle = useMemo(
+    () => [
+      styles.inputContainer,
+      { borderColor },
+      isFocused && styles.inputContainerFocused,
+      hasError && styles.inputContainerError,
+      isDisabled && styles.inputContainerDisabled,
+    ],
+    [borderColor, isFocused, hasError, isDisabled]
+  );
 
   return (
     <View style={[styles.container, containerStyle]}>
@@ -97,15 +123,7 @@ const InputComponent: React.FC<InputProps> = ({
       )}
 
       {/* Input Container */}
-      <View
-        style={[
-          styles.inputContainer,
-          { borderColor },
-          isFocused && styles.inputContainerFocused,
-          hasError && styles.inputContainerError,
-          isDisabled && styles.inputContainerDisabled,
-        ]}
-      >
+      <View style={inputContainerStyle}>
         {/* Ícone */}
         {icon && <Icon name={icon} size={22} color={finalIconColor} style={styles.icon} />}
 
@@ -117,8 +135,8 @@ const InputComponent: React.FC<InputProps> = ({
           placeholder={placeholder}
           placeholderTextColor={colors.mutedForeground}
           editable={editable}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           accessible={true}
           accessibilityLabel={label || placeholder || 'Input de texto'}
           accessibilityHint={helperText || error}
@@ -151,7 +169,7 @@ const styles = StyleSheet.create({
   // Label
   label: {
     fontSize: typography.sizes.base,
-    fontWeight: typography.weights.medium as any,
+    fontWeight: typography.weights.medium,
     color: colors.foreground,
     marginBottom: spacing.sm,
     fontFamily: typography.fontFamily.sans,
@@ -176,7 +194,7 @@ const styles = StyleSheet.create({
   inputContainerFocused: {
     borderColor: colors.primary,
     backgroundColor: colors.background,
-    ...((shadows as any).light?.xs || {}),
+    ...shadows.light.xs,
     borderWidth: 3,
   },
 

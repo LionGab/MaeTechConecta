@@ -19,88 +19,13 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { MessageItem } from '@/components/chat/MessageItem';
+import { TypingIndicator } from '@/components/chat/TypingIndicator';
+import { MessageSkeleton } from '@/components/chat/MessageSkeleton';
 import { Message, useChatOptimized } from '@/hooks/useChatOptimized';
 import { borderRadius, colors, spacing, typography, shadows } from '@/theme/colors';
 import { EmptyState } from '@/shared/components/EmptyState';
-import { SkeletonPresets } from '@/shared/components/Skeleton';
 import { logger } from '@/utils/logger';
-
-// Blue Theme Constants
-const BLUE_THEME = {
-  darkBlue: '#0A2540',
-  deepBlue: '#0F3460',
-  primaryBlue: '#3B82F6',
-  lightBlue: '#60A5FA',
-  skyBlue: '#93C5FD',
-  mutedBlue: '#475569',
-  white: '#FFFFFF',
-  lightGray: '#F1F5F9',
-  darkGray: '#94A3B8',
-};
-
-// Componente de indicador de digitação animado
-const TypingIndicator = React.memo(() => {
-  const fadeAnim = useRef(new Animated.Value(0.5)).current;
-
-  useEffect(() => {
-    const animation = Animated.loop(
-      Animated.sequence([
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(fadeAnim, {
-          toValue: 0.5,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ])
-    );
-    animation.start();
-    return () => animation.stop();
-  }, [fadeAnim]);
-
-  return (
-    <View style={styles.typingContainer}>
-      <Animated.View style={{ opacity: fadeAnim }}>
-        <Text style={styles.typingText}>💭 Pensando...</Text>
-      </Animated.View>
-    </View>
-  );
-});
-TypingIndicator.displayName = 'TypingIndicator';
-
-// Skeleton de mensagem para loading
-const MessageSkeleton = React.memo(() => {
-  const pulseAnim = useRef(new Animated.Value(0.5)).current;
-
-  useEffect(() => {
-    const animation = Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 0.5,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ])
-    );
-    animation.start();
-    return () => animation.stop();
-  }, [pulseAnim]);
-
-  return (
-    <Animated.View style={[styles.messageSkeleton, { opacity: pulseAnim }]}>
-      <View style={styles.skeletonBar} />
-    </Animated.View>
-  );
-});
-MessageSkeleton.displayName = 'MessageSkeleton';
+import { useTheme } from '@/contexts/ThemeContext';
 
 // Definição de ações rápidas
 interface QuickAction {
@@ -119,8 +44,53 @@ const QUICK_ACTIONS: QuickAction[] = [
   { icon: '🚨', text: 'Preocupada', message: 'Tenho alguns sintomas e estou preocupada. O que fazer?', isUrgent: true },
 ];
 
+// Componente memoizado para ações rápidas
+interface QuickActionButtonProps {
+  action: QuickAction;
+  isDisabled: boolean;
+  onPress: (action: QuickAction) => void;
+}
+
+const QuickActionButton = React.memo<QuickActionButtonProps>(({ action, isDisabled, onPress }) => {
+  const handlePress = useCallback(() => {
+    onPress(action);
+  }, [action, onPress]);
+
+  return (
+    <TouchableOpacity
+      style={[
+        styles.quickActionButton,
+        action.isUrgent && styles.quickActionButtonUrgent,
+        isDisabled && styles.quickActionButtonDisabled,
+      ]}
+      onPress={handlePress}
+      disabled={isDisabled}
+      accessible={true}
+      accessibilityLabel={`Ação rápida: ${action.text}`}
+      accessibilityRole="button"
+      accessibilityHint={isDisabled ? 'Aguarde a resposta da assistente' : `Envia mensagem sobre ${action.text}`}
+      accessibilityState={{ disabled: isDisabled }}
+      activeOpacity={0.7}
+    >
+      <Text style={styles.quickActionIcon}>{action.icon}</Text>
+      <Text
+        style={[
+          styles.quickActionText,
+          action.isUrgent && styles.quickActionTextUrgent,
+          isDisabled && styles.quickActionTextDisabled,
+        ]}
+        numberOfLines={1}
+      >
+        {action.text}
+      </Text>
+    </TouchableOpacity>
+  );
+});
+QuickActionButton.displayName = 'QuickActionButton';
+
 export default function ChatScreen() {
   const navigation = useNavigation();
+  const theme = useTheme();
   const [inputText, setInputText] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const inputRef = useRef<TextInput>(null);
@@ -332,41 +302,14 @@ export default function ChatScreen() {
           style={styles.quickActionsContainer}
           contentContainerStyle={styles.quickActionsContent}
         >
-          {filteredQuickActions.map((action, index) => {
-            const isDisabled = loading || initialLoading;
-            return (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.quickActionButton,
-                  action.isUrgent && styles.quickActionButtonUrgent,
-                  isDisabled && styles.quickActionButtonDisabled,
-                ]}
-                onPress={() => handleQuickAction(action)}
-                disabled={isDisabled}
-                accessible={true}
-                accessibilityLabel={`Ação rápida: ${action.text}`}
-                accessibilityRole="button"
-                accessibilityHint={
-                  isDisabled ? 'Aguarde a resposta da assistente' : `Envia mensagem sobre ${action.text}`
-                }
-                accessibilityState={{ disabled: isDisabled }}
-                activeOpacity={0.7}
-              >
-                <Text style={styles.quickActionIcon}>{action.icon}</Text>
-                <Text
-                  style={[
-                    styles.quickActionText,
-                    action.isUrgent && styles.quickActionTextUrgent,
-                    isDisabled && styles.quickActionTextDisabled,
-                  ]}
-                  numberOfLines={1}
-                >
-                  {action.text}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+          {filteredQuickActions.map((action) => (
+            <QuickActionButton
+              key={action.text}
+              action={action}
+              isDisabled={loading || initialLoading}
+              onPress={handleQuickAction}
+            />
+          ))}
         </ScrollView>
       )}
 
@@ -401,13 +344,13 @@ export default function ChatScreen() {
             colors={
               !inputText.trim() || loading
                 ? [colors.muted, colors.muted]
-                : [BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]
+                : [theme.colors.primary, theme.colors.primary + 'CC']
             }
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={[styles.sendButton, (!inputText.trim() || loading) && styles.sendButtonDisabled]}
           >
-            <Icon name={loading ? 'loading' : 'send'} size={24} color={BLUE_THEME.white} />
+            <Icon name={loading ? 'loading' : 'send'} size={24} color={colors.background} />
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -432,7 +375,7 @@ const styles = StyleSheet.create({
   },
   headerBack: {
     fontSize: typography.sizes.base,
-    color: BLUE_THEME.primaryBlue,
+    color: colors.primary,
     fontWeight: typography.weights.medium as any,
   },
   headerTitle: {
@@ -570,31 +513,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.xl,
     gap: spacing.md,
-  },
-  messageSkeleton: {
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    marginVertical: spacing.xs,
-    borderRadius: borderRadius.lg,
-    maxWidth: '75%',
-    alignSelf: 'flex-start',
-    backgroundColor: colors.card,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  skeletonBar: {
-    width: '100%',
-    height: 16,
-    backgroundColor: colors.muted,
-    borderRadius: borderRadius.sm,
-  },
-  typingContainer: {
-    padding: spacing.md,
-    alignItems: 'center',
-  },
-  typingText: {
-    fontSize: typography.sizes.sm,
-    color: colors.mutedForeground,
-    fontStyle: 'italic',
   },
 });

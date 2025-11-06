@@ -26,6 +26,8 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
   }),
 });
 
@@ -247,8 +249,8 @@ export function removeNotificationListeners(listeners: {
   received: Notifications.Subscription;
   response: Notifications.Subscription;
 }): void {
-  Notifications.removeNotificationSubscription(listeners.received);
-  Notifications.removeNotificationSubscription(listeners.response);
+  listeners.received.remove();
+  listeners.response.remove();
 }
 
 /**

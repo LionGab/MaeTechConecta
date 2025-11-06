@@ -5,6 +5,7 @@ Workflow otimizado para criação e execução de testes usando Cursor 2.0.
 ## Fase 1: Planejamento de Testes
 
 ### Passo 1: Identificar O Que Testar
+
 - Componentes críticos
 - Lógica de negócio
 - Utils e helpers
@@ -12,12 +13,14 @@ Workflow otimizado para criação e execução de testes usando Cursor 2.0.
 - Serviços e integrações
 
 ### Passo 2: Definir Estratégia
+
 - Testes unitários para lógica
 - Testes de componente para UI
 - Testes de integração para fluxos
 - Testes E2E para cenários completos
 
 ### Passo 3: Estabelecer Coverage
+
 - Coverage mínimo: 70%
 - Componentes críticos: 100%
 - Utils: 90%+
@@ -28,6 +31,7 @@ Workflow otimizado para criação e execução de testes usando Cursor 2.0.
 ### Testes Unitários (Jest/Vitest)
 
 #### Utils e Helpers
+
 ```typescript
 import { describe, it, expect } from 'vitest';
 import { functionToTest } from './utils';
@@ -50,6 +54,7 @@ describe('functionToTest', () => {
 ```
 
 #### Hooks Customizados
+
 ```typescript
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useCustomHook } from './useCustomHook';
@@ -129,32 +134,36 @@ describe('ScreenWithIntegration', () => {
 appId: com.nossamaternidade.app
 ---
 - launchApp
-- tapOn: "Login"
-- inputText: "test@example.com"
-- tapOn: "Senha"
-- inputText: "password123"
-- tapOn: "Entrar"
-- assertVisible: "Home"
+- tapOn: 'Login'
+- inputText: 'test@example.com'
+- tapOn: 'Senha'
+- inputText: 'password123'
+- tapOn: 'Entrar'
+- assertVisible: 'Home'
 ```
 
 ## Fase 3: Execução de Testes
 
 ### Executar Todos os Testes
+
 ```bash
 npm run test
 ```
 
 ### Executar com Coverage
+
 ```bash
 npm run test:coverage
 ```
 
 ### Executar em Modo Watch
+
 ```bash
 npm run test:watch
 ```
 
 ### Executar Testes E2E
+
 ```bash
 npm run e2e:android
 ```
@@ -173,6 +182,7 @@ npm run e2e:android
 - [ ] Erros tratados e testados
 
 ### Validação Automática
+
 ```
 @validar-projeto
 ```
@@ -202,32 +212,38 @@ npm run test -- --verbose
 ## Boas Práticas
 
 ### 1. Testes Isolados
+
 - Cada teste deve ser independente
 - Não depender de ordem de execução
 - Limpar estado entre testes
 
 ### 2. Testes Descritivos
+
 - Nomes claros e descritivos
 - Descrever comportamento esperado
 - Organizar com describe/it
 
 ### 3. AAA Pattern
+
 - Arrange: Preparar dados
 - Act: Executar ação
 - Assert: Verificar resultado
 
 ### 4. Mocks e Stubs
+
 - Mockar dependências externas
 - Mockar APIs e serviços
 - Mockar navegação quando necessário
 
 ### 5. Coverage Inteligente
+
 - Não focar apenas em números
 - Testar comportamentos importantes
 - Testar edge cases
 - Testar erros
 
 ### 6. Testes de Acessibilidade
+
 - Verificar accessibilityLabel
 - Verificar accessibilityRole
 - Testar com screen readers
@@ -276,4 +292,3 @@ __tests__/
 - [ ] Testes de acessibilidade incluídos
 - [ ] Edge cases cobertos
 - [ ] Erros testados
-

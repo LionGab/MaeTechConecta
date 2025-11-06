@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "pnpm@9.12.0",
   "scripts": {
-    "dev": "pnpm -C apps/mobile start",
+    "dev": "pnpm -C apps/mobile dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
@@ -28,6 +28,8 @@
     "agents:stop": "node scripts/stop-agents.js",
     "agents:status": "node scripts/agents-status.js",
     "agents:logs": "node scripts/agents-logs.js",
+    "browser:automation": "tsx scripts/browser-automation-agent.ts",
+    "refactor:web": "tsx scripts/refactor-web-agent.ts",
     "precommit": "lint-staged",
     "prepush": "pnpm run validate:quick"
   },
@@ -41,20 +43,20 @@
     "@sentry/react-native": "^7.5.0",
     "@stripe/stripe-react-native": "0.38.6",
     "@supabase/supabase-js": "^2.48.0",
-    "@types/react": "~18.3.12",
+    "@types/react": "~19.1.10",
     "axios": "^1.6.2",
     "date-fns": "^2.30.0",
-    "expo-av": "~15.0.2",
-    "expo-notifications": "~0.29.14",
-    "expo-status-bar": "~2.0.1",
+    "expo-av": "~16.0.7",
+    "expo-notifications": "~0.32.12",
+    "expo-status-bar": "~3.0.8",
     "glob": "^10.4.5",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.8",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.7.1",
-    "react": "18.3.1",
-    "react-native": "0.76.9",
-    "react-native-safe-area-context": "4.12.0",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-safe-area-context": "~5.6.0",
     "tsx": "^4.7.0",
     "turbo": "^2.1.0",
     "typescript": "^5.3.3"
@@ -70,12 +72,13 @@
   },
   "pnpm": {
     "overrides": {
-      "@types/react": "~18.3.12",
-      "react": "18.3.1"
+      "@types/react": "~19.1.10",
+      "react": "19.1.0",
+      "react-native-safe-area-context": "~5.6.0"
     }
   },
   "dependencies": {
-    "expo-constants": "~17.0.3",
-    "expo-linear-gradient": "~14.0.1"
+    "expo-constants": "~18.0.10",
+    "expo-linear-gradient": "~15.0.7"
   }
 }

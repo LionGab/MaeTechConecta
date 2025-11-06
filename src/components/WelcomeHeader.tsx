@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   greeting: {
     fontSize: typography.sizes['2xl'], // 24px
-    fontWeight: typography.weights.bold as any,
+    fontWeight: typography.weights.bold,
     color: colors.primary,
     marginTop: spacing.md,
     fontFamily: typography.fontFamily.sans,

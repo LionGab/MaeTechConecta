@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, TextStyle, TouchableOpacityProps } from 'react-native';
-import { colors, spacing, borderRadius, typography, shadows } from '@/theme/colors';
+import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
+import React, { useMemo } from 'react';
+import { StyleSheet, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 /**
@@ -83,18 +83,27 @@ const CardComponent: React.FC<CardProps> = ({
   accessibilityHint,
   padding = 'lg',
 }) => {
-  const containerStyle = [styles.base, styles[variant], { padding: spacing[padding] }, style];
+  // Memoizar estilo do container
+  const containerStyle = useMemo(
+    () => [styles.base, styles[variant], { padding: spacing[padding] }, style],
+    [variant, padding, style]
+  );
 
-  const touchableProps: Partial<TouchableOpacityProps> = onPress
-    ? {
-        onPress,
-        accessible: true,
-        accessibilityRole: 'button',
-        accessibilityLabel: accessibilityLabel || title || 'Card',
-        accessibilityHint: accessibilityHint,
-        activeOpacity: 0.7,
-      }
-    : {};
+  // Memoizar props de acessibilidade
+  const touchableProps: Partial<TouchableOpacityProps> = useMemo(
+    () =>
+      onPress
+        ? {
+            onPress,
+            accessible: true,
+            accessibilityRole: 'button',
+            accessibilityLabel: accessibilityLabel || title || 'Card',
+            accessibilityHint: accessibilityHint,
+            activeOpacity: 0.7,
+          }
+        : {},
+    [onPress, accessibilityLabel, title, accessibilityHint]
+  );
 
   // Renderizar como TouchableOpacity ou View dependendo de onPress
   if (onPress) {
@@ -174,7 +183,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.semibold as any,
+    fontWeight: typography.weights.semibold,
     color: colors.foreground,
     fontFamily: typography.fontFamily.sans,
   },

@@ -5,18 +5,21 @@ Refatore o código para melhorar performance seguindo as melhores práticas do R
 ## Otimizações a Aplicar
 
 ### 1. Componentes
+
 - [ ] Adicionar `React.memo` em componentes puros
 - [ ] Remover re-renders desnecessários
 - [ ] Verificar dependências de hooks (useEffect, useMemo, useCallback)
 - [ ] Lazy load componentes pesados
 
 ### 2. Hooks
+
 - [ ] Usar `useCallback` para handlers passados como props
 - [ ] Usar `useMemo` para computações pesadas
 - [ ] Otimizar dependências de hooks
 - [ ] Evitar hooks dentro de loops ou condicionais
 
 ### 3. FlatList
+
 - [ ] Configurar `windowSize={10}` para reduzir memória
 - [ ] Configurar `maxToRenderPerBatch={10}` para renderização inicial
 - [ ] Configurar `updateCellsBatchingPeriod={50}` para atualizações suaves
@@ -27,27 +30,32 @@ Refatore o código para melhorar performance seguindo as melhores práticas do R
 - [ ] Usar `ListEmptyComponent` e `ListFooterComponent` eficientemente
 
 ### 4. Navegação
+
 - [ ] Lazy load screens no TabNavigator
 - [ ] Usar `React.lazy()` ou imports dinâmicos
 - [ ] Otimizar transições de navegação
 
 ### 5. Imagens
+
 - [ ] Usar `expo-image` ou `react-native-fast-image`
 - [ ] Usar tamanhos apropriados de imagens
 - [ ] Usar formatos eficientes (WebP quando possível)
 - [ ] Implementar lazy loading de imagens
 
 ### 6. Animações
+
 - [ ] Usar `InteractionManager` para adiar tarefas não-críticas após animações
 - [ ] Usar `Animated` API do React Native (não JavaScript animations)
 - [ ] Otimizar animações com `useNativeDriver: true`
 
 ### 7. Debounce/Throttle
+
 - [ ] Debounce handlers de scroll
 - [ ] Throttle handlers de input
 - [ ] Otimizar pesquisas com debounce
 
 ### 8. Memória
+
 - [ ] Limpar subscriptions e listeners
 - [ ] Remover timers quando componente desmontar
 - [ ] Evitar memory leaks
@@ -130,6 +138,7 @@ export const OptimizedComponent: React.FC<OptimizedComponentProps> = React.memo(
 ## Métricas de Performance
 
 Após refatoração, verificar:
+
 - [ ] Redução de re-renders (usar React DevTools Profiler)
 - [ ] Melhoria no tempo de renderização
 - [ ] Redução no uso de memória
@@ -159,6 +168,7 @@ Após refatoração, verificar:
 ## Relatório Final
 
 Após refatoração, forneça:
+
 ```
 ## Refatoração de Performance
 
@@ -188,4 +198,3 @@ Após refatoração, forneça:
 ## Instruções para o Cursor
 
 Refatore o código aplicando TODAS as otimizações relevantes. Não quebre funcionalidade existente. Execute validação após refatoração.
-

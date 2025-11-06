@@ -24,24 +24,24 @@ if (!agentType) {
 
 async function main() {
   const orchestrator = new Orchestrator();
-  
+
   // Carrega configuração
   const configPath = path.join(__dirname, '..', 'config', 'agent-config.json');
   await orchestrator.loadConfig(configPath);
-  
+
   // Inicializa sistema
   await orchestrator.initialize();
-  
+
   // Cria e registra agente
   let agent;
   const config = JSON.parse(await fs.readFile(configPath, 'utf8'));
   const agentConfig = config.agents[agentType];
-  
+
   if (!agentConfig || !agentConfig.enabled) {
     console.error(`Agent ${agentType} is not enabled or not found`);
     process.exit(1);
   }
-  
+
   switch (agentType) {
     case 'refactor':
       agent = new RefactorAgent(agentConfig.maxFiles, config.blacklist);
@@ -71,30 +71,29 @@ async function main() {
       console.error(`Unknown agent type: ${agentType}`);
       process.exit(1);
   }
-  
+
   await orchestrator.registerAgent(agent);
-  
+
   // Executa agente em loop
   console.log(`[${agentType}-agent] Starting...`);
   await logger.info(`${agentType}-agent`, 'Agent started');
-  
+
   const interval = config.schedule?.interval || 1800000;
-  
+
   while (true) {
     try {
       const result = await agent.run();
       console.log(`[${agentType}-agent] Completed: ${result.message}`);
       await orchestrator.updateStatus(agentType, result);
-      
+
       console.log(`[${agentType}-agent] Waiting ${interval / 1000 / 60} minutes...`);
-      await new Promise(resolve => setTimeout(resolve, interval));
+      await new Promise((resolve) => setTimeout(resolve, interval));
     } catch (error: any) {
       console.error(`[${agentType}-agent] Error:`, error);
       await logger.error(`${agentType}-agent`, 'Execution error', error);
-      await new Promise(resolve => setTimeout(resolve, 60000)); // Aguarda 1 minuto em caso de erro
+      await new Promise((resolve) => setTimeout(resolve, 60000)); // Aguarda 1 minuto em caso de erro
     }
   }
 }
 
 main().catch(console.error);
-

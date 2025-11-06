@@ -16,6 +16,7 @@ import { colors, spacing, typography, borderRadius, shadows } from '@/theme/colo
 import { supabase } from '@/services/supabase';
 import { EmptyState } from '@/shared/components/EmptyState';
 import { SkeletonPresets } from '@/shared/components/Skeleton';
+import { useDebounce } from '@/hooks/useMemoizedCallback';
 
 // Blue Theme Constants
 const BLUE_THEME = {
@@ -54,39 +55,11 @@ function ContentFeedScreen() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
-  useEffect(() => {
-    loadContent();
-  }, []);
+  // Debounce do input de busca para evitar filtros excessivos
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
-  // Memoizar filtro de conteúdo para evitar recálculos desnecessários
-  const filteredContent = useMemo(() => {
-    let filtered = [...content];
-
-    // Filtro por categoria
-    if (selectedCategory) {
-      filtered = filtered.filter((item) => item.category?.toLowerCase() === selectedCategory.toLowerCase());
-    }
-
-    // Filtro por favoritos
-    if (showFavoritesOnly) {
-      filtered = filtered.filter((item) => item.is_favorite);
-    }
-
-    // Busca por texto
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(
-        (item) =>
-          item.title.toLowerCase().includes(query) ||
-          item.description?.toLowerCase().includes(query) ||
-          item.tags?.some((tag) => tag.toLowerCase().includes(query))
-      );
-    }
-
-    return filtered;
-  }, [content, searchQuery, selectedCategory, showFavoritesOnly]);
-
-  const loadContent = async () => {
+  // Memoizar loadContent para evitar recriação
+  const loadContent = useCallback(async () => {
     try {
       const {
         data: { user },
@@ -119,73 +92,110 @@ function ContentFeedScreen() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const toggleFavorite = useCallback(async (contentId: string, isFavorite: boolean) => {
-    try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return;
-
-      if (isFavorite) {
-        // Remover dos favoritos
-        await supabase.from('content_favorites').delete().eq('user_id', user.id).eq('content_id', contentId);
-      } else {
-        // Adicionar aos favoritos
-        await supabase.from('content_favorites').insert({
-          user_id: user.id,
-          content_id: contentId,
-        });
-      }
-
-      await loadContent();
-    } catch (error) {
-      console.error('Error toggling favorite:', error);
-      Alert.alert('Erro', 'Não foi possível atualizar os favoritos');
-    }
   }, []);
+
+  useEffect(() => {
+    loadContent();
+  }, [loadContent]);
+
+  // Memoizar filtro de conteúdo para evitar recálculos desnecessários
+  const filteredContent = useMemo(() => {
+    let filtered = [...content];
+
+    // Filtro por categoria
+    if (selectedCategory) {
+      filtered = filtered.filter((item) => item.category?.toLowerCase() === selectedCategory.toLowerCase());
+    }
+
+    // Filtro por favoritos
+    if (showFavoritesOnly) {
+      filtered = filtered.filter((item) => item.is_favorite);
+    }
+
+    // Busca por texto (usando debounced value)
+    if (debouncedSearchQuery.trim()) {
+      const query = debouncedSearchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (item) =>
+          item.title.toLowerCase().includes(query) ||
+          item.description?.toLowerCase().includes(query) ||
+          item.tags?.some((tag) => tag.toLowerCase().includes(query))
+      );
+    }
+
+    return filtered;
+  }, [content, debouncedSearchQuery, selectedCategory, showFavoritesOnly]);
+
+  const toggleFavorite = useCallback(
+    async (contentId: string, isFavorite: boolean) => {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) return;
+
+        if (isFavorite) {
+          // Remover dos favoritos
+          await supabase.from('content_favorites').delete().eq('user_id', user.id).eq('content_id', contentId);
+        } else {
+          // Adicionar aos favoritos
+          await supabase.from('content_favorites').insert({
+            user_id: user.id,
+            content_id: contentId,
+          });
+        }
+
+        await loadContent();
+      } catch (error) {
+        console.error('Error toggling favorite:', error);
+        Alert.alert('Erro', 'Não foi possível atualizar os favoritos');
+      }
+    },
+    [loadContent]
+  );
 
   // Memoizar renderItem para evitar recriação em cada render
   const renderContentItem = useCallback(
     ({ item }: { item: ContentItem }) => (
-    <Card
-      variant="elevated"
-      style={styles.contentCard}
-      onPress={() => navigation.navigate('ContentDetail' as any, { contentId: item.id })}
-      accessibilityLabel={`${item.title} - ${item.type}`}
-    >
-      {item.thumbnail_url && <Image source={{ uri: item.thumbnail_url }} style={styles.thumbnail} resizeMode="cover" />}
-      <View style={styles.contentInfo}>
-        <View style={styles.headerRow}>
-          <Badge variant="info" size="sm" style={styles.typeBadge}>
-            {item.type === 'article' && '📄 Artigo'}
-            {item.type === 'video' && '🎥 Vídeo'}
-            {item.type === 'audio' && '🎧 Áudio'}
-            {item.type === 'post' && '📝 Post'}
-          </Badge>
-          <TouchableOpacity
-            onPress={() => toggleFavorite(item.id, item.is_favorite)}
-            accessible={true}
-            accessibilityLabel={item.is_favorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
-            style={styles.favoriteButton}
-          >
-            <Icon
-              name={item.is_favorite ? 'heart' : 'heart-outline'}
-              size={24}
-              color={item.is_favorite ? colors.destructive : colors.mutedForeground}
-            />
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.contentTitle}>{item.title}</Text>
-        {item.description && (
-          <Text style={styles.contentDescription} numberOfLines={2}>
-            {item.description}
-          </Text>
+      <Card
+        variant="elevated"
+        style={styles.contentCard}
+        onPress={() => navigation.navigate('ContentDetail' as any, { contentId: item.id })}
+        accessibilityLabel={`${item.title} - ${item.type}`}
+      >
+        {item.thumbnail_url && (
+          <Image source={{ uri: item.thumbnail_url }} style={styles.thumbnail} resizeMode="cover" />
         )}
-        {item.category && <Text style={styles.contentCategory}>{item.category}</Text>}
-      </View>
-    </Card>
+        <View style={styles.contentInfo}>
+          <View style={styles.headerRow}>
+            <Badge variant="info" size="sm" style={styles.typeBadge}>
+              {item.type === 'article' && '📄 Artigo'}
+              {item.type === 'video' && '🎥 Vídeo'}
+              {item.type === 'audio' && '🎧 Áudio'}
+              {item.type === 'post' && '📝 Post'}
+            </Badge>
+            <TouchableOpacity
+              onPress={() => toggleFavorite(item.id, item.is_favorite)}
+              accessible={true}
+              accessibilityLabel={item.is_favorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+              style={styles.favoriteButton}
+            >
+              <Icon
+                name={item.is_favorite ? 'heart' : 'heart-outline'}
+                size={24}
+                color={item.is_favorite ? colors.destructive : colors.mutedForeground}
+              />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.contentTitle}>{item.title}</Text>
+          {item.description && (
+            <Text style={styles.contentDescription} numberOfLines={2}>
+              {item.description}
+            </Text>
+          )}
+          {item.category && <Text style={styles.contentCategory}>{item.category}</Text>}
+        </View>
+      </Card>
     ),
     [navigation, toggleFavorite]
   );
@@ -194,9 +204,12 @@ function ContentFeedScreen() {
   const keyExtractor = useCallback((item: ContentItem) => item.id, []);
 
   // Memoizar handlers de filtro
-  const handleCategoryFilter = useCallback((category: string | null) => {
-    setSelectedCategory(selectedCategory === category ? null : category);
-  }, [selectedCategory]);
+  const handleCategoryFilter = useCallback(
+    (category: string | null) => {
+      setSelectedCategory(selectedCategory === category ? null : category);
+    },
+    [selectedCategory]
+  );
 
   const handleToggleFavorites = useCallback(() => {
     setShowFavoritesOnly(!showFavoritesOnly);

@@ -7,10 +7,10 @@
  * - Microinterações acolhedoras
  */
 
-import React, { useRef } from 'react';
+import { shadows } from '@/theme/colors';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { Animated, StyleSheet, ViewStyle } from 'react-native';
 import { Button, ButtonProps } from './Button';
-import { colors, shadows } from '@/theme/colors';
 
 export interface EnhancedButtonProps extends ButtonProps {
   /** Animação de entrada */
@@ -34,45 +34,51 @@ export const EnhancedButton: React.FC<EnhancedButtonProps> = ({
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
 
-  const handlePress = (event: any) => {
-    if (ripple) {
-      // Animação de press
-      Animated.sequence([
-        Animated.parallel([
-          Animated.spring(scaleAnim, {
-            toValue: 0.95,
-            useNativeDriver: true,
-          }),
-          Animated.timing(opacityAnim, {
-            toValue: 0.8,
-            duration: 100,
-            useNativeDriver: true,
-          }),
-        ]),
-        Animated.parallel([
-          Animated.spring(scaleAnim, {
-            toValue: 1,
-            useNativeDriver: true,
-          }),
-          Animated.timing(opacityAnim, {
-            toValue: 1,
-            duration: 150,
-            useNativeDriver: true,
-          }),
-        ]),
-      ]).start();
-    }
+  const handlePress = useCallback(
+    (event: Parameters<NonNullable<ButtonProps['onPress']>>[0]) => {
+      if (ripple) {
+        // Animação de press
+        Animated.sequence([
+          Animated.parallel([
+            Animated.spring(scaleAnim, {
+              toValue: 0.95,
+              useNativeDriver: true,
+            }),
+            Animated.timing(opacityAnim, {
+              toValue: 0.8,
+              duration: 100,
+              useNativeDriver: true,
+            }),
+          ]),
+          Animated.parallel([
+            Animated.spring(scaleAnim, {
+              toValue: 1,
+              useNativeDriver: true,
+            }),
+            Animated.timing(opacityAnim, {
+              toValue: 1,
+              duration: 150,
+              useNativeDriver: true,
+            }),
+          ]),
+        ]).start();
+      }
 
-    if (onPress) {
-      onPress(event);
-    }
-  };
+      if (onPress) {
+        onPress(event);
+      }
+    },
+    [ripple, scaleAnim, opacityAnim, onPress]
+  );
 
-  const animatedStyle: ViewStyle = {
-    transform: [{ scale: scaleAnim }],
-    opacity: opacityAnim,
-    ...(elevated && shadows.light.lg),
-  };
+  const animatedStyle: ViewStyle = useMemo(
+    () => ({
+      transform: [{ scale: scaleAnim }],
+      opacity: opacityAnim,
+      ...(elevated && shadows.light.lg),
+    }),
+    [scaleAnim, opacityAnim, elevated]
+  );
 
   return (
     <Animated.View style={[animatedStyle, style]}>

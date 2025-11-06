@@ -5,12 +5,14 @@
 ### 1. Usando Composer do Cursor (Recomendado)
 
 #### Ativar Composer
+
 - Pressione `Ctrl+I` (Windows) ou `Cmd+I` (Mac)
 - Ou clique no ícone "Composer" na barra lateral
 
 #### Comandos de Verificação
 
 **Verificar Chat:**
+
 ```
 Verifique se o chat está funcionando:
 1. Teste useChatOptimized
@@ -20,6 +22,7 @@ Verifique se o chat está funcionando:
 ```
 
 **Verificar Autenticação:**
+
 ```
 Verifique autenticação:
 1. Teste sign up
@@ -29,6 +32,7 @@ Verifique autenticação:
 ```
 
 **Verificar Backend:**
+
 ```
 Verifique o backend:
 1. Execute VALIDAR_SCHEMA.sql no Supabase
@@ -40,10 +44,12 @@ Verifique o backend:
 ### 2. Usando Multi-Agente (Paralelo)
 
 #### Ativar Multi-Agente
+
 - Use o Composer (`Ctrl+I`)
 - Digite múltiplas tarefas separadas
 
 #### Exemplo:
+
 ```
 Agente 1: Verifique integração do chat
 Agente 2: Verifique autenticação
@@ -54,10 +60,12 @@ Agente 4: Verifique configurações
 ### 3. Usando Browser Integrado
 
 #### Ativar Browser
+
 - Use o Composer (`Ctrl+I`)
 - Digite: "Abra o browser e verifique o Supabase"
 
 #### Exemplo:
+
 ```
 Abra o browser e:
 1. Acesse Supabase Dashboard
@@ -69,21 +77,25 @@ Abra o browser e:
 ### 4. Scripts de Verificação
 
 #### Executar Validação Completa
+
 ```bash
 npm run validate
 ```
 
 #### Verificar Tipos
+
 ```bash
 npm run type-check
 ```
 
 #### Verificar Lint
+
 ```bash
 npm run lint
 ```
 
 #### Executar Testes
+
 ```bash
 npm run test
 ```
@@ -91,12 +103,14 @@ npm run test
 ### 5. Verificação Manual
 
 #### No Supabase Dashboard
+
 1. Acesse: https://supabase.com/dashboard/project/mnszbkeuerjcevjvdqme
 2. SQL Editor - Execute `VALIDAR_SCHEMA.sql`
 3. Edge Functions - Verifique logs
 4. Database - Verifique tabelas
 
 #### No App Mobile
+
 1. Execute: `cd apps/mobile && pnpm dev`
 2. Teste no emulador/dispositivo
 3. Verifique logs no console
@@ -105,6 +119,7 @@ npm run test
 ## Scripts de Verificação Criados
 
 ### 1. VALIDAR_SCHEMA.sql
+
 - Verifica extensões
 - Verifica tabelas
 - Verifica RLS
@@ -113,11 +128,13 @@ npm run test
 - Verifica funções
 
 ### 2. VERIFICAR_MIGRATION_COMPLETA.sql
+
 - Verifica migration 001_gemini_memory.sql
 - Mostra status de cada componente
 - Resumo final
 
 ### 3. VERIFICAR_RAPIDO.sql
+
 - Verificação rápida
 - Status de cada item
 - Resumo final
@@ -125,17 +142,20 @@ npm run test
 ## Como Visualizar Resultados
 
 ### No Cursor
+
 - **Composer** - Resultados em tempo real
 - **Multi-Agente** - Progresso de cada agente
 - **Browser** - Tela do browser
 - **Terminal** - Logs e resultados
 
 ### No Supabase Dashboard
+
 - **SQL Editor** - Resultados das queries
 - **Edge Functions** - Logs e status
 - **Database** - Estrutura e dados
 
 ### No App
+
 - **Console** - Logs do app
 - **Sentry** - Erros em produção
 - **Network Tab** - Requisições
@@ -143,6 +163,7 @@ npm run test
 ## Checklist de Verificação
 
 ### Backend ✅
+
 - [x] SQL Migration executada
 - [x] Tabelas criadas
 - [x] RLS habilitado
@@ -150,6 +171,7 @@ npm run test
 - [x] Secrets configurados
 
 ### Frontend ✅
+
 - [x] Variáveis de ambiente configuradas
 - [x] Autenticação implementada
 - [x] Chat implementado
@@ -157,6 +179,7 @@ npm run test
 - [x] Histórico implementado
 
 ### Integrações ✅
+
 - [x] Supabase conectado
 - [x] Edge Functions configuradas
 - [x] Sentry integrado
@@ -168,4 +191,3 @@ npm run test
 2. Execute scripts de validação
 3. Teste o app manualmente
 4. Verifique logs e erros
-

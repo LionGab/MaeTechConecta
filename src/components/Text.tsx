@@ -4,10 +4,10 @@
  * Todas as variantes tipográficas do design system
  */
 
-import React from 'react';
-import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from 'react-native';
-import { colors, typography } from '@/theme/colors';
 import { theme } from '@/constants/theme';
+import { colors, typography } from '@/theme/colors';
+import React, { useMemo } from 'react';
+import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from 'react-native';
 
 export type TextVariant =
   | 'h1'
@@ -121,9 +121,14 @@ const getVariantStyles = (variant: TextVariant): TextStyle => {
 };
 
 export const Text: React.FC<TextProps> = ({ variant = 'body', color, style, children, ...props }) => {
-  const variantStyles = getVariantStyles(variant);
+  // Memoizar estilos da variante
+  const variantStyles = useMemo(() => getVariantStyles(variant), [variant]);
 
-  const finalStyle = [styles.base, variantStyles, color ? { color } : null, style].filter(Boolean);
+  // Memoizar estilo final
+  const finalStyle = useMemo(
+    () => [styles.base, variantStyles, color ? { color } : null, style].filter(Boolean) as TextStyle[],
+    [variantStyles, color, style]
+  );
 
   return (
     <RNText style={finalStyle} {...props}>

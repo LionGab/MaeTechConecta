@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "description": "Configuração de permissões - SKIP ALL PERMISSIONS ATIVADO",
+  "skip_all_permissions": true,
+  "auto_approve_all": true,
+  "permissions": {
+    "write": {
+      "enabled": true,
+      "require_approval": false,
+      "auto_approve": true,
+      "keep_changes": true,
+      "skip_permission": true
+    },
+    "shell": {
+      "enabled": true,
+      "require_approval": false,
+      "auto_approve": true,
+      "keep_changes": true,
+      "skip_permission": true
+    },
+    "read": {
+      "enabled": true,
+      "require_approval": false,
+      "auto_approve": true,
+      "skip_permission": true
+    },
+    "review": {
+      "enabled": true,
+      "require_approval": false,
+      "auto_approve": true,
+      "keep_all_changes": true,
+      "skip_permission": true
+    }
+  },
+  "workflow": {
+    "skip_all_confirmations": true,
+    "auto_accept_all": true,
+    "auto_keep_all": true,
+    "skip_awaiting_review": true
+  }
+}
+

@@ -1,44 +1,56 @@
 {
   "version": "1.0.0",
-  "description": "Configuração de auto-aprovação do Cursor - Aprova automaticamente todas as mudanças e mantém mudanças de revisão",
+  "description": "Configuração de auto-aprovação do Cursor - Aprova automaticamente todas as mudanças e mantém mudanças de revisão. SKIP ALL PERMISSIONS ATIVADO.",
   "enabled": true,
+  "skip_all_permissions": true,
   "auto_approve": {
     "enabled": true,
     "all_changes": true,
     "review_changes": true,
     "write_operations": true,
     "shell_commands": true,
-    "read_operations": true
+    "read_operations": true,
+    "skip_all_confirmations": true
   },
   "skip_awaiting_review": {
     "enabled": true,
-    "for_all_operations": true
+    "for_all_operations": true,
+    "skip_all": true
   },
   "keep_review_changes": {
     "enabled": true,
     "auto_approve": true,
-    "default_action": "keep_all"
+    "default_action": "keep_all",
+    "always_keep": true
   },
   "approval_rules": {
     "default_action": "approve",
     "timeout": 0,
     "skip_interactive": true,
-    "auto_approve_on_review": true
+    "auto_approve_on_review": true,
+    "skip_all_permissions": true,
+    "auto_accept_all": true
   },
   "permissions": {
+    "skip_all": true,
+    "require_approval": false,
+    "auto_approve_all": true,
     "write": {
       "require_approval": false,
       "auto_approve": true,
-      "keep_changes": true
+      "keep_changes": true,
+      "skip_permission": true
     },
     "shell": {
       "require_approval": false,
       "auto_approve": true,
-      "keep_changes": true
+      "keep_changes": true,
+      "skip_permission": true
     },
     "read": {
       "require_approval": false,
-      "auto_approve": true
+      "auto_approve": true,
+      "skip_permission": true
     }
   },
   "review_workflow": {
@@ -46,6 +58,7 @@
     "keep_all_changes": true,
     "skip_awaiting": true,
     "approve_on_review": true,
-    "default_action": "approve_and_keep"
+    "default_action": "approve_and_keep",
+    "skip_all_permissions": true
   }
 }

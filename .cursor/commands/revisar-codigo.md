@@ -5,6 +5,7 @@ Revise o código seguindo todos os padrões do projeto e .cursorrules:
 ## Checklist de Revisão
 
 ### 1. TypeScript
+
 - [ ] Sem tipos `any` desnecessários
 - [ ] Interfaces usadas ao invés de `type` quando apropriado
 - [ ] Sem type assertions desnecessárias (`as`, `!`)
@@ -12,6 +13,7 @@ Revise o código seguindo todos os padrões do projeto e .cursorrules:
 - [ ] Props tipadas corretamente
 
 ### 2. Performance
+
 - [ ] `React.memo` usado em componentes puros
 - [ ] `useCallback` usado para handlers passados como props
 - [ ] `useMemo` usado para computações pesadas
@@ -21,6 +23,7 @@ Revise o código seguindo todos os padrões do projeto e .cursorrules:
 - [ ] Imagens otimizadas (expo-image)
 
 ### 3. Acessibilidade (WCAG 2.1 AA)
+
 - [ ] `accessibilityLabel` descritivo presente
 - [ ] `accessibilityRole` correto
 - [ ] `accessibilityHint` quando necessário
@@ -29,6 +32,7 @@ Revise o código seguindo todos os padrões do projeto e .cursorrules:
 - [ ] `accessibilityLiveRegion` para mudanças dinâmicas
 
 ### 4. Estilização
+
 - [ ] `StyleSheet.create()` usado (não objetos inline desnecessários)
 - [ ] Tema usado (colors, spacing, typography) - sem cores hardcoded
 - [ ] Dark mode suportado automaticamente
@@ -36,6 +40,7 @@ Revise o código seguindo todos os padrões do projeto e .cursorrules:
 - [ ] Mobile-first design
 
 ### 5. Estrutura e Organização
+
 - [ ] Estrutura correta: componente → helpers → tipos
 - [ ] Imports organizados (React → RN → Expo → Externos → Internos)
 - [ ] JSDoc presente em componentes públicos
@@ -43,24 +48,28 @@ Revise o código seguindo todos os padrões do projeto e .cursorrules:
 - [ ] Sem código duplicado
 
 ### 6. Tratamento de Erros
+
 - [ ] Try-catch em operações assíncronas
 - [ ] Logs descritivos para debug
 - [ ] Feedback visual para o usuário
 - [ ] ErrorBoundary quando apropriado
 
 ### 7. Padrões do Projeto
+
 - [ ] Segue .cursorrules
 - [ ] Nomenclatura correta (PascalCase componentes, camelCase funções)
 - [ ] Named exports quando apropriado
 - [ ] Programação funcional (evitar classes)
 
 ### 8. Testes
+
 - [ ] Testes criados para componentes críticos
 - [ ] Coverage adequado (objetivo: 70%+)
 
 ## Sugestões de Melhoria
 
 Após a revisão, forneça:
+
 1. **Bugs encontrados** (com severidade: Crítico, Alto, Médio, Baixo)
 2. **Code smells** (complexidade, acoplamento, etc.)
 3. **Violações de estilo** (pontos específicos)
@@ -113,4 +122,3 @@ Após a revisão, forneça:
 ## Instruções para o Cursor
 
 Revise o código seguindo TODOS os itens do checklist. Seja específico e forneça correções concretas. Não seja genérico - forneça exemplos de código quando apropriado.
-

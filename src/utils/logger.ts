@@ -5,17 +5,22 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export enum LogLevel {
-  DEBUG = 0,
-  INFO = 1,
-  WARN = 2,
-  ERROR = 3,
-  CRITICAL = 4,
-}
+/**
+ * Níveis de log - usando objeto ao invés de enum conforme .cursorrules
+ */
+export const LogLevel = {
+  DEBUG: 0,
+  INFO: 1,
+  WARN: 2,
+  ERROR: 3,
+  CRITICAL: 4,
+} as const;
+
+export type LogLevelValue = (typeof LogLevel)[keyof typeof LogLevel];
 
 export interface LogEntry {
   timestamp: string;
-  level: LogLevel;
+  level: LogLevelValue;
   message: string;
   context?: Record<string, any>;
   error?: any;
@@ -23,10 +28,10 @@ export interface LogEntry {
 }
 
 class Logger {
-  private minLevel: LogLevel;
+  private minLevel: LogLevelValue;
   private userId?: string;
 
-  constructor(minLevel: LogLevel = LogLevel.INFO) {
+  constructor(minLevel: LogLevelValue = LogLevel.INFO) {
     this.minLevel = minLevel;
   }
 
@@ -34,41 +39,46 @@ class Logger {
     this.userId = userId;
   }
 
-  private shouldLog(level: LogLevel): boolean {
+  private shouldLog(level: LogLevelValue): boolean {
     return level >= this.minLevel;
   }
 
-  private formatMessage(level: LogLevel, message: string, context?: Record<string, any>, error?: any): string {
-    const prefix = `[${LogLevel[level]}] ${new Date().toISOString()}`;
+  private getLevelName(level: LogLevelValue): string {
+    const levelNames: Record<LogLevelValue, string> = {
+      [LogLevel.DEBUG]: 'DEBUG',
+      [LogLevel.INFO]: 'INFO',
+      [LogLevel.WARN]: 'WARN',
+      [LogLevel.ERROR]: 'ERROR',
+      [LogLevel.CRITICAL]: 'CRITICAL',
+    };
+    return levelNames[level] || 'UNKNOWN';
+  }
+
+  private formatMessage(level: LogLevelValue, message: string, context?: Record<string, any>, error?: any): string {
+    const prefix = `[${this.getLevelName(level)}] ${new Date().toISOString()}`;
     const contextStr = context ? ` | Context: ${JSON.stringify(context)}` : '';
     const errorStr = error ? ` | Error: ${error.message || String(error)}` : '';
 
     return `${prefix} | ${message}${contextStr}${errorStr}`;
   }
 
-  private log(level: LogLevel, message: string, context?: Record<string, any>, error?: any) {
+  private log(level: LogLevelValue, message: string, context?: Record<string, any>, error?: any) {
     if (!this.shouldLog(level)) return;
 
     const formattedMessage = this.formatMessage(level, message, context, error);
 
     // Console output com cores (desenvolvimento)
     if (__DEV__) {
-      switch (level) {
-        case LogLevel.DEBUG:
-          console.log(`🔍 ${formattedMessage}`);
-          break;
-        case LogLevel.INFO:
-          console.info(`ℹ️ ${formattedMessage}`);
-          break;
-        case LogLevel.WARN:
-          console.warn(`⚠️ ${formattedMessage}`);
-          break;
-        case LogLevel.ERROR:
-          console.error(`❌ ${formattedMessage}`);
-          break;
-        case LogLevel.CRITICAL:
-          console.error(`🚨🚨 ${formattedMessage}`);
-          break;
+      if (level === LogLevel.DEBUG) {
+        console.log(`🔍 ${formattedMessage}`);
+      } else if (level === LogLevel.INFO) {
+        console.info(`ℹ️ ${formattedMessage}`);
+      } else if (level === LogLevel.WARN) {
+        console.warn(`⚠️ ${formattedMessage}`);
+      } else if (level === LogLevel.ERROR) {
+        console.error(`❌ ${formattedMessage}`);
+      } else if (level === LogLevel.CRITICAL) {
+        console.error(`🚨🚨 ${formattedMessage}`);
       }
     }
 
@@ -81,7 +91,7 @@ class Logger {
           if (error) {
             Sentry.captureException(error, {
               tags: {
-                logLevel: LogLevel[level],
+                logLevel: this.getLevelName(level),
                 component: context?.component || 'unknown',
               },
               extra: {
@@ -94,7 +104,7 @@ class Logger {
             Sentry.captureMessage(message, {
               level: level === LogLevel.ERROR ? 'error' : level === LogLevel.CRITICAL ? 'fatal' : 'warning',
               tags: {
-                logLevel: LogLevel[level],
+                logLevel: this.getLevelName(level),
                 component: context?.component || 'unknown',
               },
               extra: {

@@ -1,13 +1,16 @@
 # Status da Autenticação e Criação de Perfil
 
 ## Status Geral
+
 ✅ **Serviços de autenticação implementados**
 ⏳ **Criação automática de perfil precisa ser verificada**
 
 ## Serviços Implementados
 
 ### 1. Autenticação (`src/services/auth.ts`)
+
 ✅ **Completo** - Implementa:
+
 - Sign up com email/senha
 - Sign in com email/senha
 - Magic link (OTP por email)
@@ -18,7 +21,9 @@
 - Gerenciamento de sessão
 
 ### 2. Perfil de Usuário (`src/services/user.service.ts`)
+
 ✅ **Completo** - Implementa:
+
 - `createUserProfile()` - Criar perfil inicial
 - `getUserProfile()` - Buscar perfil
 - `updateUserProfile()` - Atualizar perfil
@@ -26,19 +31,23 @@
 - `incrementDailyInteractions()` - Incrementar interações
 
 ### 3. Onboarding (`src/services/onboarding.service.ts`)
+
 ✅ **Completo** - Implementa:
+
 - `saveOnboardingData()` - Salva dados do onboarding e cria perfil
 - Cria perfil automaticamente quando onboarding é completado
 
 ## Fluxo Atual
 
 ### Fluxo de Registro/Login
+
 1. Usuário faz sign up/sign in via `auth.ts`
 2. Usuário é redirecionado para onboarding
 3. Onboarding coleta dados do usuário
 4. `saveOnboardingData()` cria perfil em `user_profiles`
 
 ### Fluxo de Sign In Anônimo
+
 1. Usuário faz sign in anônimo
 2. Pode usar app sem perfil completo
 3. Perfil é criado quando completa onboarding
@@ -46,6 +55,7 @@
 ## Verificações Necessárias
 
 ### 1. Trigger Automático no Banco
+
 ⏳ **Verificar se existe trigger para criar perfil automaticamente**
 
 **Recomendação:** Criar trigger no Supabase que cria perfil básico quando usuário é criado em `auth.users`:
@@ -72,14 +82,17 @@ CREATE TRIGGER on_auth_user_created
 ```
 
 ### 2. Sincronização AsyncStorage ↔ Supabase
+
 ⏳ **Verificar se há sincronização**
 
 **Status:** `useUserProfile` hook carrega apenas do AsyncStorage. Precisa sincronizar com Supabase.
 
 ### 3. Verificação de Perfil ao Fazer Login
+
 ⏳ **Verificar se app verifica existência de perfil ao fazer login**
 
 **Recomendação:** Adicionar verificação no fluxo de login:
+
 - Se perfil não existe, redirecionar para onboarding
 - Se perfil existe, carregar do Supabase e salvar no AsyncStorage
 
@@ -96,4 +109,3 @@ CREATE TRIGGER on_auth_user_created
 - O fluxo atual depende do onboarding para criar perfil
 - Sign in anônimo permite usar app sem perfil completo
 - Recomendado criar trigger automático para garantir perfil sempre existe
-

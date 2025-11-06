@@ -5,7 +5,7 @@
  * Melhora a experiência visual e feedback ao usuário
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { Animated, StyleSheet, ViewStyle } from 'react-native';
 import { Card, CardProps } from './Card';
 import { colors, shadows, spacing } from '@/theme/colors';
@@ -55,12 +55,16 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
     }
   }, [animated, delay, duration, fadeAnim, scaleAnim]);
 
-  const animatedStyle: ViewStyle = animated
-    ? {
-        opacity: fadeAnim,
-        transform: [{ scale: scaleAnim }],
-      }
-    : {};
+  const animatedStyle: ViewStyle = useMemo(
+    () =>
+      animated
+        ? {
+            opacity: fadeAnim,
+            transform: [{ scale: scaleAnim }],
+          }
+        : {},
+    [animated, fadeAnim, scaleAnim]
+  );
 
   return (
     <Animated.View style={[animatedStyle, style]}>

@@ -19,7 +19,7 @@ if (!fs.existsSync(pidFile)) {
 
 try {
   const pids = JSON.parse(fs.readFileSync(pidFile, 'utf8'));
-  
+
   pids.forEach(({ Type, PID }) => {
     try {
       // Tenta parar processo (Windows)
@@ -33,11 +33,10 @@ try {
       console.log(`Could not stop ${Type}-agent (PID ${PID}): Process may not exist`);
     }
   });
-  
+
   // Remove arquivo de PIDs
   fs.unlinkSync(pidFile);
   console.log('\nAll agents stopped.');
-  
 } catch (error) {
   console.error('Error stopping agents:', error.message);
   process.exit(1);

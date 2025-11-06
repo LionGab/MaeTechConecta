@@ -5,12 +5,22 @@
  * Baseado no tema Bubblegum com tons rosa e azul
  */
 
+import { borderRadius } from '@/theme/colors';
 import React from 'react';
-import { View, ViewStyle, StyleSheet } from 'react-native';
-import { colors, borderRadius } from '@/theme/colors';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 
 // Expo Linear Gradient (opcional)
-let LinearGradient: any = null;
+type LinearGradientProps = {
+  colors: string[];
+  start: { x: number; y: number };
+  end: { x: number; y: number };
+  style?: ViewStyle | ViewStyle[];
+  children?: React.ReactNode;
+};
+
+type LinearGradientType = React.ComponentType<LinearGradientProps> | null;
+
+let LinearGradient: LinearGradientType = null;
 try {
   LinearGradient = require('expo-linear-gradient').LinearGradient;
 } catch (e) {
@@ -112,8 +122,9 @@ export const GradientView: React.FC<GradientViewProps> = ({
     );
   }
 
+  const GradientComponent = LinearGradient as React.ComponentType<LinearGradientProps>;
   return (
-    <LinearGradient
+    <GradientComponent
       colors={[gradient.start, gradient.middle, gradient.end]}
       start={gradientDirection.start}
       end={gradientDirection.end}
@@ -125,7 +136,7 @@ export const GradientView: React.FC<GradientViewProps> = ({
       ]}
     >
       {children}
-    </LinearGradient>
+    </GradientComponent>
   );
 };
 

@@ -1,10 +1,12 @@
 # Executar SQL Migration - Gemini Memory
 
 ## Status
+
 - ✅ Projeto Supabase linkado: `mnszbkeuerjcevjvdqme`
 - ⏳ Migration SQL pendente de execução
 
 ## Arquivo de Migration
+
 - **Arquivo:** `supabase/migrations/001_gemini_memory.sql`
 - **Objetivo:** Criar tabela `conversations` com suporte a embeddings vetoriais para busca semântica
 
@@ -35,18 +37,18 @@ Após executar a migration, execute estas queries no SQL Editor para verificar:
 SELECT * FROM pg_extension WHERE extname = 'vector';
 
 -- Verificar tabela conversations
-SELECT table_name, column_name, data_type 
-FROM information_schema.columns 
+SELECT table_name, column_name, data_type
+FROM information_schema.columns
 WHERE table_name = 'conversations';
 
 -- Verificar função match_conversations
-SELECT routine_name, routine_type 
-FROM information_schema.routines 
+SELECT routine_name, routine_type
+FROM information_schema.routines
 WHERE routine_name = 'match_conversations';
 
 -- Verificar políticas RLS
-SELECT schemaname, tablename, policyname 
-FROM pg_policies 
+SELECT schemaname, tablename, policyname
+FROM pg_policies
 WHERE tablename = 'conversations';
 ```
 
@@ -61,6 +63,7 @@ WHERE tablename = 'conversations';
 ## Próximos Passos
 
 Após executar a migration:
+
 1. ✅ Verificar se tabela foi criada
 2. ✅ Verificar se função foi criada
 3. ✅ Verificar se RLS está ativo
@@ -71,4 +74,3 @@ Após executar a migration:
 - A migration usa `ivfflat` ao invés de `hnsw` para compatibilidade com planos gratuitos
 - Embeddings são de 768 dimensões (Gemini text-embedding-004)
 - Conversas antigas (>30 dias) podem ser limpas automaticamente
-

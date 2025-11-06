@@ -1,4 +1,5 @@
-import React from 'react';
+import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
+import React, { useCallback, useMemo } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -10,10 +11,18 @@ import {
   ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
 
 // Haptics é opcional - só funciona se expo-haptics estiver instalado
-let Haptics: any = null;
+interface HapticsType {
+  impactAsync: (style: number) => void;
+  ImpactFeedbackStyle: {
+    Light: number;
+    Medium: number;
+    Heavy: number;
+  };
+}
+
+let Haptics: HapticsType | null = null;
 try {
   Haptics = require('expo-haptics');
 } catch (e) {
@@ -93,71 +102,88 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   accessibilityHint,
   ...touchableProps
 }) => {
-  // Determinar estilos baseados na variante
-  const containerStyle = [
-    styles.base,
-    styles[`${variant}Container`],
-    styles[`${size}Container`],
-    fullWidth && styles.fullWidth,
-    (disabled || loading) && styles.disabledContainer,
-    style,
-  ];
+  // Memoizar valores calculados
+  const iconColor = useMemo(() => getIconColor(variant, disabled || loading), [variant, disabled, loading]);
+  const iconSize = useMemo(() => getIconSize(size), [size]);
 
-  const textStyleCombined = [
-    styles.baseText,
-    styles[`${variant}Text`],
-    styles[`${size}Text`],
-    (disabled || loading) && styles.disabledText,
-    textStyle,
-  ];
+  // Memoizar estilos do container
+  const containerStyle = useMemo(
+    () => [
+      styles.base,
+      styles[`${variant}Container`],
+      styles[`${size}Container`],
+      fullWidth && styles.fullWidth,
+      (disabled || loading) && styles.disabledContainer,
+      style,
+    ],
+    [variant, size, fullWidth, disabled, loading, style]
+  );
 
-  const iconColor = getIconColor(variant, disabled || loading);
-  const iconSize = getIconSize(size);
+  // Memoizar estilos do texto
+  const textStyleCombined = useMemo(
+    () => [
+      styles.baseText,
+      styles[`${variant}Text`],
+      styles[`${size}Text`],
+      (disabled || loading) && styles.disabledText,
+      textStyle,
+    ],
+    [variant, size, disabled, loading, textStyle]
+  );
 
-  const handlePress = (event: any) => {
-    // Haptic feedback (opcional - só se expo-haptics estiver disponível)
-    try {
-      if (Haptics && Haptics.impactAsync) {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle?.Light || 1);
+  // Memoizar estilo do wrapper
+  const wrapperStyle = useMemo(() => (fullWidth ? styles.fullWidthWrapper : undefined), [fullWidth]);
+
+  // Callback para handlePress com haptic feedback
+  const handlePress = useCallback(
+    (event: Parameters<NonNullable<TouchableOpacityProps['onPress']>>[0]) => {
+      // Haptic feedback (opcional - só se expo-haptics estiver disponível)
+      try {
+        if (Haptics?.impactAsync) {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle?.Light ?? 1);
+        }
+      } catch (e) {
+        // expo-haptics não disponível, ignorar
       }
-    } catch (e) {
-      // expo-haptics não disponível, ignorar
-    }
 
-    if (touchableProps.onPress) {
-      touchableProps.onPress(event);
-    }
-  };
+      if (touchableProps.onPress) {
+        touchableProps.onPress(event);
+      }
+    },
+    [touchableProps.onPress]
+  );
 
   return (
-    <TouchableOpacity
-      style={containerStyle}
-      disabled={disabled || loading}
-      accessible={true}
-      accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel}
-      accessibilityHint={accessibilityHint}
-      accessibilityState={{ disabled: disabled || loading }}
-      activeOpacity={0.85}
-      onPress={handlePress}
-      {...touchableProps}
-    >
-      {loading ? (
-        <ActivityIndicator color={iconColor} size="small" />
-      ) : (
-        <View style={styles.content}>
-          {icon && iconPosition === 'left' && (
-            <Icon name={icon} size={iconSize} color={iconColor} style={styles.iconLeft} />
-          )}
+    <View style={wrapperStyle}>
+      <TouchableOpacity
+        style={containerStyle}
+        disabled={disabled || loading}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel}
+        accessibilityHint={accessibilityHint}
+        accessibilityState={{ disabled: disabled || loading }}
+        activeOpacity={0.85}
+        onPress={handlePress}
+        {...touchableProps}
+      >
+        {loading ? (
+          <ActivityIndicator color={iconColor} size="small" />
+        ) : (
+          <View style={styles.content}>
+            {icon && iconPosition === 'left' && (
+              <Icon name={icon} size={iconSize} color={iconColor} style={styles.iconLeft} />
+            )}
 
-          <Text style={textStyleCombined}>{children}</Text>
+            <Text style={textStyleCombined}>{children}</Text>
 
-          {icon && iconPosition === 'right' && (
-            <Icon name={icon} size={iconSize} color={iconColor} style={styles.iconRight} />
-          )}
-        </View>
-      )}
-    </TouchableOpacity>
+            {icon && iconPosition === 'right' && (
+              <Icon name={icon} size={iconSize} color={iconColor} style={styles.iconRight} />
+            )}
+          </View>
+        )}
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -206,7 +232,7 @@ const styles = StyleSheet.create({
 
   baseText: {
     fontFamily: typography.fontFamily.sans,
-    fontWeight: typography.weights.semibold as any,
+    fontWeight: typography.weights.semibold,
     textAlign: 'center',
   },
 
@@ -217,6 +243,10 @@ const styles = StyleSheet.create({
   },
 
   fullWidth: {
+    width: '100%',
+  },
+
+  fullWidthWrapper: {
     width: '100%',
   },
 

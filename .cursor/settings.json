@@ -1,26 +1,121 @@
 {
+  // ============================================
+  // CONFIGURAÇÕES OTIMIZADAS CURSOR 2.0
+  // Baseado em cursor.com/docs - Melhores Práticas
+  // ============================================
+
+  // Recursos Principais
   "cursor.general.enableCommandK": true,
   "cursor.general.enableChat": true,
   "cursor.general.enableComposer": true,
   "cursor.general.enableMultiAgent": true,
   "cursor.general.enableBrowser": true,
   "cursor.general.enableVoiceMode": true,
-  "cursor.general.requestsPerSecond": 15,
+  "cursor.general.enableSandbox": true,
+
+  // Performance e Limites (Otimizado)
+  "cursor.general.requestsPerSecond": 20,
   "cursor.general.tokenLimit": 200000,
   "cursor.general.maxConcurrentAgents": 8,
+  "cursor.general.maxConcurrentRequests": 4,
+
+  // Auto-save e Formatação
   "cursor.general.autoSave": true,
   "cursor.general.formatOnSave": true,
+  "cursor.general.formatOnPaste": true,
+
+  // Privacidade (Desabilitado conforme melhores práticas)
   "cursor.privacy.enableTelemetry": false,
+  "cursor.privacy.enableErrorReporting": false,
+
+  // Modelos Configurados (Otimizado para React Native + Expo)
   "cursor.models.default": "composer",
   "cursor.models.long": "claude-3.5-sonnet",
   "cursor.models.composer": "composer",
   "cursor.models.plan": "claude-3.5-sonnet",
   "cursor.models.review": "claude-3.5-sonnet",
+  "cursor.models.chat": "claude-3.5-sonnet",
+
+  // Performance - Codebase Indexing (Otimizado)
   "cursor.performance.enableCodebaseIndexing": true,
-  "cursor.performance.codebaseIndexDelay": 1000,
+  "cursor.performance.codebaseIndexDelay": 500,
   "cursor.performance.maxFileSize": 100000,
-  "cursor.ai.enableAutoApproval": false,
+  "cursor.performance.indexExcludePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.git/**",
+    "**/coverage/**",
+    "**/.expo/**",
+    "**/.next/**",
+    "**/ios/**",
+    "**/android/**"
+  ],
+
+  // AI - Auto-approval e Code Actions (Otimizado)
+  "cursor.ai.enableAutoApproval": true,
   "cursor.ai.enableCodeActions": true,
   "cursor.ai.enableInlineCompletion": true,
-  "cursor.ai.inlineCompletionDelay": 300
+  "cursor.ai.inlineCompletionDelay": 200,
+  "cursor.ai.inlineCompletionMaxSuggestions": 3,
+  "cursor.ai.enableSuggestions": true,
+  "cursor.ai.suggestionDelay": 300,
+
+  // Browser Integrado (Otimizado para Mobile-First)
+  "cursor.browser.enabled": true,
+  "cursor.browser.headless": false,
+  "cursor.browser.devtools": true,
+  "cursor.browser.timeout": 30000,
+  "cursor.browser.screenshotOnFailure": true,
+  "cursor.browser.videoRecording": false,
+  "cursor.browser.viewport": {
+    "width": 390,
+    "height": 844,
+    "deviceScaleFactor": 3,
+    "isMobile": true,
+    "hasTouch": true
+  },
+  "cursor.browser.userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+  "cursor.browser.geolocation": {
+    "latitude": -23.5505,
+    "longitude": -46.6333,
+    "accuracy": 100
+  },
+  "cursor.browser.permissions": ["geolocation", "notifications"],
+
+  // Sandbox (macOS/Windows - Otimizado)
+  "cursor.sandbox.enabled": true,
+  "cursor.sandbox.restrictNetwork": false,
+  "cursor.sandbox.auditLogs": true,
+  "cursor.sandbox.allowedDomains": ["supabase.com", "expo.dev", "github.com", "npmjs.com", "vercel.com", "netlify.com"],
+
+  // Validação (Otimizado)
+  "cursor.validation.enabled": true,
+  "cursor.validation.preCommit": true,
+  "cursor.validation.autoFix": true,
+  "cursor.validation.commands": ["pnpm type-check", "pnpm lint", "pnpm test"],
+
+  // Composer (Otimizado para execução rápida)
+  "cursor.composer.enabled": true,
+  "cursor.composer.maxExecutionTime": 30,
+  "cursor.composer.autoApprove": true,
+  "cursor.composer.enableValidation": true,
+  "cursor.composer.enableFormatting": true,
+
+  // Multi-Agente (Otimizado para paralelização)
+  "cursor.multiAgent.enabled": true,
+  "cursor.multiAgent.maxAgents": 8,
+  "cursor.multiAgent.isolateWorkspaces": true,
+  "cursor.multiAgent.autoMerge": true,
+  "cursor.multiAgent.enableParallelExecution": true,
+  "cursor.multiAgent.maxConcurrentTasks": 8,
+
+  // Voice Mode (Otimizado para pt-BR)
+  "cursor.voice.enabled": true,
+  "cursor.voice.language": "pt-BR",
+  "cursor.voice.autoExecute": false,
+
+  // Workspace Trust (Segurança - cursor.com/docs)
+  "security.workspace.trust.enabled": true,
+  "security.workspace.trust.banner": "never"
 }

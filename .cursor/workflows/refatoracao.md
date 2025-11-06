@@ -5,6 +5,7 @@ Workflow otimizado para refatoração de código usando Cursor 2.0.
 ## Fase 1: Análise
 
 ### Passo 1: Identificar Áreas para Refatorar
+
 - Código duplicado
 - Componentes muito complexos
 - Problemas de performance
@@ -12,13 +13,16 @@ Workflow otimizado para refatoração de código usando Cursor 2.0.
 - Code smells
 
 ### Passo 2: Analisar Impacto
+
 - Identificar dependências
 - Verificar testes existentes
 - Analisar risco de quebrar funcionalidade
 - Estimar esforço necessário
 
 ### Passo 3: Criar Plano de Refatoração
+
 Use Plan Mode:
+
 ```
 Planeje a refatoração do módulo X:
 1. Análise do código atual
@@ -31,12 +35,14 @@ Planeje a refatoração do módulo X:
 ## Fase 2: Divisão
 
 ### Dividir em Etapas Pequenas
+
 - Refatorar uma parte por vez
 - Manter código sempre funcionando
 - Commitar após cada etapa
 - Testar após cada etapa
 
 ### Exemplo de Divisão
+
 ```
 Etapa 1: Extrair lógica de negócio para hooks
 Etapa 2: Refatorar componentes para usar hooks
@@ -48,17 +54,20 @@ Etapa 5: Atualizar testes
 ## Fase 3: Execução
 
 ### Opção A: Refatoração Manual (Composer)
+
 ```
 Use Ctrl+I e descreva a refatoração específica:
 "Refatore o componente X para usar hooks e melhorar performance"
 ```
 
 ### Opção B: Refatoração com Performance
+
 ```
 @refatorar-performance
 ```
 
 ### Opção C: Multi-Agente (Refatoração Paralela)
+
 ```
 Use Ctrl+Shift+M:
 
@@ -71,21 +80,25 @@ Agente Docs: Atualizar documentação
 ## Fase 4: Validação
 
 ### Passo 1: Validação Automática
+
 ```
 @validar-projeto
 ```
 
 ### Passo 2: Revisão de Código
+
 ```
 @revisar-codigo
 ```
 
 ### Passo 3: Testes
+
 - Executar testes existentes
 - Criar novos testes se necessário
 - Garantir que nada quebrou
 
 ### Passo 4: Teste Manual
+
 - Testar funcionalidade manualmente
 - Verificar comportamento em diferentes cenários
 - Validar performance
@@ -93,18 +106,21 @@ Agente Docs: Atualizar documentação
 ## Checklist de Refatoração
 
 ### Antes de Começar
+
 - [ ] Análise completa feita
 - [ ] Plano criado
 - [ ] Testes existentes identificados
 - [ ] Backup do código atual
 
 ### Durante a Refatoração
+
 - [ ] Refatorar uma etapa por vez
 - [ ] Testar após cada etapa
 - [ ] Commitar após cada etapa
 - [ ] Manter código sempre funcionando
 
 ### Após a Refatoração
+
 - [ ] Todos os testes passando
 - [ ] Validação passou (@validar-projeto)
 - [ ] Revisão feita (@revisar-codigo)
@@ -135,29 +151,34 @@ npm run format
 ## Tipos de Refatoração
 
 ### 1. Extração de Lógica
+
 - Extrair lógica de negócio para hooks
 - Extrair componentes menores
 - Extrair utilitários
 
 ### 2. Otimização de Performance
+
 - Adicionar React.memo
 - Usar useCallback/useMemo
 - Otimizar FlatList
 - Lazy loading
 
 ### 3. Melhoria de Acessibilidade
+
 - Adicionar accessibilityLabel
 - Melhorar accessibilityRole
 - Garantir contraste adequado
 - Área de toque mínima
 
 ### 4. Padronização
+
 - Seguir .cursorrules
 - Usar tema consistentemente
 - Padronizar nomenclatura
 - Organizar imports
 
 ### 5. Limpeza de Código
+
 - Remover código duplicado
 - Remover código morto
 - Simplificar lógica complexa
@@ -187,4 +208,3 @@ npm run format
 4. Use Multi-Agente para refatorações paralelas
 5. Valide frequentemente
 6. Mantenha funcionalidade sempre funcionando
-

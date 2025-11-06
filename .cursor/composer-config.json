@@ -5,7 +5,7 @@
     "enabled": true,
     "defaultModel": "composer",
     "maxExecutionTime": 30,
-    "autoApprove": false,
+    "autoApprove": true,
     "enableValidation": true,
     "enableFormatting": true
   },
@@ -15,8 +15,8 @@
     "isolateWorkspaces": true,
     "gitWorktrees": true,
     "worktreeBasePath": "../",
-    "autoMerge": false,
-    "conflictResolution": "manual",
+    "autoMerge": true,
+    "conflictResolution": "auto",
     "enableParallelExecution": true,
     "maxConcurrentTasks": 8
   },
@@ -154,16 +154,81 @@
     "enabled": true,
     "e2eTests": true,
     "automated": true,
+    "automationAgent": {
+      "enabled": true,
+      "screenshotOnError": true,
+      "generateReport": true,
+      "screens": ["Onboarding", "Home", "Chat", "Habits", "Content", "Profile", "DailyPlan", "ContentDetail"],
+      "errorDetection": {
+        "console": true,
+        "visual": true,
+        "performance": true,
+        "accessibility": true,
+        "network": true
+      },
+      "autoFix": {
+        "console": true,
+        "visual": true,
+        "performance": true,
+        "accessibility": true
+      }
+    },
     "headless": false,
+    "devtools": true,
     "screenshotOnFailure": true,
     "videoRecording": false,
     "timeout": 30000,
+    "waitForTimeout": 5000,
+    "navigationTimeout": 30000,
     "viewport": {
-      "width": 375,
-      "height": 812,
+      "width": 390,
+      "height": 844,
       "isMobile": true,
-      "deviceScaleFactor": 2
-    }
+      "deviceScaleFactor": 3,
+      "hasTouch": true,
+      "isLandscape": false
+    },
+    "devices": {
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 3,
+        "isMobile": true,
+        "hasTouch": true
+      },
+      "iphone13": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 3,
+        "isMobile": true,
+        "hasTouch": true
+      },
+      "tablet": {
+        "width": 768,
+        "height": 1024,
+        "deviceScaleFactor": 2,
+        "isMobile": false,
+        "hasTouch": true
+      },
+      "desktop": {
+        "width": 1920,
+        "height": 1080,
+        "deviceScaleFactor": 1,
+        "isMobile": false,
+        "hasTouch": false
+      }
+    },
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+    "geolocation": {
+      "latitude": -23.5505,
+      "longitude": -46.6333,
+      "accuracy": 100
+    },
+    "permissions": ["geolocation", "notifications"],
+    "emulateMedia": "screen",
+    "colorScheme": "light",
+    "reducedMotion": false,
+    "forcedColors": "none"
   },
   "sandbox": {
     "enabled": true,
@@ -171,49 +236,26 @@
     "auditLogs": true,
     "allowFileSystem": true,
     "allowShell": true,
-    "allowedDomains": [
-      "supabase.com",
-      "expo.dev",
-      "github.com"
-    ]
+    "allowedDomains": ["supabase.com", "expo.dev", "github.com"]
   },
   "validation": {
     "enabled": true,
     "preCommit": true,
-    "commands": [
-      "npm run type-check",
-      "npm run lint",
-      "npm run test"
-    ],
+    "commands": ["npm run type-check", "npm run lint", "npm run test"],
     "required": true
   },
   "workflows": {
     "featureDevelopment": {
       "enabled": true,
-      "steps": [
-        "planejar",
-        "implementar",
-        "revisar",
-        "testar",
-        "validar"
-      ]
+      "steps": ["planejar", "implementar", "revisar", "testar", "validar"]
     },
     "refactor": {
       "enabled": true,
-      "steps": [
-        "analisar",
-        "dividir",
-        "executar",
-        "validar"
-      ]
+      "steps": ["analisar", "dividir", "executar", "validar"]
     },
     "codeReview": {
       "enabled": true,
-      "steps": [
-        "revisar",
-        "sugerir",
-        "aprovar"
-      ]
+      "steps": ["revisar", "sugerir", "aprovar"]
     }
   }
 }

@@ -9,6 +9,7 @@
 ### 1. Ativar Recursos no Cursor
 
 **Settings → Features:**
+
 - ✅ Composer (ativado por padrão)
 - ✅ Multi-Agent (ativado por padrão)
 - ✅ Browser Integrado (ativar)
@@ -20,6 +21,7 @@
 **Cmd+Shift+P → "Preferences: Open Keyboard Shortcuts"**
 
 Adicione:
+
 ```json
 [
   {
@@ -47,12 +49,15 @@ Adicione:
 **Settings → Models:**
 
 **Para Planejamento:**
+
 - GPT-4 / Claude Sonnet (raciocínio complexo)
 
 **Para Execução:**
+
 - Composer (rápido, < 30s)
 
 **Para Revisão:**
+
 - GPT-4 Codex (qualidade)
 
 ---
@@ -137,6 +142,7 @@ Antes de finalizar, execute:
 ### Workflow 1: Criar Feature Completa
 
 **1. Planejar (Background):**
+
 ```
 Use modelo de raciocínio para criar plano detalhado:
 - Análise de requisitos
@@ -147,6 +153,7 @@ Use modelo de raciocínio para criar plano detalhado:
 ```
 
 **2. Executar (Composer):**
+
 ```
 Use Composer para implementar cada parte:
 - Criar componentes
@@ -156,6 +163,7 @@ Use Composer para implementar cada parte:
 ```
 
 **3. Revisar:**
+
 ```
 Use comando "Revisar Código" para validar
 ```
@@ -163,6 +171,7 @@ Use comando "Revisar Código" para validar
 ### Workflow 2: Refatoração Grande
 
 **1. Dividir em Tarefas:**
+
 ```
 - Tarefa 1: Refatorar componentes
 - Tarefa 2: Refatorar screens
@@ -171,6 +180,7 @@ Use comando "Revisar Código" para validar
 ```
 
 **2. Multi-Agente Paralelo:**
+
 ```
 - Agente 1: Refatora componentes
 - Agente 2: Refatora screens
@@ -179,6 +189,7 @@ Use comando "Revisar Código" para validar
 ```
 
 **3. Revisar e Integrar:**
+
 ```
 - Revisar mudanças de cada agente
 - Integrar melhores soluções
@@ -188,16 +199,19 @@ Use comando "Revisar Código" para validar
 ### Workflow 3: Debug Visual
 
 **1. Abrir Browser Integrado:**
+
 ```
 Cmd+Shift+B
 ```
 
 **2. Carregar App:**
+
 ```
 Carregue sua aplicação no browser integrado
 ```
 
 **3. Selecionar e Comandar:**
+
 ```
 - Selecione elemento visualmente
 - "Cursor, corrija este elemento"
@@ -230,11 +244,13 @@ Carregue sua aplicação no browser integrado
 ### Usar no Cursor
 
 **Antes de finalizar:**
+
 ```
 "Execute npm run validate antes de finalizar"
 ```
 
 **Para cobertura completa:**
+
 ```
 "Execute npm run validate:full antes de finalizar"
 ```
@@ -255,6 +271,7 @@ Carregue sua aplicação no browser integrado
 **Nome:** `criar-componente-rn`
 
 **Prompt:**
+
 ```
 Crie um componente React Native seguindo as regras do .cursorrules:
 1. TypeScript com tipos explícitos
@@ -268,6 +285,7 @@ Crie um componente React Native seguindo as regras do .cursorrules:
 ```
 
 **Compartilhar:**
+
 ```
 cursor://command?name=criar-componente-rn&team=nossa-maternidade
 ```
@@ -279,6 +297,7 @@ cursor://command?name=criar-componente-rn&team=nossa-maternidade
 ### Revisar Sempre
 
 **Checklist de Revisão:**
+
 - [ ] Revise todas as mudanças antes de aprovar
 - [ ] Execute `npm run validate` localmente
 - [ ] Teste funcionalidade manualmente
@@ -289,6 +308,7 @@ cursor://command?name=criar-componente-rn&team=nossa-maternidade
 ### CI Gates
 
 **GitHub Actions:**
+
 ```yaml
 name: CI
 
@@ -310,6 +330,7 @@ jobs:
 ```
 
 **Bloquear merge sem CI:**
+
 - Settings → Branches → Branch protection rules
 - Require status checks to pass before merging
 - Select `validate` check
@@ -321,6 +342,7 @@ jobs:
 ### 1. Usar Composer para Tarefas Rápidas
 
 **Exemplos:**
+
 - Adicionar validação em formulário
 - Corrigir bug simples
 - Adicionar prop em componente
@@ -331,6 +353,7 @@ jobs:
 ### 2. Usar Planejamento para Tarefas Complexas
 
 **Exemplos:**
+
 - Refatorar sistema de autenticação
 - Migrar para nova versão do Expo
 - Implementar nova feature grande
@@ -341,6 +364,7 @@ jobs:
 ### 3. Usar Multi-Agente para Features Paralelas
 
 **Exemplos:**
+
 - Implementar múltiplas screens simultaneamente
 - Criar múltiplos componentes relacionados
 - Refatorar múltiplas partes do código
@@ -351,6 +375,7 @@ jobs:
 ### 4. Usar Browser para Debug Visual
 
 **Exemplos:**
+
 - Ajustar layout visualmente
 - Testar responsividade
 - Debug de estilos
@@ -381,6 +406,7 @@ jobs:
 ## ✅ Checklist de Setup
 
 ### Configuração Inicial
+
 - [ ] Ativar Composer
 - [ ] Ativar Multi-Agent
 - [ ] Ativar Browser Integrado
@@ -389,18 +415,21 @@ jobs:
 - [ ] Configurar modelos
 
 ### Comandos
+
 - [ ] Criar comandos personalizados
 - [ ] Compartilhar via deeplinks
 - [ ] Documentar comandos úteis
 - [ ] Atualizar .cursorrules
 
 ### Automações
+
 - [ ] Configurar scripts npm
 - [ ] Integrar com CI/CD
 - [ ] Configurar gates de validação
 - [ ] Testar automações
 
 ### Segurança
+
 - [ ] Configurar revisão obrigatória
 - [ ] Configurar CI gates
 - [ ] Documentar processos
@@ -420,4 +449,3 @@ jobs:
 
 **Última atualização:** Novembro 2025
 **Versão do Cursor:** 2.0+
-
