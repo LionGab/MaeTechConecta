@@ -12,10 +12,23 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Card } from '@/components/Card';
 import { Badge } from '@/components/Badge';
 import { Input } from '@/components/Input';
-import { colors, spacing, typography, borderRadius } from '@/theme/colors';
+import { colors, spacing, typography, borderRadius, shadows } from '@/theme/colors';
 import { supabase } from '@/services/supabase';
 import { EmptyState } from '@/shared/components/EmptyState';
 import { SkeletonPresets } from '@/shared/components/Skeleton';
+
+// Blue Theme Constants
+const BLUE_THEME = {
+  darkBlue: '#0A2540',
+  deepBlue: '#0F3460',
+  primaryBlue: '#3B82F6',
+  lightBlue: '#60A5FA',
+  skyBlue: '#93C5FD',
+  mutedBlue: '#475569',
+  white: '#FFFFFF',
+  lightGray: '#F1F5F9',
+  darkGray: '#94A3B8',
+};
 
 interface ContentItem {
   id: string;
@@ -308,22 +321,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderRadius: borderRadius.full,
-    backgroundColor: colors.card,
+    backgroundColor: 'rgba(59, 130, 246, 0.1)',
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'rgba(147, 197, 253, 0.2)',
     marginRight: spacing.sm,
+    minHeight: 40,
   },
   filterChipActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    backgroundColor: BLUE_THEME.primaryBlue,
+    borderColor: BLUE_THEME.primaryBlue,
+    ...shadows.dark.sm,
   },
   filterChipText: {
     fontSize: typography.sizes.sm,
-    color: colors.mutedForeground,
+    color: colors.foreground,
     fontFamily: typography.fontFamily.sans,
+    fontWeight: typography.weights.medium as any,
   },
   filterChipTextActive: {
-    color: colors.primaryForeground,
+    color: BLUE_THEME.white,
+    fontWeight: typography.weights.semibold as any,
   },
   filterIcon: {
     marginRight: spacing.xs,

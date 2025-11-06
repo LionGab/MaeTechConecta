@@ -7,12 +7,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Card } from '@/components/Card';
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
-import { colors, spacing, typography, borderRadius } from '@/theme/colors';
+import { colors, spacing, typography, borderRadius, shadows } from '@/theme/colors';
 import { supabase } from '@/services/supabase';
 import { EmptyState } from '@/shared/components/EmptyState';
 import { SkeletonPresets } from '@/shared/components/Skeleton';
@@ -23,6 +24,19 @@ import {
   scheduleStreakCelebration,
   requestNotificationPermissions,
 } from '@/services/notifications';
+
+// Blue Theme Constants
+const BLUE_THEME = {
+  darkBlue: '#0A2540',
+  deepBlue: '#0F3460',
+  primaryBlue: '#3B82F6',
+  lightBlue: '#60A5FA',
+  skyBlue: '#93C5FD',
+  mutedBlue: '#475569',
+  white: '#FFFFFF',
+  lightGray: '#F1F5F9',
+  darkGray: '#94A3B8',
+};
 
 interface Habit {
   id: string;
@@ -254,11 +268,18 @@ export default function HabitsScreen() {
             >
               <View style={styles.habitContent}>
                 <TouchableOpacity
-                  style={[styles.checkbox, habit.completed_today && styles.checkboxCompleted]}
+                  style={styles.checkboxWrapper}
                   onPress={() => toggleHabit(habit.id, !habit.completed_today)}
                   accessible={false}
                 >
-                  {habit.completed_today && <Icon name="check" size={24} color={colors.primaryForeground} />}
+                  <LinearGradient
+                    colors={habit.completed_today ? [BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue] : ['transparent', 'transparent']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={[styles.checkbox, habit.completed_today && styles.checkboxCompleted]}
+                  >
+                    {habit.completed_today && <Icon name="check" size={24} color={BLUE_THEME.white} />}
+                  </LinearGradient>
                 </TouchableOpacity>
 
                 <View style={styles.habitInfo}>
@@ -327,20 +348,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  checkbox: {
-    width: 48,
-    height: 48,
-    borderRadius: borderRadius.full,
-    borderWidth: 3,
-    borderColor: colors.border,
-    backgroundColor: colors.background,
-    justifyContent: 'center',
-    alignItems: 'center',
+  checkboxWrapper: {
     marginRight: spacing.md,
   },
+  checkbox: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    borderWidth: 3,
+    borderColor: 'rgba(147, 197, 253, 0.3)',
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   checkboxCompleted: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    borderColor: 'transparent',
+    ...shadows.dark.md,
   },
   habitInfo: {
     flex: 1,

@@ -13,9 +13,22 @@ import { Card } from '@/components/Card';
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
 import { Loading } from '@/shared/components/Loading';
-import { colors, spacing, typography, borderRadius } from '@/theme/colors';
+import { colors, spacing, typography, borderRadius, shadows } from '@/theme/colors';
 import { supabase } from '@/services/supabase';
 import { RootStackParamList } from '@/navigation/types';
+
+// Blue Theme Constants
+const BLUE_THEME = {
+  darkBlue: '#0A2540',
+  deepBlue: '#0F3460',
+  primaryBlue: '#3B82F6',
+  lightBlue: '#60A5FA',
+  skyBlue: '#93C5FD',
+  mutedBlue: '#475569',
+  white: '#FFFFFF',
+  lightGray: '#F1F5F9',
+  darkGray: '#94A3B8',
+};
 
 type ContentDetailRouteProp = RouteProp<RootStackParamList, 'ContentDetail'>;
 

@@ -3,9 +3,24 @@ import { useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ChatContext, generateDailyPlan } from '@/services/ai';
 import { getDailyPlan, saveDailyPlan } from '@/services/supabase';
 import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
+
+// Blue Theme Constants
+const BLUE_THEME = {
+  darkBlue: '#0A2540',
+  deepBlue: '#0F3460',
+  primaryBlue: '#3B82F6',
+  lightBlue: '#60A5FA',
+  skyBlue: '#93C5FD',
+  mutedBlue: '#475569',
+  white: '#FFFFFF',
+  lightGray: '#F1F5F9',
+  darkGray: '#94A3B8',
+};
 
 export default function DailyPlanScreen() {
   const navigation = useNavigation();
@@ -100,10 +115,29 @@ export default function DailyPlanScreen() {
           <>
             {/* Prioridades */}
             <View style={styles.sectionCard}>
-              <Text style={styles.sectionTitle}>🎯 Prioridades de Hoje</Text>
+              <View style={styles.sectionHeader}>
+                <View style={styles.sectionIconContainer}>
+                  <LinearGradient
+                    colors={[BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.sectionIconGradient}
+                  >
+                    <Text style={styles.sectionEmoji}>🎯</Text>
+                  </LinearGradient>
+                </View>
+                <Text style={styles.sectionTitle}>Prioridades de Hoje</Text>
+              </View>
               {dailyPlan.priorities?.map((priority: string, index: number) => (
                 <View key={index} style={styles.priorityItem}>
-                  <Text style={styles.priorityNumber}>{index + 1}</Text>
+                  <LinearGradient
+                    colors={[BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.priorityNumberGradient}
+                  >
+                    <Text style={styles.priorityNumber}>{index + 1}</Text>
+                  </LinearGradient>
                   <Text style={styles.priorityText}>{priority}</Text>
                 </View>
               ))}
@@ -206,40 +240,73 @@ const styles = StyleSheet.create({
     fontWeight: typography.weights.bold as any,
   },
   sectionCard: {
-    backgroundColor: colors.card,
-    padding: spacing.lg,
-    borderRadius: borderRadius.lg,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    padding: spacing.xl,
+    borderRadius: borderRadius.xl,
     marginBottom: spacing.lg,
-    ...shadows.light.md,
+    borderWidth: 1,
+    borderColor: 'rgba(147, 197, 253, 0.15)',
+    ...shadows.dark.lg,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    marginBottom: spacing.lg,
+  },
+  sectionIconContainer: {
+    marginBottom: 0,
+  },
+  sectionIconGradient: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...shadows.dark.md,
+  },
+  sectionEmoji: {
+    fontSize: 24,
   },
   sectionTitle: {
     fontSize: typography.sizes.xl,
     fontWeight: typography.weights.bold as any,
-    color: colors.primary,
-    marginBottom: spacing.lg,
+    color: colors.foreground,
+    fontFamily: typography.fontFamily.sans,
+    flex: 1,
   },
   priorityItem: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: spacing.md,
     paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    backgroundColor: 'rgba(59, 130, 246, 0.05)',
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: 'rgba(147, 197, 253, 0.1)',
+  },
+  priorityNumberGradient: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: spacing.md,
+    ...shadows.dark.sm,
   },
   priorityNumber: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: colors.primary,
-    color: colors.primaryForeground,
-    fontSize: typography.sizes.sm,
+    color: BLUE_THEME.white,
+    fontSize: typography.sizes.base,
     fontWeight: typography.weights.bold as any,
-    textAlign: 'center',
-    lineHeight: 32,
-    marginRight: spacing.md,
+    fontFamily: typography.fontFamily.sans,
   },
   priorityText: {
     flex: 1,
-    fontSize: typography.sizes.sm,
+    fontSize: typography.sizes.base,
     color: colors.foreground,
+    fontFamily: typography.fontFamily.sans,
+    lineHeight: 22,
   },
   tipText: {
     fontSize: typography.sizes.base,

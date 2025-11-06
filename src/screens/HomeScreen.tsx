@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   Linking,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { generateDailyPlan, ChatContext } from '@/services/ai';
@@ -21,6 +22,19 @@ import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { colors, shadows, spacing, borderRadius, typography } from '@/theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+// Blue Theme Constants
+const BLUE_THEME = {
+  darkBlue: '#0A2540',
+  deepBlue: '#0F3460',
+  primaryBlue: '#3B82F6',
+  lightBlue: '#60A5FA',
+  skyBlue: '#93C5FD',
+  mutedBlue: '#475569',
+  white: '#FFFFFF',
+  lightGray: '#F1F5F9',
+  darkGray: '#94A3B8',
+};
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -87,7 +101,7 @@ export default function HomeScreen() {
     }
   };
 
-  const QuickActionButton = ({ iconName, title, onPress, accessibilityLabel }: any) => (
+  const QuickActionButton = ({ iconName, iconEmoji, title, onPress, accessibilityLabel, gradientColors }: any) => (
     <TouchableOpacity
       style={styles.quickAction}
       onPress={onPress}
@@ -95,9 +109,22 @@ export default function HomeScreen() {
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
       accessibilityHint={`Abre a tela de ${title.toLowerCase()}`}
-      activeOpacity={0.7}
+      activeOpacity={0.8}
     >
-      <Icon name={iconName} size={32} color={colors.primary} />
+      <View style={styles.quickActionIconContainer}>
+        <LinearGradient
+          colors={gradientColors || [BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.quickActionIconGradient}
+        >
+          {iconEmoji ? (
+            <Text style={styles.quickActionEmoji}>{iconEmoji}</Text>
+          ) : (
+            <Icon name={iconName} size={28} color={BLUE_THEME.white} />
+          )}
+        </LinearGradient>
+      </View>
       <Text style={styles.quickActionTitle}>{title}</Text>
     </TouchableOpacity>
   );
@@ -129,27 +156,31 @@ export default function HomeScreen() {
         {/* Botões de ação rápida */}
         <View style={styles.quickActionsContainer}>
           <QuickActionButton
-            iconName="message-text-outline"
+            iconEmoji="💬"
             title="Conversar"
             accessibilityLabel="Botão Conversar"
+            gradientColors={[BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]}
             onPress={() => navigation.navigate('Chat' as never)}
           />
           <QuickActionButton
-            iconName="calendar-today"
+            iconEmoji="📅"
             title="Plano Diário"
             accessibilityLabel="Botão Plano Diário"
+            gradientColors={['#8B5CF6', '#A78BFA']}
             onPress={() => navigation.navigate('DailyPlan' as never)}
           />
           <QuickActionButton
-            iconName="chart-line"
+            iconEmoji="📊"
             title="Progresso"
             accessibilityLabel="Botão Progresso"
+            gradientColors={['#10B981', '#34D399']}
             onPress={() => Alert.alert('Em breve', 'Acompanhe seu progresso aqui!')}
           />
           <QuickActionButton
-            iconName="account-cog-outline"
+            iconEmoji="👤"
             title="Perfil"
             accessibilityLabel="Botão Perfil"
+            gradientColors={['#F59E0B', '#FBBF24']}
             onPress={() => navigation.navigate('Profile' as never)}
           />
         </View>
@@ -328,11 +359,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.sm,
+    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+    padding: spacing.lg,
+    borderRadius: borderRadius.xl,
+    borderWidth: 1,
+    borderColor: 'rgba(147, 197, 253, 0.2)',
   },
   greeting: {
     fontSize: typography.sizes['3xl'],
     fontWeight: typography.weights.bold as any,
-    color: colors.primary,
+    color: BLUE_THEME.primaryBlue,
     textAlign: 'center',
     fontFamily: typography.fontFamily.sans,
     letterSpacing: -0.5,
@@ -361,21 +397,35 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: '45%',
     alignItems: 'center',
-    backgroundColor: colors.card,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
     padding: spacing.lg,
     paddingVertical: spacing.xl,
     borderRadius: borderRadius.xl,
-    minHeight: 110,
-    ...shadows.light.md,
+    minHeight: 120,
+    ...shadows.dark.lg,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'rgba(147, 197, 253, 0.15)',
+  },
+  quickActionIconContainer: {
+    marginBottom: spacing.md,
+  },
+  quickActionIconGradient: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...shadows.dark.md,
+  },
+  quickActionEmoji: {
+    fontSize: 32,
   },
   quickActionTitle: {
-    fontSize: typography.sizes.sm, // 14px agora
+    fontSize: typography.sizes.sm,
     color: colors.foreground,
     textAlign: 'center',
-    marginTop: spacing.sm,
-    fontWeight: typography.weights.medium as any,
+    fontWeight: typography.weights.semibold as any,
+    fontFamily: typography.fontFamily.sans,
   },
   dailyPlanCard: {
     marginHorizontal: spacing.lg,

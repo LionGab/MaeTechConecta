@@ -11,6 +11,7 @@ import {
   Animated,
   Dimensions,
   FlatList,
+  Image,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -136,6 +137,7 @@ const ONBOARDING_SLIDES: OnboardingSlide[] = [
     description: 'Conecte-se com outras mães, compartilhe experiências e encontre apoio na comunidade.',
     icon: 'account-group',
     color: BLUE_THEME.skyBlue, // Azul céu claro
+    image: require('@/assets/images/nat1.png'),
     features: [
       { emoji: '👥', text: 'Comunidade de mães', color: '#60A5FA' },
       { emoji: '💬', text: 'Compartilhamento de experiências', color: '#93C5FD' },
@@ -236,6 +238,13 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
               <Icon name={item.icon} size={iconSize} color={item.color} />
             </View>
 
+            {/* Optional Image */}
+            {item.image && (
+              <View style={styles.slideImageContainer}>
+                <Image source={item.image} style={styles.slideImage} resizeMode="contain" />
+              </View>
+            )}
+
             {/* Title */}
             <Text style={styles.title}>{item.title}</Text>
 
@@ -318,15 +327,23 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
       <SafeAreaView style={styles.safeArea}>
         {/* Header com Skip */}
         <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <Logo size={getResponsiveValue(32, 36, 40)} />
+          {/* Espaçador esquerdo para centralizar logo */}
+          <View style={styles.headerSpacer} />
+
+          {/* Logo centralizada */}
+          <View style={styles.logoContainer}>
+            <Logo size={getResponsiveValue(32, 36, 40)} />
+          </View>
+
+          {/* Botão Skip à direita */}
+          <View style={styles.headerSpacer}>
+            {currentIndex < ONBOARDING_SLIDES.length - 1 && (
+              <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
+                <Text style={styles.skipText}>Pular</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
-        {currentIndex < ONBOARDING_SLIDES.length - 1 && (
-          <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
-            <Text style={styles.skipText}>Pular</Text>
-          </TouchableOpacity>
-        )}
-      </View>
 
       {/* Slides */}
       <FlatList
@@ -471,6 +488,11 @@ const getStyles = () => ({
     paddingBottom: spacing.sm,
     minHeight: getResponsiveValue(50, 56, 60),
   },
+  headerSpacer: {
+    flex: 1,
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+  },
   skipText: {
     fontSize: getResponsiveValue(typography.sizes.sm, typography.sizes.base, typography.sizes.base),
     color: BLUE_THEME.darkGray,
@@ -495,6 +517,17 @@ const getStyles = () => ({
     borderWidth: 2,
     borderColor: 'rgba(147, 197, 253, 0.2)',
     ...shadows.dark.lg,
+  },
+  slideImageContainer: {
+    width: '100%' as const,
+    alignItems: 'center' as const,
+    marginBottom: getResponsiveValue(spacing.lg, spacing.xl, spacing.xl),
+  },
+  slideImage: {
+    width: getResponsiveValue(SCREEN_WIDTH * 0.5, SCREEN_WIDTH * 0.45, SCREEN_WIDTH * 0.4),
+    height: getResponsiveValue(SCREEN_WIDTH * 0.5, SCREEN_WIDTH * 0.45, SCREEN_WIDTH * 0.4),
+    maxWidth: 220,
+    maxHeight: 220,
   },
   title: {
     fontSize: getResponsiveValue(typography.sizes['2xl'], typography.sizes['3xl'], typography.sizes['3xl']),

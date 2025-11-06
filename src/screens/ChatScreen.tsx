@@ -16,13 +16,26 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { MessageItem } from '@/components/chat/MessageItem';
 import { Message, useChatOptimized } from '@/hooks/useChatOptimized';
-import { borderRadius, colors, spacing, typography } from '@/theme/colors';
+import { borderRadius, colors, spacing, typography, shadows } from '@/theme/colors';
 import { EmptyState } from '@/shared/components/EmptyState';
 import { SkeletonPresets } from '@/shared/components/Skeleton';
-// Import não usado removido - já estamos usando keyExtractor customizado
+
+// Blue Theme Constants
+const BLUE_THEME = {
+  darkBlue: '#0A2540',
+  deepBlue: '#0F3460',
+  primaryBlue: '#3B82F6',
+  lightBlue: '#60A5FA',
+  skyBlue: '#93C5FD',
+  mutedBlue: '#475569',
+  white: '#FFFFFF',
+  lightGray: '#F1F5F9',
+  darkGray: '#94A3B8',
+};
 
 // Componente de indicador de digitação animado
 const TypingIndicator = React.memo(() => {
@@ -373,7 +386,7 @@ export default function ChatScreen() {
           accessibilityHint="Digite sua pergunta ou mensagem aqui"
         />
         <TouchableOpacity
-          style={[styles.sendButton, (!inputText.trim() || loading) && styles.sendButtonDisabled]}
+          style={styles.sendButtonWrapper}
           onPress={handleSend}
           disabled={!inputText.trim() || loading}
           accessible={true}
@@ -383,11 +396,18 @@ export default function ChatScreen() {
             !inputText.trim() ? 'Digite uma mensagem para enviar' : 'Envia sua mensagem para a assistente virtual'
           }
         >
-          <Icon
-            name={loading ? 'loading' : 'send'}
-            size={24}
-            color={!inputText.trim() || loading ? colors.muted : colors.background}
-          />
+          <LinearGradient
+            colors={!inputText.trim() || loading ? [colors.muted, colors.muted] : [BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={[styles.sendButton, (!inputText.trim() || loading) && styles.sendButtonDisabled]}
+          >
+            <Icon
+              name={loading ? 'loading' : 'send'}
+              size={24}
+              color={BLUE_THEME.white}
+            />
+          </LinearGradient>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -404,23 +424,30 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: spacing.lg,
-    backgroundColor: colors.background,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: 'rgba(147, 197, 253, 0.15)',
+    ...shadows.dark.sm,
   },
   headerBack: {
     fontSize: typography.sizes.base,
-    color: colors.primary,
+    color: BLUE_THEME.primaryBlue,
+    fontWeight: typography.weights.medium as any,
   },
   headerTitle: {
-    fontSize: typography.sizes.lg,
+    fontSize: typography.sizes.xl,
     fontWeight: typography.weights.bold as any,
     color: colors.foreground,
+    fontFamily: typography.fontFamily.sans,
   },
   headerEmergency: {
     fontSize: typography.sizes.base,
     color: colors.destructive,
     fontWeight: typography.weights.bold as any,
+    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.md,
   },
   messageList: {
     flexGrow: 1,
@@ -459,16 +486,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
   },
-  sendButton: {
-    width: 40,
-    height: 40,
+  sendButtonWrapper: {
     borderRadius: borderRadius.full,
-    backgroundColor: colors.primary,
+    overflow: 'hidden',
+  },
+  sendButton: {
+    width: 48,
+    height: 48,
+    borderRadius: borderRadius.full,
     justifyContent: 'center',
     alignItems: 'center',
+    ...shadows.dark.md,
   },
   sendButtonDisabled: {
-    backgroundColor: colors.muted,
     opacity: 0.5,
   },
   errorContainer: {
@@ -501,24 +531,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.xs,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    backgroundColor: colors.card,
+    paddingVertical: spacing.sm,
+    backgroundColor: 'rgba(59, 130, 246, 0.1)',
     borderRadius: borderRadius.full,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'rgba(147, 197, 253, 0.2)',
     marginRight: spacing.sm,
+    minHeight: 44,
+    ...shadows.dark.sm,
   },
   quickActionButtonUrgent: {
-    backgroundColor: colors.destructive + '10',
-    borderColor: colors.destructive,
+    backgroundColor: 'rgba(239, 68, 68, 0.15)',
+    borderColor: 'rgba(239, 68, 68, 0.3)',
   },
   quickActionIcon: {
-    fontSize: 18,
+    fontSize: 20,
   },
   quickActionText: {
     fontSize: typography.sizes.sm,
     color: colors.foreground,
-    fontWeight: typography.weights.medium as any,
+    fontWeight: typography.weights.semibold as any,
+    fontFamily: typography.fontFamily.sans,
   },
   quickActionTextUrgent: {
     color: colors.destructive,
