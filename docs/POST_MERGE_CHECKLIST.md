@@ -39,7 +39,8 @@ Validar automaticamente após cada merge para garantir qualidade e estabilidade.
     echo "✅ Tests passed (coverage: $COVERAGE%)"
 ```
 
-**Critério**: 
+**Critério**:
+
 - Todos os testes devem passar
 - Coverage ≥ 70%
 
@@ -106,7 +107,8 @@ Validar automaticamente após cada merge para garantir qualidade e estabilidade.
     echo "✅ Performance check passed"
 ```
 
-**Critério**: 
+**Critério**:
+
 - Cold start < 2s
 - API latency < 500ms (p95)
 - Screen load < 1s (p95)
@@ -137,7 +139,7 @@ Validar automaticamente após cada merge para garantir qualidade e estabilidade.
       "EXPO_PUBLIC_SUPABASE_URL"
       "EXPO_PUBLIC_SUPABASE_ANON_KEY"
     )
-    
+
     for var in "${REQUIRED_VARS[@]}"; do
       if [ -z "${!var}" ]; then
         echo "❌ Missing required env var: $var"
@@ -197,34 +199,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: pnpm/action-setup@v3
         with:
           version: 9
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm -w install --frozen-lockfile
-      
+
       - name: Build Validation
         run: pnpm -w run build
-      
+
       - name: Test Validation
         run: pnpm -w run test
-      
+
       - name: Lint Validation
         run: pnpm -w run lint
-      
+
       - name: TypeScript Validation
         run: pnpm -w run typecheck
-      
+
       - name: Security Scan
         run: pnpm audit --audit-level=moderate || true
-      
+
       - name: Notify on Failure
         if: failure()
         uses: actions/github-script@v7
@@ -244,21 +246,25 @@ jobs:
 ## 📊 Métricas de Sucesso
 
 ### Build & Deploy
+
 - ✅ Build time < 5min
 - ✅ Zero build failures
 - ✅ Preview deploy < 2min
 
 ### Testes
+
 - ✅ Coverage ≥ 70%
 - ✅ Zero test failures
 - ✅ E2E tests passing
 
 ### Qualidade
+
 - ✅ Zero lint errors
 - ✅ Zero TypeScript errors
 - ✅ Zero security vulnerabilities (moderate+)
 
 ### Performance
+
 - ✅ Cold start < 2s
 - ✅ API latency < 500ms (p95)
 - ✅ Screen load < 1s (p95)
@@ -268,15 +274,18 @@ jobs:
 ## 🚨 Alertas Automáticos
 
 ### Falha Crítica
+
 - **Notificação**: GitHub Issue criado automaticamente
 - **Labels**: `bug`, `validation-failed`
 - **Ação**: Bloquear deploy até correção
 
 ### Performance Degradada
+
 - **Notificação**: Slack/Email alert
 - **Ação**: Investigar e otimizar
 
 ### Vulnerabilidade de Segurança
+
 - **Notificação**: Dependabot alert
 - **Ação**: Atualizar dependências
 
@@ -288,4 +297,3 @@ jobs:
 - Falhas bloqueiam deploy automático até correção
 - Métricas são coletadas e armazenadas para análise de tendências
 - Alertas são enviados para Slack/Email (configurável)
-

@@ -39,7 +39,8 @@
 
 **Solução**: Deploy automático no Vercel para cada PR com ambiente isolado.
 
-**Impacto**: 
+**Impacto**:
+
 - ⏱️ **Build**: <5min por PR
 - 💰 **Custo**: Gratuito (Vercel Hobby)
 - 🎯 **Conversão**: +15% (testes mais rápidos)
@@ -59,19 +60,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: pnpm/action-setup@v3
         with:
           version: 9
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm -w install --frozen-lockfile
-      
+
       - name: Build web app
         run: |
           cd apps/mobile
@@ -79,7 +80,7 @@ jobs:
         env:
           EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL_STAGING }}
           EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY_STAGING }}
-      
+
       - name: Deploy to Vercel Preview
         uses: amondnet/vercel-action@v25
         with:
@@ -88,7 +89,7 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           working-directory: apps/mobile
           scope: ${{ secrets.VERCEL_ORG_ID }}
-      
+
       - name: Comment PR with Preview URL
         uses: actions/github-script@v7
         with:
@@ -110,15 +111,11 @@ jobs:
   "devCommand": "cd apps/mobile && pnpm start:web",
   "installCommand": "pnpm -w install",
   "framework": null,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/assets/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     }
   ],
   "env": {
@@ -137,6 +134,7 @@ jobs:
 **Solução**: Integração Amplitude (free tier) + Sentry para eventos + erros.
 
 **Impacto**:
+
 - 📊 **Visibilidade**: 100% eventos rastreados
 - 💰 **Custo**: $0 (Amplitude free tier até 10M eventos/mês)
 - 🎯 **Conversão**: +20% (otimização baseada em dados)
@@ -151,7 +149,7 @@ let amplitude: ReturnType<typeof Amplitude.init> | null = null;
 
 export function initAnalytics(apiKey: string, userId?: string) {
   if (typeof window === 'undefined') return;
-  
+
   amplitude = Amplitude.init(apiKey, userId, {
     defaultTracking: {
       pageViews: true,
@@ -163,7 +161,7 @@ export function initAnalytics(apiKey: string, userId?: string) {
 
 export function trackEvent(eventName: string, properties?: Record<string, any>) {
   if (!amplitude) return;
-  
+
   amplitude.track(eventName, properties);
 }
 
@@ -195,7 +193,7 @@ export function initMobileAnalytics() {
     console.warn('Amplitude API key not configured');
     return;
   }
-  
+
   initAnalytics(apiKey);
 }
 
@@ -204,11 +202,11 @@ export function useAnalytics() {
   const trackScreen = (screenName: string) => {
     trackEvent('screen_view', { screen: screenName });
   };
-  
+
   const trackConversion = (step: string, data?: Record<string, any>) => {
     trackEvent(ConversionEvents[step as keyof typeof ConversionEvents] || step, data);
   };
-  
+
   return { trackScreen, trackConversion };
 }
 ```
@@ -227,13 +225,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Sync Amplitude Cohorts
         run: |
           # Sincronizar coortes de usuários
           # (implementar com Amplitude API)
           echo "Syncing cohorts..."
-      
+
       - name: Update Conversion Funnel
         run: |
           # Atualizar funil de conversão
@@ -250,6 +248,7 @@ jobs:
 **Solução**: Cache inteligente com Turborepo + GitHub Actions cache layers.
 
 **Impacto**:
+
 - ⏱️ **Build**: <5min (de 10min+)
 - 💰 **Custo**: $0 (cache gratuito)
 - 🎯 **Produtividade**: +40% (menos espera)
@@ -320,16 +319,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: pnpm/action-setup@v3
         with:
           version: 9
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
-      
+
       # Cache Turbo
       - name: Cache Turbo
         uses: actions/cache@v4
@@ -338,7 +337,7 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             turbo-${{ runner.os }}-
-      
+
       # Cache node_modules
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -349,34 +348,34 @@ jobs:
           key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             pnpm-${{ runner.os }}-
-      
+
       - name: Install dependencies
         run: pnpm -w install --frozen-lockfile
-      
+
       - name: Lint
         run: pnpm -w run lint
         env:
           TURBO_TOKEN: ${{ env.TURBO_TOKEN }}
           TURBO_TEAM: ${{ env.TURBO_TEAM }}
-      
+
       - name: Typecheck
         run: pnpm -w run typecheck
         env:
           TURBO_TOKEN: ${{ env.TURBO_TOKEN }}
           TURBO_TEAM: ${{ env.TURBO_TEAM }}
-      
+
       - name: Test
         run: pnpm -w run test
         env:
           TURBO_TOKEN: ${{ env.TURBO_TOKEN }}
           TURBO_TEAM: ${{ env.TURBO_TEAM }}
-      
+
       - name: Upload coverage
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: "**/coverage/**"
+          path: '**/coverage/**'
 ```
 
 ---
@@ -388,6 +387,7 @@ jobs:
 **Solução**: Sentry Performance Monitoring + custom metrics para RN.
 
 **Impacto**:
+
 - 📊 **Visibilidade**: 100% erros + performance
 - 💰 **Custo**: $0 (Sentry free tier até 5K eventos/mês)
 - 🎯 **Conversão**: +10% (otimização de performance)
@@ -429,7 +429,7 @@ import { trackScreenLoad } from '@/services/performance';
 
 export function useScreenPerformance(screenName: string) {
   const startTime = useRef(Date.now());
-  
+
   useEffect(() => {
     const endTime = Date.now();
     const duration = endTime - startTime.current;
@@ -452,13 +452,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Check Performance Metrics
         run: |
           # Verificar métricas no Sentry
           # (implementar com Sentry API)
           echo "Checking performance..."
-      
+
       - name: Alert if Degraded
         if: failure()
         run: |
@@ -475,6 +475,7 @@ jobs:
 **Solução**: Vercel Preview Environments + GitHub Environments + Supabase Branching.
 
 **Impacto**:
+
 - 🔒 **Segurança**: Ambientes isolados
 - 💰 **Custo**: $0 (Vercel Preview gratuito)
 - 🎯 **Qualidade**: +30% (menos bugs em prod)
@@ -499,19 +500,19 @@ jobs:
       url: https://staging.nossa-maternidade.vercel.app
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Sync Staging Environment
         run: |
           # Sincronizar env vars do Vercel
           # (implementar com Vercel API)
           echo "Syncing staging..."
-      
+
       - name: Deploy to Staging
         if: github.ref == 'refs/heads/develop'
         run: |
           # Deploy automático para staging
           echo "Deploying to staging..."
-  
+
   sync-production:
     runs-on: ubuntu-latest
     environment:
@@ -520,7 +521,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Sync Production Environment
         run: |
           # Sincronizar env vars do Vercel
@@ -569,6 +570,7 @@ jobs:
 ## 📋 Checklist de Implementação
 
 ### Fase 1: Preview Deployments (1-2h)
+
 - [ ] Criar conta Vercel (free tier)
 - [ ] Configurar `vercel.json`
 - [ ] Adicionar secrets no GitHub (`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`)
@@ -576,6 +578,7 @@ jobs:
 - [ ] Validar preview URL em PR
 
 ### Fase 2: Analytics (2-3h)
+
 - [ ] Criar conta Amplitude (free tier)
 - [ ] Instalar `@amplitude/analytics-browser`
 - [ ] Implementar `packages/shared/src/analytics/index.ts`
@@ -583,18 +586,21 @@ jobs:
 - [ ] Validar eventos no Amplitude dashboard
 
 ### Fase 3: Cache e Builds (1-2h)
+
 - [ ] Configurar Turborepo remote cache (opcional)
 - [ ] Atualizar `turbo.json` com cache flags
 - [ ] Atualizar `.github/workflows/ci.yml` com cache layers
 - [ ] Testar build times (deve reduzir 50%+)
 
 ### Fase 4: Performance (2-3h)
+
 - [ ] Configurar Sentry Performance Monitoring
 - [ ] Implementar `useScreenPerformance` hook
 - [ ] Adicionar tracking em APIs críticas
 - [ ] Configurar alertas no Sentry
 
 ### Fase 5: Ambientes (1-2h)
+
 - [ ] Configurar GitHub Environments
 - [ ] Criar workflow `environments.yml`
 - [ ] Testar sync de env vars
@@ -604,14 +610,14 @@ jobs:
 
 ## 💰 Estimativa de Custos
 
-| Serviço | Plano | Custo/Mês | Limite |
-|---------|-------|-----------|--------|
-| **Vercel** | Hobby | $0 | 100GB bandwidth, previews ilimitados |
-| **Amplitude** | Free | $0 | 10M eventos/mês |
-| **Sentry** | Free | $0 | 5K eventos/mês, 1 projeto |
-| **GitHub Actions** | Free | $0 | 2,000 min/mês |
-| **Supabase** | Free | $0 | 500MB DB, 2GB bandwidth |
-| **Turborepo** | Free | $0 | 1 remote cache |
+| Serviço            | Plano | Custo/Mês | Limite                               |
+| ------------------ | ----- | --------- | ------------------------------------ |
+| **Vercel**         | Hobby | $0        | 100GB bandwidth, previews ilimitados |
+| **Amplitude**      | Free  | $0        | 10M eventos/mês                      |
+| **Sentry**         | Free  | $0        | 5K eventos/mês, 1 projeto            |
+| **GitHub Actions** | Free  | $0        | 2,000 min/mês                        |
+| **Supabase**       | Free  | $0        | 500MB DB, 2GB bandwidth              |
+| **Turborepo**      | Free  | $0        | 1 remote cache                       |
 
 **Total**: **$0/mês** (até escalar para >10K usuários/mês)
 
@@ -620,21 +626,25 @@ jobs:
 ## 🎯 Métricas de Sucesso
 
 ### Build & Deploy
+
 - ✅ Build time < 5min (atual: 10min+)
 - ✅ Preview deploy < 2min por PR
 - ✅ Zero downtime em deploys
 
 ### Performance
+
 - ✅ Cold start < 2s (mobile)
 - ✅ API latency < 500ms (p95)
 - ✅ Screen load < 1s (p95)
 
 ### Observabilidade
+
 - ✅ 100% erros capturados
 - ✅ 100% eventos rastreados
 - ✅ Alertas em < 5min
 
 ### Conversão
+
 - ✅ Onboarding completion > 70%
 - ✅ First chat message > 50%
 - ✅ Daily plan generation > 30%
@@ -644,11 +654,13 @@ jobs:
 ## 🚨 Alertas Configurados
 
 ### Sentry Alerts
+
 - **Critical errors**: > 10/min
 - **Performance degradation**: P95 > 2s
 - **API failures**: > 5% error rate
 
 ### GitHub Actions
+
 - **Build failures**: Notificação no Slack/Email
 - **Test failures**: Comentário no PR
 - **Security vulnerabilities**: Dependabot alerts
@@ -661,4 +673,3 @@ jobs:
 - [Amplitude Analytics](https://developers.amplitude.com/docs)
 - [Sentry Performance Monitoring](https://docs.sentry.io/product/performance/)
 - [Turborepo Remote Cache](https://turbo.build/repo/docs/core-concepts/remote-caching)
-

@@ -46,6 +46,7 @@ Este documento consolida todas as melhorias DevOps/Infraestrutura implementadas 
 **Solução**: Deploy automático no Vercel para cada PR com ambiente isolado.
 
 **Impacto**:
+
 - ⏱️ **Build**: <5min por PR
 - 💰 **Custo**: $0 (Vercel Hobby)
 - 🎯 **Conversão**: +15% (testes mais rápidos)
@@ -61,6 +62,7 @@ Este documento consolida todas as melhorias DevOps/Infraestrutura implementadas 
 **Solução**: Integração Amplitude (free tier) + Sentry para eventos + erros.
 
 **Impacto**:
+
 - 📊 **Visibilidade**: 100% eventos rastreados
 - 💰 **Custo**: $0 (Amplitude free tier até 10M eventos/mês)
 - 🎯 **Conversão**: +20% (otimização baseada em dados)
@@ -76,6 +78,7 @@ Este documento consolida todas as melhorias DevOps/Infraestrutura implementadas 
 **Solução**: Cache inteligente com Turborepo + GitHub Actions cache layers.
 
 **Impacto**:
+
 - ⏱️ **Build**: <5min (de 10min+)
 - 💰 **Custo**: $0 (cache gratuito)
 - 🎯 **Produtividade**: +40% (menos espera)
@@ -91,6 +94,7 @@ Este documento consolida todas as melhorias DevOps/Infraestrutura implementadas 
 **Solução**: Sentry Performance Monitoring + custom metrics para RN.
 
 **Impacto**:
+
 - 📊 **Visibilidade**: 100% erros + performance
 - 💰 **Custo**: $0 (Sentry free tier até 5K eventos/mês)
 - 🎯 **Conversão**: +10% (otimização de performance)
@@ -106,6 +110,7 @@ Este documento consolida todas as melhorias DevOps/Infraestrutura implementadas 
 **Solução**: Vercel Preview Environments + GitHub Environments + Supabase Branching.
 
 **Impacto**:
+
 - 🔒 **Segurança**: Ambientes isolados
 - 💰 **Custo**: $0 (Vercel Preview gratuito)
 - 🎯 **Qualidade**: +30% (menos bugs em prod)
@@ -143,14 +148,14 @@ Este documento consolida todas as melhorias DevOps/Infraestrutura implementadas 
 
 ## 💰 Estimativa de Custos
 
-| Serviço | Plano | Custo/Mês | Limite |
-|---------|-------|-----------|--------|
-| **Vercel** | Hobby | $0 | 100GB bandwidth, previews ilimitados |
-| **Amplitude** | Free | $0 | 10M eventos/mês |
-| **Sentry** | Free | $0 | 5K eventos/mês, 1 projeto |
-| **GitHub Actions** | Free | $0 | 2,000 min/mês |
-| **Supabase** | Free | $0 | 500MB DB, 2GB bandwidth |
-| **Turborepo** | Free | $0 | 1 remote cache |
+| Serviço            | Plano | Custo/Mês | Limite                               |
+| ------------------ | ----- | --------- | ------------------------------------ |
+| **Vercel**         | Hobby | $0        | 100GB bandwidth, previews ilimitados |
+| **Amplitude**      | Free  | $0        | 10M eventos/mês                      |
+| **Sentry**         | Free  | $0        | 5K eventos/mês, 1 projeto            |
+| **GitHub Actions** | Free  | $0        | 2,000 min/mês                        |
+| **Supabase**       | Free  | $0        | 500MB DB, 2GB bandwidth              |
+| **Turborepo**      | Free  | $0        | 1 remote cache                       |
 
 **Total**: **$0/mês** (até escalar para >10K usuários/mês)
 
@@ -253,4 +258,3 @@ Este documento consolida todas as melhorias DevOps/Infraestrutura implementadas 
 **Última atualização**: 2025-01-XX  
 **Status**: ✅ Completo  
 **Mantido por**: Time Nossa Maternidade
-

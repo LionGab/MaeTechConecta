@@ -22,13 +22,15 @@ interface ThemeContextType {
   toggleTheme: () => void;
   setThemeMode: (mode: ThemeMode) => void;
   setThemeName: (name: ThemeName) => void;
-  theme: ReturnType<typeof getTheme> | {
-    colors: any;
-    shadows: any;
-    typography: any;
-    spacing: any;
-    borderRadius: any;
-  };
+  theme:
+    | ReturnType<typeof getTheme>
+    | {
+        colors: any;
+        shadows: any;
+        typography: any;
+        spacing: any;
+        borderRadius: any;
+      };
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -140,7 +142,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Tema completo (compatibilidade com código existente)
   // Se o tema for bubblegum, usa getTheme, senão constrói do tema atual
   const bubblegumTheme = getTheme(isDark);
-  
+
   const baseTheme =
     themeName === 'bubblegum'
       ? bubblegumTheme

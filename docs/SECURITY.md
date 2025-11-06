@@ -68,7 +68,7 @@ CREATE POLICY "user_insert_own_profile"
    - **Camada 1**: Palavras-chave (banlist)
    - **Camada 2**: Classificação de sentimento (toxicity, spam)
    - **Camada 3**: Análise de contexto (intenção, contexto)
-3. **Output**: 
+3. **Output**:
    - `approved`: Conteúdo aprovado
    - `rejected`: Conteúdo rejeitado
    - `requires_review`: Requer revisão humana
@@ -135,14 +135,14 @@ if (riskLevel === 'CRITICAL') {
 // Pseudocódigo
 export async function handleLGPDRequest(req: Request) {
   const { userId, requestType } = await req.json();
-  
+
   if (requestType === 'export') {
     // 1. Buscar todos os dados do usuário
     // 2. Gerar arquivo JSON
     // 3. Enviar por email
     // 4. Logar evento
   }
-  
+
   if (requestType === 'delete') {
     // 1. Deletar todos os dados do usuário
     // 2. Anonimizar logs
@@ -318,4 +318,3 @@ Ver **[CONTRACT_TESTS.md](./CONTRACT_TESTS.md)** para testes de contrato RLS e E
 
 **Última atualização**: 2025-01-XX  
 **Mantido por**: Time Nossa Maternidade
-

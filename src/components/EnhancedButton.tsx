@@ -76,13 +76,9 @@ export const EnhancedButton: React.FC<EnhancedButtonProps> = ({
 
   return (
     <Animated.View style={[animatedStyle, style]}>
-      <Button
-        {...buttonProps}
-        onPress={handlePress}
-      />
+      <Button {...buttonProps} onPress={handlePress} />
     </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({});
-

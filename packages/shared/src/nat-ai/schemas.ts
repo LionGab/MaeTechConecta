@@ -1,6 +1,6 @@
 /**
  * Schemas Zod - Sistema NAT-AI
- * 
+ *
  * Schemas de validação consolidados para entrada/saída do sistema de IA
  */
 
@@ -12,13 +12,7 @@ import { z } from 'zod';
 
 export const AIModelSchema = z.enum(['claude', 'gemini', 'perplexity', 'manus', 'fallback']);
 
-export const TaskTypeSchema = z.enum([
-  'empathy',
-  'moderation',
-  'long-context',
-  'research',
-  'execution',
-]);
+export const TaskTypeSchema = z.enum(['empathy', 'moderation', 'long-context', 'research', 'execution']);
 
 export const ModelRouterConfigSchema = z.object({
   apiKeys: z.object({

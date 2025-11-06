@@ -1,6 +1,6 @@
 /**
  * Sentry Configuration - Mobile App
- * 
+ *
  * Configuração para Sentry no Expo
  */
 
@@ -17,4 +17,3 @@ module.exports = {
   // Performance
   tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
 };
-

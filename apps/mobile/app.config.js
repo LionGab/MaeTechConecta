@@ -1,6 +1,6 @@
 /**
  * Expo App Configuration
- * 
+ *
  * Processa variáveis de ambiente e retorna configuração dinâmica
  * Necessário porque app.json não processa process.env
  */
@@ -49,11 +49,7 @@ module.exports = {
       favicon: './assets/favicon.png',
       bundler: 'metro',
     },
-    plugins: [
-      'expo-notifications',
-      'expo-av',
-      '@react-native-voice/voice',
-    ],
+    plugins: ['expo-notifications', 'expo-av', '@react-native-voice/voice'],
     extra: {
       // Sentry DSN - processa variáveis de ambiente corretamente
       sentry: {
@@ -65,4 +61,3 @@ module.exports = {
     },
   },
 };
-

@@ -1,6 +1,6 @@
 /**
  * Jest Setup - Mobile App
- * 
+ *
  * Configuração global para testes
  */
 
@@ -29,4 +29,3 @@ jest.mock('@sentry/react-native', () => ({
   captureException: jest.fn(),
   captureMessage: jest.fn(),
 }));
-

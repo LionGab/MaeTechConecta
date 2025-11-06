@@ -92,7 +92,8 @@ const ONBOARDING_SLIDES: OnboardingSlide[] = [
     id: 'home',
     title: 'Home com o NathIA',
     subtitle: 'Sua assistente virtual empática',
-    description: 'Converse com a NathIA, sua companheira virtual que entende seu momento e oferece suporte personalizado 24/7.',
+    description:
+      'Converse com a NathIA, sua companheira virtual que entende seu momento e oferece suporte personalizado 24/7.',
     icon: 'robot-happy',
     color: BLUE_THEME.primaryBlue, // Azul primário
     features: [
@@ -345,69 +346,67 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
           </View>
         </View>
 
-      {/* Slides */}
-      <FlatList
-        ref={flatListRef}
-        data={ONBOARDING_SLIDES}
-        renderItem={renderSlide}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
-        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
-          useNativeDriver: false,
-        })}
-        onMomentumScrollEnd={(event) => {
-          const index = Math.round(event.nativeEvent.contentOffset.x / SCREEN_WIDTH);
-          setCurrentIndex(index);
-        }}
-        scrollEventThrottle={16}
-        getItemLayout={(_, index) => ({
-          length: SCREEN_WIDTH,
-          offset: SCREEN_WIDTH * index,
-          index,
-        })}
-        removeClippedSubviews={Platform.OS === 'android'}
-        initialNumToRender={1}
-        maxToRenderPerBatch={1}
-        windowSize={2}
-      />
+        {/* Slides */}
+        <FlatList
+          ref={flatListRef}
+          data={ONBOARDING_SLIDES}
+          renderItem={renderSlide}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => item.id}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+            useNativeDriver: false,
+          })}
+          onMomentumScrollEnd={(event) => {
+            const index = Math.round(event.nativeEvent.contentOffset.x / SCREEN_WIDTH);
+            setCurrentIndex(index);
+          }}
+          scrollEventThrottle={16}
+          getItemLayout={(_, index) => ({
+            length: SCREEN_WIDTH,
+            offset: SCREEN_WIDTH * index,
+            index,
+          })}
+          removeClippedSubviews={Platform.OS === 'android'}
+          initialNumToRender={1}
+          maxToRenderPerBatch={1}
+          windowSize={2}
+        />
 
-      {/* Pagination */}
-      {renderPagination()}
+        {/* Pagination */}
+        {renderPagination()}
 
-      {/* Actions */}
-      <View style={styles.actions}>
-        {currentIndex > 0 && (
+        {/* Actions */}
+        <View style={styles.actions}>
+          {currentIndex > 0 && (
+            <Button
+              variant="outline"
+              size="lg"
+              onPress={handleBack}
+              icon="arrow-left"
+              accessibilityLabel="Voltar para slide anterior"
+              style={styles.backButton}
+            >
+              Voltar
+            </Button>
+          )}
+
           <Button
-            variant="outline"
+            variant="primary"
             size="lg"
-            onPress={handleBack}
-            icon="arrow-left"
-            accessibilityLabel="Voltar para slide anterior"
-            style={styles.backButton}
+            fullWidth={currentIndex === 0}
+            onPress={handleNext}
+            icon={currentIndex === ONBOARDING_SLIDES.length - 1 ? 'check-circle' : 'arrow-right'}
+            iconPosition="right"
+            accessibilityLabel={
+              currentIndex === ONBOARDING_SLIDES.length - 1 ? 'Começar a usar o app' : 'Ir para próximo slide'
+            }
+            style={currentIndex === 0 ? { flex: 1 } : styles.nextButton}
           >
-            Voltar
+            {currentIndex === ONBOARDING_SLIDES.length - 1 ? 'Começar agora!' : 'Próximo'}
           </Button>
-        )}
-
-        <Button
-          variant="primary"
-          size="lg"
-          fullWidth={currentIndex === 0}
-          onPress={handleNext}
-          icon={currentIndex === ONBOARDING_SLIDES.length - 1 ? 'check-circle' : 'arrow-right'}
-          iconPosition="right"
-          accessibilityLabel={
-            currentIndex === ONBOARDING_SLIDES.length - 1
-              ? 'Começar a usar o app'
-              : 'Ir para próximo slide'
-          }
-          style={currentIndex === 0 ? { flex: 1 } : styles.nextButton}
-        >
-          {currentIndex === ONBOARDING_SLIDES.length - 1 ? 'Começar agora!' : 'Próximo'}
-        </Button>
-      </View>
+        </View>
       </SafeAreaView>
     </View>
   );

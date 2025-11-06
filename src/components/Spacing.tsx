@@ -84,11 +84,7 @@ export const Spacing: React.FC<SpacingProps> = ({
     spacingStyle.paddingRight = spacing[right];
   }
 
-  return (
-    <View style={[spacingStyle, style]}>
-      {children}
-    </View>
-  );
+  return <View style={[spacingStyle, style]}>{children}</View>;
 };
 
 /**
@@ -109,4 +105,3 @@ export const Gap: React.FC<GapProps> = ({ size = 'md', direction = 'column' }) =
 
   return <View style={gapStyle} />;
 };
-

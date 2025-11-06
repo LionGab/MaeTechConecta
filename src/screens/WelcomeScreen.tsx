@@ -4,7 +4,17 @@
  */
 
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions, Animated, TouchableOpacity, StatusBar, Platform, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Animated,
+  TouchableOpacity,
+  StatusBar,
+  Platform,
+  Image,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -116,11 +126,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, onLogin }
       >
         {/* Hero Image */}
         <View style={styles.heroImageContainer}>
-          <Image
-            source={require('@/assets/images/nat3.png')}
-            style={styles.heroImage}
-            resizeMode="contain"
-          />
+          <Image source={require('@/assets/images/nat3.png')} style={styles.heroImage} resizeMode="contain" />
         </View>
 
         {/* Title */}

@@ -7,11 +7,11 @@
 
 ## 📋 Matriz de Ambientes
 
-| Ambiente | Branch | URL App | URL Supabase | Propósito | Acesso |
-|----------|--------|---------|--------------|-----------|--------|
-| **Development** | `develop` | Local | Dev Project | Desenvolvimento local | Devs |
-| **Staging** | `develop` | EAS Preview | Staging Project | Testes pré-produção | Time |
-| **Production** | `main` | Stores | Prod Project | Produção | Usuários |
+| Ambiente        | Branch    | URL App     | URL Supabase    | Propósito             | Acesso   |
+| --------------- | --------- | ----------- | --------------- | --------------------- | -------- |
+| **Development** | `develop` | Local       | Dev Project     | Desenvolvimento local | Devs     |
+| **Staging**     | `develop` | EAS Preview | Staging Project | Testes pré-produção   | Time     |
+| **Production**  | `main`    | Stores      | Prod Project    | Produção              | Usuários |
 
 ---
 
@@ -21,67 +21,67 @@
 
 #### Expo (EAS)
 
-| Secret | Descrição | Ambiente | Obrigatório |
-|--------|-----------|-----------|-------------|
-| `EXPO_TOKEN` | Token de autenticação EAS | Todos | ✅ |
-| `EAS_PROJECT_ID` | ID do projeto EAS | Todos | ✅ |
+| Secret           | Descrição                 | Ambiente | Obrigatório |
+| ---------------- | ------------------------- | -------- | ----------- |
+| `EXPO_TOKEN`     | Token de autenticação EAS | Todos    | ✅          |
+| `EAS_PROJECT_ID` | ID do projeto EAS         | Todos    | ✅          |
 
 #### Supabase
 
-| Secret | Descrição | Ambiente | Obrigatório |
-|--------|-----------|-----------|-------------|
-| `SUPABASE_URL` | URL do projeto Supabase | Todos | ✅ |
-| `SUPABASE_ANON_KEY` | Chave anônima (pública no app) | Todos | ✅ |
-| `SUPABASE_SERVICE_ROLE_KEY` | Chave de serviço (admin, nunca no app) | Todos | ✅ |
-| `SUPABASE_ACCESS_TOKEN` | Token de acesso Supabase CLI | Todos | ✅ |
-| `SUPABASE_PROJECT_ID` | ID do projeto Supabase | Todos | ✅ |
+| Secret                      | Descrição                              | Ambiente | Obrigatório |
+| --------------------------- | -------------------------------------- | -------- | ----------- |
+| `SUPABASE_URL`              | URL do projeto Supabase                | Todos    | ✅          |
+| `SUPABASE_ANON_KEY`         | Chave anônima (pública no app)         | Todos    | ✅          |
+| `SUPABASE_SERVICE_ROLE_KEY` | Chave de serviço (admin, nunca no app) | Todos    | ✅          |
+| `SUPABASE_ACCESS_TOKEN`     | Token de acesso Supabase CLI           | Todos    | ✅          |
+| `SUPABASE_PROJECT_ID`       | ID do projeto Supabase                 | Todos    | ✅          |
 
 #### Supabase (Staging)
 
-| Secret | Descrição | Ambiente | Obrigatório |
-|--------|-----------|-----------|-------------|
-| `SUPABASE_URL_STAGING` | URL do projeto Supabase Staging | Staging | ⚠️ |
-| `SUPABASE_ANON_KEY_STAGING` | Chave anônima Staging | Staging | ⚠️ |
+| Secret                      | Descrição                       | Ambiente | Obrigatório |
+| --------------------------- | ------------------------------- | -------- | ----------- |
+| `SUPABASE_URL_STAGING`      | URL do projeto Supabase Staging | Staging  | ⚠️          |
+| `SUPABASE_ANON_KEY_STAGING` | Chave anônima Staging           | Staging  | ⚠️          |
 
 #### Sentry
 
-| Secret | Descrição | Ambiente | Obrigatório |
-|--------|-----------|-----------|-------------|
-| `SENTRY_DSN` | DSN do Sentry | Todos | ✅ |
-| `SENTRY_AUTH_TOKEN` | Token para upload de source maps | Todos | ✅ |
-| `SENTRY_ORG` | Organização Sentry | Todos | ✅ |
-| `SENTRY_PROJECT` | Projeto Sentry | Todos | ✅ |
+| Secret              | Descrição                        | Ambiente | Obrigatório |
+| ------------------- | -------------------------------- | -------- | ----------- |
+| `SENTRY_DSN`        | DSN do Sentry                    | Todos    | ✅          |
+| `SENTRY_AUTH_TOKEN` | Token para upload de source maps | Todos    | ✅          |
+| `SENTRY_ORG`        | Organização Sentry               | Todos    | ✅          |
+| `SENTRY_PROJECT`    | Projeto Sentry                   | Todos    | ✅          |
 
 #### IA (Edge Functions)
 
-| Secret | Descrição | Ambiente | Obrigatório |
-|--------|-----------|-----------|-------------|
-| `GEMINI_API_KEY` | Chave da API Gemini | Todos | ✅ |
-| `ANTHROPIC_API_KEY` | Chave da API Anthropic (Claude) | Todos | ⚠️ |
-| `OPENAI_API_KEY` | Chave da API OpenAI | Todos | ⚠️ |
-| `PERPLEXITY_API_KEY` | Chave da API Perplexity | Todos | ⚠️ |
+| Secret               | Descrição                       | Ambiente | Obrigatório |
+| -------------------- | ------------------------------- | -------- | ----------- |
+| `GEMINI_API_KEY`     | Chave da API Gemini             | Todos    | ✅          |
+| `ANTHROPIC_API_KEY`  | Chave da API Anthropic (Claude) | Todos    | ⚠️          |
+| `OPENAI_API_KEY`     | Chave da API OpenAI             | Todos    | ⚠️          |
+| `PERPLEXITY_API_KEY` | Chave da API Perplexity         | Todos    | ⚠️          |
 
 #### Analytics
 
-| Secret | Descrição | Ambiente | Obrigatório |
-|--------|-----------|-----------|-------------|
-| `AMPLITUDE_API_KEY` | Chave Amplitude | Todos | ⚠️ |
-| `MIXPANEL_TOKEN` | Token Mixpanel | Todos | ⚠️ |
+| Secret              | Descrição       | Ambiente | Obrigatório |
+| ------------------- | --------------- | -------- | ----------- |
+| `AMPLITUDE_API_KEY` | Chave Amplitude | Todos    | ⚠️          |
+| `MIXPANEL_TOKEN`    | Token Mixpanel  | Todos    | ⚠️          |
 
 #### Vercel (Preview)
 
-| Secret | Descrição | Ambiente | Obrigatório |
-|--------|-----------|-----------|-------------|
-| `VERCEL_TOKEN` | Token Vercel | Preview | ⚠️ |
-| `VERCEL_ORG_ID` | ID da organização Vercel | Preview | ⚠️ |
-| `VERCEL_PROJECT_ID` | ID do projeto Vercel | Preview | ⚠️ |
+| Secret              | Descrição                | Ambiente | Obrigatório |
+| ------------------- | ------------------------ | -------- | ----------- |
+| `VERCEL_TOKEN`      | Token Vercel             | Preview  | ⚠️          |
+| `VERCEL_ORG_ID`     | ID da organização Vercel | Preview  | ⚠️          |
+| `VERCEL_PROJECT_ID` | ID do projeto Vercel     | Preview  | ⚠️          |
 
 #### Turborepo (Remote Cache)
 
-| Secret | Descrição | Ambiente | Obrigatório |
-|--------|-----------|-----------|-------------|
-| `TURBO_TOKEN` | Token Turborepo | Todos | ⚠️ |
-| `TURBO_TEAM` | Time Turborepo | Todos | ⚠️ |
+| Secret        | Descrição       | Ambiente | Obrigatório |
+| ------------- | --------------- | -------- | ----------- |
+| `TURBO_TOKEN` | Token Turborepo | Todos    | ⚠️          |
+| `TURBO_TEAM`  | Time Turborepo  | Todos    | ⚠️          |
 
 ---
 
@@ -226,4 +226,3 @@ EXPO_PUBLIC_ENV=production
 
 **Última atualização**: 2025-01-XX  
 **Mantido por**: Time Nossa Maternidade
-

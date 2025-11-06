@@ -55,6 +55,7 @@ Se você já tem a Edge Function `nathia-chat`:
 3. Clique em **Deploy** ou **Redeploy**
 
 Ou via CLI:
+
 ```bash
 supabase functions deploy nathia-chat
 ```
@@ -62,6 +63,7 @@ supabase functions deploy nathia-chat
 ## ✅ Passo 4: Testar
 
 1. Inicie o app:
+
 ```bash
 cd apps/mobile
 pnpm dev
@@ -76,15 +78,18 @@ pnpm dev
 ## 🐛 Troubleshooting
 
 ### "Função match_conversations não encontrada"
+
 - Execute o SQL novamente: `EXECUTAR_SUPABASE.sql`
 
 ### "Tabela conversations não encontrada"
+
 - Execute o SQL novamente: `EXECUTAR_SUPABASE.sql`
 
 ### "GEMINI_API_KEY not configured"
+
 - Configure no Supabase Dashboard > Edge Functions > Secrets
 
 ### Erro ao executar SQL
+
 - Verifique se você tem permissões de administrador no projeto
 - Verifique se a extensão `pgvector` está disponível no seu plano do Supabase
-

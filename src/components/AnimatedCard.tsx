@@ -64,9 +64,7 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
 
   return (
     <Animated.View style={[animatedStyle, style]}>
-      <Card
-        {...cardProps}
-      />
+      <Card {...cardProps} />
     </Animated.View>
   );
 };
@@ -77,4 +75,3 @@ const styles = StyleSheet.create({
     ...shadows.light.lg,
   },
 });
-

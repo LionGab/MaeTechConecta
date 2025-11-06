@@ -1,9 +1,11 @@
 # Pull Request
 
 ## Objetivo
+
 <!-- Descreva o objetivo deste PR -->
 
 ## Checklist
+
 - [ ] Testes passam no CI
 - [ ] Cobertura não caiu (< 70%)
 - [ ] VARs .env documentadas/atualizadas
@@ -12,10 +14,13 @@
 - [ ] Documentação atualizada (se necessário)
 
 ## Mudanças
+
 <!-- Lista de mudanças principais -->
 
 ## Testes
+
 <!-- Como testar? -->
 
 ## Screenshots (se aplicável)
+
 <!-- Screenshots de mudanças visuais -->

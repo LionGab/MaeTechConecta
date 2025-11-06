@@ -236,11 +236,11 @@ export const typography = {
     mono: 'Courier', // Fallback para mono
   },
   sizes: {
-    xs: 12,    // 0.75rem
-    sm: 14,    // 0.875rem
-    base: 16,  // 1rem (mínimo para evitar zoom no iOS)
-    lg: 18,    // 1.125rem
-    xl: 20,    // 1.25rem
+    xs: 12, // 0.75rem
+    sm: 14, // 0.875rem
+    base: 16, // 1rem (mínimo para evitar zoom no iOS)
+    lg: 18, // 1.125rem
+    xl: 20, // 1.25rem
     '2xl': 24, // 1.5rem
     '3xl': 28, // 1.75rem
     '4xl': 32, // 2rem
@@ -267,14 +267,14 @@ export const typography = {
  * 📱 Espaçamento Mobile-First - Mais Generoso e Acolhedor
  */
 export const spacing = {
-  xs: 4,   // 0.25rem - 4px
-  sm: 8,   // 0.5rem - 8px
-  md: 16,  // 1rem - 16px (melhorado de 12px)
-  lg: 24,  // 1.5rem - 24px (melhorado de 16px)
-  xl: 32,  // 2rem - 32px (melhorado de 20px)
-  '2xl': 48,  // 3rem - 48px (melhorado de 24px)
-  '3xl': 64,  // 4rem - 64px (melhorado de 32px)
-  '4xl': 96,  // 6rem - 96px (novo)
+  xs: 4, // 0.25rem - 4px
+  sm: 8, // 0.5rem - 8px
+  md: 16, // 1rem - 16px (melhorado de 12px)
+  lg: 24, // 1.5rem - 24px (melhorado de 16px)
+  xl: 32, // 2rem - 32px (melhorado de 20px)
+  '2xl': 48, // 3rem - 48px (melhorado de 24px)
+  '3xl': 64, // 4rem - 64px (melhorado de 32px)
+  '4xl': 96, // 6rem - 96px (novo)
   '5xl': 128, // 8rem - 128px (novo)
 };
 
@@ -282,13 +282,13 @@ export const spacing = {
  * 🎨 Border Radius Mobile-Friendly - Mais Suave e Acolhedor
  */
 export const borderRadius = {
-  sm: 4,      // 0.25rem - 4px (melhorado)
-  md: 8,      // 0.5rem - 8px (melhorado)
-  lg: 12,     // 0.75rem - 12px (melhorado, padrão mobile)
-  xl: 16,     // 1rem - 16px
-  '2xl': 24,  // 1.5rem - 24px (melhorado)
-  '3xl': 32,  // 2rem - 32px (novo)
-  full: 999,  // Fully rounded
+  sm: 4, // 0.25rem - 4px (melhorado)
+  md: 8, // 0.5rem - 8px (melhorado)
+  lg: 12, // 0.75rem - 12px (melhorado, padrão mobile)
+  xl: 16, // 1rem - 16px
+  '2xl': 24, // 1.5rem - 24px (melhorado)
+  '3xl': 32, // 2rem - 32px (novo)
+  full: 999, // Fully rounded
 };
 
 export default {

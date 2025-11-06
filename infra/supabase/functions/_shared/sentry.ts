@@ -1,6 +1,6 @@
 /**
  * Sentry Wrapper - Edge Functions
- * 
+ *
  * Wrapper para error tracking em Edge Functions
  */
 
@@ -17,7 +17,7 @@ export function initSentry(options: SentryOptions = {}) {
   // Em Edge Functions, Sentry pode ser configurado via env vars
   // ou usando @sentry/deno se disponível
   const dsn = options.dsn || Deno.env.get('SENTRY_DSN');
-  
+
   if (!dsn) {
     console.warn('Sentry DSN não configurado');
     return;
@@ -33,7 +33,7 @@ export function initSentry(options: SentryOptions = {}) {
  */
 export function captureException(error: Error, context?: Record<string, unknown>) {
   console.error('Error capturado:', error, context);
-  
+
   // TODO: Enviar para Sentry
   // Por enquanto, apenas log
 }
@@ -43,7 +43,7 @@ export function captureException(error: Error, context?: Record<string, unknown>
  */
 export function captureMessage(message: string, level: 'info' | 'warning' | 'error' = 'info') {
   console.log(`[${level.toUpperCase()}] ${message}`);
-  
+
   // TODO: Enviar para Sentry
   // Por enquanto, apenas log
 }
@@ -51,15 +51,12 @@ export function captureMessage(message: string, level: 'info' | 'warning' | 'err
 /**
  * Wrapper para Edge Functions com Sentry
  */
-export function withSentry(
-  handler: (req: Request) => Promise<Response>,
-  options: SentryOptions = {}
-) {
+export function withSentry(handler: (req: Request) => Promise<Response>, options: SentryOptions = {}) {
   return async (req: Request): Promise<Response> => {
     try {
       // Inicializar Sentry se ainda não foi
       initSentry(options);
-      
+
       // Executar handler
       return await handler(req);
     } catch (error) {
@@ -69,7 +66,7 @@ export function withSentry(
         method: req.method,
         headers: Object.fromEntries(req.headers.entries()),
       });
-      
+
       // Retornar erro genérico (sem expor detalhes)
       return new Response(
         JSON.stringify({
@@ -84,4 +81,3 @@ export function withSentry(
     }
   };
 }
-

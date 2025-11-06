@@ -1,0 +1,63 @@
+{
+  "enabled": true,
+  "branch": "feature/tema-v0-app",
+  "schedule": {
+    "start": "22:00",
+    "end": "08:00",
+    "interval": 1800000
+  },
+  "agents": {
+    "refactor": {
+      "enabled": true,
+      "maxFiles": 10,
+      "priority": 3
+    },
+    "performance": {
+      "enabled": true,
+      "maxFiles": 8,
+      "priority": 3
+    },
+    "test": {
+      "enabled": true,
+      "maxFiles": 5,
+      "priority": 2
+    },
+    "docs": {
+      "enabled": true,
+      "maxFiles": 15,
+      "priority": 2
+    },
+    "type-safety": {
+      "enabled": true,
+      "maxFiles": 12,
+      "priority": 4
+    },
+    "accessibility": {
+      "enabled": true,
+      "maxFiles": 10,
+      "priority": 3
+    },
+    "security": {
+      "enabled": true,
+      "maxFiles": 8,
+      "priority": 4
+    },
+    "cleanup": {
+      "enabled": true,
+      "maxFiles": 20,
+      "priority": 1
+    }
+  },
+  "validation": {
+    "lint": true,
+    "typeCheck": true,
+    "tests": true,
+    "format": true
+  },
+  "git": {
+    "autoCommit": true,
+    "commitMessage": "chore(agents): {agent} - {description}",
+    "maxCommitsPerRun": 50
+  },
+  "blacklist": ["node_modules", ".git", "dist", "build", ".next", ".expo", "coverage", ".agents"]
+}

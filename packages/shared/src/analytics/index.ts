@@ -11,14 +11,18 @@ let isInitialized = false;
 /**
  * Inicializa o cliente Amplitude
  */
-export function initAnalytics(apiKey: string, userId?: string, options?: {
-  enableLogging?: boolean;
-  defaultTracking?: {
-    pageViews?: boolean;
-    sessions?: boolean;
-    formInteractions?: boolean;
-  };
-}) {
+export function initAnalytics(
+  apiKey: string,
+  userId?: string,
+  options?: {
+    enableLogging?: boolean;
+    defaultTracking?: {
+      pageViews?: boolean;
+      sessions?: boolean;
+      formInteractions?: boolean;
+    };
+  }
+) {
   if (typeof window === 'undefined') {
     // Server-side rendering (Edge Functions)
     return;
@@ -71,26 +75,26 @@ export const ConversionEvents = {
   ONBOARDING_STEP_COMPLETED: 'onboarding_step_completed',
   ONBOARDING_COMPLETED: 'onboarding_completed',
   ONBOARDING_ABANDONED: 'onboarding_abandoned',
-  
+
   // Chat
   CHAT_FIRST_MESSAGE: 'chat_first_message',
   CHAT_MESSAGE_SENT: 'chat_message_sent',
   CHAT_MESSAGE_RECEIVED: 'chat_message_received',
-  
+
   // Daily Plan
   DAILY_PLAN_VIEWED: 'daily_plan_viewed',
   DAILY_PLAN_GENERATED: 'daily_plan_generated',
   DAILY_PLAN_COMPLETED: 'daily_plan_completed',
-  
+
   // Profile
   PROFILE_VIEWED: 'profile_viewed',
   PROFILE_COMPLETED: 'profile_completed',
   PROFILE_UPDATED: 'profile_updated',
-  
+
   // Gamification
   ACHIEVEMENT_UNLOCKED: 'achievement_unlocked',
   POINTS_EARNED: 'points_earned',
-  
+
   // Engagement
   APP_OPENED: 'app_opened',
   APP_CLOSED: 'app_closed',
@@ -100,10 +104,7 @@ export const ConversionEvents = {
 /**
  * Rastreia um evento de conversão
  */
-export function trackConversion(
-  event: keyof typeof ConversionEvents | string,
-  properties?: Record<string, any>
-) {
+export function trackConversion(event: keyof typeof ConversionEvents | string, properties?: Record<string, any>) {
   const eventName = ConversionEvents[event as keyof typeof ConversionEvents] || event;
   trackEvent(eventName, {
     ...properties,
@@ -138,7 +139,7 @@ export function trackError(error: Error, context?: Record<string, any>) {
  */
 export function setUserId(userId: string) {
   if (!isInitialized || !amplitudeClient) return;
-  
+
   try {
     amplitudeClient.setUserId(userId);
   } catch (error) {
@@ -151,11 +152,10 @@ export function setUserId(userId: string) {
  */
 export function setUserProperties(properties: Record<string, any>) {
   if (!isInitialized || !amplitudeClient) return;
-  
+
   try {
     amplitudeClient.identify(new (amplitudeClient as any).Identify().set(properties));
   } catch (error) {
     console.error('Failed to set user properties:', error);
   }
 }
-

@@ -42,11 +42,7 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": [
-      "expo-notifications",
-      "expo-av",
-      "@react-native-voice/voice"
-    ],
+    "plugins": ["expo-notifications", "expo-av", "@react-native-voice/voice"],
     "extra": {
       "sentry": {
         "dsn": ""

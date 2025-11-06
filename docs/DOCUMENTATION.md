@@ -3,25 +3,31 @@
 ## 📋 Índice
 
 ### 🏗️ Arquitetura
+
 - [ARCHITECTURE.md](./ARCHITECTURE.md) - Arquitetura do sistema
 - [ENVIRONMENTS.md](./ENVIRONMENTS.md) - Ambientes e configuração
 
 ### 🚀 Deploy
+
 - [DEPLOY_PRODUCTION.md](./DEPLOY_PRODUCTION.md) - Guia de deploy em produção
 
 ### 🔧 Desenvolvimento
+
 - [SETUP.md](../SETUP.md) - Guia de setup inicial
 - [MIGRACAO-MONOREPO.md](../MIGRACAO-MONOREPO.md) - Guia de migração para monorepo
 
 ### 🧪 Testes
+
 - [INTEGRATION_TESTING.md](./INTEGRATION_TESTING.md) - Testes de integração
 - [E2E Testing](../e2e/README.md) - Testes E2E com Maestro
 
 ### 🔐 Segurança
+
 - [SECURITY.md](../SECURITY.md) - Políticas de segurança
 - [LGPD_SECURITY.md](../LGPD_SECURITY.md) - Conformidade LGPD
 
 ### 📊 Supabase
+
 - [EDGE_FUNCTIONS.md](./EDGE_FUNCTIONS.md) - Edge Functions
 - [supabase/README-SCHEMA.md](../supabase/README-SCHEMA.md) - Schema do banco
 
@@ -67,16 +73,19 @@ nossa-maternidade/
 ## 📝 Guias Principais
 
 ### Para Desenvolvedores
+
 1. [Setup Inicial](./SETUP.md)
 2. [Arquitetura](./ARCHITECTURE.md)
 3. [Ambientes](./ENVIRONMENTS.md)
 
 ### Para DevOps
+
 1. [Deploy em Produção](./DEPLOY_PRODUCTION.md)
 2. [CI/CD](../.github/workflows/)
 3. [Secrets e Configuração](./ENVIRONMENTS.md)
 
 ### Para QA
+
 1. [Testes de Integração](./INTEGRATION_TESTING.md)
 2. [E2E Testing](../e2e/README.md)
 3. [Testes RLS](../__tests__/contracts/rls-policies.test.ts)

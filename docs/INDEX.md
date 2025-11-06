@@ -76,7 +76,7 @@ Workflows GitHub Actions:
 
 - **`.github/workflows/ci.yml`** - CI completo (lint, typecheck, test, security)
 - **`.github/workflows/e2e-android.yml`** - E2E Android (Maestro, smoke tests)
-- **`.github/workflows/release.yml`** - Release automático (tag v*.*.* → EAS Build/Submit + Sentry)
+- **`.github/workflows/release.yml`** - Release automático (tag v*.*.\* → EAS Build/Submit + Sentry)
 
 ---
 
@@ -129,4 +129,3 @@ Problemas comuns e soluções:
 ---
 
 **Mantido por**: Time Nossa Maternidade
-

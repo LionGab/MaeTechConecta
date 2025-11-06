@@ -2,11 +2,11 @@
 
 ## Matriz de Ambientes
 
-| Ambiente | Origem        | Supabase     | Sentry   | EAS Channel  |
-|----------|---------------|--------------|----------|--------------|
-| dev      | local         | dev          | dev      | -            |
-| staging  | PR (preview)  | staging      | staging  | preview      |
-| prod     | tag v*.*.*    | prod         | prod     | production   |
+| Ambiente | Origem       | Supabase | Sentry  | EAS Channel |
+| -------- | ------------ | -------- | ------- | ----------- |
+| dev      | local        | dev      | dev     | -           |
+| staging  | PR (preview) | staging  | staging | preview     |
+| prod     | tag v*.*.\*  | prod     | prod    | production  |
 
 ## Secrets GitHub (CI/CD)
 

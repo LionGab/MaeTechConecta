@@ -1,18 +1,18 @@
 /**
  * Model Router - Roteamento de Modelos IA
- * 
+ *
  * Roteia requisições para o modelo IA apropriado baseado no tipo de tarefa,
  * contexto e disponibilidade de API keys.
  */
 
 export type AIModel = 'claude' | 'gemini' | 'perplexity' | 'manus' | 'fallback';
 
-export type TaskType = 
-  | 'empathy'      // Empatia/conversa
-  | 'moderation'   // Moderação de conteúdo
+export type TaskType =
+  | 'empathy' // Empatia/conversa
+  | 'moderation' // Moderação de conteúdo
   | 'long-context' // Análise de contexto longo
-  | 'research'     // Pesquisa/citações
-  | 'execution';   // Execução de tarefas
+  | 'research' // Pesquisa/citações
+  | 'execution'; // Execução de tarefas
 
 export interface ModelRouterConfig {
   /** API keys disponíveis */
@@ -22,10 +22,10 @@ export interface ModelRouterConfig {
     perplexity?: string;
     manus?: string;
   };
-  
+
   /** Modelo preferencial por tarefa */
   preferences?: Partial<Record<TaskType, AIModel>>;
-  
+
   /** Fallback quando modelo preferido indisponível */
   fallback?: AIModel;
 }
@@ -39,10 +39,7 @@ export interface RoutingDecision {
 /**
  * Roteia tarefa para o modelo IA apropriado
  */
-export function routeModel(
-  taskType: TaskType,
-  config: ModelRouterConfig
-): RoutingDecision {
+export function routeModel(taskType: TaskType, config: ModelRouterConfig): RoutingDecision {
   const { apiKeys, preferences, fallback = 'fallback' } = config;
 
   // 1. Verificar preferência explícita
@@ -107,10 +104,7 @@ function hasApiKey(model: AIModel, apiKeys: ModelRouterConfig['apiKeys']): boole
 /**
  * Retorna API key para modelo
  */
-function getApiKey(
-  model: AIModel,
-  apiKeys: ModelRouterConfig['apiKeys']
-): string | undefined {
+function getApiKey(model: AIModel, apiKeys: ModelRouterConfig['apiKeys']): string | undefined {
   switch (model) {
     case 'claude':
       return apiKeys.anthropic;

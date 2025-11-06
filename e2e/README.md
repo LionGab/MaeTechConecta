@@ -42,6 +42,7 @@ e2e/
 ### Smoke Flow (`smoke-flow.yaml`)
 
 Teste básico de funcionalidade:
+
 1. ✅ App abre
 2. ✅ Tela de login visível
 3. ✅ Login funcionando
@@ -50,6 +51,7 @@ Teste básico de funcionalidade:
 ### Full Flow (futuro)
 
 Teste completo:
+
 1. Login
 2. Dashboard
 3. Chat

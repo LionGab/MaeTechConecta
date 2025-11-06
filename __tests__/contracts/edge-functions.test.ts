@@ -1,6 +1,6 @@
 /**
  * Testes de Contrato Edge Functions
- * 
+ *
  * Verifica que as Edge Functions estão funcionando corretamente
  * Testa rate limiting, autenticação, e respostas
  */

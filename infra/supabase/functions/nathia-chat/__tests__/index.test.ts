@@ -1,6 +1,6 @@
 /**
  * Testes - Edge Function nathia-chat
- * 
+ *
  * Testes unitários e de contrato para a função de chat
  */
 
@@ -36,7 +36,7 @@ describe('nathia-chat Edge Function', () => {
       // TODO: Implementar chamada real quando function estiver disponível
       // const response = await handler(request);
       // expect(response.status).toBe(200);
-      
+
       expect(request.method).toBe('POST');
     });
 
@@ -55,7 +55,7 @@ describe('nathia-chat Edge Function', () => {
       // TODO: Implementar validação
       // const response = await handler(request);
       // expect(response.status).toBe(400);
-      
+
       expect(request.method).toBe('POST');
     });
 
@@ -76,7 +76,7 @@ describe('nathia-chat Edge Function', () => {
       // TODO: Implementar validação de tamanho
       // const response = await handler(request);
       // expect(response.status).toBe(400);
-      
+
       expect(request.method).toBe('POST');
     });
   });
@@ -86,7 +86,7 @@ describe('nathia-chat Edge Function', () => {
       // TODO: Implementar teste de rate limiting
       // Simular múltiplas requisições do mesmo usuário
       // Verificar que após limite, retorna 429
-      
+
       expect(true).toBe(true);
     });
 
@@ -113,7 +113,7 @@ describe('nathia-chat Edge Function', () => {
       // TODO: Implementar validação JWT
       // const response = await handler(request);
       // expect(response.status).toBe(401);
-      
+
       expect(request.method).toBe('POST');
     });
 

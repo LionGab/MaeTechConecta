@@ -273,7 +273,11 @@ export default function HabitsScreen() {
                   accessible={false}
                 >
                   <LinearGradient
-                    colors={habit.completed_today ? [BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue] : ['transparent', 'transparent']}
+                    colors={
+                      habit.completed_today
+                        ? [BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]
+                        : ['transparent', 'transparent']
+                    }
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                     style={[styles.checkbox, habit.completed_today && styles.checkboxCompleted]}

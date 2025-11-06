@@ -397,16 +397,16 @@ export default function ChatScreen() {
           }
         >
           <LinearGradient
-            colors={!inputText.trim() || loading ? [colors.muted, colors.muted] : [BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]}
+            colors={
+              !inputText.trim() || loading
+                ? [colors.muted, colors.muted]
+                : [BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]
+            }
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={[styles.sendButton, (!inputText.trim() || loading) && styles.sendButtonDisabled]}
           >
-            <Icon
-              name={loading ? 'loading' : 'send'}
-              size={24}
-              color={BLUE_THEME.white}
-            />
+            <Icon name={loading ? 'loading' : 'send'} size={24} color={BLUE_THEME.white} />
           </LinearGradient>
         </TouchableOpacity>
       </View>

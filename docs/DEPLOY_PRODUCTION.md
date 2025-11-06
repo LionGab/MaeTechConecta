@@ -168,12 +168,12 @@ npx eas submit --platform android --latest --track production
 #### 2. Supabase
 
 - [ ] Edge Functions deployadas
-   - [ ] `nathia-chat`
-   - [ ] `moderation-service`
-   - [ ] `risk-classifier`
-   - [ ] `behavior-analysis`
-   - [ ] `lgpd-requests`
-   - [ ] `transcribe-audio`
+  - [ ] `nathia-chat`
+  - [ ] `moderation-service`
+  - [ ] `risk-classifier`
+  - [ ] `behavior-analysis`
+  - [ ] `lgpd-requests`
+  - [ ] `transcribe-audio`
 - [ ] Migrations aplicadas
 - [ ] RLS policies ativas
 - [ ] Logs funcionando

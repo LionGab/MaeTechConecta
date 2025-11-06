@@ -1,6 +1,6 @@
 /**
  * Testes de Contrato RLS (Row Level Security)
- * 
+ *
  * Verifica que as policies RLS estão funcionando corretamente
  * Testa diferentes roles (authenticated, anon, service_role)
  */
@@ -30,10 +30,7 @@ describe('RLS Policies - Contract Tests', () => {
 
   describe('chat_messages table', () => {
     it('deve permitir usuário autenticado ler suas próprias mensagens', async () => {
-      const { data, error } = await authenticatedClient
-        .from('chat_messages')
-        .select('*')
-        .eq('user_id', testUserId);
+      const { data, error } = await authenticatedClient.from('chat_messages').select('*').eq('user_id', testUserId);
 
       expect(error).toBeNull();
       expect(data).toBeDefined();
@@ -67,23 +64,18 @@ describe('RLS Policies - Contract Tests', () => {
     });
 
     it('NÃO deve permitir usuário autenticado inserir mensagens para outros usuários', async () => {
-      const { error } = await authenticatedClient
-        .from('chat_messages')
-        .insert({
-          user_id: 'other-user-id', // Tentar inserir para outro usuário
-          message: 'Test message',
-          role: 'user',
-        });
+      const { error } = await authenticatedClient.from('chat_messages').insert({
+        user_id: 'other-user-id', // Tentar inserir para outro usuário
+        message: 'Test message',
+        role: 'user',
+      });
 
       expect(error).toBeDefined();
       expect(error?.message).toContain('RLS');
     });
 
     it('NÃO deve permitir usuário anônimo ler mensagens', async () => {
-      const { data, error } = await anonClient
-        .from('chat_messages')
-        .select('*')
-        .limit(1);
+      const { data, error } = await anonClient.from('chat_messages').select('*').limit(1);
 
       expect(error).toBeDefined();
       expect(data).toBeNull();
@@ -92,11 +84,7 @@ describe('RLS Policies - Contract Tests', () => {
 
   describe('user_profiles table', () => {
     it('deve permitir usuário autenticado ler seu próprio perfil', async () => {
-      const { data, error } = await authenticatedClient
-        .from('user_profiles')
-        .select('*')
-        .eq('id', testUserId)
-        .single();
+      const { data, error } = await authenticatedClient.from('user_profiles').select('*').eq('id', testUserId).single();
 
       expect(error).toBeNull();
       expect(data).toBeDefined();
@@ -141,12 +129,10 @@ describe('RLS Policies - Contract Tests', () => {
     });
 
     it('NÃO deve permitir usuário autenticado inserir eventos para outros', async () => {
-      const { error } = await authenticatedClient
-        .from('rate_limit_events')
-        .insert({
-          user_id: 'other-user-id',
-          endpoint: 'chat',
-        });
+      const { error } = await authenticatedClient.from('rate_limit_events').insert({
+        user_id: 'other-user-id',
+        endpoint: 'chat',
+      });
 
       expect(error).toBeDefined();
     });
