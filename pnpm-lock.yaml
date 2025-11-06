@@ -18,6 +18,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^19.4.0
         version: 19.8.1
+      '@types/node':
+        specifier: ^24.10.0
+        version: 24.10.0
       husky:
         specifier: ^9.1.6
         version: 9.1.7
@@ -1372,7 +1375,7 @@ packages:
 
   '@expo/bunyan@4.0.1':
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {'0': node >=0.10.0}
+    engines: {node: '>=0.10.0'}
 
   '@expo/cli@0.22.26':
     resolution: {integrity: sha512-I689wc8Fn/AX7aUGiwrh3HnssiORMJtR2fpksX+JIe8Cj/EDleblYMSwRPd0025wrwOV9UN1KM/RuEt/QjCS3Q==}
