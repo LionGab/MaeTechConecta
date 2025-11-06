@@ -1,0 +1,11 @@
+node_modules
+dist
+build
+.expo
+coverage
+*.config.js
+babel.config.js
+metro.config.js
+sentry.config.js
+index.js
+jest.setup.js
