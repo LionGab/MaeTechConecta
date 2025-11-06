@@ -9,7 +9,10 @@
       "Bash(npx http-server:*)",
       "Bash(curl:*)",
       "Bash(git push:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm install:*)",
+      "Bash(test:*)"
     ],
     "deny": [],
     "ask": []

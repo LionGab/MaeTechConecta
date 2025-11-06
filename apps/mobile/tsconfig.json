@@ -15,17 +15,20 @@
     "noEmit": true,
     "isolatedModules": true,
     "baseUrl": ".",
+    "typeRoots": [
+      "../../node_modules/@types",
+      "./node_modules/@types"
+    ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["./src/components/*"],
-      "@services/*": ["./src/services/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@theme/*": ["./src/theme/*"],
-      "@shared/*": ["../../packages/shared/src/*"],
-      "@types/*": ["../../packages/shared-types/src/*"]
+      "@nossa-maternidade/shared": ["../../packages/shared/src/index.ts"],
+      "@nossa-maternidade/shared/*": ["../../packages/shared/src/*"],
+      "@nossa-maternidade/shared-types": ["../../packages/shared-types/src/index.ts"],
+      "@nossa-maternidade/shared-types/*": ["../../packages/shared-types/src/*"],
+      "@/*": ["../../src/*"],
+      "react": ["../../node_modules/@types/react"],
+      "react-native": ["../../node_modules/react-native"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "src/**/*"],
-  "exclude": ["node_modules", "dist", "build"]
+  "include": ["**/*.ts", "**/*.tsx", "*.ts", "*.tsx", "../../src/**/*.ts", "../../src/**/*.tsx"],
+  "exclude": ["node_modules", "dist", "build", "../../../node_modules", "../../../**/node_modules"]
 }

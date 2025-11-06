@@ -57,4 +57,8 @@ REVOGAR*.md
 *.log
 .temp/
 tmp/
+nul
+
+# Turbo cache
+.turbo/
 

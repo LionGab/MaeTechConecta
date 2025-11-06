@@ -44,15 +44,7 @@
     "plugins": [
       "expo-notifications",
       "expo-av",
-      "@react-native-voice/voice",
-      [
-        "sentry-expo",
-        {
-          "organization": "nossa-maternidade",
-          "project": "nossa-maternidade-mobile",
-          "authToken": "process.env.SENTRY_AUTH_TOKEN"
-        }
-      ]
+      "@react-native-voice/voice"
     ],
     "extra": {
       "sentry": {

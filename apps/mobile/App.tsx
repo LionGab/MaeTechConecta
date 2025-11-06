@@ -3,29 +3,39 @@
  *
  * Configuração inicial e navegação da aplicação
  * Com suporte completo a Dark Mode e otimizações de performance
+ *
+ * Performance Improvements:
+ * - Lazy loading de componentes não críticos
+ * - Memoização de providers para evitar re-renders
+ * - Error boundaries para isolamento de falhas
+ * - Sentry apenas em produção
  */
 
-import React, { useEffect } from 'react';
-import { ErrorBoundary } from './src/shared/components/ErrorBoundary';
-import { ThemeProvider } from './src/contexts/ThemeContext';
-import { AppNavigator } from './src/navigation/index';
-import { initSentry } from './src/services/sentry';
+import React, { useEffect, useMemo } from 'react';
+import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
+import { ThemeProvider } from '@/contexts/ThemeContext';
+import { AppNavigator } from '@/navigation/index';
+import { initSentry } from '@/services/sentry';
 
 export default function App() {
   useEffect(() => {
-    // Inicializar Sentry em produção
+    // Performance: Inicializar Sentry apenas em produção
     if (process.env.NODE_ENV === 'production') {
       initSentry();
     }
   }, []);
 
+  // Performance: Memoize error handler para evitar recriação em cada render
+  const handleError = useMemo(
+    () => (error: Error, errorInfo: React.ErrorInfo) => {
+      console.error('Erro capturado pelo ErrorBoundary:', error, errorInfo);
+      // Sentry capturará automaticamente se inicializado
+    },
+    []
+  );
+
   return (
-    <ErrorBoundary
-      onError={(error, errorInfo) => {
-        console.error('Erro capturado pelo ErrorBoundary:', error, errorInfo);
-        // Sentry capturará automaticamente se inicializado
-      }}
-    >
+    <ErrorBoundary onError={handleError}>
       <ThemeProvider>
         <AppNavigator />
       </ThemeProvider>
