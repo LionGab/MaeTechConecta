@@ -1,382 +1,591 @@
+/**
+ * Onboarding Screen - Tour das Funcionalidades
+ * Apresenta as principais features do app de forma visual e interativa
+ */
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { Alert, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import {
+  Alert,
+  Animated,
+  Dimensions,
+  FlatList,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
 import { Logo } from '@/components/Logo';
-import { supabase, UserProfile } from '@/services/supabase';
 import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
+import { LinearGradient } from 'expo-linear-gradient';
+
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+// 🎨 Cores Azuis Modernas (matching WelcomeScreen e theme colors)
+const BLUE_THEME = {
+  // Backgrounds - Azul escuro profundo
+  darkBlue: '#0A2540', // Background principal
+  deepBlue: '#0F3460', // Cards e elementos
+  navyBlue: '#16213E', // Popover e contraste
+
+  // Azuis primários - Vibrantes e modernos
+  primaryBlue: '#3B82F6', // Blue 500 - Primário
+  lightBlue: '#60A5FA', // Blue 400 - Hover/Active
+  skyBlue: '#93C5FD', // Blue 300 - Highlights
+  accentBlue: '#0EA5E9', // Sky 500 - Accent
+
+  // Cinzas azulados - Texto e borders
+  mutedBlue: '#475569', // Slate 600 - Texto terciário
+  grayBlue: '#64748B', // Slate 500 - Texto secundário
+  borderBlue: '#334155', // Slate 700 - Borders
+
+  // Cores claras
+  white: '#FFFFFF',
+  lightGray: '#F1F5F9', // Slate 100
+  darkGray: '#94A3B8', // Slate 400
+};
+
+// Breakpoints para responsividade mobile-first
+const isSmallDevice = SCREEN_WIDTH < 375; // iPhone SE, etc
+const isMediumDevice = SCREEN_WIDTH >= 375 && SCREEN_WIDTH < 414; // iPhone 12, etc
+const isLargeDevice = SCREEN_WIDTH >= 414; // iPhone Pro Max, etc
+
+// Valores responsivos
+const getResponsiveValue = (small: number, medium: number, large: number) => {
+  if (isSmallDevice) return small;
+  if (isMediumDevice) return medium;
+  return large;
+};
 
 interface OnboardingScreenProps {
   onComplete?: () => void;
   route?: any;
 }
 
-const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete, route }) => {
+interface OnboardingSlide {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  icon: string;
+  color: string;
+  features: FeatureItem[];
+  image?: string;
+}
+
+interface FeatureItem {
+  emoji: string;
+  text: string;
+  color: string;
+}
+
+const ONBOARDING_SLIDES: OnboardingSlide[] = [
+  {
+    id: 'home',
+    title: 'Home com o NathIA',
+    subtitle: 'Sua assistente virtual empática',
+    description: 'Converse com a NathIA, sua companheira virtual que entende seu momento e oferece suporte personalizado 24/7.',
+    icon: 'robot-happy',
+    color: BLUE_THEME.primaryBlue, // Azul primário
+    features: [
+      { emoji: '💙', text: 'Chat empático e acolhedor', color: '#60A5FA' },
+      { emoji: '✨', text: 'Respostas personalizadas', color: '#93C5FD' },
+      { emoji: '🧠', text: 'Memória de conversas anteriores', color: '#3B82F6' },
+      { emoji: '🤗', text: 'Suporte emocional sempre disponível', color: '#0EA5E9' },
+    ],
+  },
+  {
+    id: 'apoio-emocional',
+    title: 'Apoio Emocional',
+    subtitle: 'Análise de sentimentos com IA',
+    description: 'Análise de sentimentos com IA e sugestões personalizadas para seu bem-estar emocional.',
+    icon: 'heart-pulse',
+    color: BLUE_THEME.accentBlue, // Sky blue - Accent
+    features: [
+      { emoji: '💕', text: 'Análise de sentimentos em tempo real', color: '#F472B6' },
+      { emoji: '🌟', text: 'Sugestões personalizadas de bem-estar', color: '#FBBF24' },
+      { emoji: '🛡️', text: 'Acompanhamento emocional', color: '#60A5FA' },
+      { emoji: '🧘', text: 'Recursos de autocuidado', color: '#A78BFA' },
+    ],
+  },
+  {
+    id: 'rotina-organizada',
+    title: 'Rotina Organizada',
+    subtitle: 'Gerencie tudo com facilidade',
+    description: 'Gerencie alimentação, sono e atividades do seu bebê com facilidade e tranquilidade.',
+    icon: 'calendar-check',
+    color: BLUE_THEME.lightBlue, // Azul claro
+    features: [
+      { emoji: '🍼', text: 'Controle de alimentação do bebê', color: '#93C5FD' },
+      { emoji: '😴', text: 'Acompanhamento de sono', color: '#A78BFA' },
+      { emoji: '📅', text: 'Agenda de atividades', color: '#60A5FA' },
+      { emoji: '⏰', text: 'Lembretes personalizados', color: '#3B82F6' },
+    ],
+  },
+  {
+    id: 'mundo-nath',
+    title: 'MundoNath',
+    subtitle: 'Comunidade e conexão',
+    description: 'Conecte-se com outras mães, compartilhe experiências e encontre apoio na comunidade.',
+    icon: 'account-group',
+    color: BLUE_THEME.skyBlue, // Azul céu claro
+    features: [
+      { emoji: '👥', text: 'Comunidade de mães', color: '#60A5FA' },
+      { emoji: '💬', text: 'Compartilhamento de experiências', color: '#93C5FD' },
+      { emoji: '🎯', text: 'Grupos temáticos', color: '#3B82F6' },
+      { emoji: '🤝', text: 'Suporte mútuo', color: '#0EA5E9' },
+    ],
+  },
+  {
+    id: 'conteudo-exclusivo',
+    title: 'Conteúdo Exclusivo',
+    subtitle: 'Dicas e estratégias da Nathalia Valente',
+    description: 'Acesso a dicas, receitas e estratégias da Nathalia Valente para sua jornada.',
+    icon: 'book-open-variant',
+    color: '#6366F1', // Indigo 500 - Para variedade
+    features: [
+      { emoji: '📚', text: 'Dicas exclusivas da Nathalia', color: '#818CF8' },
+      { emoji: '🥗', text: 'Receitas saudáveis', color: '#34D399' },
+      { emoji: '✨', text: 'Estratégias práticas', color: '#FBBF24' },
+      { emoji: '🔄', text: 'Conteúdo atualizado', color: '#60A5FA' },
+    ],
+  },
+];
+
+const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
   const navigation = useNavigation();
-
-  const [step, setStep] = useState(1);
-  const [name, setName] = useState('');
-  const [type, setType] = useState<'gestante' | 'mae' | 'tentante' | null>(null);
-  const [pregnancyWeek, setPregnancyWeek] = useState('');
-  const [babyName, setBabyName] = useState('');
-  const [preferences, setPreferences] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const preferencesOptions = [
-    { label: 'Alimentação saudável', icon: 'food-apple' },
-    { label: 'Exercícios físicos', icon: 'run' },
-    { label: 'Bem-estar mental', icon: 'meditation' },
-    { label: 'Preparação para o parto', icon: 'baby-carriage' },
-    { label: 'Amamentação', icon: 'mother-nurse' },
-    { label: 'Sono do bebê', icon: 'sleep' },
-    { label: 'Relacionamento', icon: 'heart-multiple' },
-  ];
-
-  const togglePreference = (pref: string) => {
-    if (preferences.includes(pref)) {
-      setPreferences(preferences.filter((p) => p !== pref));
-    } else {
-      setPreferences([...preferences, pref]);
-    }
-  };
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
+  const scrollX = useRef(new Animated.Value(0)).current;
 
   const handleNext = () => {
-    if (step === 1 && !name.trim()) {
-      Alert.alert('Ops!', 'Por favor, digite seu nome');
-      return;
-    }
-    if (step === 2 && !type) {
-      Alert.alert('Ops!', 'Por favor, selecione uma opção');
-      return;
-    }
-    if (step === 3 && type === 'gestante' && !pregnancyWeek) {
-      Alert.alert('Ops!', 'Por favor, informe a semana de gravidez');
-      return;
-    }
-
-    if (step < 4) {
-      setStep(step + 1);
+    if (currentIndex < ONBOARDING_SLIDES.length - 1) {
+      const nextIndex = currentIndex + 1;
+      setCurrentIndex(nextIndex);
+      flatListRef.current?.scrollToIndex({ index: nextIndex, animated: true });
     } else {
       handleComplete();
     }
   };
 
-  const handleComplete = async () => {
-    setLoading(true);
-    try {
-      // Criar perfil no Supabase
-      const {
-        data: { user },
-      } = await supabase.auth.signUp({
-        email: `${Date.now()}@temp.com`, // Email temporário
-        password: `${Date.now()}-${Math.random()}`, // Senha temporária
-      });
-
-      if (user) {
-        // Salvar perfil do usuário
-        const profile: Partial<UserProfile> = {
-          id: user.id,
-          name,
-          type: type!,
-          pregnancy_week: type === 'gestante' ? parseInt(pregnancyWeek) : undefined,
-          baby_name: babyName || undefined,
-          preferences,
-          subscription_tier: 'free',
-          daily_interactions: 0,
-          last_interaction_date: new Date().toISOString(),
-        };
-
-        const { error } = await supabase.from('user_profiles').insert(profile);
-
-        if (error) throw error;
-
-        // Salvar dados localmente
-        await AsyncStorage.setItem('onboarded', 'true');
-        await AsyncStorage.setItem('userId', user.id);
-        await AsyncStorage.setItem('userProfile', JSON.stringify(profile));
-
-        if (onComplete) {
-          onComplete();
-        }
-      }
-    } catch (error: any) {
-      console.error('Erro ao completar onboarding:', error);
-      Alert.alert('Erro', 'Não foi possível salvar seus dados. Tente novamente.');
-    } finally {
-      setLoading(false);
+  const handleBack = () => {
+    if (currentIndex > 0) {
+      const prevIndex = currentIndex - 1;
+      setCurrentIndex(prevIndex);
+      flatListRef.current?.scrollToIndex({ index: prevIndex, animated: true });
     }
   };
 
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.background} />
-      <ScrollView style={styles.container}>
-        <View style={styles.content}>
-          <View style={styles.logoContainer}>
-            <Logo size={120} />
-          </View>
-          <View style={styles.titleContainer}>
-            <Icon name="mother-heart" size={32} color={colors.primary} />
-            <Text style={styles.title}>Bem-vinda ao Nossa Maternidade!</Text>
-          </View>
-          <Text style={styles.subtitle}>Vou te conhecer melhor para poder te ajudar da melhor forma</Text>
+  const handleSkip = () => {
+    handleComplete();
+  };
 
-          {step === 1 && (
-            <View style={styles.stepContainer}>
-              <Text style={styles.stepTitle}>Qual é o seu nome?</Text>
-              <Input
-                label="Nome completo"
-                value={name}
-                onChangeText={setName}
-                placeholder="Digite seu nome"
-                icon="account"
-                required
-              />
+  const handleComplete = async () => {
+    try {
+      await AsyncStorage.setItem('onboarded', 'true');
+      if (onComplete) {
+        onComplete();
+      } else {
+        // Se não tiver callback, navegar para Home
+        (navigation as any).navigate('Home');
+      }
+    } catch (error) {
+      console.error('Erro ao completar onboarding:', error);
+      Alert.alert('Erro', 'Não foi possível salvar. Tente novamente.');
+    }
+  };
+
+  const renderSlide = ({ item, index }: { item: OnboardingSlide; index: number }) => {
+    const inputRange = [(index - 1) * SCREEN_WIDTH, index * SCREEN_WIDTH, (index + 1) * SCREEN_WIDTH];
+    const opacity = scrollX.interpolate({
+      inputRange,
+      outputRange: [0.3, 1, 0.3],
+    });
+
+    // Tamanhos responsivos
+    const iconSize = getResponsiveValue(60, 70, 80);
+    const iconContainerSize = getResponsiveValue(120, 140, 160);
+
+    return (
+      <View style={styles.slide}>
+        <ScrollView
+          contentContainerStyle={styles.slideScrollContent}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+        >
+          <Animated.View style={[styles.slideContent, { opacity }]}>
+            {/* Icon/Logo */}
+            <View
+              style={[
+                styles.iconContainer,
+                {
+                  width: iconContainerSize,
+                  height: iconContainerSize,
+                  borderRadius: iconContainerSize / 2,
+                  backgroundColor: `${item.color}20`,
+                },
+              ]}
+            >
+              <Icon name={item.icon} size={iconSize} color={item.color} />
             </View>
-          )}
 
-          {step === 2 && (
-            <View style={styles.stepContainer}>
-              <Text style={styles.stepTitle}>Como você se identifica?</Text>
-              <TouchableOpacity
-                style={[styles.option, type === 'gestante' && styles.optionSelected]}
-                onPress={() => setType('gestante')}
-                accessible={true}
-                accessibilityRole="button"
-                accessibilityLabel="Gestante"
-                accessibilityState={{ selected: type === 'gestante' }}
-              >
-                <Icon
-                  name="baby-carriage"
-                  size={32}
-                  color={type === 'gestante' ? colors.primary : colors.mutedForeground}
-                />
-                <Text style={styles.optionText}>Gestante</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.option, type === 'mae' && styles.optionSelected]}
-                onPress={() => setType('mae')}
-                accessible={true}
-                accessibilityRole="button"
-                accessibilityLabel="Mãe"
-                accessibilityState={{ selected: type === 'mae' }}
-              >
-                <Icon name="mother-nurse" size={32} color={type === 'mae' ? colors.primary : colors.mutedForeground} />
-                <Text style={styles.optionText}>Mãe</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.option, type === 'tentante' && styles.optionSelected]}
-                onPress={() => setType('tentante')}
-                accessible={true}
-                accessibilityRole="button"
-                accessibilityLabel="Tentante"
-                accessibilityState={{ selected: type === 'tentante' }}
-              >
-                <Icon
-                  name="heart-multiple"
-                  size={32}
-                  color={type === 'tentante' ? colors.primary : colors.mutedForeground}
-                />
-                <Text style={styles.optionText}>Tentante</Text>
-              </TouchableOpacity>
-            </View>
-          )}
+            {/* Title */}
+            <Text style={styles.title}>{item.title}</Text>
 
-          {step === 3 && type === 'gestante' && (
-            <View style={styles.stepContainer}>
-              <Text style={styles.stepTitle}>Em que semana de gestação você está?</Text>
-              <Input
-                label="Semana de gestação"
-                value={pregnancyWeek}
-                onChangeText={setPregnancyWeek}
-                placeholder="Ex: 28"
-                keyboardType="number-pad"
-                icon="calendar-heart"
-                helperText={`Você está na semana ${pregnancyWeek || '0'}`}
-                required
-              />
-            </View>
-          )}
+            {/* Subtitle */}
+            <Text style={styles.subtitle}>{item.subtitle}</Text>
 
-          {step === 3 && (type === 'mae' || type === 'tentante') && (
-            <View style={styles.stepContainer}>
-              <Text style={styles.stepTitle}>Qual é o nome do seu bebê?</Text>
-              <Input
-                label="Nome do bebê"
-                value={babyName}
-                onChangeText={setBabyName}
-                placeholder="Ou deixe em branco se preferir"
-                icon="baby-face"
-              />
-            </View>
-          )}
+            {/* Description */}
+            <Text style={styles.description}>{item.description}</Text>
 
-          {step === 4 && (
-            <View style={styles.stepContainer}>
-              <Text style={styles.stepTitle}>Quais são seus principais interesses?</Text>
-              <Text style={styles.subtitle}>Selecione os que mais te interessam:</Text>
-              {preferencesOptions.map((pref) => (
-                <TouchableOpacity
-                  key={pref.label}
-                  style={[styles.preferenceOption, preferences.includes(pref.label) && styles.preferenceSelected]}
-                  onPress={() => togglePreference(pref.label)}
-                  accessible={true}
-                  accessibilityRole="checkbox"
-                  accessibilityLabel={pref.label}
-                  accessibilityState={{ checked: preferences.includes(pref.label) }}
-                >
-                  <Icon
-                    name={pref.icon}
-                    size={24}
-                    color={preferences.includes(pref.label) ? colors.primary : colors.mutedForeground}
-                    style={styles.preferenceIcon}
-                  />
-                  <Text style={styles.preferenceText}>{pref.label}</Text>
-                </TouchableOpacity>
+            {/* Features */}
+            <View style={styles.featuresContainer}>
+              {item.features.map((feature, idx) => (
+                <View key={idx} style={styles.featureItem}>
+                  {/* Emoji Icon Container */}
+                  <View style={[styles.featureIconContainer, { backgroundColor: `${feature.color}20` }]}>
+                    <Text style={styles.featureEmoji}>{feature.emoji}</Text>
+                  </View>
+
+                  {/* Feature Text */}
+                  <Text style={styles.featureText}>{feature.text}</Text>
+                </View>
               ))}
             </View>
-          )}
+          </Animated.View>
+        </ScrollView>
+      </View>
+    );
+  };
 
-          <Button
-            variant="primary"
-            size="lg"
-            fullWidth
-            onPress={handleNext}
-            loading={loading}
-            disabled={loading}
-            icon={step < 4 ? 'arrow-right' : 'check-circle'}
-            iconPosition="right"
-            accessibilityLabel={step < 4 ? 'Ir para próximo passo' : 'Começar a usar o app'}
-            accessibilityHint={step < 4 ? `Avançar para o passo ${step + 1} de 4` : 'Finalizar cadastro e começar'}
-          >
-            {step < 4 ? 'Próximo' : 'Começar agora!'}
-          </Button>
+  const renderPagination = () => {
+    return (
+      <View style={styles.pagination}>
+        {ONBOARDING_SLIDES.map((_, index) => {
+          const inputRange = [(index - 1) * SCREEN_WIDTH, index * SCREEN_WIDTH, (index + 1) * SCREEN_WIDTH];
+          const dotWidth = scrollX.interpolate({
+            inputRange,
+            outputRange: [8, 24, 8],
+            extrapolate: 'clamp',
+          });
+          const dotOpacity = scrollX.interpolate({
+            inputRange,
+            outputRange: [0.3, 1, 0.3],
+            extrapolate: 'clamp',
+          });
 
-          {step > 1 && (
-            <Button
-              variant="ghost"
-              size="md"
-              fullWidth
-              onPress={() => setStep(Math.max(1, step - 1))}
-              icon="arrow-left"
-              accessibilityLabel="Voltar para passo anterior"
-              style={styles.backButton}
-            >
-              Voltar
-            </Button>
-          )}
+          return (
+            <Animated.View
+              key={index}
+              style={[
+                styles.paginationDot,
+                {
+                  width: dotWidth,
+                  opacity: dotOpacity,
+                  backgroundColor: currentIndex === index ? BLUE_THEME.primaryBlue : BLUE_THEME.grayBlue,
+                },
+              ]}
+            />
+          );
+        })}
+      </View>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor={BLUE_THEME.darkBlue} />
+
+      {/* Background Gradient */}
+      <LinearGradient
+        colors={[BLUE_THEME.darkBlue, BLUE_THEME.deepBlue, BLUE_THEME.navyBlue]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={StyleSheet.absoluteFill}
+      />
+
+      {/* Decorative Circles - Glassmorphism */}
+      <View style={styles.decorativeCircle1} />
+      <View style={styles.decorativeCircle2} />
+
+      <SafeAreaView style={styles.safeArea}>
+        {/* Header com Skip */}
+        <View style={styles.header}>
+        <View style={styles.logoContainer}>
+          <Logo size={getResponsiveValue(32, 36, 40)} />
         </View>
-      </ScrollView>
-    </SafeAreaView>
+        {currentIndex < ONBOARDING_SLIDES.length - 1 && (
+          <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
+            <Text style={styles.skipText}>Pular</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
+      {/* Slides */}
+      <FlatList
+        ref={flatListRef}
+        data={ONBOARDING_SLIDES}
+        renderItem={renderSlide}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+          useNativeDriver: false,
+        })}
+        onMomentumScrollEnd={(event) => {
+          const index = Math.round(event.nativeEvent.contentOffset.x / SCREEN_WIDTH);
+          setCurrentIndex(index);
+        }}
+        scrollEventThrottle={16}
+        getItemLayout={(_, index) => ({
+          length: SCREEN_WIDTH,
+          offset: SCREEN_WIDTH * index,
+          index,
+        })}
+        removeClippedSubviews={Platform.OS === 'android'}
+        initialNumToRender={1}
+        maxToRenderPerBatch={1}
+        windowSize={2}
+      />
+
+      {/* Pagination */}
+      {renderPagination()}
+
+      {/* Actions */}
+      <View style={styles.actions}>
+        {currentIndex > 0 && (
+          <Button
+            variant="outline"
+            size="lg"
+            onPress={handleBack}
+            icon="arrow-left"
+            accessibilityLabel="Voltar para slide anterior"
+            style={styles.backButton}
+          >
+            Voltar
+          </Button>
+        )}
+
+        <Button
+          variant="primary"
+          size="lg"
+          fullWidth={currentIndex === 0}
+          onPress={handleNext}
+          icon={currentIndex === ONBOARDING_SLIDES.length - 1 ? 'check-circle' : 'arrow-right'}
+          iconPosition="right"
+          accessibilityLabel={
+            currentIndex === ONBOARDING_SLIDES.length - 1
+              ? 'Começar a usar o app'
+              : 'Ir para próximo slide'
+          }
+          style={currentIndex === 0 ? { flex: 1 } : styles.nextButton}
+        >
+          {currentIndex === ONBOARDING_SLIDES.length - 1 ? 'Começar agora!' : 'Próximo'}
+        </Button>
+      </View>
+      </SafeAreaView>
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
+// Estilos base (valores fixos)
+const baseStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: BLUE_THEME.darkBlue,
   },
-  content: {
-    padding: spacing.lg,
-    paddingTop: spacing.xl,
-  },
-  logoContainer: {
-    alignItems: 'center',
-    marginBottom: spacing.lg,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.sm,
-    marginBottom: spacing.sm,
-  },
-  title: {
-    fontSize: typography.sizes['2xl'],
-    fontWeight: typography.weights.bold as any,
-    color: colors.primary,
-    textAlign: 'center',
-    fontFamily: typography.fontFamily.sans,
-  },
-  subtitle: {
-    fontSize: typography.sizes.base,
-    color: colors.mutedForeground,
-    textAlign: 'center',
-    marginBottom: spacing['2xl'],
-    fontFamily: typography.fontFamily.sans,
-  },
-  stepContainer: {
-    marginBottom: spacing['2xl'],
-  },
-  stepTitle: {
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold as any,
-    color: colors.foreground,
-    marginBottom: spacing.lg,
-    textAlign: 'center',
-    fontFamily: typography.fontFamily.sans,
-  },
-  option: {
-    backgroundColor: colors.card,
-    borderRadius: borderRadius.lg,
-    padding: spacing.lg,
-    marginBottom: spacing.md,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.md,
-    borderWidth: 2,
-    borderColor: colors.border,
-    minHeight: 60,
-    ...shadows.light.sm,
-  },
-  optionSelected: {
-    backgroundColor: colors.secondary,
-    borderColor: colors.primary,
-    ...shadows.light.md,
-  },
-  optionText: {
-    fontSize: typography.sizes.lg,
-    color: colors.foreground,
-    fontWeight: typography.weights.medium as any,
-    fontFamily: typography.fontFamily.sans,
-  },
-  preferenceOption: {
-    backgroundColor: colors.card,
-    borderRadius: borderRadius.lg,
-    padding: spacing.md,
-    marginBottom: spacing.sm,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-    borderWidth: 1,
-    borderColor: colors.border,
-    minHeight: 52,
-  },
-  preferenceSelected: {
-    backgroundColor: colors.secondary,
-    borderColor: colors.primary,
-    borderWidth: 2,
-  },
-  preferenceIcon: {
-    marginRight: spacing.xs,
-  },
-  preferenceText: {
-    fontSize: typography.sizes.base,
-    color: colors.foreground,
-    fontFamily: typography.fontFamily.sans,
+  safeArea: {
     flex: 1,
   },
+  decorativeCircle1: {
+    position: 'absolute',
+    top: -100,
+    right: -100,
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+    opacity: 0.5,
+  },
+  decorativeCircle2: {
+    position: 'absolute',
+    bottom: -80,
+    left: -80,
+    width: 250,
+    height: 250,
+    borderRadius: 125,
+    backgroundColor: 'rgba(96, 165, 250, 0.08)',
+    opacity: 0.4,
+  },
+  logoContainer: {
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+  },
+  skipButton: {
+    padding: spacing.sm,
+    minWidth: 44, // Touch target mínimo
+    minHeight: 44,
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+  },
+  slide: {
+    width: SCREEN_WIDTH,
+    flex: 1,
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+  },
+  pagination: {
+    flexDirection: 'row' as const,
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+    gap: spacing.sm,
+    minHeight: 32,
+  },
   backButton: {
-    marginTop: spacing.md,
+    flex: 1,
+    minHeight: 44, // Touch target mínimo
+  },
+  nextButton: {
+    flex: 2,
+    minHeight: 44, // Touch target mínimo
   },
 });
+
+// Função para obter estilos responsivos
+const getStyles = () => ({
+  ...baseStyles,
+  header: {
+    flexDirection: 'row' as const,
+    justifyContent: 'space-between' as const,
+    alignItems: 'center' as const,
+    paddingHorizontal: getResponsiveValue(spacing.md, spacing.lg, spacing.lg),
+    paddingTop: Platform.OS === 'ios' ? spacing.md : spacing.sm,
+    paddingBottom: spacing.sm,
+    minHeight: getResponsiveValue(50, 56, 60),
+  },
+  skipText: {
+    fontSize: getResponsiveValue(typography.sizes.sm, typography.sizes.base, typography.sizes.base),
+    color: BLUE_THEME.darkGray,
+    fontFamily: typography.fontFamily.sans,
+  },
+  slideScrollContent: {
+    flexGrow: 1,
+    justifyContent: 'center' as 'center',
+    alignItems: 'center' as 'center',
+    paddingHorizontal: getResponsiveValue(spacing.md, spacing.lg, spacing.xl),
+    paddingVertical: getResponsiveValue(spacing.md, spacing.lg, spacing.xl),
+  },
+  slideContent: {
+    alignItems: 'center' as const,
+    width: '100%' as const,
+    maxWidth: getResponsiveValue(SCREEN_WIDTH - spacing.lg * 2, 400, 450),
+  },
+  iconContainer: {
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+    marginBottom: getResponsiveValue(spacing.lg, spacing.xl, spacing.xl),
+    borderWidth: 2,
+    borderColor: 'rgba(147, 197, 253, 0.2)',
+    ...shadows.dark.lg,
+  },
+  title: {
+    fontSize: getResponsiveValue(typography.sizes['2xl'], typography.sizes['3xl'], typography.sizes['3xl']),
+    fontWeight: typography.weights.bold as any,
+    color: BLUE_THEME.white,
+    textAlign: 'center' as const,
+    marginBottom: spacing.sm,
+    fontFamily: typography.fontFamily.sans,
+    paddingHorizontal: spacing.sm,
+  },
+  subtitle: {
+    fontSize: getResponsiveValue(typography.sizes.lg, typography.sizes.xl, typography.sizes.xl),
+    fontWeight: typography.weights.semibold as any,
+    color: BLUE_THEME.skyBlue,
+    textAlign: 'center' as const,
+    marginBottom: spacing.md,
+    fontFamily: typography.fontFamily.sans,
+    paddingHorizontal: spacing.sm,
+  },
+  description: {
+    fontSize: getResponsiveValue(typography.sizes.sm, typography.sizes.base, typography.sizes.base),
+    color: BLUE_THEME.darkGray,
+    textAlign: 'center' as const,
+    lineHeight: getResponsiveValue(
+      typography.lineHeight.normal * typography.sizes.sm,
+      typography.lineHeight.relaxed * typography.sizes.base,
+      typography.lineHeight.relaxed * typography.sizes.base
+    ),
+    marginBottom: getResponsiveValue(spacing.lg, spacing.xl, spacing.xl),
+    fontFamily: typography.fontFamily.sans,
+    paddingHorizontal: spacing.sm,
+  },
+  featuresContainer: {
+    width: '100%' as const,
+    gap: getResponsiveValue(spacing.sm, spacing.md, spacing.md),
+  },
+  featureItem: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)', // White overlay for card effect
+    padding: getResponsiveValue(spacing.md, spacing.md + 2, spacing.lg),
+    borderRadius: borderRadius.xl,
+    borderWidth: 1,
+    borderColor: 'rgba(147, 197, 253, 0.15)',
+    ...shadows.dark.lg,
+    minHeight: getResponsiveValue(52, 56, 60), // Larger touch target
+    gap: getResponsiveValue(spacing.sm, spacing.md, spacing.md),
+  },
+  featureIconContainer: {
+    width: getResponsiveValue(40, 44, 48),
+    height: getResponsiveValue(40, 44, 48),
+    borderRadius: getResponsiveValue(10, 11, 12),
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+    borderWidth: 1,
+    borderColor: 'rgba(147, 197, 253, 0.2)',
+    ...shadows.dark.md,
+  },
+  featureEmoji: {
+    fontSize: getResponsiveValue(20, 22, 24),
+    textAlign: 'center' as const,
+    lineHeight: getResponsiveValue(24, 26, 28),
+  },
+  featureText: {
+    fontSize: getResponsiveValue(typography.sizes.sm, typography.sizes.base, typography.sizes.base),
+    color: BLUE_THEME.white,
+    flex: 1,
+    fontFamily: typography.fontFamily.sans,
+    fontWeight: typography.weights.medium as any,
+    lineHeight: getResponsiveValue(
+      typography.lineHeight.relaxed * typography.sizes.sm,
+      typography.lineHeight.relaxed * typography.sizes.base,
+      typography.lineHeight.relaxed * typography.sizes.base
+    ),
+  },
+  paginationDot: {
+    height: getResponsiveValue(6, 8, 8),
+    borderRadius: getResponsiveValue(3, 4, 4),
+    backgroundColor: BLUE_THEME.grayBlue,
+  },
+  actions: {
+    flexDirection: 'row' as const,
+    paddingHorizontal: getResponsiveValue(spacing.md, spacing.lg, spacing.xl),
+    paddingBottom: Platform.OS === 'ios' ? getResponsiveValue(spacing.lg, spacing.xl, spacing.xl) : spacing.lg,
+    paddingTop: spacing.sm,
+    gap: spacing.md,
+    alignItems: 'center' as const,
+    minHeight: getResponsiveValue(60, 70, 80),
+  },
+});
+
+const styles = getStyles();
 
 export default OnboardingScreen;

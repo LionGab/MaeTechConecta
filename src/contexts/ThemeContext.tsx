@@ -22,7 +22,13 @@ interface ThemeContextType {
   toggleTheme: () => void;
   setThemeMode: (mode: ThemeMode) => void;
   setThemeName: (name: ThemeName) => void;
-  theme: ReturnType<typeof getTheme>;
+  theme: ReturnType<typeof getTheme> | {
+    colors: any;
+    shadows: any;
+    typography: any;
+    spacing: any;
+    borderRadius: any;
+  };
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -133,9 +139,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Tema completo (compatibilidade com código existente)
   // Se o tema for bubblegum, usa getTheme, senão constrói do tema atual
+  const bubblegumTheme = getTheme(isDark);
+  
   const baseTheme =
     themeName === 'bubblegum'
-      ? getTheme(isDark)
+      ? bubblegumTheme
       : {
           colors: {
             ...colors,
@@ -154,22 +162,32 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             },
           },
           shadows: isDark ? shadows.dark : shadows.light,
-          typography,
-          spacing,
+          typography: {
+            ...typography,
+            lineHeights: {
+              tight: 1.2,
+              normal: 1.5,
+              relaxed: 1.8,
+            },
+          },
+          spacing: {
+            ...spacing,
+            xxl: 48,
+            xxxl: 64,
+          },
           borderRadius,
         };
 
+  // Garantir estrutura consistente para ambos os temas
   const theme = {
-    ...baseTheme,
     colors: {
-      ...baseTheme.colors,
-      // Garantir que todas as cores do tema atual estão presentes
-      ...colors,
+      ...(themeName === 'bubblegum' ? bubblegumTheme.colors : baseTheme.colors),
+      ...colors, // Sobrescrever com cores do tema atual
     },
     shadows: isDark ? shadows.dark : shadows.light,
-    typography,
-    spacing,
-    borderRadius,
+    typography: baseTheme.typography || typography,
+    spacing: baseTheme.spacing || spacing,
+    borderRadius: baseTheme.borderRadius || borderRadius,
   };
 
   const value: ThemeContextType = {

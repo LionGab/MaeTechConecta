@@ -44,8 +44,12 @@ export const ThemeSelector: React.FC = () => {
               style={[
                 styles.themeCard,
                 {
-                  backgroundColor: isSelected ? colors.primary : colors.card,
-                  borderColor: isSelected ? colors.primary : colors.border,
+                  backgroundColor: isSelected 
+                    ? (typeof colors.primary === 'string' ? colors.primary : colors.primary[500] || '#DD5B9A')
+                    : (typeof colors.card === 'string' ? colors.card : colors.card || '#FFFFFF'),
+                  borderColor: isSelected 
+                    ? (typeof colors.primary === 'string' ? colors.primary : colors.primary[500] || '#DD5B9A')
+                    : (typeof colors.border === 'string' ? colors.border : colors.border || '#E5E5E5'),
                   borderWidth: isSelected ? 2 : 1,
                 },
               ]}
