@@ -78,7 +78,7 @@ interface OnboardingSlide {
   icon: string;
   color: string;
   features: FeatureItem[];
-  image?: string;
+  image?: any; // ImageSourcePropType from React Native
 }
 
 interface FeatureItem {

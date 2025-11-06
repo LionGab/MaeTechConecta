@@ -43,7 +43,7 @@ export interface UserProfile {
   id: string;
   email?: string;
   name: string;
-  type: 'gestante' | 'mae' | 'tentante';
+  type: 'gestante' | 'mae' | 'tentante' | 'puerperio' | 'mae_estabelecida';
   pregnancy_week?: number;
   baby_name?: string;
   preferences: string[];

@@ -3,7 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@types/*": ["../shared-types/src/*"]
+      "@types/*": ["../shared-types/src/*"],
+      "@/*": ["../../src/*"]
     }
   },
   "include": ["src/**/*.ts"],

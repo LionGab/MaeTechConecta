@@ -9,7 +9,7 @@ export const UserProfileSchema = z.object({
   id: z.string().uuid(),
   email: z.string().email().optional(),
   name: z.string().min(1).max(100),
-  type: z.enum(['gestante', 'mae', 'tentante']),
+  type: z.enum(['gestante', 'mae', 'tentante', 'puerperio', 'mae_estabelecida']),
   pregnancy_week: z.number().int().min(1).max(42).optional().nullable(),
   baby_name: z.string().max(100).optional().nullable(),
   preferences: z.array(z.string()).default([]),

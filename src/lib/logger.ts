@@ -3,8 +3,6 @@
  * Evita console.log e fornece níveis de log apropriados
  */
 
-import Constants from 'expo-constants';
-
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
 interface LogContext {
@@ -68,7 +66,7 @@ class Logger {
       console.info(formatted);
     }
     // Em produção, enviar para Sentry se configurado
-    const sentryDsn = Constants.expoConfig?.extra?.EXPO_PUBLIC_SENTRY_DSN;
+    const sentryDsn = process.env.EXPO_PUBLIC_SENTRY_DSN;
     if (!this.isDevelopment && sentryDsn) {
       try {
         // @ts-ignore - Sentry pode não estar instalado
@@ -89,7 +87,7 @@ class Logger {
       console.warn(formatted);
     }
     // Em produção, enviar para Sentry se configurado
-    const sentryDsn = Constants.expoConfig?.extra?.EXPO_PUBLIC_SENTRY_DSN;
+    const sentryDsn = process.env.EXPO_PUBLIC_SENTRY_DSN;
     if (!this.isDevelopment && sentryDsn) {
       try {
         // @ts-ignore - Sentry pode não estar instalado
@@ -122,7 +120,7 @@ class Logger {
     }
 
     // Em produção, enviar para Sentry se configurado
-    const sentryDsn = Constants.expoConfig?.extra?.EXPO_PUBLIC_SENTRY_DSN;
+    const sentryDsn = process.env.EXPO_PUBLIC_SENTRY_DSN;
     if (!this.isDevelopment && sentryDsn) {
       try {
         // @ts-ignore - Sentry pode não estar instalado

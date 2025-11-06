@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     height: 160,
     borderRadius: 80,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    backdropFilter: 'blur(10px)',
+    // backdropFilter not supported in React Native
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 3,

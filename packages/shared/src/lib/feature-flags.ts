@@ -4,8 +4,8 @@
  * Suporta A/B testing
  */
 
-import { supabase } from '../../../../src/services/supabase';
-import { logger } from '../../../../src/lib/logger';
+import { supabase } from '@/services/supabase';
+import { logger } from '@/lib/logger';
 
 export type FeatureFlag =
   | 'use_grok'

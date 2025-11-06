@@ -169,6 +169,7 @@ export async function scheduleStreakCelebration(habitName: string, streakDays: n
         },
       },
       trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
         seconds: 1, // Notificação imediata
       },
     });
@@ -197,6 +198,7 @@ export async function scheduleNewContentNotification(contentTitle: string, conte
         categoryIdentifier: 'content',
       },
       trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
         seconds: 1,
       },
       identifier: `content_${contentId}`,
