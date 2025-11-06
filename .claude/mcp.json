@@ -12,7 +12,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "C:\\Users\\User\\NossaMaternidade\\v0-nossa-maternidade-app\\LionNath"
+        "C:\\Users\\Usuario\\Documents\\LionNath"
       ]
     },
     "git": {
@@ -21,7 +21,7 @@
         "-y",
         "@modelcontextprotocol/server-git",
         "--repository",
-        "C:\\Users\\User\\NossaMaternidade\\v0-nossa-maternidade-app\\LionNath"
+        "C:\\Users\\Usuario\\Documents\\LionNath"
       ]
     }
   }

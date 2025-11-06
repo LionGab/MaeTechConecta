@@ -253,9 +253,9 @@
   },
 
   "environment": {
-    "working_directory": "C:\\Users\\User\\Desktop\\Projetos\\Correto",
+    "working_directory": "C:\\Users\\Usuario\\Documents\\LionNath",
     "platform": "win32",
     "git_repo": true,
-    "additional_dirs": ["C:\\Users\\User\\Desktop\\Projetos\\Correto\\.claude"]
+    "additional_dirs": ["C:\\Users\\Usuario\\Documents\\LionNath\\.claude"]
   }
 }
