@@ -3,67 +3,79 @@ function Get-ActiveBrowser {
     $browsers = @{
         'chrome' = @{
             'name' = 'Chrome'
-            'path' = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+            'paths' = @(
+                'C:\Program Files\Google\Chrome\Application\chrome.exe',
+                'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe',
+                "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe"
+            )
             'icon' = '🌐'
+            'process' = 'chrome'
         }
         'msedge' = @{
             'name' = 'Edge'
-            'path' = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+            'paths' = @(
+                'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe',
+                'C:\Program Files\Microsoft\Edge\Application\msedge.exe'
+            )
             'icon' = '🔷'
+            'process' = 'msedge'
         }
         'firefox' = @{
             'name' = 'Firefox'
-            'path' = 'C:\Program Files\Mozilla Firefox\firefox.exe'
+            'paths' = @(
+                'C:\Program Files\Mozilla Firefox\firefox.exe',
+                'C:\Program Files (x86)\Mozilla Firefox\firefox.exe'
+            )
             'icon' = '🦊'
+            'process' = 'firefox'
         }
         'brave' = @{
             'name' = 'Brave'
-            'path' = "$env:LOCALAPPDATA\BraveSoftware\Brave-Browser\Application\brave.exe"
+            'paths' = @(
+                "$env:LOCALAPPDATA\BraveSoftware\Brave-Browser\Application\brave.exe",
+                'C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe'
+            )
             'icon' = '🦁'
+            'process' = 'brave'
         }
     }
 
-    # Verificar qual browser está instalado
-    $activeBrowser = $null
+    # Primeiro, verificar processos rodando (prioridade)
     foreach ($key in $browsers.Keys) {
         $browser = $browsers[$key]
-        if (Test-Path $browser.path) {
-            $activeBrowser = $browser
-            $activeBrowser['key'] = $key
-            break
+        $processName = $browser.process
+        $running = Get-Process -Name $processName -ErrorAction SilentlyContinue
+        if ($running) {
+            $activeBrowser = @{
+                'name' = $browser.name
+                'icon' = $browser.icon
+                'key' = $key
+                'running' = $true
+                'process' = $processName
+            }
+            return $activeBrowser
         }
     }
 
-    # Se não encontrou nos caminhos padrão, verificar pelo processo
-    if (-not $activeBrowser) {
-        $processes = @('chrome', 'msedge', 'firefox', 'brave')
-        foreach ($proc in $processes) {
-            $running = Get-Process -Name $proc -ErrorAction SilentlyContinue
-            if ($running) {
+    # Se nenhum processo rodando, verificar qual está instalado
+    foreach ($key in $browsers.Keys) {
+        $browser = $browsers[$key]
+        foreach ($path in $browser.paths) {
+            if (Test-Path $path) {
                 $activeBrowser = @{
-                    'name' = $proc
-                    'icon' = '🌐'
-                    'key' = $proc
-                    'running' = $true
+                    'name' = $browser.name
+                    'icon' = $browser.icon
+                    'key' = $key
+                    'running' = $false
+                    'process' = $browser.process
                 }
-                break
+                return $activeBrowser
             }
         }
     }
 
-    # Verificar se há processo do browser rodando
-    if ($activeBrowser) {
-        $processName = $activeBrowser.key
-        $running = Get-Process -Name $processName -ErrorAction SilentlyContinue
-        if ($running) {
-            $activeBrowser['running'] = $true
-            $activeBrowser['tabs'] = (Get-Process -Name $processName).Count
-        } else {
-            $activeBrowser['running'] = $false
-        }
-    }
-
-    return $activeBrowser
+    # Nenhum browser encontrado
+    return $null
 }
 
 # Função para formatar info do browser no prompt
@@ -75,6 +87,3 @@ function Format-BrowserPrompt {
     }
     return ''
 }
-
-# Exportar funções
-Export-ModuleMember -Function Get-ActiveBrowser, Format-BrowserPrompt

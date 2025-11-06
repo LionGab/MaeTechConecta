@@ -41,10 +41,12 @@ function Get-BrowserInfo {
 # Customizar prompt para incluir browser
 function prompt {
     # Info do browser
-    `$browserInfo = Get-BrowserInfo
-    
-    # Cores
-    `$browserColor = if (`$browserInfo -match '🟢') { 'Green' } else { 'Gray' }
+    `$browser = Get-ActiveBrowser
+    `$browserInfo = ''
+    if (`$browser) {
+        `$status = if (`$browser.running) { '🟢' } else { '⚪' }
+        `$browserInfo = "`$(`$browser.icon) `$(`$browser.name) `$status | "
+    }
     
     # Prompt base
     `$location = Get-Location
@@ -54,36 +56,43 @@ function prompt {
         `$location.Path
     }
     
-    # Montar prompt
-    `$prompt = ''
-    
     # Branch do Git (se houver)
     `$gitBranch = ''
-    `$gitStatus = git rev-parse --abbrev-ref HEAD 2>$null
-    if (`$gitStatus) {
-        `$gitBranch = " 🌿 [`$gitStatus]"
-    }
+    try {
+        `$gitStatus = git rev-parse --abbrev-ref HEAD 2>$null
+        if (`$gitStatus) {
+            `$gitBranch = " 🌿 [`$gitStatus]"
+        }
+    } catch { }
     
-    # Browser info
+    # Montar prompt com cores ANSI
+    `$promptText = ''
+    
+    # Browser info (com cor)
     if (`$browserInfo) {
-        `$prompt += Write-Host `$browserInfo -ForegroundColor `$browserColor -NoNewline
-        `$prompt += Write-Host ' | ' -ForegroundColor DarkGray -NoNewline
+        if (`$browser.running) {
+            `$promptText += "`e[32m"  # Green
+        } else {
+            `$promptText += "`e[90m"  # DarkGray
+        }
+        `$promptText += `$browserInfo
+        `$promptText += "`e[0m"  # Reset
     }
     
-    # Path
-    `$prompt += Write-Host `$path -ForegroundColor Cyan -NoNewline
+    # Path (Cyan)
+    `$promptText += "`e[36m`$path`e[0m"
     
-    # Git branch
+    # Git branch (Yellow)
     if (`$gitBranch) {
-        `$prompt += Write-Host `$gitBranch -ForegroundColor Yellow -NoNewline
+        `$promptText += "`e[33m`$gitBranch`e[0m"
     }
     
-    # Prompt final
-    `$prompt += Write-Host '`n' -NoNewline
-    `$prompt += Write-Host 'PS ' -ForegroundColor Blue -NoNewline
-    `$prompt += Write-Host '> ' -ForegroundColor White -NoNewline
+    # Nova linha e prompt PS
+    `$promptText += "`n"
+    `$promptText += "`e[34mPS`e[0m "  # Blue
+    `$promptText += "`e[37m> `e[0m"   # White
     
-    return ' '
+    return `$promptText
 }
 
 Write-Host "✅ Browser configurado no prompt!" -ForegroundColor Green
