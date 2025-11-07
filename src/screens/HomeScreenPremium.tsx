@@ -1,7 +1,7 @@
 /**
  * 🌅 Home Screen Premium - Tema "Amanhecer Sereno"
  * Exemplo de implementação do tema Serene Dawn
- * 
+ *
  * Features:
  * - Background com gradiente premium
  * - Cards glass com efeito glassmorphism
@@ -11,15 +11,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  StatusBar,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
@@ -62,12 +54,7 @@ const QuickActionButton: React.FC<QuickActionButtonProps> = React.memo(
       activeOpacity={0.8}
     >
       {/* Background glass */}
-      <View
-        style={[
-          StyleSheet.absoluteFill,
-          { backgroundColor: sereneDawnOverlay.glass },
-        ]}
-      />
+      <View style={[StyleSheet.absoluteFill, { backgroundColor: sereneDawnOverlay.glass }]} />
 
       <LinearGradient
         colors={gradientColors || sereneDawnGradients.primary}
@@ -118,20 +105,16 @@ export default function HomeScreenPremium() {
   };
 
   const handleEmergency = useCallback(() => {
-    Alert.alert(
-      '🚨 Emergência',
-      'Você será direcionado para ligar para o SAMU (192).',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Ligar Agora',
-          style: 'destructive',
-          onPress: () => {
-            // Implementar ligação
-          },
+    Alert.alert('🚨 Emergência', 'Você será direcionado para ligar para o SAMU (192).', [
+      { text: 'Cancelar', style: 'cancel' },
+      {
+        text: 'Ligar Agora',
+        style: 'destructive',
+        onPress: () => {
+          // Implementar ligação
         },
-      ]
-    );
+      },
+    ]);
   }, []);
 
   return (
@@ -140,11 +123,7 @@ export default function HomeScreenPremium() {
 
       {/* Background Gradient Premium */}
       <LinearGradient
-        colors={[
-          sereneDawnColors.midnightBlue,
-          sereneDawnColors.darkPetrol,
-          sereneDawnColors.twilight,
-        ]}
+        colors={[sereneDawnColors.midnightBlue, sereneDawnColors.darkPetrol, sereneDawnColors.twilight]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={StyleSheet.absoluteFill}
@@ -222,9 +201,7 @@ export default function HomeScreenPremium() {
             variant="elevated"
             style={styles.planCard}
           >
-            <Text style={styles.planText}>
-              Seu plano personalizado aparecerá aqui com base nas suas necessidades.
-            </Text>
+            <Text style={styles.planText}>Seu plano personalizado aparecerá aqui com base nas suas necessidades.</Text>
 
             <ButtonPremium
               variant="primaryGold"
@@ -288,12 +265,7 @@ export default function HomeScreenPremium() {
                 accessibilityRole="button"
                 activeOpacity={0.7}
               >
-                <View
-                  style={[
-                    StyleSheet.absoluteFill,
-                    { backgroundColor: sereneDawnOverlay.glass },
-                  ]}
-                />
+                <View style={[StyleSheet.absoluteFill, { backgroundColor: sereneDawnOverlay.glass }]} />
                 <Icon name={faq.icon} size={20} color={sereneDawnColors.babyBlue} />
                 <Text style={styles.faqQuestion}>{faq.text}</Text>
                 <Icon name="chevron-right" size={20} color={sereneDawnColors.slateBlue} />
@@ -508,4 +480,3 @@ const styles = StyleSheet.create({
     marginTop: sereneDawnSpacing.xl,
   },
 });
-

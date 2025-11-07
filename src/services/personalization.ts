@@ -76,31 +76,24 @@ export interface ContentCatalog {
 
 /**
  * Grava um evento de comportamento do usuário
- * 
+ *
  * @param userId - ID do usuário
  * @param kind - Tipo do evento (onboarding_submitted, mood_update, habit_check, etc)
  * @param payload - Dados adicionais do evento
  * @returns Event criado
- * 
+ *
  * @example
  * await ingestEvent(userId, 'mood_update', { mood: 4, energy: 3 });
  */
-export async function ingestEvent(
-  userId: string,
-  kind: string,
-  payload: Record<string, any>
-): Promise<Event> {
-  const response = await fetch(
-    `${SUPABASE_CONFIG.URL}/functions/v1/ingest-event`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${SUPABASE_CONFIG.ANON_KEY}`,
-      },
-      body: JSON.stringify({ userId, kind, payload }),
-    }
-  );
+export async function ingestEvent(userId: string, kind: string, payload: Record<string, any>): Promise<Event> {
+  const response = await fetch(`${SUPABASE_CONFIG.URL}/functions/v1/ingest-event`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${SUPABASE_CONFIG.ANON_KEY}`,
+    },
+    body: JSON.stringify({ userId, kind, payload }),
+  });
 
   if (!response.ok) {
     const error = await response.json();
@@ -117,21 +110,18 @@ export async function ingestEvent(
 
 /**
  * Busca o plano do dia do usuário
- * 
+ *
  * @param userId - ID do usuário
  * @param date - Data no formato YYYY-MM-DD (opcional, padrão: hoje)
  * @returns MessagePlan ou null se não existir
- * 
+ *
  * @example
  * const plan = await getPlanoDoDia(userId);
  * if (plan) {
  *   console.log('Itens:', plan.items.length);
  * }
  */
-export async function getPlanoDoDia(
-  userId: string,
-  date?: string
-): Promise<MessagePlan | null> {
+export async function getPlanoDoDia(userId: string, date?: string): Promise<MessagePlan | null> {
   const planDate = date || new Date().toISOString().split('T')[0];
 
   const { data, error } = await supabase
@@ -154,10 +144,10 @@ export async function getPlanoDoDia(
 
 /**
  * Gera um novo plano para hoje/amanhã
- * 
+ *
  * @param userId - ID do usuário
  * @returns MessagePlan gerado
- * 
+ *
  * @example
  * const newPlan = await replanToday(userId);
  * console.log('Novo plano criado:', newPlan.id);
@@ -169,17 +159,14 @@ export async function replanToday(userId: string): Promise<MessagePlan> {
   });
 
   // Chamar plan-daily para este usuário
-  const response = await fetch(
-    `${SUPABASE_CONFIG.URL}/functions/v1/plan-daily`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${SUPABASE_CONFIG.ANON_KEY}`,
-      },
-      body: JSON.stringify({ userId, forceRegenerate: true }),
-    }
-  );
+  const response = await fetch(`${SUPABASE_CONFIG.URL}/functions/v1/plan-daily`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${SUPABASE_CONFIG.ANON_KEY}`,
+    },
+    body: JSON.stringify({ userId, forceRegenerate: true }),
+  });
 
   if (!response.ok) {
     const error = await response.json();
@@ -205,25 +192,19 @@ export async function replanToday(userId: string): Promise<MessagePlan> {
 
 /**
  * Atualiza o limite de notificações por dia
- * 
+ *
  * @param userId - ID do usuário
  * @param cap - Novo limite (0-10)
- * 
+ *
  * @example
  * await updateFrequencyCap(userId, 1); // Apenas 1 notificação por dia
  */
-export async function updateFrequencyCap(
-  userId: string,
-  cap: number
-): Promise<void> {
+export async function updateFrequencyCap(userId: string, cap: number): Promise<void> {
   if (cap < 0 || cap > 10) {
     throw new Error('Frequency cap must be between 0 and 10');
   }
 
-  const { error } = await supabase
-    .from('user_profiles')
-    .update({ frequency_cap: cap })
-    .eq('id', userId);
+  const { error } = await supabase.from('user_profiles').update({ frequency_cap: cap }).eq('id', userId);
 
   if (error) {
     throw error;
@@ -242,10 +223,10 @@ export async function updateFrequencyCap(
 
 /**
  * Busca o sinal mais recente do usuário
- * 
+ *
  * @param userId - ID do usuário
  * @returns Signal mais recente ou null
- * 
+ *
  * @example
  * const signal = await getLatestSignal(userId);
  * if (signal) {
@@ -275,19 +256,16 @@ export async function getLatestSignal(userId: string): Promise<Signal | null> {
 
 /**
  * Busca conteúdo curado por tags
- * 
+ *
  * @param tags - Tags de interesse
  * @param limit - Limite de resultados (padrão: 10)
  * @returns Array de ContentCatalog
- * 
+ *
  * @example
  * const content = await getCuratedContent(['support_low', 'tag_lonely']);
  * console.log('Conteúdo encontrado:', content.length);
  */
-export async function getCuratedContent(
-  tags: string[],
-  limit = 10
-): Promise<ContentCatalog[]> {
+export async function getCuratedContent(tags: string[], limit = 10): Promise<ContentCatalog[]> {
   const { data, error } = await supabase
     .from('content_catalog')
     .select('*')
@@ -308,17 +286,14 @@ export async function getCuratedContent(
 
 /**
  * Marca uma entrega como aberta (métrica)
- * 
+ *
  * @param deliveryId - ID da entrega
- * 
+ *
  * @example
  * await markDeliveryAsOpened(deliveryId);
  */
 export async function markDeliveryAsOpened(deliveryId: string): Promise<void> {
-  const { error } = await supabase
-    .from('message_deliveries')
-    .update({ opened: true })
-    .eq('id', deliveryId);
+  const { error } = await supabase.from('message_deliveries').update({ opened: true }).eq('id', deliveryId);
 
   if (error) {
     throw error;
@@ -338,10 +313,7 @@ export async function markDeliveryAsOpened(deliveryId: string): Promise<void> {
  * await markDeliveryAsClicked(deliveryId);
  */
 export async function markDeliveryAsClicked(deliveryId: string): Promise<void> {
-  const { error } = await supabase
-    .from('message_deliveries')
-    .update({ clicked: true })
-    .eq('id', deliveryId);
+  const { error } = await supabase.from('message_deliveries').update({ clicked: true }).eq('id', deliveryId);
 
   if (error) {
     throw error;
@@ -382,20 +354,15 @@ export interface InferPreferencesResponse {
  * console.log('Preferências inferidas:', result.inferred.length);
  * console.log('Atualizações realizadas:', result.updated_count);
  */
-export async function inferUserPreferences(
-  userId: string
-): Promise<InferPreferencesResponse> {
-  const response = await fetch(
-    `${SUPABASE_CONFIG.URL}/functions/v1/infer-preferences`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${SUPABASE_CONFIG.ANON_KEY}`,
-      },
-      body: JSON.stringify({ userId }),
-    }
-  );
+export async function inferUserPreferences(userId: string): Promise<InferPreferencesResponse> {
+  const response = await fetch(`${SUPABASE_CONFIG.URL}/functions/v1/infer-preferences`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${SUPABASE_CONFIG.ANON_KEY}`,
+    },
+    body: JSON.stringify({ userId }),
+  });
 
   if (!response.ok) {
     const error = await response.json();
@@ -405,4 +372,3 @@ export async function inferUserPreferences(
   const data = await response.json();
   return data;
 }
-

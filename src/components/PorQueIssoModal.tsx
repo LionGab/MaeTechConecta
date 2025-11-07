@@ -4,15 +4,7 @@
  */
 
 import React, { useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { useTheme } from '@/contexts/ThemeContext';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -35,7 +27,7 @@ export interface PorQueIssoModalProps {
 
 /**
  * Modal "Por que estou vendo isso?"
- * 
+ *
  * @example
  * <PorQueIssoModal
  *   visible={modalVisible}
@@ -138,8 +130,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                     },
                   ]}
                 >
-                  • Stress: {scores.stress_score}/100{' '}
-                  {scores.stress_score > 70 && '⚠️'}
+                  • Stress: {scores.stress_score}/100 {scores.stress_score > 70 && '⚠️'}
                 </Text>
               )}
               {scores.support_score !== undefined && (
@@ -153,8 +144,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                     },
                   ]}
                 >
-                  • Apoio: {scores.support_score}/100{' '}
-                  {scores.support_score < 40 && '⚠️'}
+                  • Apoio: {scores.support_score}/100 {scores.support_score < 40 && '⚠️'}
                 </Text>
               )}
               {scores.sleep_quality !== undefined && (
@@ -168,8 +158,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                     },
                   ]}
                 >
-                  • Sono: {scores.sleep_quality}/100{' '}
-                  {scores.sleep_quality < 50 && '⚠️'}
+                  • Sono: {scores.sleep_quality}/100 {scores.sleep_quality < 50 && '⚠️'}
                 </Text>
               )}
             </View>
@@ -213,12 +202,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
     }, [rationale, theme]);
 
     return (
-      <Modal
-        visible={visible}
-        transparent
-        animationType="slide"
-        onRequestClose={onClose}
-      >
+      <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
         <View style={styles.overlay}>
           <View
             style={[
@@ -248,10 +232,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
             </View>
 
             {/* Content */}
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              style={[styles.content, { marginTop: theme.spacing.md }]}
-            >
+            <ScrollView showsVerticalScrollIndicator={false} style={[styles.content, { marginTop: theme.spacing.md }]}>
               {/* Prioridade */}
               {rationale && (
                 <View
@@ -292,8 +273,8 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                   },
                 ]}
               >
-                Personalizamos seu plano com base no seu comportamento dos últimos 14
-                dias. Tudo que você compartilha nos ajuda a te acompanhar melhor. 💕
+                Personalizamos seu plano com base no seu comportamento dos últimos 14 dias. Tudo que você compartilha
+                nos ajuda a te acompanhar melhor. 💕
               </Text>
 
               {/* Motivos */}
@@ -321,8 +302,8 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                     },
                   ]}
                 >
-                  ⚠️ Este plano não substitui aconselhamento médico ou psicológico. Se
-                  você está em crise, busque ajuda profissional imediatamente.
+                  ⚠️ Este plano não substitui aconselhamento médico ou psicológico. Se você está em crise, busque ajuda
+                  profissional imediatamente.
                 </Text>
               </View>
             </ScrollView>
@@ -456,4 +437,3 @@ const styles = StyleSheet.create({
     // Handled inline
   },
 });
-

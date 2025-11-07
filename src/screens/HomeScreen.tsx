@@ -82,11 +82,11 @@ export default function HomeScreen() {
     content: personalizedContent,
     isLoading: contentLoading,
     trackInteraction,
-    refetch: refetchContent
+    refetch: refetchContent,
   } = usePersonalizedContent({
     userId: userId || '',
     limit: 5,
-    autoFetch: !!userId
+    autoFetch: !!userId,
   });
 
   useEffect(() => {
@@ -102,40 +102,45 @@ export default function HomeScreen() {
     }
 
     // Carregar userId da sessão
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     if (user) {
       setUserId(user.id);
     }
   };
 
-  const handleItemCtaPressed = useCallback(async (item: any) => {
-    if (!userId) return;
+  const handleItemCtaPressed = useCallback(
+    async (item: any) => {
+      if (!userId) return;
 
-    // Registrar evento de CTA clicado
-    try {
-      await ingestEvent(userId, 'notification_opened', {
-        type: item.type,
-        cta: item.cta,
-        scheduled_at: item.scheduled_at,
-      });
+      // Registrar evento de CTA clicado
+      try {
+        await ingestEvent(userId, 'notification_opened', {
+          type: item.type,
+          cta: item.cta,
+          scheduled_at: item.scheduled_at,
+        });
 
-      // Ação baseada no tipo
-      if (item.type === 'habit') {
-        // Navegar para Meus Hábitos
-        navigation.navigate('Habits' as any);
-      } else if (item.type === 'content') {
-        // Navegar para Mãe Valente
-        navigation.navigate('MaeValente' as any);
-      } else if (item.type === 'check-in') {
-        // Navegar para Chat
-        navigation.navigate('Chat');
+        // Ação baseada no tipo
+        if (item.type === 'habit') {
+          // Navegar para Meus Hábitos
+          navigation.navigate('Habits' as any);
+        } else if (item.type === 'content') {
+          // Navegar para Mãe Valente
+          navigation.navigate('MaeValente' as any);
+        } else if (item.type === 'check-in') {
+          // Navegar para Chat
+          navigation.navigate('Chat');
+        }
+
+        Alert.alert('✅ Ação registrada!', 'Continuamos te acompanhando. 💕');
+      } catch (error) {
+        console.error('Error handling CTA:', error);
       }
-
-      Alert.alert('✅ Ação registrada!', 'Continuamos te acompanhando. 💕');
-    } catch (error) {
-      console.error('Error handling CTA:', error);
-    }
-  }, [userId, navigation]);
+    },
+    [userId, navigation]
+  );
 
   const handleDecreaseFrequency = useCallback(async () => {
     if (!userId) return;
@@ -193,12 +198,7 @@ export default function HomeScreen() {
 
         {/* Plano do Dia Personalizado */}
         {userId && plan && plan.items.length > 0 && (
-          <Card
-            title="💕 Seu Plano de Hoje"
-            icon="calendar-star"
-            variant="outlined"
-            style={styles.planCard}
-          >
+          <Card title="💕 Seu Plano de Hoje" icon="calendar-star" variant="outlined" style={styles.planCard}>
             <PlanoDoDia
               items={plan.items}
               rationale={plan.rationale}
@@ -234,12 +234,7 @@ export default function HomeScreen() {
             </View>
             <View style={styles.personalizedContentContainer}>
               {personalizedContent.slice(0, 3).map((item) => (
-                <PersonalizedContentCard
-                  key={item.id}
-                  content={item}
-                  onInteraction={trackInteraction}
-                  isDark={false}
-                />
+                <PersonalizedContentCard key={item.id} content={item} onInteraction={trackInteraction} isDark={false} />
               ))}
             </View>
             {personalizedContent.length > 3 && (

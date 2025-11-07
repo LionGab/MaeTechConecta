@@ -1,7 +1,7 @@
 /**
  * 🌅 Card Glass - Tema "Amanhecer Sereno"
  * Card com efeito glassmorphism premium
- * 
+ *
  * Features:
  * - Efeito vidro fosco (blur)
  * - Gradientes sutis
@@ -11,15 +11,7 @@
  */
 
 import React, { useMemo } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableOpacityProps,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TouchableOpacityProps, ViewStyle, TextStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -31,6 +23,7 @@ import {
   sereneDawnSpacing,
   sereneDawnBorderRadius,
 } from '@/theme/sereneDawn';
+import { getShadowStyle } from '@/utils/platformStyles';
 
 // =====================================================
 // TIPOS
@@ -104,12 +97,7 @@ const CardGlassComponent: React.FC<CardGlassProps> = ({
 }) => {
   // Memoizar estilos do container
   const containerStyle = useMemo(
-    () => [
-      styles.base,
-      styles[variant],
-      { padding: sereneDawnSpacing[padding] },
-      style,
-    ],
+    () => [styles.base, styles[variant], { padding: sereneDawnSpacing[padding] }, style],
     [variant, padding, style]
   );
 
@@ -134,25 +122,13 @@ const CardGlassComponent: React.FC<CardGlassProps> = ({
     <>
       {/* Background Gradient com efeito glass */}
       {useNativeBlur ? (
-        <BlurView
-          intensity={20}
-          tint="dark"
-          style={StyleSheet.absoluteFill}
-        />
+        <BlurView intensity={20} tint="dark" style={StyleSheet.absoluteFill} />
       ) : (
-        <View
-          style={[
-            StyleSheet.absoluteFill,
-            { backgroundColor: sereneDawnOverlay.glass },
-          ]}
-        />
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: sereneDawnOverlay.glass }]} />
       )}
 
       <LinearGradient
-        colors={[
-          sereneDawnOverlay.white,
-          'rgba(127, 176, 218, 0.08)',
-        ]}
+        colors={[sereneDawnOverlay.white, 'rgba(127, 176, 218, 0.08)']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={StyleSheet.absoluteFill}
@@ -204,23 +180,37 @@ const styles = StyleSheet.create({
 
   // Variantes
   default: {
-    ...sereneDawnShadows.dark.md,
+    ...getShadowStyle({
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 4.65,
+      elevation: 8,
+    }),
   },
   elevated: {
-    ...sereneDawnShadows.dark.xl,
+    ...getShadowStyle({
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 0.44,
+      shadowRadius: 10.32,
+      elevation: 16,
+    }),
   },
   outlined: {
     borderWidth: 2,
     borderColor: sereneDawnOverlay.primaryBorderLight,
   },
   glow: {
-    ...sereneDawnShadows.dark.xl,
+    ...getShadowStyle({
+      shadowColor: sereneDawnColors.champagne,
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 0.44,
+      shadowRadius: 16,
+      elevation: 16,
+    }),
     borderWidth: 1,
     borderColor: sereneDawnOverlay.goldBorder,
-    // Efeito glow dourado
-    shadowColor: sereneDawnColors.champagne,
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
   },
 
   // Header
@@ -238,7 +228,13 @@ const styles = StyleSheet.create({
     marginRight: sereneDawnSpacing.md,
     borderWidth: 1,
     borderColor: sereneDawnOverlay.goldBorder,
-    ...sereneDawnShadows.dark.sm,
+    ...getShadowStyle({
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.18,
+      shadowRadius: 1.0,
+      elevation: 1,
+    }),
   },
   headerText: {
     flex: 1,
@@ -265,4 +261,3 @@ const styles = StyleSheet.create({
 
 // Memoizar componente
 export const CardGlass = React.memo(CardGlassComponent);
-

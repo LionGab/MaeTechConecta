@@ -37,10 +37,7 @@ serve(async (req) => {
     console.log(`Dispatching plans for date=${today}, time=${currentTime}`);
 
     // 1. Buscar message_plans de hoje que devem ser enviados nesta hora
-    let query = supabase
-      .from('message_plan')
-      .select('id, user_id, items, rationale, timezone')
-      .eq('plan_date', today);
+    let query = supabase.from('message_plan').select('id, user_id, items, rationale, timezone').eq('plan_date', today);
 
     if (singleUserId) {
       query = query.eq('user_id', singleUserId);
@@ -107,19 +104,53 @@ serve(async (req) => {
 
         const frequencyCap = user.frequency_cap || 2;
         if (todayDeliveries && todayDeliveries >= frequencyCap) {
-          console.log(
-            `User ${plan.user_id} reached frequency cap (${todayDeliveries}/${frequencyCap}), skipping`
-          );
+          console.log(`User ${plan.user_id} reached frequency cap (${todayDeliveries}/${frequencyCap}), skipping`);
           results.skipped++;
           continue;
         }
 
-        // 3. Filtrar itens que devem ser enviados nesta hora
+        // 3. Filtrar itens que devem ser enviados agora
+        // Job roda às 00h, 09h, 14h, 19h
+        // Pega todos os itens cujo horário já passou desde a última execução
         const items = plan.items || [];
+        const currentHourInt = parseInt(currentHour, 10);
+
+        // Determinar janela de horários com base na hora atual
+        let minHour: number;
+        let maxHour: number;
+
+        if (currentHourInt === 0) {
+          // Às 00h: pega itens de 00:00-08:59 (até próxima execução às 09h)
+          minHour = 0;
+          maxHour = 8;
+        } else if (currentHourInt === 9) {
+          // Às 09h: pega itens de 09:00-13:59 (até próxima execução às 14h)
+          minHour = 9;
+          maxHour = 13;
+        } else if (currentHourInt === 14) {
+          // Às 14h: pega itens de 14:00-18:59 (até próxima execução às 19h)
+          minHour = 14;
+          maxHour = 18;
+        } else {
+          // Às 19h: pega itens de 19:00-23:59 (até próxima execução às 00h)
+          minHour = 19;
+          maxHour = 23;
+        }
+
         const itemsToSend = items.filter((item: any) => {
-          const itemHour = item.scheduled_at.split(':')[0].padStart(2, '0');
-          const itemTime = `${itemHour}:00`;
-          return itemTime === currentTime;
+          // Extrair hora do scheduled_at (formato: "HH:MM")
+          const [itemHourStr] = item.scheduled_at.split(':');
+          const itemHour = parseInt(itemHourStr, 10);
+
+          // Verificar se o item está na janela de horários
+          // Como o job roda apenas 4x ao dia, enviamos TODOS os itens da janela
+          // A proteção contra duplicatas está em !item.delivery_id
+          const isInWindow = itemHour >= minHour && itemHour <= maxHour;
+
+          // Não enviar se já tiver delivery_id (já foi enviado)
+          const notDeliveredYet = !item.delivery_id;
+
+          return isInWindow && notDeliveredYet;
         });
 
         if (itemsToSend.length === 0) {
@@ -251,4 +282,3 @@ serve(async (req) => {
     );
   }
 });
-

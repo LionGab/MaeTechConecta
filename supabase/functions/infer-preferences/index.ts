@@ -42,13 +42,10 @@ serve(async (req) => {
     const { userId }: InferPreferencesRequest = await req.json();
 
     if (!userId) {
-      return new Response(
-        JSON.stringify({ error: 'userId is required' }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
-      );
+      return new Response(JSON.stringify({ error: 'userId is required' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     // Initialize Supabase client
@@ -70,13 +67,10 @@ serve(async (req) => {
 
     if (interactionsError) {
       console.error('Error fetching interactions:', interactionsError);
-      return new Response(
-        JSON.stringify({ error: 'Failed to fetch user interactions' }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
-      );
+      return new Response(JSON.stringify({ error: 'Failed to fetch user interactions' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     if (!interactions || interactions.length === 0) {
@@ -85,7 +79,7 @@ serve(async (req) => {
           success: true,
           inferred: [],
           updated_count: 0,
-          message: 'No interactions found to infer preferences'
+          message: 'No interactions found to infer preferences',
         }),
         {
           status: 200,
@@ -95,12 +89,13 @@ serve(async (req) => {
     }
 
     // 2. Extrair content_ids das interações
-    const contentIds = [...new Set(interactions.map(i => i.content_id))];
+    const contentIds = [...new Set(interactions.map((i) => i.content_id))];
 
     // 3. Buscar tags associadas ao conteúdo via content_tag_relations
     const { data: tagRelations, error: tagRelationsError } = await supabase
       .from('content_tag_relations')
-      .select(`
+      .select(
+        `
         content_id,
         tag_id,
         relevance_score,
@@ -109,7 +104,8 @@ serve(async (req) => {
           name,
           category
         )
-      `)
+      `
+      )
       .in('content_id', contentIds);
 
     if (tagRelationsError) {
@@ -129,9 +125,7 @@ serve(async (req) => {
         const tagCategory = tag.category;
 
         // Buscar todas as interações com este content_id
-        const contentInteractions = interactions.filter(
-          i => i.content_id === relation.content_id
-        );
+        const contentInteractions = interactions.filter((i) => i.content_id === relation.content_id);
 
         for (const interaction of contentInteractions) {
           const engagementScore = interaction.engagement_score || 0;
@@ -145,7 +139,7 @@ serve(async (req) => {
               total_engagement: 0,
               avg_engagement: 0,
               weight: 0,
-              reason: ''
+              reason: '',
             });
           }
 
@@ -165,7 +159,7 @@ serve(async (req) => {
       // Fórmula: (avg_engagement * frequency_factor)
       // frequency_factor = log2(interaction_count + 1) para suavizar
       const frequencyFactor = Math.log2(data.interaction_count + 1);
-      data.weight = Math.min(1.0, data.avg_engagement * frequencyFactor / 5);
+      data.weight = Math.min(1.0, (data.avg_engagement * frequencyFactor) / 5);
 
       // Gerar razão humanizada
       if (data.interaction_count >= 5) {
@@ -198,8 +192,8 @@ serve(async (req) => {
 
     // 7. Upsert em user_preferences (apenas se peso > 0.1)
     const preferencesToUpsert = topTags
-      .filter(t => t.weight > 0.1)
-      .map(tag => ({
+      .filter((t) => t.weight > 0.1)
+      .map((tag) => ({
         user_id: userId,
         tag_id: tag.tag_id,
         preference_type: 'interest',
@@ -210,23 +204,18 @@ serve(async (req) => {
           interaction_count: tag.interaction_count,
           avg_engagement: tag.avg_engagement,
           reason: tag.reason,
-          inferred_at: new Date().toISOString()
-        }
+          inferred_at: new Date().toISOString(),
+        },
       }));
 
     let updatedCount = 0;
 
     if (preferencesToUpsert.length > 0) {
       for (const pref of preferencesToUpsert) {
-        const { error: upsertError } = await supabase
-          .from('user_preferences')
-          .upsert(
-            pref,
-            {
-              onConflict: 'user_id,tag_id,preference_type',
-              ignoreDuplicates: false
-            }
-          );
+        const { error: upsertError } = await supabase.from('user_preferences').upsert(pref, {
+          onConflict: 'user_id,tag_id,preference_type',
+          ignoreDuplicates: false,
+        });
 
         if (upsertError) {
           console.error('Error upserting preference:', upsertError);
@@ -240,19 +229,19 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({
         success: true,
-        inferred: topTags.map(t => ({
+        inferred: topTags.map((t) => ({
           tag_id: t.tag_id,
           tag_name: t.tag_name,
           category: t.tag_category,
           weight: t.weight,
-          reason: t.reason
+          reason: t.reason,
         })),
         updated_count: updatedCount,
         metadata: {
           total_interactions: interactions.length,
           unique_tags: tagMap.size,
-          inference_date: new Date().toISOString()
-        }
+          inference_date: new Date().toISOString(),
+        },
       }),
       {
         status: 200,

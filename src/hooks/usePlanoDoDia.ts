@@ -17,23 +17,20 @@ interface UsePlanoDoDiaReturn {
 
 /**
  * Hook para gerenciar plano do dia
- * 
+ *
  * @param userId - ID do usuário
  * @param autoRefresh - Refresh automático a cada hora (padrão: true)
  * @returns { plan, isLoading, error, refresh, replan, isReplanning }
- * 
+ *
  * @example
  * const { plan, isLoading, replan } = usePlanoDoDia(userId);
- * 
+ *
  * if (isLoading) return <Loading />;
  * if (plan) {
  *   return <PlanoDoDia items={plan.items} />;
  * }
  */
-export function usePlanoDoDia(
-  userId: string,
-  autoRefresh = true
-): UsePlanoDoDiaReturn {
+export function usePlanoDoDia(userId: string, autoRefresh = true): UsePlanoDoDiaReturn {
   const [plan, setPlan] = useState<MessagePlan | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -41,7 +38,11 @@ export function usePlanoDoDia(
 
   // Buscar plano
   const fetchPlan = useCallback(async () => {
-    if (!userId) return;
+    // Early return se userId estiver vazio
+    if (!userId) {
+      setIsLoading(false);
+      return;
+    }
 
     try {
       setIsLoading(true);
@@ -63,7 +64,10 @@ export function usePlanoDoDia(
 
   // Replanejar (on-demand)
   const replan = useCallback(async () => {
-    if (!userId) return;
+    // Early return se userId estiver vazio
+    if (!userId) {
+      return;
+    }
 
     try {
       setIsReplanning(true);
@@ -85,11 +89,16 @@ export function usePlanoDoDia(
 
   // Auto-refresh a cada hora
   useEffect(() => {
-    if (!autoRefresh || !userId) return;
+    if (!autoRefresh || !userId) {
+      return;
+    }
 
-    const interval = setInterval(() => {
-      fetchPlan();
-    }, 60 * 60 * 1000); // 1 hora
+    const interval = setInterval(
+      () => {
+        fetchPlan();
+      },
+      60 * 60 * 1000
+    ); // 1 hora
 
     return () => clearInterval(interval);
   }, [autoRefresh, userId, fetchPlan]);
@@ -103,4 +112,3 @@ export function usePlanoDoDia(
     isReplanning,
   };
 }
-

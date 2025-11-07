@@ -7,6 +7,7 @@ import React, { useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { PlanItem } from '@/services/personalization';
 import { colors, spacing, typography, borderRadius } from '@/theme/colors';
+import { getShadowStyle } from '@/utils/platformStyles';
 
 export interface PlanoDoDiaProps {
   /** Itens do plano (3 cards) */
@@ -60,47 +61,44 @@ export const PlanoDoDia: React.FC<PlanoDoDiaProps> = React.memo(
     }, [items]);
 
     // Renderizar chip de tag
-    const renderTag = useCallback(
-      (tag: string) => {
-        const tagLabels: Record<string, string> = {
-          tag_father_absent: 'Pai ausente',
-          tag_lonely: 'Solidão',
-          tag_single_mom: 'Mãe solo',
-          support_low: 'Apoio baixo',
-          stress_high: 'Stress alto',
-          sleep_low: 'Sono ruim',
-          pp_intrusive: 'Alerta',
-        };
+    const renderTag = useCallback((tag: string) => {
+      const tagLabels: Record<string, string> = {
+        tag_father_absent: 'Pai ausente',
+        tag_lonely: 'Solidão',
+        tag_single_mom: 'Mãe solo',
+        support_low: 'Apoio baixo',
+        stress_high: 'Stress alto',
+        sleep_low: 'Sono ruim',
+        pp_intrusive: 'Alerta',
+      };
 
-        const label = tagLabels[tag] || tag;
+      const label = tagLabels[tag] || tag;
 
-        return (
-          <View
-            key={tag}
+      return (
+        <View
+          key={tag}
+          style={[
+            styles.tagChip,
+            {
+              backgroundColor: colors.muted,
+              borderColor: colors.primary,
+            },
+          ]}
+        >
+          <Text
             style={[
-              styles.tagChip,
+              styles.tagText,
               {
-                backgroundColor: colors.muted,
-                borderColor: colors.primary,
+                color: colors.primary,
+                fontSize: typography.sizes.xs,
               },
             ]}
           >
-            <Text
-              style={[
-                styles.tagText,
-                {
-                  color: colors.primary,
-                  fontSize: typography.sizes.xs,
-                },
-              ]}
-            >
-              {label}
-            </Text>
-          </View>
-        );
-      },
-      []
-    );
+            {label}
+          </Text>
+        </View>
+      );
+    }, []);
 
     // Renderizar card de item
     const renderItem = useCallback(
@@ -312,10 +310,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   itemCard: {
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    ...getShadowStyle({
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    }),
   },
   itemHeader: {
     flexDirection: 'row',

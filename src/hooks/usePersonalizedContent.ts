@@ -73,21 +73,17 @@ const RETRY_DELAY = 1000; // 1 segundo
 // HELPERS
 // =====================================================
 
-async function fetchWithRetry(
-  url: string,
-  options: RequestInit,
-  retries = MAX_RETRIES
-): Promise<Response> {
+async function fetchWithRetry(url: string, options: RequestInit, retries = MAX_RETRIES): Promise<Response> {
   try {
     const response = await fetch(url, options);
     if (!response.ok && retries > 0) {
-      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
       return fetchWithRetry(url, options, retries - 1);
     }
     return response;
   } catch (error) {
     if (retries > 0) {
-      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
       return fetchWithRetry(url, options, retries - 1);
     }
     throw error;
@@ -120,7 +116,7 @@ async function setCachedData(key: string, data: PersonalizedContentResponse): Pr
   try {
     const cacheItem = {
       data,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
     await AsyncStorage.setItem(key, JSON.stringify(cacheItem));
   } catch (error) {
@@ -137,7 +133,7 @@ export function usePersonalizedContent({
   limit = 10,
   cacheKey,
   cacheDuration = DEFAULT_CACHE_DURATION,
-  autoFetch = true
+  autoFetch = true,
 }: UsePersonalizedContentOptions): UsePersonalizedContentResult {
   const [content, setContent] = useState<PersonalizedContent[]>([]);
   const [preferences, setPreferences] = useState<UserPreference[]>([]);
@@ -148,92 +144,87 @@ export function usePersonalizedContent({
   const storageKey = cacheKey || `${STORAGE_KEY_PREFIX}${userId}`;
 
   // Função para buscar conteúdo personalizado
-  const fetchContent = useCallback(async (skipCache = false) => {
-    setIsLoading(true);
-    setError(null);
+  const fetchContent = useCallback(
+    async (skipCache = false) => {
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      // Tentar buscar do cache primeiro
-      if (!skipCache) {
-        const cached = await getCachedData(storageKey);
-        if (cached) {
-          setContent(cached.content);
-          setPreferences(cached.user_preferences);
-          setHasCache(true);
-          setIsLoading(false);
-          return;
+      try {
+        // Tentar buscar do cache primeiro
+        if (!skipCache) {
+          const cached = await getCachedData(storageKey);
+          if (cached) {
+            setContent(cached.content);
+            setPreferences(cached.user_preferences);
+            setHasCache(true);
+            setIsLoading(false);
+            return;
+          }
         }
-      }
 
-      // Buscar da API
-      const response = await fetchWithRetry(
-        `${SUPABASE_CONFIG.URL}/functions/v1/curate-content-personalized`,
-        {
+        // Buscar da API
+        const response = await fetchWithRetry(`${SUPABASE_CONFIG.URL}/functions/v1/curate-content-personalized`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${SUPABASE_CONFIG.ANON_KEY}`,
           },
           body: JSON.stringify({ userId, limit }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch personalized content: ${response.status}`);
         }
-      );
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch personalized content: ${response.status}`);
+        const data: PersonalizedContentResponse = await response.json();
+
+        // Atualizar estado
+        setContent(data.content);
+        setPreferences(data.user_preferences);
+        setHasCache(false);
+
+        // Salvar no cache
+        await setCachedData(storageKey, data);
+
+        // Registrar evento de visualização de conteúdo curado
+        await ingestEvent(userId, 'content_curated_viewed', {
+          count: data.content.length,
+          source: data.source,
+          query: data.query,
+        });
+      } catch (err) {
+        console.error('Error fetching personalized content:', err);
+        setError(err as Error);
+      } finally {
+        setIsLoading(false);
       }
-
-      const data: PersonalizedContentResponse = await response.json();
-
-      // Atualizar estado
-      setContent(data.content);
-      setPreferences(data.user_preferences);
-      setHasCache(false);
-
-      // Salvar no cache
-      await setCachedData(storageKey, data);
-
-      // Registrar evento de visualização de conteúdo curado
-      await ingestEvent(userId, 'content_curated_viewed', {
-        count: data.content.length,
-        source: data.source,
-        query: data.query
-      });
-
-    } catch (err) {
-      console.error('Error fetching personalized content:', err);
-      setError(err as Error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [userId, limit, storageKey]);
+    },
+    [userId, limit, storageKey]
+  );
 
   // Função para registrar interação com conteúdo
-  const trackInteraction = useCallback(async (
-    contentId: string,
-    interactionType: 'like' | 'save' | 'share' | 'view'
-  ) => {
-    try {
-      // Buscar engagement_score via função calculate_engagement_score
-      // Por enquanto, usar scores fixos
-      const engagementScores: Record<string, number> = {
-        view: 0.1,
-        like: 0.6,
-        save: 0.8,
-        share: 0.9
-      };
+  const trackInteraction = useCallback(
+    async (contentId: string, interactionType: 'like' | 'save' | 'share' | 'view') => {
+      try {
+        // Buscar engagement_score via função calculate_engagement_score
+        // Por enquanto, usar scores fixos
+        const engagementScores: Record<string, number> = {
+          view: 0.1,
+          like: 0.6,
+          save: 0.8,
+          share: 0.9,
+        };
 
-      const engagementScore = engagementScores[interactionType] || 0.5;
+        const engagementScore = engagementScores[interactionType] || 0.5;
 
-      // Inserir no histórico de interações
-      const response = await fetch(
-        `${SUPABASE_CONFIG.URL}/rest/v1/user_interaction_history`,
-        {
+        // Inserir no histórico de interações
+        const response = await fetch(`${SUPABASE_CONFIG.URL}/rest/v1/user_interaction_history`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${SUPABASE_CONFIG.ANON_KEY}`,
             apikey: SUPABASE_CONFIG.ANON_KEY,
-            Prefer: 'return=minimal'
+            Prefer: 'return=minimal',
           },
           body: JSON.stringify({
             user_id: userId,
@@ -243,38 +234,36 @@ export function usePersonalizedContent({
             engagement_score: engagementScore,
             context: {
               source: 'personalized_content_card',
-              timestamp: new Date().toISOString()
-            }
+              timestamp: new Date().toISOString(),
+            },
           }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to track interaction: ${response.status}`);
         }
-      );
 
-      if (!response.ok) {
-        throw new Error(`Failed to track interaction: ${response.status}`);
+        // Atualizar estado otimisticamente (se for like/save)
+        if (interactionType === 'like' || interactionType === 'save') {
+          setContent((prevContent) =>
+            prevContent.map((item) =>
+              item.id === contentId ? { ...item, [interactionType === 'like' ? 'liked' : 'saved']: true } : item
+            )
+          );
+        }
+
+        // Registrar evento genérico
+        await ingestEvent(userId, `content_${interactionType}`, {
+          content_id: contentId,
+          engagement_score: engagementScore,
+        });
+      } catch (err) {
+        console.error('Error tracking interaction:', err);
+        throw err;
       }
-
-      // Atualizar estado otimisticamente (se for like/save)
-      if (interactionType === 'like' || interactionType === 'save') {
-        setContent(prevContent =>
-          prevContent.map(item =>
-            item.id === contentId
-              ? { ...item, [interactionType === 'like' ? 'liked' : 'saved']: true }
-              : item
-          )
-        );
-      }
-
-      // Registrar evento genérico
-      await ingestEvent(userId, `content_${interactionType}`, {
-        content_id: contentId,
-        engagement_score: engagementScore
-      });
-
-    } catch (err) {
-      console.error('Error tracking interaction:', err);
-      throw err;
-    }
-  }, [userId]);
+    },
+    [userId]
+  );
 
   // Refetch forçado (ignora cache)
   const refetch = useCallback(async () => {
@@ -295,6 +284,6 @@ export function usePersonalizedContent({
     error,
     refetch,
     trackInteraction,
-    hasCache
+    hasCache,
   };
 }

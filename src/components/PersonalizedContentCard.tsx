@@ -10,18 +10,10 @@
  */
 
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Linking,
-  Alert,
-  Share,
-  ActivityIndicator
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Alert, Share, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { PersonalizedContent } from '@/hooks/usePersonalizedContent';
+import { getShadowStyle } from '@/utils/platformStyles';
 
 // =====================================================
 // TYPES
@@ -37,11 +29,7 @@ interface PersonalizedContentCardProps {
 // COMPONENT
 // =====================================================
 
-export function PersonalizedContentCard({
-  content,
-  onInteraction,
-  isDark = false
-}: PersonalizedContentCardProps) {
+export function PersonalizedContentCard({ content, onInteraction, isDark = false }: PersonalizedContentCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +46,7 @@ export function PersonalizedContentCard({
     save: '#4CAF50',
     share: '#2196F3',
     badge: isDark ? '#2A2A2A' : '#F5F5F5',
-    badgeText: isDark ? '#FFA726' : '#F57C00'
+    badgeText: isDark ? '#FFA726' : '#F57C00',
   };
 
   // =====================================================
@@ -107,12 +95,12 @@ export function PersonalizedContentCard({
         await Share.share({
           message: `${content.title}\n\n${content.summary}\n\nLeia mais: ${content.source_url}`,
           title: content.title,
-          url: content.source_url
+          url: content.source_url,
         });
       } else {
         await Share.share({
           message: `${content.title}\n\n${content.summary}`,
-          title: content.title
+          title: content.title,
         });
       }
     } catch (error) {
@@ -149,10 +137,7 @@ export function PersonalizedContentCard({
 
   return (
     <View
-      style={[
-        styles.card,
-        { backgroundColor: colors.background, borderColor: colors.border }
-      ]}
+      style={[styles.card, { backgroundColor: colors.background, borderColor: colors.border }]}
       accessible={true}
       accessibilityLabel={`Conteúdo recomendado: ${content.title}`}
       accessibilityHint="Toque duas vezes para visualizar detalhes"
@@ -161,9 +146,7 @@ export function PersonalizedContentCard({
       <View style={styles.header}>
         <View style={[styles.badge, { backgroundColor: colors.badge }]}>
           <Ionicons name="star" size={12} color={colors.badgeText} />
-          <Text style={[styles.badgeText, { color: colors.badgeText }]}>
-            Recomendado para você
-          </Text>
+          <Text style={[styles.badgeText, { color: colors.badgeText }]}>Recomendado para você</Text>
         </View>
 
         {content.relevance_score && (
@@ -186,11 +169,7 @@ export function PersonalizedContentCard({
       </Text>
 
       {/* Resumo */}
-      <Text
-        style={[styles.summary, { color: colors.textSecondary }]}
-        numberOfLines={3}
-        accessible={true}
-      >
+      <Text style={[styles.summary, { color: colors.textSecondary }]} numberOfLines={3} accessible={true}>
         {content.summary}
       </Text>
 
@@ -198,13 +177,8 @@ export function PersonalizedContentCard({
       {content.tags && content.tags.length > 0 && (
         <View style={styles.tagsContainer}>
           {content.tags.slice(0, 3).map((tag, index) => (
-            <View
-              key={index}
-              style={[styles.tag, { backgroundColor: colors.badge }]}
-            >
-              <Text style={[styles.tagText, { color: colors.textSecondary }]}>
-                {tag}
-              </Text>
+            <View key={index} style={[styles.tag, { backgroundColor: colors.badge }]}>
+              <Text style={[styles.tagText, { color: colors.textSecondary }]}>{tag}</Text>
             </View>
           ))}
         </View>
@@ -219,22 +193,14 @@ export function PersonalizedContentCard({
           accessibilityLabel="Por que isso foi recomendado?"
           accessibilityHint="Toque para ver a explicação"
         >
-          <Ionicons
-            name={showReason ? 'chevron-up' : 'information-circle-outline'}
-            size={16}
-            color={colors.accent}
-          />
-          <Text style={[styles.reasonButtonText, { color: colors.accent }]}>
-            Por que isso?
-          </Text>
+          <Ionicons name={showReason ? 'chevron-up' : 'information-circle-outline'} size={16} color={colors.accent} />
+          <Text style={[styles.reasonButtonText, { color: colors.accent }]}>Por que isso?</Text>
         </TouchableOpacity>
       )}
 
       {showReason && (
         <View style={[styles.reasonContainer, { backgroundColor: colors.badge }]}>
-          <Text style={[styles.reasonText, { color: colors.text }]}>
-            {content.why_relevant}
-          </Text>
+          <Text style={[styles.reasonText, { color: colors.text }]}>{content.why_relevant}</Text>
         </View>
       )}
 
@@ -254,9 +220,7 @@ export function PersonalizedContentCard({
             size={24}
             color={isLiked ? colors.like : colors.textSecondary}
           />
-          <Text style={[styles.actionText, { color: colors.textSecondary }]}>
-            Curtir
-          </Text>
+          <Text style={[styles.actionText, { color: colors.textSecondary }]}>Curtir</Text>
         </TouchableOpacity>
 
         {/* Save */}
@@ -273,9 +237,7 @@ export function PersonalizedContentCard({
             size={24}
             color={isSaved ? colors.save : colors.textSecondary}
           />
-          <Text style={[styles.actionText, { color: colors.textSecondary }]}>
-            Salvar
-          </Text>
+          <Text style={[styles.actionText, { color: colors.textSecondary }]}>Salvar</Text>
         </TouchableOpacity>
 
         {/* Share */}
@@ -287,14 +249,8 @@ export function PersonalizedContentCard({
           accessibilityLabel="Compartilhar conteúdo"
           accessibilityRole="button"
         >
-          <Ionicons
-            name="share-social-outline"
-            size={24}
-            color={colors.textSecondary}
-          />
-          <Text style={[styles.actionText, { color: colors.textSecondary }]}>
-            Compartilhar
-          </Text>
+          <Ionicons name="share-social-outline" size={24} color={colors.textSecondary} />
+          <Text style={[styles.actionText, { color: colors.textSecondary }]}>Compartilhar</Text>
         </TouchableOpacity>
 
         {/* View (se tiver URL) */}
@@ -312,9 +268,7 @@ export function PersonalizedContentCard({
             ) : (
               <>
                 <Ionicons name="open-outline" size={24} color={colors.accent} />
-                <Text style={[styles.actionText, { color: colors.accent, fontWeight: '600' }]}>
-                  Ver
-                </Text>
+                <Text style={[styles.actionText, { color: colors.accent, fontWeight: '600' }]}>Ver</Text>
               </>
             )}
           </TouchableOpacity>
@@ -335,17 +289,19 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
     borderWidth: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3
+    ...getShadowStyle({
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+    }),
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12
+    marginBottom: 12,
   },
   badge: {
     flexDirection: 'row',
@@ -353,64 +309,64 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 12,
-    gap: 4
+    gap: 4,
   },
   badgeText: {
     fontSize: 11,
-    fontWeight: '600'
+    fontWeight: '600',
   },
   scoreContainer: {
     paddingVertical: 2,
-    paddingHorizontal: 6
+    paddingHorizontal: 6,
   },
   scoreText: {
     fontSize: 11,
-    fontWeight: '500'
+    fontWeight: '500',
   },
   title: {
     fontSize: 18,
     fontWeight: '700',
     marginBottom: 8,
-    lineHeight: 24
+    lineHeight: 24,
   },
   summary: {
     fontSize: 14,
     lineHeight: 20,
-    marginBottom: 12
+    marginBottom: 12,
   },
   tagsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 6,
-    marginBottom: 12
+    marginBottom: 12,
   },
   tag: {
     paddingVertical: 4,
     paddingHorizontal: 10,
-    borderRadius: 12
+    borderRadius: 12,
   },
   tagText: {
     fontSize: 12,
-    fontWeight: '500'
+    fontWeight: '500',
   },
   reasonButton: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    marginBottom: 12
+    marginBottom: 12,
   },
   reasonButtonText: {
     fontSize: 13,
-    fontWeight: '600'
+    fontWeight: '600',
   },
   reasonContainer: {
     padding: 12,
     borderRadius: 8,
-    marginBottom: 12
+    marginBottom: 12,
   },
   reasonText: {
     fontSize: 13,
-    lineHeight: 18
+    lineHeight: 18,
   },
   actionsContainer: {
     flexDirection: 'row',
@@ -418,20 +374,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(0,0,0,0.05)'
+    borderTopColor: 'rgba(0,0,0,0.05)',
   },
   actionButton: {
     alignItems: 'center',
     gap: 4,
     paddingVertical: 8,
-    paddingHorizontal: 12
+    paddingHorizontal: 12,
   },
   viewButton: {
     backgroundColor: 'rgba(255, 107, 157, 0.1)',
-    borderRadius: 8
+    borderRadius: 8,
   },
   actionText: {
     fontSize: 12,
-    fontWeight: '500'
-  }
+    fontWeight: '500',
+  },
 });

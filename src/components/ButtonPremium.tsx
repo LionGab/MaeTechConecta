@@ -1,7 +1,7 @@
 /**
  * 🌅 Button Premium - Tema "Amanhecer Sereno"
  * Botão com gradiente, sombras premium e micro-interações
- * 
+ *
  * Features:
  * - Gradientes suaves com toque dourado
  * - Haptic feedback
@@ -32,9 +32,19 @@ import {
   sereneDawnSpacing,
   sereneDawnBorderRadius,
 } from '@/theme/sereneDawn';
+import { getShadowStyle } from '@/utils/platformStyles';
 
-// Haptics opcional
-let Haptics: any = null;
+// Haptics opcional - tipado corretamente
+interface HapticsType {
+  impactAsync: (style: number) => Promise<void>;
+  ImpactFeedbackStyle: {
+    Light: number;
+    Medium: number;
+    Heavy: number;
+  };
+}
+
+let Haptics: HapticsType | null = null;
 try {
   Haptics = require('expo-haptics');
 } catch (e) {
@@ -175,12 +185,7 @@ const ButtonPremiumComponent: React.FC<ButtonPremiumProps> = ({
   );
 
   const contentTextStyle = useMemo(
-    () => [
-      styles.baseText,
-      styles[`${size}Text`],
-      { color: contentColor },
-      textStyle,
-    ],
+    () => [styles.baseText, styles[`${size}Text`], { color: contentColor }, textStyle],
     [size, contentColor, textStyle]
   );
 
@@ -220,12 +225,7 @@ const ButtonPremiumComponent: React.FC<ButtonPremiumProps> = ({
   );
 
   return (
-    <Animated.View
-      style={[
-        fullWidth && styles.fullWidthWrapper,
-        { transform: [{ scale: scaleAnim }] },
-      ]}
-    >
+    <Animated.View style={[fullWidth && styles.fullWidthWrapper, { transform: [{ scale: scaleAnim }] }]}>
       <TouchableOpacity
         style={containerStyle}
         disabled={disabled || loading}
@@ -357,4 +357,3 @@ const styles = StyleSheet.create({
 
 // Memoizar componente
 export const ButtonPremium = React.memo(ButtonPremiumComponent);
-

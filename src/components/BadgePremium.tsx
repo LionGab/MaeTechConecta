@@ -7,6 +7,18 @@
  * - Efeito glow opcional
  * - Animações sutis
  * - Ícones premium
+ *
+ * @example
+ * // Badge dourado com glow
+ * <BadgePremium variant="gold" glow icon="crown">
+ *   Premium
+ * </BadgePremium>
+ *
+ * @example
+ * // Badge de status
+ * <BadgePremium variant="success" icon="check">
+ *   Verificado
+ * </BadgePremium>
  */
 
 import React, { useMemo } from 'react';
@@ -21,6 +33,7 @@ import {
   sereneDawnSpacing,
   sereneDawnBorderRadius,
 } from '@/theme/sereneDawn';
+import { getShadowStyle } from '@/utils/platformStyles';
 
 // =====================================================
 // TIPOS
@@ -75,7 +88,7 @@ const BadgePremiumComponent: React.FC<BadgePremiumProps> = ({
       case 'error':
         return sereneDawnGradients.error;
       case 'info':
-        return [sereneDawnColors.info, '#93C5FD'];
+        return sereneDawnGradients.info;
       default:
         return sereneDawnGradients.primary;
     }
@@ -101,20 +114,19 @@ const BadgePremiumComponent: React.FC<BadgePremiumProps> = ({
       styles.base,
       styles[`${size}Container`],
       glow && styles.glow,
-      glow && {
+      glow && getShadowStyle({
         shadowColor: gradientColors[0],
+        shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.4,
         shadowRadius: 8,
-      },
+        elevation: 8,
+      }),
       style,
     ],
     [size, glow, gradientColors, style]
   );
 
-  const textStyle = useMemo(
-    () => [styles.baseText, styles[`${size}Text`]],
-    [size]
-  );
+  const textStyle = useMemo(() => [styles.baseText, styles[`${size}Text`]], [size]);
 
   return (
     <View style={containerStyle}>
@@ -126,9 +138,7 @@ const BadgePremiumComponent: React.FC<BadgePremiumProps> = ({
       />
 
       <View style={styles.content}>
-        {icon && (
-          <Icon name={icon} size={iconSize} color={sereneDawnColors.warmWhite} style={styles.icon} />
-        )}
+        {icon && <Icon name={icon} size={iconSize} color={sereneDawnColors.warmWhite} style={styles.icon} />}
         <Text style={textStyle}>{children}</Text>
       </View>
     </View>
@@ -144,7 +154,13 @@ const styles = StyleSheet.create({
     borderRadius: sereneDawnBorderRadius.full,
     overflow: 'hidden',
     alignSelf: 'flex-start',
-    ...sereneDawnShadows.dark.sm,
+    ...getShadowStyle({
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.18,
+      shadowRadius: 1.0,
+      elevation: 1,
+    }),
   },
   content: {
     flexDirection: 'row',
@@ -182,10 +198,8 @@ const styles = StyleSheet.create({
     fontSize: sereneDawnTypography.sizes.base,
   },
 
-  // Glow effect
-  glow: {
-    elevation: 8,
-  },
+  // Glow effect (aplicado dinamicamente via useMemo no componente)
+  glow: {},
 
   icon: {
     // Espaçamento tratado no content gap
@@ -194,4 +208,3 @@ const styles = StyleSheet.create({
 
 // Memoizar componente
 export const BadgePremium = React.memo(BadgePremiumComponent);
-

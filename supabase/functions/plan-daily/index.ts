@@ -393,7 +393,7 @@ function applyPolicyEngine(signal: any, user: any): PolicyResult {
         type: 'habit',
         template_id: 'habito_simples_5min',
         message_text:
-          'Falta pouco, {nome}! 🍼 Marca um hábito rápido: beber 1 copo d''água agora.',
+          'Falta pouco, {nome}! 🍼 Marca um hábito rápido: beber 1 copo d\'água agora.',
         cta: 'Bebi água',
         rationale: 'Hábito simples para construir autoeficácia',
       },

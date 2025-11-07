@@ -167,6 +167,7 @@ export const sereneDawnGradients = {
   success: ['#34D399', '#6EE7B7'] as [string, string],
   warning: ['#FBBF24', '#FCD34D'] as [string, string],
   error: ['#F87171', '#FCA5A5'] as [string, string],
+  info: [sereneDawnColors.info, '#93C5FD'] as [string, string],
 };
 
 // =====================================================

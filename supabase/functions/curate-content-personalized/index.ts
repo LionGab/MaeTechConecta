@@ -55,13 +55,10 @@ serve(async (req) => {
     const { userId, limit = 10 }: CurateContentRequest = await req.json();
 
     if (!userId) {
-      return new Response(
-        JSON.stringify({ error: 'userId is required' }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
-      );
+      return new Response(JSON.stringify({ error: 'userId is required' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     // Initialize Supabase client
@@ -84,21 +81,17 @@ serve(async (req) => {
     }
 
     // 2. Obter top tags personalizadas do usuário via get_user_top_tags()
-    const { data: topTags, error: tagsError } = await supabase
-      .rpc('get_user_top_tags', {
-        p_user_id: userId,
-        p_limit: 5
-      });
+    const { data: topTags, error: tagsError } = await supabase.rpc('get_user_top_tags', {
+      p_user_id: userId,
+      p_limit: 5,
+    });
 
     if (tagsError) {
       console.error('Error fetching user top tags:', tagsError);
-      return new Response(
-        JSON.stringify({ error: 'Failed to fetch user preferences' }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
-      );
+      return new Response(JSON.stringify({ error: 'Failed to fetch user preferences' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const userTopTags = topTags as UserTopTag[];
@@ -107,26 +100,29 @@ serve(async (req) => {
     let tagNames: string[];
     if (userTopTags.length === 0) {
       // Fallback: tags baseadas no perfil
-      tagNames = profile.type === 'gestante'
-        ? ['Nutrição', 'Desenvolvimento Fetal', 'Saúde Mental']
-        : profile.type === 'mae'
-        ? ['Cuidados Bebê', 'Amamentação', 'Saúde Mental']
-        : ['Preparação Parto', 'Nutrição', 'Saúde Mental'];
+      tagNames =
+        profile.type === 'gestante'
+          ? ['Nutrição', 'Desenvolvimento Fetal', 'Saúde Mental']
+          : profile.type === 'mae'
+            ? ['Cuidados Bebê', 'Amamentação', 'Saúde Mental']
+            : ['Preparação Parto', 'Nutrição', 'Saúde Mental'];
     } else {
-      tagNames = userTopTags.map(t => t.tag_name);
+      tagNames = userTopTags.map((t) => t.tag_name);
     }
 
     // 3. Verificar se já existe conteúdo relacionado às tags no content_catalog
     const { data: existingContent, error: existingError } = await supabase
       .from('content_catalog')
-      .select(`
+      .select(
+        `
         id,
         title,
         summary,
         source_url,
         tags,
         relevance_score
-      `)
+      `
+      )
       .overlaps('tags', tagNames)
       .order('relevance_score', { ascending: false })
       .limit(limit);
@@ -147,20 +143,20 @@ serve(async (req) => {
         context: {
           tags: tagNames,
           source: 'existing_catalog',
-          count: existingContent.length
-        }
+          count: existingContent.length,
+        },
       });
 
       return new Response(
         JSON.stringify({
           success: true,
-          content: existingContent.map(c => ({
+          content: existingContent.map((c) => ({
             ...c,
-            why_relevant: `Curado para você baseado em: ${tagNames.slice(0, 2).join(', ')}`
+            why_relevant: `Curado para você baseado em: ${tagNames.slice(0, 2).join(', ')}`,
           })),
           user_preferences: userTopTags,
           query: tagNames.join(', '),
-          source: 'catalog'
+          source: 'catalog',
         }),
         {
           status: 200,
@@ -174,8 +170,8 @@ serve(async (req) => {
       profile.type === 'gestante'
         ? `gestante de ${profile.pregnancy_week} semanas`
         : profile.type === 'mae'
-        ? 'mãe com bebê'
-        : 'tentante';
+          ? 'mãe com bebê'
+          : 'tentante';
 
     const topicQuery = tagNames.join(', ');
 
@@ -216,8 +212,7 @@ Retorne APENAS um JSON válido com este formato:
         messages: [
           {
             role: 'system',
-            content:
-              'Você é um curador de conteúdo para mães brasileiras. Retorne apenas JSON válido.',
+            content: 'Você é um curador de conteúdo para mães brasileiras. Retorne apenas JSON válido.',
           },
           {
             role: 'user',
@@ -245,12 +240,9 @@ Retorne APENAS um JSON válido com este formato:
     const results: PerplexityResult[] = JSON.parse(jsonMatch[0]);
 
     // 7. Obter IDs das tags para associação
-    const { data: tagIds } = await supabase
-      .from('content_tags')
-      .select('id, name')
-      .in('name', tagNames);
+    const { data: tagIds } = await supabase.from('content_tags').select('id, name').in('name', tagNames);
 
-    const tagIdMap = new Map(tagIds?.map(t => [t.name, t.id]) || []);
+    const tagIdMap = new Map(tagIds?.map((t) => [t.name, t.id]) || []);
 
     // 8. Salvar em content_catalog e associar tags via content_tag_relations
     const savedContent: CuratedContent[] = [];
@@ -293,13 +285,11 @@ Retorne APENAS um JSON válido com este formato:
           content_id: contentId,
           content_type: 'article' as const,
           tag_id: tagId,
-          relevance_score: 0.9
+          relevance_score: 0.9,
         }));
 
         if (tagRelations.length > 0) {
-          await supabase
-            .from('content_tag_relations')
-            .insert(tagRelations);
+          await supabase.from('content_tag_relations').insert(tagRelations);
         }
 
         savedContent.push({
@@ -334,11 +324,11 @@ Retorne APENAS um JSON válido com este formato:
         tags: tagNames,
         source: 'perplexity_api',
         count: savedContent.length,
-        top_tags_scores: userTopTags.map(t => ({
+        top_tags_scores: userTopTags.map((t) => ({
           name: t.tag_name,
-          score: t.combined_score
-        }))
-      }
+          score: t.combined_score,
+        })),
+      },
     });
 
     // 10. Retornar conteúdo curado
@@ -348,7 +338,7 @@ Retorne APENAS um JSON válido com este formato:
         content: savedContent,
         user_preferences: userTopTags,
         query: topicQuery,
-        source: 'perplexity'
+        source: 'perplexity',
       }),
       {
         status: 200,

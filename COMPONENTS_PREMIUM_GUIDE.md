@@ -28,6 +28,7 @@
 Campo de entrada com efeito glass e gradiente dourado no focus.
 
 ### **Features:**
+
 - ✨ Glassmorphism background
 - 🌟 Gradiente dourado ao focar
 - 🎯 Borda animada
@@ -73,15 +74,15 @@ import { InputPremium } from '@/components/InputPremium';
 
 ### **Props:**
 
-| Prop | Tipo | Default | Descrição |
-|------|------|---------|-----------|
-| `label` | `string?` | - | Label acima do input |
-| `error` | `string?` | - | Mensagem de erro |
-| `helperText` | `string?` | - | Texto de ajuda |
-| `icon` | `string?` | - | Ícone MaterialCommunityIcons |
-| `iconColor` | `string?` | `champagne` | Cor do ícone |
-| `required` | `boolean?` | `false` | Adiciona * no label |
-| `useGlass` | `boolean?` | `true` | Efeito glassmorphism |
+| Prop         | Tipo       | Default     | Descrição                    |
+| ------------ | ---------- | ----------- | ---------------------------- |
+| `label`      | `string?`  | -           | Label acima do input         |
+| `error`      | `string?`  | -           | Mensagem de erro             |
+| `helperText` | `string?`  | -           | Texto de ajuda               |
+| `icon`       | `string?`  | -           | Ícone MaterialCommunityIcons |
+| `iconColor`  | `string?`  | `champagne` | Cor do ícone                 |
+| `required`   | `boolean?` | `false`     | Adiciona \* no label         |
+| `useGlass`   | `boolean?` | `true`      | Efeito glassmorphism         |
 
 ### **Exemplo Completo (Login):**
 
@@ -108,13 +109,7 @@ import { InputPremium } from '@/components/InputPremium';
     required
   />
 
-  <ButtonPremium
-    variant="primaryGold"
-    size="lg"
-    fullWidth
-    onPress={handleLogin}
-    accessibilityLabel="Entrar"
-  >
+  <ButtonPremium variant="primaryGold" size="lg" fullWidth onPress={handleLogin} accessibilityLabel="Entrar">
     Entrar
   </ButtonPremium>
 </View>
@@ -127,6 +122,7 @@ import { InputPremium } from '@/components/InputPremium';
 Badge com gradientes e efeito glow.
 
 ### **Features:**
+
 - ✨ 6 variantes com gradientes
 - 🌟 Efeito glow opcional
 - 🎯 3 tamanhos (sm, md, lg)
@@ -161,14 +157,14 @@ import { BadgePremium } from '@/components/BadgePremium';
 
 ### **Variantes:**
 
-| Variante | Gradiente | Uso |
-|----------|-----------|-----|
-| `primary` | Azul sereno → Azul bebê | Padrão |
-| `gold` | Azul → Dourado | Premium features |
-| `success` | Verde suave | Sucesso |
-| `warning` | Amarelo | Avisos |
-| `error` | Vermelho suave | Erros |
-| `info` | Azul info | Informação |
+| Variante  | Gradiente               | Uso              |
+| --------- | ----------------------- | ---------------- |
+| `primary` | Azul sereno → Azul bebê | Padrão           |
+| `gold`    | Azul → Dourado          | Premium features |
+| `success` | Verde suave             | Sucesso          |
+| `warning` | Amarelo                 | Avisos           |
+| `error`   | Vermelho suave          | Erros            |
+| `info`    | Azul info               | Informação       |
 
 ### **Tamanhos:**
 
@@ -183,16 +179,16 @@ import { BadgePremium } from '@/components/BadgePremium';
 ```tsx
 <View style={styles.userHeader}>
   <Text style={styles.userName}>Maria Silva</Text>
-  
+
   <View style={styles.badges}>
     <BadgePremium variant="gold" glow icon="crown">
       Premium
     </BadgePremium>
-    
+
     <BadgePremium variant="success" icon="check-circle">
       Verificada
     </BadgePremium>
-    
+
     <BadgePremium variant="primary" size="sm">
       Semana 24
     </BadgePremium>
@@ -254,12 +250,7 @@ import { BadgePremium } from '@/components/BadgePremium';
   iconColor={sereneDawnColors.champagne}
   variant="elevated"
 >
-  <InputPremium
-    label="Nome"
-    value={profile.name}
-    onChangeText={(text) => updateProfile('name', text)}
-    icon="account"
-  />
+  <InputPremium label="Nome" value={profile.name} onChangeText={(text) => updateProfile('name', text)} icon="account" />
 
   <InputPremium
     label="Semana de gestação"
@@ -271,9 +262,7 @@ import { BadgePremium } from '@/components/BadgePremium';
 
   <View style={styles.badgesContainer}>
     <Text style={styles.badgesLabel}>Status:</Text>
-    <BadgePremium variant="primary">
-      Ativa
-    </BadgePremium>
+    <BadgePremium variant="primary">Ativa</BadgePremium>
     {profile.isPremium && (
       <BadgePremium variant="gold" glow>
         Premium
@@ -281,13 +270,7 @@ import { BadgePremium } from '@/components/BadgePremium';
     )}
   </View>
 
-  <ButtonPremium
-    variant="primaryGold"
-    size="lg"
-    fullWidth
-    onPress={handleSave}
-    accessibilityLabel="Salvar alterações"
-  >
+  <ButtonPremium variant="primaryGold" size="lg" fullWidth onPress={handleSave} accessibilityLabel="Salvar alterações">
     Salvar
   </ButtonPremium>
 </CardGlass>
@@ -305,11 +288,7 @@ import { InputPremium } from '@/components/InputPremium';
 import { ButtonPremium } from '@/components/ButtonPremium';
 import { BadgePremium } from '@/components/BadgePremium';
 import { CardGlass } from '@/components/CardGlass';
-import {
-  sereneDawnColors,
-  sereneDawnSpacing,
-  sereneDawnBorderRadius,
-} from '@/theme/sereneDawn';
+import { sereneDawnColors, sereneDawnSpacing, sereneDawnBorderRadius } from '@/theme/sereneDawn';
 
 export default function SignupScreen() {
   const [name, setName] = useState('');
@@ -326,17 +305,11 @@ export default function SignupScreen() {
     <View style={styles.container}>
       {/* Background Gradient */}
       <LinearGradient
-        colors={[
-          sereneDawnColors.midnightBlue,
-          sereneDawnColors.darkPetrol,
-        ]}
+        colors={[sereneDawnColors.midnightBlue, sereneDawnColors.darkPetrol]}
         style={StyleSheet.absoluteFill}
       />
 
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Card Principal */}
         <CardGlass
           title="💕 Bem-vinda ao Nossa Maternidade"
@@ -455,24 +428,28 @@ const styles = StyleSheet.create({
 ### **Por Screen:**
 
 #### **LoginScreen:**
+
 - [ ] Substituir `Input` por `InputPremium`
 - [ ] Substituir `Button` por `ButtonPremium`
 - [ ] Adicionar background gradient
 - [ ] Usar `CardGlass` para container
 
 #### **SignupScreen:**
+
 - [ ] Substituir inputs por `InputPremium`
 - [ ] Substituir botões por `ButtonPremium`
 - [ ] Adicionar `BadgePremium` para premium trial
 - [ ] Background gradient
 
 #### **ProfileScreen:**
+
 - [ ] Migrar para `InputPremium`
 - [ ] Usar `BadgePremium` para status
 - [ ] `CardGlass` para seções
 - [ ] `ButtonPremium` para ações
 
 #### **SettingsScreen:**
+
 - [ ] `CardGlass` para grupos de configurações
 - [ ] `BadgePremium` para novidades
 - [ ] `ButtonPremium` para botões de ação
@@ -508,12 +485,12 @@ const styles = StyleSheet.create({
 
 ## 📊 **Comparação Antes vs. Depois**
 
-| Componente | Antes (Bubblegum) | Depois (Serene Dawn) | Melhoria |
-|------------|-------------------|----------------------|----------|
-| Input | Rosa/creme, flat | Glass + gradiente dourado | +80% UX |
-| Badge | Sólido, sem brilho | Gradiente + glow | +70% visual |
-| Button | Simples | Gradiente + haptic | +90% premium |
-| Card | Flat branco | Glassmorphism + shadow | +100% elite |
+| Componente | Antes (Bubblegum)  | Depois (Serene Dawn)      | Melhoria     |
+| ---------- | ------------------ | ------------------------- | ------------ |
+| Input      | Rosa/creme, flat   | Glass + gradiente dourado | +80% UX      |
+| Badge      | Sólido, sem brilho | Gradiente + glow          | +70% visual  |
+| Button     | Simples            | Gradiente + haptic        | +90% premium |
+| Card       | Flat branco        | Glassmorphism + shadow    | +100% elite  |
 
 ---
 
@@ -529,5 +506,4 @@ const styles = StyleSheet.create({
 
 **🌅 Componentes Premium - Tema "Amanhecer Sereno"**
 
-*Transformando cada interação em uma experiência premium.* ✨
-
+_Transformando cada interação em uma experiência premium._ ✨

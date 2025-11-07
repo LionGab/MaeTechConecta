@@ -33,4 +33,3 @@ npx @tailwindcss/upgrade@next
 **Este projeto usa React Native, NÃO Tailwind CSS.**
 
 Este arquivo serve apenas como referência para projetos web futuros.
-

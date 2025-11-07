@@ -21,12 +21,14 @@
 O tema **"Amanhecer Sereno"** transforma o Nossa Maternidade em um aplicativo **premium elite** através de:
 
 ### Conceito Visual
+
 - **Azuis noturnos profundos** (backgrounds elegantes)
 - **Azuis céu suaves** (elementos interativos)
 - **Toque dourado champanhe** (luxo e acolhimento)
 - **Gradientes sutis** (transição do amanhecer)
 
 ### Características Premium
+
 - ✨ **Glassmorphism**: Cards com efeito vidro fosco
 - 🌟 **Gradientes sofisticados**: Transições suaves com toque dourado
 - 💎 **Sombras profundas**: Efeito "floating" premium
@@ -39,24 +41,27 @@ O tema **"Amanhecer Sereno"** transforma o Nossa Maternidade em um aplicativo **
 ## 🎨 Paleta de Cores
 
 ### Azuis Noturnos (Backgrounds)
+
 ```typescript
-midnightBlue: '#0A1931'    // Background principal
-darkPetrol: '#1B2A41'      // Cards e seções
-navyDeep: '#0F1E2E'        // Popover
+midnightBlue: '#0A1931'; // Background principal
+darkPetrol: '#1B2A41'; // Cards e seções
+navyDeep: '#0F1E2E'; // Popover
 ```
 
 ### Azuis Céu (Elementos Interativos)
+
 ```typescript
-slateBlue: '#5D7B9B'       // Textos secundários
-sereneSky: '#7FB0DA'       // Primário
-babyBlue: '#ADD8E6'        // Destaques
+slateBlue: '#5D7B9B'; // Textos secundários
+sereneSky: '#7FB0DA'; // Primário
+babyBlue: '#ADD8E6'; // Destaques
 ```
 
 ### Toques de Calor
+
 ```typescript
-champagne: '#FFD700'       // Dourado (luxo)
-warmWhite: '#F8F8F8'       // Textos principais
-platinum: '#DCDCDC'        // Bordas
+champagne: '#FFD700'; // Dourado (luxo)
+warmWhite: '#F8F8F8'; // Textos principais
+platinum: '#DCDCDC'; // Bordas
 ```
 
 ---
@@ -104,6 +109,7 @@ import { ButtonPremium } from '@/components/ButtonPremium';
 ```
 
 **Variantes disponíveis:**
+
 - `primary`: Gradiente azul sereno → azul bebê
 - `primaryGold`: Gradiente azul → dourado (luxo)
 - `secondary`: Azul ardósia → azul sereno
@@ -152,6 +158,7 @@ import { CardGlass } from '@/components/CardGlass';
 ```
 
 **Variantes disponíveis:**
+
 - `default`: Efeito glass padrão com sombra média
 - `elevated`: Sombra XL, mais "flutuante"
 - `outlined`: Borda destacada, sombra mínima
@@ -168,14 +175,11 @@ Onboarding completo com tema Serene Dawn.
 import OnboardingScreenPremium from '@/screens/OnboardingScreenPremium';
 
 // Em navigation/AppNavigator.tsx
-<Stack.Screen 
-  name="Onboarding" 
-  component={OnboardingScreenPremium}
-  options={{ headerShown: false }}
-/>
+<Stack.Screen name="Onboarding" component={OnboardingScreenPremium} options={{ headerShown: false }} />;
 ```
 
 **Features:**
+
 - Logo centralizada (20-28% da tela)
 - Gradientes por slide
 - Cards premium com efeito glass
@@ -226,32 +230,19 @@ export default function HomeScreen() {
     <View style={styles.container}>
       {/* Background com gradiente */}
       <LinearGradient
-        colors={[
-          sereneDawnColors.midnightBlue,
-          sereneDawnColors.darkPetrol,
-        ]}
+        colors={[sereneDawnColors.midnightBlue, sereneDawnColors.darkPetrol]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={StyleSheet.absoluteFill}
       />
 
       {/* Cards Glass */}
-      <CardGlass
-        title="💕 Seu Plano de Hoje"
-        icon="calendar-star"
-        variant="default"
-      >
+      <CardGlass title="💕 Seu Plano de Hoje" icon="calendar-star" variant="default">
         {/* Conteúdo */}
       </CardGlass>
 
       {/* Botão Premium */}
-      <ButtonPremium
-        variant="primaryGold"
-        size="lg"
-        fullWidth
-        onPress={handleAction}
-        accessibilityLabel="Continuar"
-      >
+      <ButtonPremium variant="primaryGold" size="lg" fullWidth onPress={handleAction} accessibilityLabel="Continuar">
         Continuar
       </ButtonPremium>
     </View>
@@ -269,14 +260,21 @@ const styles = StyleSheet.create({
 #### ChatScreen
 
 ```tsx
-<View style={[styles.messageContainer, { 
-  backgroundColor: sereneDawnOverlay.glass,
-  borderColor: sereneDawnOverlay.primaryBorder,
-}]}>
-  <Text style={{ 
-    color: sereneDawnColors.warmWhite,
-    fontFamily: sereneDawnTypography.fontFamily.body,
-  }}>
+<View
+  style={[
+    styles.messageContainer,
+    {
+      backgroundColor: sereneDawnOverlay.glass,
+      borderColor: sereneDawnOverlay.primaryBorder,
+    },
+  ]}
+>
+  <Text
+    style={{
+      color: sereneDawnColors.warmWhite,
+      fontFamily: sereneDawnTypography.fontFamily.body,
+    }}
+  >
     Mensagem do chat
   </Text>
 </View>
@@ -345,17 +343,19 @@ const styles = StyleSheet.create({
 ### Efeito Glass
 
 ```tsx
-<View style={[styles.glassCard, {
-  backgroundColor: sereneDawnOverlay.glass,
-  borderColor: sereneDawnOverlay.primaryBorder,
-  borderWidth: 1,
-  ...sereneDawnShadows.dark.lg,
-}]}>
+<View
+  style={[
+    styles.glassCard,
+    {
+      backgroundColor: sereneDawnOverlay.glass,
+      borderColor: sereneDawnOverlay.primaryBorder,
+      borderWidth: 1,
+      ...sereneDawnShadows.dark.lg,
+    },
+  ]}
+>
   <LinearGradient
-    colors={[
-      sereneDawnOverlay.white,
-      'rgba(127, 176, 218, 0.08)',
-    ]}
+    colors={[sereneDawnOverlay.white, 'rgba(127, 176, 218, 0.08)']}
     start={{ x: 0, y: 0 }}
     end={{ x: 1, y: 1 }}
     style={StyleSheet.absoluteFill}
@@ -392,31 +392,32 @@ const styles = StyleSheet.create({
 
 ### Substituições Diretas
 
-| **Atual (Bubblegum)**     | **Serene Dawn**                |
-|---------------------------|--------------------------------|
-| `colors.primary`          | `sereneDawnColors.sereneSky`   |
-| `colors.accent`           | `sereneDawnColors.champagne`   |
-| `colors.background`       | `sereneDawnColors.midnightBlue`|
-| `colors.card`             | `sereneDawnColors.darkPetrol`  |
-| `colors.foreground`       | `sereneDawnColors.warmWhite`   |
-| `colors.mutedForeground`  | `sereneDawnColors.slateBlue`   |
-| `shadows.light.lg`        | `sereneDawnShadows.dark.xl`    |
-| `borderRadius.xl`         | `sereneDawnBorderRadius.xl`    |
-| `spacing.lg`              | `sereneDawnSpacing.lg`         |
+| **Atual (Bubblegum)**    | **Serene Dawn**                 |
+| ------------------------ | ------------------------------- |
+| `colors.primary`         | `sereneDawnColors.sereneSky`    |
+| `colors.accent`          | `sereneDawnColors.champagne`    |
+| `colors.background`      | `sereneDawnColors.midnightBlue` |
+| `colors.card`            | `sereneDawnColors.darkPetrol`   |
+| `colors.foreground`      | `sereneDawnColors.warmWhite`    |
+| `colors.mutedForeground` | `sereneDawnColors.slateBlue`    |
+| `shadows.light.lg`       | `sereneDawnShadows.dark.xl`     |
+| `borderRadius.xl`        | `sereneDawnBorderRadius.xl`     |
+| `spacing.lg`             | `sereneDawnSpacing.lg`          |
 
 ### Componentes
 
-| **Atual**     | **Serene Dawn Premium**  |
-|---------------|--------------------------|
-| `<Button>`    | `<ButtonPremium>`        |
-| `<Card>`      | `<CardGlass>`            |
-| Background plano | `<LinearGradient>` |
+| **Atual**        | **Serene Dawn Premium** |
+| ---------------- | ----------------------- |
+| `<Button>`       | `<ButtonPremium>`       |
+| `<Card>`         | `<CardGlass>`           |
+| Background plano | `<LinearGradient>`      |
 
 ---
 
 ## ✅ Checklist Final
 
 ### Implementação Visual
+
 - [ ] Tema Serene Dawn importado em `src/theme/sereneDawn.ts`
 - [ ] OnboardingScreenPremium criado e testado
 - [ ] ButtonPremium criado e testado
@@ -426,6 +427,7 @@ const styles = StyleSheet.create({
 - [ ] ProfileScreen atualizado
 
 ### Componentes Auxiliares
+
 - [ ] Logo centralizada (20-28% da tela)
 - [ ] Tipografia Inter + Roboto configurada
 - [ ] Sombras profundas aplicadas em todos os cards
@@ -433,24 +435,28 @@ const styles = StyleSheet.create({
 - [ ] Efeito glass em cards secundários
 
 ### Micro-interações
+
 - [ ] Haptic feedback em todos os botões
 - [ ] Animação de escala ao pressionar (0.96)
 - [ ] Transições suaves entre telas
 - [ ] Paginação animada no onboarding
 
 ### Acessibilidade
+
 - [ ] Touch targets 52-60px em todos os botões
 - [ ] Contraste 4.5:1+ (texto branco em azul escuro)
 - [ ] Labels de acessibilidade em todos os botões
 - [ ] Hints descritivos onde necessário
 
 ### Performance
+
 - [ ] Componentes memoizados (React.memo)
 - [ ] Animações com useNativeDriver quando possível
 - [ ] Gradientes otimizados (máx 3 cores)
 - [ ] Blur nativo desabilitado por padrão (performance)
 
 ### Testes
+
 - [ ] Testar no iPhone SE (tela pequena)
 - [ ] Testar no iPhone 14 Pro Max (tela grande)
 - [ ] Testar em Android (Pixel 6)
@@ -486,12 +492,14 @@ const styles = StyleSheet.create({
 ## 📚 Recursos Adicionais
 
 ### Arquivos Criados
+
 - `src/theme/sereneDawn.ts` - Tema completo
 - `src/screens/OnboardingScreenPremium.tsx` - Onboarding premium
 - `src/components/ButtonPremium.tsx` - Botão com gradiente
 - `src/components/CardGlass.tsx` - Card glassmorphism
 
 ### Dependências
+
 - `expo-linear-gradient` - Gradientes
 - `expo-blur` - Efeito blur (opcional)
 - `expo-haptics` - Feedback tátil
@@ -501,5 +509,4 @@ const styles = StyleSheet.create({
 
 **🌅 Tema "Amanhecer Sereno" - Design Premium Elite**
 
-*Transforme Nossa Maternidade em um aplicativo inesquecível.* ✨
-
+_Transforme Nossa Maternidade em um aplicativo inesquecível._ ✨

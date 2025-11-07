@@ -8,6 +8,28 @@
  * - Borda animada
  * - Ícones premium
  * - Validação visual elegante
+ *
+ * @example
+ * // Input básico
+ * <InputPremium
+ *   label="Email"
+ *   value={email}
+ *   onChangeText={setEmail}
+ *   icon="email"
+ *   placeholder="seu@email.com"
+ * />
+ *
+ * @example
+ * // Input com validação
+ * <InputPremium
+ *   label="Senha"
+ *   value={password}
+ *   onChangeText={setPassword}
+ *   error={passwordError}
+ *   icon="lock"
+ *   secureTextEntry
+ *   required
+ * />
  */
 
 import React, { useCallback, useMemo, useState } from 'react';
@@ -19,6 +41,9 @@ import {
   View,
   ViewStyle,
   Animated,
+  NativeSyntheticEvent,
+  TextInputFocusEventData,
+  Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -26,11 +51,11 @@ import {
   sereneDawnColors,
   sereneDawnGradients,
   sereneDawnOverlay,
-  sereneDawnShadows,
   sereneDawnTypography,
   sereneDawnSpacing,
   sereneDawnBorderRadius,
 } from '@/theme/sereneDawn';
+import { getShadowStyle } from '@/utils/platformStyles';
 
 // =====================================================
 // TIPOS
@@ -80,9 +105,9 @@ const InputPremiumComponent: React.FC<InputPremiumProps> = ({
   const [isFocused, setIsFocused] = useState(false);
   const focusAnim = React.useRef(new Animated.Value(0)).current;
 
-  // Animação de focus
+  // Animação de focus com tipos corretos
   const handleFocus = useCallback(
-    (e: any) => {
+    (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
       setIsFocused(true);
       Animated.spring(focusAnim, {
         toValue: 1,
@@ -95,7 +120,7 @@ const InputPremiumComponent: React.FC<InputPremiumProps> = ({
   );
 
   const handleBlur = useCallback(
-    (e: any) => {
+    (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
       setIsFocused(false);
       Animated.spring(focusAnim, {
         toValue: 0,
@@ -121,11 +146,7 @@ const InputPremiumComponent: React.FC<InputPremiumProps> = ({
 
   // Estilos memoizados
   const inputContainerStyle = useMemo(
-    () => [
-      styles.inputContainer,
-      error && styles.inputContainerError,
-      containerStyle,
-    ],
+    () => [styles.inputContainer, error && styles.inputContainerError, containerStyle],
     [error, containerStyle]
   );
 
@@ -142,23 +163,30 @@ const InputPremiumComponent: React.FC<InputPremiumProps> = ({
       {/* Input Container */}
       <Animated.View
         style={[
+          styles.inputContainer,
           inputContainerStyle,
           {
             borderColor: error ? sereneDawnColors.error : borderColor,
-            shadowOpacity: glowOpacity,
-            shadowColor: error ? sereneDawnColors.error : sereneDawnColors.champagne,
           },
+          Platform.OS === 'web'
+            ? getShadowStyle({
+                shadowColor: error ? sereneDawnColors.error : sereneDawnColors.champagne,
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.3,
+                shadowRadius: 2.62,
+                elevation: 4,
+              })
+            : {
+                shadowColor: error ? sereneDawnColors.error : sereneDawnColors.champagne,
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: glowOpacity,
+                shadowRadius: 2.62,
+                elevation: 4,
+              },
         ]}
       >
         {/* Background Glass */}
-        {useGlass && (
-          <View
-            style={[
-              StyleSheet.absoluteFill,
-              { backgroundColor: sereneDawnOverlay.glass },
-            ]}
-          />
-        )}
+        {useGlass && <View style={[StyleSheet.absoluteFill, { backgroundColor: sereneDawnOverlay.glass }]} />}
 
         {/* Gradiente sutil no focus */}
         {isFocused && (
@@ -172,14 +200,7 @@ const InputPremiumComponent: React.FC<InputPremiumProps> = ({
         )}
 
         {/* Ícone */}
-        {icon && (
-          <Icon
-            name={icon}
-            size={20}
-            color={error ? sereneDawnColors.error : iconColor}
-            style={styles.icon}
-          />
-        )}
+        {icon && <Icon name={icon} size={20} color={error ? sereneDawnColors.error : iconColor} style={styles.icon} />}
 
         {/* Input */}
         <TextInput
@@ -191,14 +212,7 @@ const InputPremiumComponent: React.FC<InputPremiumProps> = ({
         />
 
         {/* Ícone de validação */}
-        {error && (
-          <Icon
-            name="alert-circle"
-            size={20}
-            color={sereneDawnColors.error}
-            style={styles.validationIcon}
-          />
-        )}
+        {error && <Icon name="alert-circle" size={20} color={sereneDawnColors.error} style={styles.validationIcon} />}
       </Animated.View>
 
       {/* Mensagem de erro ou ajuda */}
@@ -240,7 +254,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: sereneDawnSpacing.md,
     minHeight: 52,
     overflow: 'hidden',
-    ...sereneDawnShadows.dark.md,
+    ...getShadowStyle({
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.23,
+      shadowRadius: 2.62,
+      elevation: 4,
+    }),
   },
   inputContainerError: {
     borderColor: sereneDawnColors.error,
@@ -279,4 +299,3 @@ const styles = StyleSheet.create({
 
 // Memoizar componente
 export const InputPremium = React.memo(InputPremiumComponent);
-

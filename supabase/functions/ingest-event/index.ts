@@ -44,13 +44,10 @@ serve(async (req) => {
 
     // Validação: userId obrigatório
     if (!userId) {
-      return new Response(
-        JSON.stringify({ error: 'userId is required' }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
-      );
+      return new Response(JSON.stringify({ error: 'userId is required' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     // Validação: kind deve ser válido
@@ -68,13 +65,10 @@ serve(async (req) => {
 
     // Validação: payload não pode ser vazio e não pode exceder 5KB
     if (!payload || typeof payload !== 'object') {
-      return new Response(
-        JSON.stringify({ error: 'payload must be a valid object' }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
-      );
+      return new Response(JSON.stringify({ error: 'payload must be a valid object' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const payloadString = JSON.stringify(payload);
@@ -159,4 +153,3 @@ serve(async (req) => {
     );
   }
 });
-

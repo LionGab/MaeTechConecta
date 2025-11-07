@@ -7,6 +7,7 @@
 ## Visão Geral
 
 Sistema de personalização inteligente que cria **planos diários** personalizados para cada usuária com base em:
+
 - **Eventos comportamentais** (últimos 14 dias)
 - **Análise semântica** com Gemini 2.0 Flash
 - **Curadoria de conteúdo** com Perplexity API
@@ -121,7 +122,9 @@ LIMIT 10;
 ## 📊 Estrutura de Tabelas
 
 ### events
+
 Rastreamento de comportamento:
+
 - `id` (UUID)
 - `user_id` (UUID) → auth.users
 - `kind` (TEXT): onboarding_submitted, mood_update, habit_check, chat_turn, etc.
@@ -129,7 +132,9 @@ Rastreamento de comportamento:
 - `created_at` (TIMESTAMPTZ)
 
 ### signals
+
 Snapshot calculado (análise Gemini):
+
 - `id` (UUID)
 - `user_id` (UUID) → user_profiles
 - `tags` (TEXT[]): tag_lonely, support_low, stress_high, etc.
@@ -138,7 +143,9 @@ Snapshot calculado (análise Gemini):
 - `created_at` (TIMESTAMPTZ)
 
 ### message_plan
+
 Plano fechado do dia:
+
 - `id` (UUID)
 - `user_id` (UUID) → user_profiles
 - `plan_date` (DATE): data do plano
@@ -147,7 +154,9 @@ Plano fechado do dia:
 - `created_at` (TIMESTAMPTZ)
 
 ### message_deliveries
+
 Execução e métricas:
+
 - `id` (UUID)
 - `plan_id` (UUID) → message_plan
 - `user_id` (UUID) → user_profiles
@@ -389,7 +398,9 @@ supabase secrets list
 
 ```typescript
 // Verificar se userId está correto
-const { data: { user } } = await supabase.auth.getUser();
+const {
+  data: { user },
+} = await supabase.auth.getUser();
 console.log('User ID:', user?.id);
 
 // Verificar se plano existe
@@ -405,8 +416,9 @@ await replanToday(user.id);
 ### Dashboards Recomendados
 
 1. **Taxa de Abertura de Pushes**
+
 ```sql
-SELECT 
+SELECT
   DATE(sent_at) as date,
   COUNT(*) as total_sent,
   SUM(CASE WHEN opened THEN 1 ELSE 0 END) as total_opened,
@@ -418,8 +430,9 @@ ORDER BY date DESC;
 ```
 
 2. **Taxa de Clique em CTAs**
+
 ```sql
-SELECT 
+SELECT
   DATE(sent_at) as date,
   COUNT(*) as total_sent,
   SUM(CASE WHEN clicked THEN 1 ELSE 0 END) as total_clicked,
@@ -431,8 +444,9 @@ ORDER BY date DESC;
 ```
 
 3. **Distribuição de Prioridades**
+
 ```sql
-SELECT 
+SELECT
   rationale->>'priority' as priority,
   COUNT(*) as total_plans
 FROM message_plan
@@ -465,7 +479,9 @@ ORDER BY total_plans DESC;
 O sistema usa **fallback automático** para garantir resiliência total contra falhas de API:
 
 ### compose-copy (Mensagens Personalizadas)
+
 **Ordem de tentativas:**
+
 1. **Claude Sonnet 4** (primeira tentativa)
    - Custo: ~$3/1M tokens
    - Tom empático e linguagem acessível
@@ -477,7 +493,9 @@ O sistema usa **fallback automático** para garantir resiliência total contra f
    - Retorna template preenchido sem personalização
 
 ### build-signals (Análise Comportamental)
+
 **Ordem de tentativas:**
+
 1. **Gemini 2.0 Flash** (primeira tentativa)
    - Custo: ~$0.10/1M tokens (muito barato)
    - Análise semântica dos últimos 14 dias
@@ -498,12 +516,14 @@ Cada response incluirá o campo `provider` indicando qual API foi usada:
 ```
 
 O campo `source` no banco de dados também reflete o provider:
+
 - `gemini_2.0_flash` - Gemini usado
 - `gpt-4o_fallback` - GPT-4o usado como fallback
 
 ### Custo Estimado
 
 **Por 1.000 usuárias/dia:**
+
 - Gemini (análise): ~$0.50/mês (muito barato)
 - Claude (mensagens): ~$15/mês
 - GPT-4o (fallback): ~$5/mês (quando necessário)
@@ -513,6 +533,7 @@ O campo `source` no banco de dados também reflete o provider:
 ### Logs de Fallback
 
 Sempre que o fallback for acionado, um log de warning é gerado:
+
 ```
 Claude failed, trying GPT-4o fallback: [erro]
 ```
@@ -525,4 +546,3 @@ Isso permite monitorar a frequência de falhas e tomar ações corretivas.
 **Data:** 11 de Janeiro de 2025
 **Versão:** 1.0.0
 **Atualização (Fallback Multi-API):** 11 de Janeiro de 2025
-

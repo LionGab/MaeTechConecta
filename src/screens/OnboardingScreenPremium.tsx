@@ -1,7 +1,7 @@
 /**
  * 🌅 Onboarding Screen Premium - Tema "Amanhecer Sereno"
  * Design elite para Nossa Maternidade
- * 
+ *
  * Features:
  * - Gradientes suaves com toque dourado
  * - Animações micro-interativas
@@ -193,81 +193,84 @@ export default function OnboardingScreenPremium() {
   // RENDER SLIDE
   // =====================================================
 
-  const renderSlide = useCallback(({ item, index }: { item: OnboardingSlide; index: number }) => {
-    const inputRange = [(index - 1) * SCREEN_WIDTH, index * SCREEN_WIDTH, (index + 1) * SCREEN_WIDTH];
-    const opacity = scrollX.interpolate({
-      inputRange,
-      outputRange: [0.5, 1, 0.5],
-    });
+  const renderSlide = useCallback(
+    ({ item, index }: { item: OnboardingSlide; index: number }) => {
+      const inputRange = [(index - 1) * SCREEN_WIDTH, index * SCREEN_WIDTH, (index + 1) * SCREEN_WIDTH];
+      const opacity = scrollX.interpolate({
+        inputRange,
+        outputRange: [0.5, 1, 0.5],
+      });
 
-    const scale = scrollX.interpolate({
-      inputRange,
-      outputRange: [0.9, 1, 0.9],
-    });
+      const scale = scrollX.interpolate({
+        inputRange,
+        outputRange: [0.9, 1, 0.9],
+      });
 
-    return (
-      <Animated.View style={[styles.slide, { opacity, transform: [{ scale }] }]}>
-        {/* Logo centralizada */}
-        <View style={styles.logoContainer}>
-          <Logo size={getResponsiveValue(SCREEN_WIDTH * 0.22, SCREEN_WIDTH * 0.25, SCREEN_WIDTH * 0.28)} />
-        </View>
+      return (
+        <Animated.View style={[styles.slide, { opacity, transform: [{ scale }] }]}>
+          {/* Logo centralizada */}
+          <View style={styles.logoContainer}>
+            <Logo size={getResponsiveValue(SCREEN_WIDTH * 0.22, SCREEN_WIDTH * 0.25, SCREEN_WIDTH * 0.28)} />
+          </View>
 
-        {/* Título */}
-        <Text style={styles.title}>{item.title}</Text>
+          {/* Título */}
+          <Text style={styles.title}>{item.title}</Text>
 
-        {/* Subtítulo */}
-        <Text style={styles.subtitle}>{item.subtitle}</Text>
+          {/* Subtítulo */}
+          <Text style={styles.subtitle}>{item.subtitle}</Text>
 
-        {/* Descrição */}
-        <Text style={styles.description}>{item.description}</Text>
+          {/* Descrição */}
+          <Text style={styles.description}>{item.description}</Text>
 
-        {/* Features - Cards Premium */}
-        <View style={styles.featuresContainer}>
-          {item.features.map((feature, idx) => (
-            <Animated.View
-              key={idx}
-              style={[
-                styles.featureCard,
-                {
-                  opacity: scrollX.interpolate({
-                    inputRange,
-                    outputRange: [0, 1, 0],
-                  }),
-                  transform: [
-                    {
-                      translateY: scrollX.interpolate({
-                        inputRange,
-                        outputRange: [20, 0, 20],
-                      }),
-                    },
-                  ],
-                },
-              ]}
-            >
-              {/* Background com gradiente sutil e blur */}
-              <LinearGradient
-                colors={[`${feature.color}15`, `${feature.color}08`]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={StyleSheet.absoluteFill}
-              />
+          {/* Features - Cards Premium */}
+          <View style={styles.featuresContainer}>
+            {item.features.map((feature, idx) => (
+              <Animated.View
+                key={idx}
+                style={[
+                  styles.featureCard,
+                  {
+                    opacity: scrollX.interpolate({
+                      inputRange,
+                      outputRange: [0, 1, 0],
+                    }),
+                    transform: [
+                      {
+                        translateY: scrollX.interpolate({
+                          inputRange,
+                          outputRange: [20, 0, 20],
+                        }),
+                      },
+                    ],
+                  },
+                ]}
+              >
+                {/* Background com gradiente sutil e blur */}
+                <LinearGradient
+                  colors={[`${feature.color}15`, `${feature.color}08`]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={StyleSheet.absoluteFill}
+                />
 
-              {/* Conteúdo */}
-              <View style={styles.featureContent}>
-                {/* Emoji container com destaque dourado */}
-                <View style={[styles.featureEmojiContainer, { backgroundColor: `${feature.color}20` }]}>
-                  <Text style={styles.featureEmoji}>{feature.emoji}</Text>
+                {/* Conteúdo */}
+                <View style={styles.featureContent}>
+                  {/* Emoji container com destaque dourado */}
+                  <View style={[styles.featureEmojiContainer, { backgroundColor: `${feature.color}20` }]}>
+                    <Text style={styles.featureEmoji}>{feature.emoji}</Text>
+                  </View>
+
+                  {/* Texto */}
+                  <Text style={styles.featureText}>{feature.text}</Text>
                 </View>
-
-                {/* Texto */}
-                <Text style={styles.featureText}>{feature.text}</Text>
-              </View>
-            </Animated.View>
-          ))}
-        </View>
-      </Animated.View>
-    );
-  }, [scrollX]);
+              </Animated.View>
+            ))}
+          </View>
+        </Animated.View>
+      );
+    },
+    [scrollX]
+  );
 
   // =====================================================
   // RENDER PAGINATION
@@ -328,11 +331,7 @@ export default function OnboardingScreenPremium() {
 
       {/* Background Gradient - Amanhecer */}
       <LinearGradient
-        colors={[
-          sereneDawnColors.midnightBlue,
-          sereneDawnColors.darkPetrol,
-          sereneDawnColors.twilight,
-        ]}
+        colors={[sereneDawnColors.midnightBlue, sereneDawnColors.darkPetrol, sereneDawnColors.twilight]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={StyleSheet.absoluteFill}
@@ -485,7 +484,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   skipText: {
-    fontSize: getResponsiveValue(sereneDawnTypography.sizes.sm, sereneDawnTypography.sizes.base, sereneDawnTypography.sizes.base),
+    fontSize: getResponsiveValue(
+      sereneDawnTypography.sizes.sm,
+      sereneDawnTypography.sizes.base,
+      sereneDawnTypography.sizes.base
+    ),
     color: sereneDawnColors.slateBlue,
     fontWeight: sereneDawnTypography.weights.medium,
     fontFamily: sereneDawnTypography.fontFamily.body,
@@ -592,7 +595,10 @@ const styles = StyleSheet.create({
   actions: {
     flexDirection: 'row',
     paddingHorizontal: getResponsiveValue(sereneDawnSpacing.lg, sereneDawnSpacing.xl, sereneDawnSpacing.xl),
-    paddingBottom: Platform.OS === 'ios' ? getResponsiveValue(sereneDawnSpacing.xl, sereneDawnSpacing['2xl'], sereneDawnSpacing['2xl']) : sereneDawnSpacing.xl,
+    paddingBottom:
+      Platform.OS === 'ios'
+        ? getResponsiveValue(sereneDawnSpacing.xl, sereneDawnSpacing['2xl'], sereneDawnSpacing['2xl'])
+        : sereneDawnSpacing.xl,
     paddingTop: sereneDawnSpacing.md,
     gap: sereneDawnSpacing.md,
     alignItems: 'center',
@@ -616,7 +622,11 @@ const styles = StyleSheet.create({
     borderColor: sereneDawnOverlay.primaryBorder,
   },
   backButtonText: {
-    fontSize: getResponsiveValue(sereneDawnTypography.sizes.base, sereneDawnTypography.sizes.base, sereneDawnTypography.sizes.lg),
+    fontSize: getResponsiveValue(
+      sereneDawnTypography.sizes.base,
+      sereneDawnTypography.sizes.base,
+      sereneDawnTypography.sizes.lg
+    ),
     fontWeight: sereneDawnTypography.weights.semibold,
     color: sereneDawnColors.babyBlue,
     fontFamily: sereneDawnTypography.fontFamily.heading,
@@ -637,11 +647,14 @@ const styles = StyleSheet.create({
     borderRadius: sereneDawnBorderRadius.xl,
   },
   nextButtonText: {
-    fontSize: getResponsiveValue(sereneDawnTypography.sizes.base, sereneDawnTypography.sizes.lg, sereneDawnTypography.sizes.lg),
+    fontSize: getResponsiveValue(
+      sereneDawnTypography.sizes.base,
+      sereneDawnTypography.sizes.lg,
+      sereneDawnTypography.sizes.lg
+    ),
     fontWeight: sereneDawnTypography.weights.bold,
     color: sereneDawnColors.midnightBlue,
     fontFamily: sereneDawnTypography.fontFamily.heading,
     letterSpacing: 0.5,
   },
 });
-

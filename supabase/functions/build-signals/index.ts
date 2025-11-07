@@ -84,13 +84,9 @@ serve(async (req) => {
       .limit(30);
 
     // 4. Preparar contexto para Gemini
-    const eventSummary = recentEvents
-      ?.map((e) => `${e.kind}: ${JSON.stringify(e.payload)}`)
-      .join('\n');
+    const eventSummary = recentEvents?.map((e) => `${e.kind}: ${JSON.stringify(e.payload)}`).join('\n');
 
-    const chatSummary = recentMessages
-      ?.map((m) => `User: ${m.message}\nNathIA: ${m.response}`)
-      .join('\n\n');
+    const chatSummary = recentMessages?.map((m) => `User: ${m.message}\nNathIA: ${m.response}`).join('\n\n');
 
     // 5. Preparar prompt de análise
     const analysisPrompt = `Analise o comportamento desta usuária de maternidade nos últimos 14 dias.
@@ -195,12 +191,10 @@ RISK_LEVEL (0-10):
 
       const completion = await openai.chat.completions.create({
         model: 'gpt-4o',
-        messages: [
-          { role: 'user', content: analysisPrompt }
-        ],
+        messages: [{ role: 'user', content: analysisPrompt }],
         temperature: 0.3,
         max_tokens: 1024,
-        response_format: { type: 'json_object' }
+        response_format: { type: 'json_object' },
       });
 
       const gptText = completion.choices[0].message.content || '';
@@ -236,9 +230,7 @@ RISK_LEVEL (0-10):
 
     // 8. Se risco crítico, criar alert_history
     if (analysis.risk_level >= 8) {
-      const criticalTags = analysis.tags.filter((tag) =>
-        ['pp_intrusive', 'harm_thoughts'].includes(tag)
-      );
+      const criticalTags = analysis.tags.filter((tag) => ['pp_intrusive', 'harm_thoughts'].includes(tag));
 
       if (criticalTags.length > 0) {
         await supabase.from('alert_history').insert({
@@ -283,4 +275,3 @@ RISK_LEVEL (0-10):
     );
   }
 });
-

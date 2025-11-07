@@ -142,7 +142,7 @@ Retorne APENAS um JSON válido:
 
       const responseText = message.content[0].type === 'text' ? message.content[0].text : '';
       const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-      
+
       if (!jsonMatch) {
         throw new Error('Failed to parse Claude response as JSON');
       }
@@ -162,11 +162,11 @@ Retorne APENAS um JSON válido:
           model: 'gpt-4o',
           messages: [
             { role: 'system', content: systemPrompt },
-            { role: 'user', content: userPrompt }
+            { role: 'user', content: userPrompt },
           ],
           temperature: 0.7,
           max_tokens: 500,
-          response_format: { type: 'json_object' }
+          response_format: { type: 'json_object' },
         });
 
         const gptText = completion.choices[0].message.content || '';
@@ -223,4 +223,3 @@ Retorne APENAS um JSON válido:
     );
   }
 });
-
