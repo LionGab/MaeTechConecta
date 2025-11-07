@@ -26,16 +26,19 @@ const itemsToSend = items.filter((item: any) => {
 ### Cenário de Falha
 
 **Setup:**
+
 - Job `dispatch-plan` roda às: **00h, 09h, 14h, 19h**
 - Item agendado para: **19:30** ⏰
 
 **Comportamento Bugado:**
+
 1. Job roda às **19:00**
 2. Código extrai hora: `"19"` → força para `"19:00"`
 3. Compara: `"19:00" === "19:00"` → ✅ **TRUE**
 4. ❌ **Item com scheduled_at="19:30" é enviado às 19:00** (30 minutos adiantado!)
 
 **Pior Cenário:**
+
 - Item agendado para **19:45**
 - Job às 19:00 envia (45 minutos adiantado)
 - Job às 00:00 (próximo) não envia (hora diferente)
@@ -57,27 +60,27 @@ const itemsToSend = items.filter((item: any) => {
   // Extrair hora do scheduled_at (formato: "HH:MM")
   const [itemHourStr] = item.scheduled_at.split(':');
   const itemHour = parseInt(itemHourStr);
-  
+
   // Verificar se o item está na janela de horários
   // Como o job roda apenas 4x ao dia, enviamos TODOS os itens da janela
   // A proteção contra duplicatas está em !item.delivery_id
   const isInWindow = itemHour >= minHour && itemHour <= maxHour;
-  
+
   // Não enviar se já tiver delivery_id (já foi enviado)
   const notDeliveredYet = !item.delivery_id;
-  
+
   return isInWindow && notDeliveredYet;
 });
 ```
 
 ### Janelas de Tempo
 
-| Job Roda | Janela de Itens | Exemplos Enviados |
-|----------|----------------|-------------------|
-| **00:00** | 00:00 - 08:59 | 00:00, 00:30, 02:15, 08:45 |
-| **09:00** | 09:00 - 13:59 | 09:00, 09:30, 12:00, 13:45 |
-| **14:00** | 14:00 - 18:59 | 14:00, 14:30, 16:00, 18:45 |
-| **19:00** | 19:00 - 23:59 | 19:00, 19:30, 21:00, 23:45 |
+| Job Roda  | Janela de Itens | Exemplos Enviados          |
+| --------- | --------------- | -------------------------- |
+| **00:00** | 00:00 - 08:59   | 00:00, 00:30, 02:15, 08:45 |
+| **09:00** | 09:00 - 13:59   | 09:00, 09:30, 12:00, 13:45 |
+| **14:00** | 14:00 - 18:59   | 14:00, 14:30, 16:00, 18:45 |
+| **19:00** | 19:00 - 23:59   | 19:00, 19:30, 21:00, 23:45 |
 
 ---
 
@@ -89,8 +92,8 @@ Cada execução do job pega **TODOS** os itens da próxima janela até a próxim
 
 ```typescript
 if (currentHourInt === 19) {
-  minHour = 19;  // 19:00
-  maxHour = 23;  // 23:59
+  minHour = 19; // 19:00
+  maxHour = 23; // 23:59
 }
 // Envia: 19:00, 19:15, 19:30, ..., 23:59
 ```
@@ -108,6 +111,7 @@ Se o job rodar novamente (ex: retry), não reenvia itens já processados.
 ### 3. **Respeita Minutos Exatos**
 
 O sistema **plan-daily** pode agendar itens em **qualquer minuto**:
+
 - ✅ `"09:15"` → Enviado às 09:00 (dentro da janela 09:00-13:59)
 - ✅ `"19:30"` → Enviado às 19:00 (dentro da janela 19:00-23:59)
 - ✅ `"23:45"` → Enviado às 19:00 (dentro da janela 19:00-23:59)
@@ -119,6 +123,7 @@ O sistema **plan-daily** pode agendar itens em **qualquer minuto**:
 ### Teste 1: Item às 19:30
 
 **Setup:**
+
 ```json
 {
   "scheduled_at": "19:30",
@@ -128,6 +133,7 @@ O sistema **plan-daily** pode agendar itens em **qualquer minuto**:
 ```
 
 **Execução:**
+
 - Job roda às **19:00**
 - `itemHour = 19` → `isInWindow = (19 >= 19 && 19 <= 23)` → ✅ **TRUE**
 - `notDeliveredYet = true` → ✅ **TRUE**
@@ -138,6 +144,7 @@ O sistema **plan-daily** pode agendar itens em **qualquer minuto**:
 ### Teste 2: Item às 08:45
 
 **Setup:**
+
 ```json
 {
   "scheduled_at": "08:45",
@@ -147,6 +154,7 @@ O sistema **plan-daily** pode agendar itens em **qualquer minuto**:
 ```
 
 **Execução:**
+
 - Job roda às **00:00**
 - `itemHour = 8` → `isInWindow = (8 >= 0 && 8 <= 8)` → ✅ **TRUE**
 - `notDeliveredYet = true` → ✅ **TRUE**
@@ -157,16 +165,18 @@ O sistema **plan-daily** pode agendar itens em **qualquer minuto**:
 ### Teste 3: Item Duplicado (já enviado)
 
 **Setup:**
+
 ```json
 {
   "scheduled_at": "19:30",
   "type": "habit",
   "text": "Hora de relaxar 🧘",
-  "delivery_id": "abc123"  // ← Já foi enviado
+  "delivery_id": "abc123" // ← Já foi enviado
 }
 ```
 
 **Execução:**
+
 - Job roda às **19:00**
 - `itemHour = 19` → `isInWindow = true`
 - `notDeliveredYet = false` → ❌ **FALSE** (tem delivery_id)
@@ -177,6 +187,7 @@ O sistema **plan-daily** pode agendar itens em **qualquer minuto**:
 ### Teste 4: Item Fora da Janela
 
 **Setup:**
+
 ```json
 {
   "scheduled_at": "22:00",
@@ -186,6 +197,7 @@ O sistema **plan-daily** pode agendar itens em **qualquer minuto**:
 ```
 
 **Execução:**
+
 - Job roda às **14:00**
 - `itemHour = 22` → `isInWindow = (22 >= 14 && 22 <= 18)` → ❌ **FALSE**
 - **Resultado:** ✅ **Item NÃO enviado** (aguarda job das 19h)
@@ -196,23 +208,23 @@ O sistema **plan-daily** pode agendar itens em **qualquer minuto**:
 
 ### Antes (Bugado)
 
-| Horário Agendado | Job às 19:00 | Status |
-|------------------|--------------|--------|
-| 19:00 | ❌ Enviado | Correto (acidentalmente) |
-| 19:30 | ❌ Enviado às 19:00 | ❌ **30 min adiantado** |
-| 19:45 | ❌ Enviado às 19:00 | ❌ **45 min adiantado** |
-| 20:00 | ❌ Enviado às 19:00 | ❌ **1h adiantado** |
+| Horário Agendado | Job às 19:00        | Status                   |
+| ---------------- | ------------------- | ------------------------ |
+| 19:00            | ❌ Enviado          | Correto (acidentalmente) |
+| 19:30            | ❌ Enviado às 19:00 | ❌ **30 min adiantado**  |
+| 19:45            | ❌ Enviado às 19:00 | ❌ **45 min adiantado**  |
+| 20:00            | ❌ Enviado às 19:00 | ❌ **1h adiantado**      |
 
 ### Depois (Corrigido)
 
-| Horário Agendado | Job às 19:00 | Status |
-|------------------|--------------|--------|
-| 19:00 | ✅ Enviado | ✅ Correto |
-| 19:30 | ✅ Enviado | ✅ Correto (dentro da janela) |
-| 19:45 | ✅ Enviado | ✅ Correto (dentro da janela) |
-| 20:00 | ✅ Enviado | ✅ Correto (dentro da janela) |
-| 23:59 | ✅ Enviado | ✅ Correto (dentro da janela) |
-| 00:00 | ❌ Não enviado | ✅ Correto (aguarda job 00h) |
+| Horário Agendado | Job às 19:00   | Status                        |
+| ---------------- | -------------- | ----------------------------- |
+| 19:00            | ✅ Enviado     | ✅ Correto                    |
+| 19:30            | ✅ Enviado     | ✅ Correto (dentro da janela) |
+| 19:45            | ✅ Enviado     | ✅ Correto (dentro da janela) |
+| 20:00            | ✅ Enviado     | ✅ Correto (dentro da janela) |
+| 23:59            | ✅ Enviado     | ✅ Correto (dentro da janela) |
+| 00:00            | ❌ Não enviado | ✅ Correto (aguarda job 00h)  |
 
 ---
 
@@ -226,6 +238,7 @@ SELECT cron.schedule('dispatch_plan_job', '* * * * *', ...);
 ```
 
 **Problemas:**
+
 - 1440 execuções/dia (ao invés de 4)
 - Custos de infraestrutura muito altos
 - Desnecessário para um app de maternidade
@@ -235,10 +248,11 @@ SELECT cron.schedule('dispatch_plan_job', '* * * * *', ...);
 ```typescript
 // ❌ NÃO FUNCIONA com job 4x ao dia
 const itemTime = `${itemHour}:${itemMinute}`;
-return itemTime === currentTime;  // "19:30" === "19:00" → FALSE
+return itemTime === currentTime; // "19:30" === "19:00" → FALSE
 ```
 
 **Problema:**
+
 - Job roda às `:00`, nunca pegaria `:15`, `:30`, `:45`
 
 ### ✅ Alternativa 3: Janelas de Tempo (ESCOLHIDA)
@@ -249,6 +263,7 @@ const isInWindow = itemHour >= minHour && itemHour <= maxHour;
 ```
 
 **Vantagens:**
+
 - 4 execuções/dia (eficiente)
 - Pega TODOS os itens da janela
 - Proteção contra duplicatas
@@ -297,9 +312,9 @@ supabase functions logs dispatch-plan --tail
 SELECT * FROM cron.job WHERE jobname = 'dispatch_plan_job';
 
 -- Ver histórico de execuções
-SELECT * FROM cron.job_run_details 
+SELECT * FROM cron.job_run_details
 WHERE jobname = 'dispatch_plan_job'
-ORDER BY start_time DESC 
+ORDER BY start_time DESC
 LIMIT 10;
 ```
 
@@ -328,4 +343,3 @@ LIMIT 10;
 ---
 
 **Status Final:** ✅ **BUG CORRIGIDO E TESTADO**
-

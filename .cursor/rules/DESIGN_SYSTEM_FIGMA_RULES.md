@@ -1,4 +1,5 @@
 # 🎨 Design System Rules - Nossa Maternidade
+
 # Regras Completas para Integração Figma → React Native
 
 > **Framework:** React Native + Expo SDK 54  
@@ -27,11 +28,13 @@
 O app possui **DOIS design systems** distintos:
 
 #### **Tema 1: Bubblegum (Original)** - Acolhedor e Maternal
+
 - **Filosofia:** Creme suave, cores quentes, não usa preto puro no dark mode
 - **Target:** Experiência acolhedora, acessível, maternal
 - **Localização:** `src/theme/colors.ts`
 
 #### **Tema 2: Serene Dawn (Premium)** - Elegante e Sofisticado
+
 - **Filosofia:** Amanhecer, azuis profundos, dourado, glassmorphism
 - **Target:** Experiência premium elite
 - **Localização:** `src/theme/sereneDawn.ts`
@@ -44,54 +47,54 @@ O app possui **DOIS design systems** distintos:
 
 ```typescript
 // Backgrounds
-background: '#FCFAF8'      // Creme suave acolhedor
-foreground: '#1A1A1A'      // Preto suave para legibilidade
+background: '#FCFAF8'; // Creme suave acolhedor
+foreground: '#1A1A1A'; // Preto suave para legibilidade
 
 // Primary Colors
-primary: '#E891B5'         // Terracota - Rosa suave maternal
-primaryForeground: '#FFFFFF'
+primary: '#E891B5'; // Terracota - Rosa suave maternal
+primaryForeground: '#FFFFFF';
 
-secondary: '#C8E0D4'       // Sage - Verde suave acolhedor
-secondaryForeground: '#1A4A3A'
+secondary: '#C8E0D4'; // Sage - Verde suave acolhedor
+secondaryForeground: '#1A4A3A';
 
-accent: '#E8C4E8'          // Lavanda - Roxo suave
-accentForeground: '#4A2A4A'
+accent: '#E8C4E8'; // Lavanda - Roxo suave
+accentForeground: '#4A2A4A';
 
 // Functional
-destructive: '#E67E7E'     // Vermelho suave (menos agressivo)
-success: '#81C784'         // Verde sucesso
-warning: '#FFB74D'         // Âmbar aviso
-info: '#64B5F6'            // Azul info
+destructive: '#E67E7E'; // Vermelho suave (menos agressivo)
+success: '#81C784'; // Verde sucesso
+warning: '#FFB74D'; // Âmbar aviso
+info: '#64B5F6'; // Azul info
 
 // Neutrals
-muted: '#F5F0E8'           // Creme suave
-mutedForeground: '#6B6660' // Cinza médio
+muted: '#F5F0E8'; // Creme suave
+mutedForeground: '#6B6660'; // Cinza médio
 
 // Borders
-border: '#E5DCD0'          // Bege suave
-input: '#F5F0E8'           // Creme suave
-ring: '#E891B5'            // Rosa focus
+border: '#E5DCD0'; // Bege suave
+input: '#F5F0E8'; // Creme suave
+ring: '#E891B5'; // Rosa focus
 ```
 
 **Dark Mode:**
 
 ```typescript
 // Backgrounds - Marrom escuro (NÃO preto puro)
-background: '#1F1C1A'      // Marrom escuro suave
-foreground: '#F5F0E8'      // Creme claro
+background: '#1F1C1A'; // Marrom escuro suave
+foreground: '#F5F0E8'; // Creme claro
 
-card: '#2A2623'            // Marrom escuro mais claro
-cardForeground: '#F5F0E8'
+card: '#2A2623'; // Marrom escuro mais claro
+cardForeground: '#F5F0E8';
 
 // Primary Colors (mais claros para contraste)
-primary: '#F0A8C4'         // Terracota claro
-primaryForeground: '#1F1C1A'
+primary: '#F0A8C4'; // Terracota claro
+primaryForeground: '#1F1C1A';
 
-secondary: '#A0C5B4'       // Sage claro
-secondaryForeground: '#1F1C1A'
+secondary: '#A0C5B4'; // Sage claro
+secondaryForeground: '#1F1C1A';
 
-accent: '#D8B4D8'          // Lavanda suave
-accentForeground: '#1F1C1A'
+accent: '#D8B4D8'; // Lavanda suave
+accentForeground: '#1F1C1A';
 ```
 
 **Gradientes:**
@@ -132,21 +135,21 @@ sereneDawnColors: {
   midnightBlue: '#0A1931',    // Background principal
   darkPetrol: '#1B2A41',      // Cards e seções
   navyDeep: '#0F1E2E',        // Popover
-  
+
   // Azuis Céu Suaves
   slateBlue: '#5D7B9B',       // Textos secundários
   sereneSky: '#7FB0DA',       // Primário
   babyBlue: '#ADD8E6',        // Destaques
-  
+
   // Toques de Calor
   champagne: '#FFD700',       // Dourado/Luxo
   warmWhite: '#F8F8F8',       // Textos principais
   platinum: '#DCDCDC',        // Bordas
-  
+
   // Azuis Secundários
   deepOcean: '#0D1B2A',       // Contraste
   twilight: '#1E3A5F',        // Variação card
-  
+
   // Estados
   success: '#34D399',
   warning: '#FBBF24',
@@ -162,15 +165,15 @@ sereneDawnGradients: {
   // Primários
   primary: ['#7FB0DA', '#ADD8E6'],
   primaryWithGold: ['#7FB0DA', '#FFD700'], // ⭐ Usado em badges, botões premium
-  
+
   // Luxo
   luxury: ['#FFD700', '#FFEAA7'],
-  
+
   // Ambientes
   twilight: ['#0A1931', '#1B2A41'],
   aurora: ['#0D1B2A', '#7FB0DA', '#ADD8E6'],  // 3 cores
   calm: ['#ADD8E6', '#F8F8F8'],
-  
+
   // Estados
   success: ['#34D399', '#6EE7B7'],
   warning: ['#FBBF24', '#FCD34D'],
@@ -285,6 +288,7 @@ sereneDawnTypography: {
 ```
 
 **Regras de Uso:**
+
 - ✅ Mínimo **16px** para corpo de texto (evita zoom no iOS)
 - ✅ Títulos: **≥24px** (hierarquia clara)
 - ✅ Classe C-D: fontes generosas, contraste alto
@@ -328,6 +332,7 @@ sereneDawnSpacing: {
 ```
 
 **Regras de Uso:**
+
 - ✅ **md (16px):** padrão interno de cards/containers
 - ✅ **lg (24px):** margens entre seções
 - ✅ **xl (32px):** padding de telas
@@ -366,6 +371,7 @@ sereneDawnBorderRadius: {
 ```
 
 **Regras de Uso:**
+
 - ✅ **lg (12-16px):** padrão para cards e botões
 - ✅ **xl (16-20px):** componentes premium
 - ✅ **full (999px):** badges, avatares, pills
@@ -470,6 +476,7 @@ sereneDawnShadows: {
 ```
 
 **Regras de Uso:**
+
 - ✅ iOS: `shadowColor`, `shadowOffset`, `shadowOpacity`, `shadowRadius`
 - ✅ Android: `elevation`
 - ✅ Cards: `md` ou `lg`
@@ -552,6 +559,7 @@ export interface ButtonProps {
 ```
 
 **Regras de Implementação:**
+
 - ✅ Sempre usar `StyleSheet.create()` para performance
 - ✅ Memoizar componente com `React.memo`
 - ✅ Usar `useMemo` e `useCallback` para otimização
@@ -597,6 +605,7 @@ export interface ButtonPremiumProps {
 ```
 
 **Features Premium:**
+
 - ✅ Gradientes via `LinearGradient` (expo-linear-gradient)
 - ✅ Animação de escala ao pressionar (Animated API)
 - ✅ Haptic feedback (expo-haptics)
@@ -649,28 +658,29 @@ export interface ButtonPremiumProps {
 
 ### 3.1 Stack Tecnológico
 
-| Categoria | Tecnologia | Versão | Uso |
-|-----------|-----------|--------|-----|
-| **Framework** | React Native | 0.76+ | Base do app mobile |
-| **SDK** | Expo | 54.0.0 | Build, deploy, OTA updates |
-| **Linguagem** | TypeScript | 5.3+ | Type safety |
-| **Navegação** | @react-navigation/native | 7.0+ | Stack, Tab, Drawer navigation |
-| **State** | Zustand | 5.0+ | Global state (alternativa ao Redux) |
-| **Storage** | AsyncStorage | 2.0+ | Persistência local |
-| **Backend** | Supabase | 2.50+ | Auth, Database, Edge Functions |
-| **AI** | Claude Sonnet 4 + GPT-4o | - | Chat inteligente |
-| **Gradientes** | expo-linear-gradient | 14.0+ | Gradientes nativos |
-| **Blur** | expo-blur | 14.0+ | Glassmorphism |
-| **Ícones** | react-native-vector-icons | 10.0+ | MaterialCommunityIcons |
-| **Haptics** | expo-haptics | 14.0+ | Feedback tátil |
-| **Forms** | react-hook-form | 7.54+ | Validação de formulários |
-| **Testing** | Vitest + Detox | - | Unit + E2E tests |
+| Categoria      | Tecnologia                | Versão | Uso                                 |
+| -------------- | ------------------------- | ------ | ----------------------------------- |
+| **Framework**  | React Native              | 0.76+  | Base do app mobile                  |
+| **SDK**        | Expo                      | 54.0.0 | Build, deploy, OTA updates          |
+| **Linguagem**  | TypeScript                | 5.3+   | Type safety                         |
+| **Navegação**  | @react-navigation/native  | 7.0+   | Stack, Tab, Drawer navigation       |
+| **State**      | Zustand                   | 5.0+   | Global state (alternativa ao Redux) |
+| **Storage**    | AsyncStorage              | 2.0+   | Persistência local                  |
+| **Backend**    | Supabase                  | 2.50+  | Auth, Database, Edge Functions      |
+| **AI**         | Claude Sonnet 4 + GPT-4o  | -      | Chat inteligente                    |
+| **Gradientes** | expo-linear-gradient      | 14.0+  | Gradientes nativos                  |
+| **Blur**       | expo-blur                 | 14.0+  | Glassmorphism                       |
+| **Ícones**     | react-native-vector-icons | 10.0+  | MaterialCommunityIcons              |
+| **Haptics**    | expo-haptics              | 14.0+  | Feedback tátil                      |
+| **Forms**      | react-hook-form           | 7.54+  | Validação de formulários            |
+| **Testing**    | Vitest + Detox            | -      | Unit + E2E tests                    |
 
 ---
 
 ### 3.2 Build System
 
 **Configuração:**
+
 - **Bundler:** Metro (padrão React Native)
 - **Build:** EAS Build (Expo Application Services)
 - **OTA Updates:** Expo Updates
@@ -754,6 +764,7 @@ apps/mobile/assets/
 ### 4.2 Otimização de Imagens
 
 **Regras:**
+
 - ✅ **PNG:** ícones, logos, imagens com transparência
 - ✅ **JPEG/WebP:** fotos, imagens realistas
 - ✅ **SVG:** ícones simples (via react-native-svg)
@@ -795,6 +806,7 @@ import { Image as ExpoImage } from 'expo-image';
 ### 4.3 CDN e Storage
 
 **Supabase Storage:**
+
 - Imagens de perfil: `supabase.storage.from('avatars')`
 - Conteúdo: `supabase.storage.from('content')`
 - Cache: 30 dias (CDN Cloudflare)
@@ -806,11 +818,13 @@ import { Image as ExpoImage } from 'expo-image';
 ### 5.1 Biblioteca: MaterialCommunityIcons
 
 **Instalação:**
+
 ```bash
 npm install react-native-vector-icons
 ```
 
 **Configuração (app.json):**
+
 ```json
 {
   "expo": {
@@ -818,9 +832,7 @@ npm install react-native-vector-icons
       [
         "expo-font",
         {
-          "fonts": [
-            "./node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"
-          ]
+          "fonts": ["./node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"]
         }
       ]
     ]
@@ -864,23 +876,23 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 ### 5.3 Ícones Principais do App
 
-| Contexto | Ícone | Nome |
-|----------|-------|------|
-| Chat | `chat` | Chat/Conversa |
-| Home | `home` | Tela inicial |
-| Perfil | `account` | Perfil do usuário |
-| Plano Diário | `calendar-star` | Calendário |
-| Progresso | `chart-line` | Gráfico |
-| Hábitos | `check-circle` | Check/Confirmar |
-| Emergência | `phone-alert` | Telefone alerta |
-| Sono | `sleep` | Dormir |
-| Alimentação | `food-apple` | Maçã/Alimento |
-| Exercício | `run` | Correr/Exercício |
-| Médico | `stethoscope` | Estetoscópio |
-| Premium | `crown` | Coroa |
-| Notificações | `bell` | Sino |
-| Configurações | `cog` | Engrenagem |
-| Sair | `logout` | Logout |
+| Contexto      | Ícone           | Nome              |
+| ------------- | --------------- | ----------------- |
+| Chat          | `chat`          | Chat/Conversa     |
+| Home          | `home`          | Tela inicial      |
+| Perfil        | `account`       | Perfil do usuário |
+| Plano Diário  | `calendar-star` | Calendário        |
+| Progresso     | `chart-line`    | Gráfico           |
+| Hábitos       | `check-circle`  | Check/Confirmar   |
+| Emergência    | `phone-alert`   | Telefone alerta   |
+| Sono          | `sleep`         | Dormir            |
+| Alimentação   | `food-apple`    | Maçã/Alimento     |
+| Exercício     | `run`           | Correr/Exercício  |
+| Médico        | `stethoscope`   | Estetoscópio      |
+| Premium       | `crown`         | Coroa             |
+| Notificações  | `bell`          | Sino              |
+| Configurações | `cog`           | Engrenagem        |
+| Sair          | `logout`        | Logout            |
 
 **Buscar ícones:**
 https://pictogrammers.com/library/mdi/
@@ -942,13 +954,7 @@ export const Button = React.memo(ButtonComponent);
 
 ```typescript
 const containerStyle = useMemo(
-  () => [
-    styles.base,
-    styles[variant],
-    fullWidth && styles.fullWidth,
-    disabled && styles.disabled,
-    style,
-  ],
+  () => [styles.base, styles[variant], fullWidth && styles.fullWidth, disabled && styles.disabled, style],
   [variant, fullWidth, disabled, style]
 );
 ```
@@ -960,7 +966,7 @@ const handlePress = useCallback(
   (event) => {
     // Haptic feedback
     Haptics?.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    
+
     if (onPress) {
       onPress(event);
     }
@@ -1018,7 +1024,7 @@ const styles = StyleSheet.create({
 });
 ```
 
-2. **Contraste de Cores:** 
+2. **Contraste de Cores:**
    - Texto normal (≤18px): **4.5:1** mínimo
    - Texto grande (≥18px): **3:1** mínimo
 
@@ -1210,22 +1216,26 @@ import { useTheme } from '@/hooks/useTheme';
 ### 8.1 Workflow: Figma → React Native
 
 **Passo 1: Receber Design do Figma**
+
 - Exportar tokens (cores, tipografia, espaçamento) via Figma plugin
 - Usar Figma DevMode para specs precisas
 - Exportar assets (PNG @2x/@3x, SVG)
 
 **Passo 2: Mapear Tokens**
+
 - Converter tokens Figma para TypeScript
 - Atualizar `src/theme/colors.ts` ou `src/theme/sereneDawn.ts`
 - Verificar contraste WCAG 2.1 AA
 
 **Passo 3: Criar/Atualizar Componentes**
+
 - Criar componente no `src/components/`
 - Implementar com `StyleSheet.create()`
 - Adicionar acessibilidade
 - Memoizar com `React.memo`
 
 **Passo 4: Testar**
+
 - Testar em iOS (iPhone 13, 15)
 - Testar em Android (Pixel 5, Galaxy S21)
 - Testar dark mode
@@ -1344,18 +1354,21 @@ assets/images/
 ### 8.4 Checklists de Integração
 
 **Checklist: Cores**
+
 - [ ] Todas as cores possuem light/dark variants
 - [ ] Contraste WCAG 2.1 AA verificado (4.5:1 texto normal, 3:1 texto grande)
 - [ ] Overlays e transparências definidas
 - [ ] Gradientes mapeados corretamente
 
 **Checklist: Tipografia**
+
 - [ ] Fontes customizadas carregadas (se necessário)
 - [ ] Tamanhos mínimos respeitados (16px corpo)
 - [ ] Pesos mapeados corretamente (300-800)
 - [ ] Line-heights definidos
 
 **Checklist: Componente**
+
 - [ ] Usa tokens de tema (não hardcoded)
 - [ ] Implementa acessibilidade (accessibilityLabel, role)
 - [ ] Touch target ≥44x44px
@@ -1366,6 +1379,7 @@ assets/images/
 - [ ] Documentado com JSDoc
 
 **Checklist: Assets**
+
 - [ ] Exportados em múltiplas resoluções (@2x/@3x)
 - [ ] Comprimidos (TinyPNG, ImageOptim)
 - [ ] Nomes em kebab-case
@@ -1375,14 +1389,14 @@ assets/images/
 
 ### 8.5 Plugins Figma Recomendados
 
-| Plugin | Uso |
-|--------|-----|
-| **Contrast** | Verificar contraste WCAG |
-| **A11y - Color Contrast Checker** | Acessibilidade de cores |
-| **Design Tokens** | Exportar tokens para JSON |
-| **Figma to Code (React Native)** | Converter design em código |
-| **Inspect** | Specs detalhadas (padding, margin, etc) |
-| **TinyImage** | Comprimir imagens antes de exportar |
+| Plugin                            | Uso                                     |
+| --------------------------------- | --------------------------------------- |
+| **Contrast**                      | Verificar contraste WCAG                |
+| **A11y - Color Contrast Checker** | Acessibilidade de cores                 |
+| **Design Tokens**                 | Exportar tokens para JSON               |
+| **Figma to Code (React Native)**  | Converter design em código              |
+| **Inspect**                       | Specs detalhadas (padding, margin, etc) |
+| **TinyImage**                     | Comprimir imagens antes de exportar     |
 
 ---
 
@@ -1661,14 +1675,14 @@ export const ButtonPremium = React.memo(ButtonPremiumComponent);
 
 ### 10.1 Links Úteis
 
-| Recurso | URL |
-|---------|-----|
-| **React Native Docs** | https://reactnative.dev/docs/getting-started |
-| **Expo Docs** | https://docs.expo.dev/ |
-| **Material Community Icons** | https://pictogrammers.com/library/mdi/ |
-| **Supabase Docs** | https://supabase.com/docs |
-| **WCAG 2.1** | https://www.w3.org/WAI/WCAG21/quickref/ |
-| **Contrast Checker** | https://webaim.org/resources/contrastchecker/ |
+| Recurso                      | URL                                           |
+| ---------------------------- | --------------------------------------------- |
+| **React Native Docs**        | https://reactnative.dev/docs/getting-started  |
+| **Expo Docs**                | https://docs.expo.dev/                        |
+| **Material Community Icons** | https://pictogrammers.com/library/mdi/        |
+| **Supabase Docs**            | https://supabase.com/docs                     |
+| **WCAG 2.1**                 | https://www.w3.org/WAI/WCAG21/quickref/       |
+| **Contrast Checker**         | https://webaim.org/resources/contrastchecker/ |
 
 ---
 
@@ -1700,6 +1714,7 @@ eas build --platform all --profile production
 Este documento serve como **fonte única de verdade** para integração de designs Figma no app Nossa Maternidade (React Native + Expo).
 
 **Principais pontos:**
+
 - ✅ **2 temas completos:** Bubblegum (acolhedor) + Serene Dawn (premium)
 - ✅ **Tokens bem definidos:** cores, tipografia, espaçamento, sombras
 - ✅ **Componentes base + premium**
@@ -1708,6 +1723,7 @@ Este documento serve como **fonte única de verdade** para integração de desig
 - ✅ **Público classe C-D priorizado**
 
 **Próximos passos:**
+
 1. Revisar tokens ao receber novos designs do Figma
 2. Implementar componentes seguindo este guia
 3. Testar em iOS + Android + Dark Mode

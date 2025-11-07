@@ -114,13 +114,14 @@ const BadgePremiumComponent: React.FC<BadgePremiumProps> = ({
       styles.base,
       styles[`${size}Container`],
       glow && styles.glow,
-      glow && getShadowStyle({
-        shadowColor: gradientColors[0],
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.4,
-        shadowRadius: 8,
-        elevation: 8,
-      }),
+      glow &&
+        getShadowStyle({
+          shadowColor: gradientColors[0],
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.4,
+          shadowRadius: 8,
+          elevation: 8,
+        }),
       style,
     ],
     [size, glow, gradientColors, style]

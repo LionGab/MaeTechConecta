@@ -7,7 +7,7 @@ import { Platform, ViewStyle } from 'react-native';
 
 /**
  * Converte shadow props do React Native para boxShadow do Web
- * 
+ *
  * @example
  * const styles = {
  *   container: {
@@ -35,7 +35,7 @@ export function getShadowStyle(shadowProps: {
     const { width, height } = shadowOffset;
     const color = shadowColor;
     const alpha = shadowOpacity;
-    
+
     // Converte cor hex para rgba se necessário
     let rgbaColor = color;
     if (color.startsWith('#')) {
@@ -71,7 +71,7 @@ export const shadows = {
     shadowRadius: 1.0,
     elevation: 1,
   }),
-  
+
   md: getShadowStyle({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -79,15 +79,15 @@ export const shadows = {
     shadowRadius: 2.62,
     elevation: 4,
   }),
-  
+
   lg: getShadowStyle({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.30,
+    shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
   }),
-  
+
   xl: getShadowStyle({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
@@ -96,4 +96,3 @@ export const shadows = {
     elevation: 16,
   }),
 };
-

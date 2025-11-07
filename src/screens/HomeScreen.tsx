@@ -143,11 +143,31 @@ export default function HomeScreen() {
   );
 
   const handleDecreaseFrequency = useCallback(async () => {
-    if (!userId) return;
+    if (!userId) {
+      return;
+    }
 
     try {
-      // Reduzir frequency_cap em 1 (mín. 0)
-      await updateFrequencyCap(userId, 1);
+      const { data: profile, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('frequency_cap')
+        .eq('id', userId)
+        .single();
+
+      if (profileError) {
+        throw profileError;
+      }
+
+      const currentCap = typeof profile?.frequency_cap === 'number' ? profile.frequency_cap : 0;
+      const updatedCap = Math.max(0, currentCap - 1);
+
+      if (updatedCap === currentCap) {
+        setShowWhyThisModal(false);
+        Alert.alert('Informação', 'Você já está recebendo o mínimo de lembretes por dia.');
+        return;
+      }
+
+      await updateFrequencyCap(userId, updatedCap);
       setShowWhyThisModal(false);
       Alert.alert(
         '✅ Frequência atualizada',

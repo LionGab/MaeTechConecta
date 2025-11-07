@@ -40,7 +40,7 @@ interface QuickActionButtonProps {
   title: string;
   onPress: () => void;
   accessibilityLabel: string;
-  gradientColors?: [string, string];
+  gradientColors?: readonly [string, string];
 }
 
 const QuickActionButton: React.FC<QuickActionButtonProps> = React.memo(
@@ -56,19 +56,20 @@ const QuickActionButton: React.FC<QuickActionButtonProps> = React.memo(
       {/* Background glass */}
       <View style={[StyleSheet.absoluteFill, { backgroundColor: sereneDawnOverlay.glass }]} />
 
-      <LinearGradient
-        colors={gradientColors || sereneDawnGradients.primary}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={StyleSheet.absoluteFill}
-        opacity={0.3}
-      />
+      <View style={[StyleSheet.absoluteFill, { opacity: 0.3 }]}>
+        <LinearGradient
+          colors={gradientColors ?? sereneDawnGradients.primary}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={StyleSheet.absoluteFill}
+        />
+      </View>
 
       {/* Conteúdo */}
       <View style={styles.quickActionContent}>
         <View style={styles.quickActionIconContainer}>
           <LinearGradient
-            colors={gradientColors || sereneDawnGradients.primaryWithGold}
+            colors={gradientColors ?? sereneDawnGradients.primaryWithGold}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.quickActionIconGradient}

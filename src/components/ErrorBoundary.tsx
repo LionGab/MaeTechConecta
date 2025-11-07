@@ -1,7 +1,7 @@
 /**
  * 🛡️ Error Boundary - Tratamento de Erros Premium
  * Component para capturar erros e exibir fallback elegante
- * 
+ *
  * Features:
  * - Captura erros de renderização
  * - UI premium de fallback
@@ -29,16 +29,16 @@ import {
 interface ErrorBoundaryProps {
   /** Children components */
   children: ReactNode;
-  
+
   /** Callback quando ocorre erro */
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
-  
+
   /** Componente de fallback customizado */
   fallback?: (error: Error, retry: () => void) => ReactNode;
-  
+
   /** Texto do título de erro */
   errorTitle?: string;
-  
+
   /** Texto da mensagem de erro */
   errorMessage?: string;
 }
@@ -72,10 +72,10 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // Log do erro
     console.error('ErrorBoundary caught an error:', error, errorInfo);
-    
+
     // Callback opcional
     this.props.onError?.(error, errorInfo);
-    
+
     // TODO: Enviar para serviço de monitoring (Sentry, etc)
     // if (__DEV__) {
     //   console.log('Error details:', errorInfo.componentStack);
@@ -100,10 +100,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       return (
         <View style={styles.container}>
           <LinearGradient
-            colors={[
-              sereneDawnColors.midnightBlue,
-              sereneDawnColors.darkPetrol,
-            ]}
+            colors={[sereneDawnColors.midnightBlue, sereneDawnColors.darkPetrol]}
             style={StyleSheet.absoluteFill}
           />
 
@@ -121,22 +118,17 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             </View>
 
             {/* Título */}
-            <Text style={styles.title}>
-              {this.props.errorTitle || 'Ops! Algo deu errado'}
-            </Text>
+            <Text style={styles.title}>{this.props.errorTitle || 'Ops! Algo deu errado'}</Text>
 
             {/* Mensagem */}
             <Text style={styles.message}>
-              {this.props.errorMessage ||
-                'Desculpe, encontramos um problema. Por favor, tente novamente.'}
+              {this.props.errorMessage || 'Desculpe, encontramos um problema. Por favor, tente novamente.'}
             </Text>
 
             {/* Detalhes do erro (apenas em dev) */}
             {__DEV__ && this.state.error && (
               <View style={styles.errorDetails}>
-                <Text style={styles.errorText}>
-                  {this.state.error.toString()}
-                </Text>
+                <Text style={styles.errorText}>{this.state.error.toString()}</Text>
               </View>
             )}
 
@@ -245,4 +237,3 @@ const styles = StyleSheet.create({
 });
 
 export default ErrorBoundary;
-

@@ -3,6 +3,7 @@
 ## ❌ Problema Atual
 
 O Node.js foi removido do sistema. Nenhum comando funciona:
+
 - `node` ❌
 - `npm` ❌
 - `pnpm` ❌
@@ -12,11 +13,13 @@ O Node.js foi removido do sistema. Nenhum comando funciona:
 ### Passo 1: Download do Node.js 20 LTS
 
 **Opção A - Link direto (RECOMENDADO):**
+
 ```
 https://nodejs.org/dist/v20.18.1/node-v20.18.1-x64.msi
 ```
 
 **Opção B - Site oficial:**
+
 1. Acesse: https://nodejs.org/
 2. Clique no botão verde "LTS" (Long Term Support)
 3. Baixe a versão Windows Installer (.msi) de 64 bits
@@ -33,6 +36,7 @@ https://nodejs.org/dist/v20.18.1/node-v20.18.1-x64.msi
 ### Passo 3: Reiniciar o Terminal
 
 **MUITO IMPORTANTE:**
+
 1. Feche TODAS as janelas do PowerShell/Terminal abertas
 2. Abra uma NOVA janela do PowerShell
 3. O PATH só é atualizado em novas sessões
@@ -56,6 +60,7 @@ npm install -g pnpm
 ```
 
 Verifique:
+
 ```powershell
 pnpm -v
 # Deve mostrar: 9.x.x
@@ -71,12 +76,15 @@ pnpm install
 ### Passo 7: Iniciar o App
 
 **Para iPhone (Expo Go):**
+
 ```powershell
 pnpm --filter @nossa-maternidade/mobile dev
 ```
+
 Escaneie o QR code que aparecer com o app Expo Go
 
 **Para testar no navegador:**
+
 ```powershell
 pnpm --filter @nossa-maternidade/mobile dev:web
 ```
@@ -86,6 +94,7 @@ pnpm --filter @nossa-maternidade/mobile dev:web
 ### "node: The term 'node' is not recognized"
 
 **Solução:** Você não reiniciou o PowerShell após a instalação
+
 1. Feche TODAS as janelas do PowerShell
 2. Abra uma NOVA janela
 3. Tente novamente
@@ -93,6 +102,7 @@ pnpm --filter @nossa-maternidade/mobile dev:web
 ### "npm install -g pnpm" dá erro de permissão
 
 **Solução:** Execute o PowerShell como Administrador
+
 1. Clique com botão direito no ícone do PowerShell
 2. Escolha "Executar como Administrador"
 3. Execute o comando novamente
@@ -100,6 +110,7 @@ pnpm --filter @nossa-maternidade/mobile dev:web
 ### PATH não foi atualizado
 
 **Solução manual:**
+
 1. Abra as Configurações do Windows
 2. Procure por "Variáveis de Ambiente"
 3. Na seção "Variáveis de Sistema", encontre "Path"

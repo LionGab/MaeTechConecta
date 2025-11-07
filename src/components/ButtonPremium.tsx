@@ -90,7 +90,7 @@ export interface ButtonPremiumProps extends Omit<TouchableOpacityProps, 'style'>
   textStyle?: TextStyle;
 
   /** Cor customizada do gradiente (sobrescreve variante) */
-  gradientColors?: [string, string];
+  gradientColors?: readonly [string, string];
 
   /** Label de acessibilidade (obrigatório) */
   accessibilityLabel: string;
@@ -123,7 +123,7 @@ const ButtonPremiumComponent: React.FC<ButtonPremiumProps> = ({
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   // Memoizar cores do gradiente
-  const gradient = useMemo(() => {
+  const gradient = useMemo((): readonly [string, string, ...string[]] => {
     if (gradientColors) return gradientColors;
     switch (variant) {
       case 'primary':
@@ -131,10 +131,10 @@ const ButtonPremiumComponent: React.FC<ButtonPremiumProps> = ({
       case 'primaryGold':
         return sereneDawnGradients.primaryWithGold;
       case 'secondary':
-        return [sereneDawnColors.slateBlue, sereneDawnColors.sereneSky];
+        return [sereneDawnColors.slateBlue, sereneDawnColors.sereneSky] as const;
       case 'outline':
       case 'ghost':
-        return ['transparent', 'transparent'];
+        return ['transparent', 'transparent'] as const;
       default:
         return sereneDawnGradients.primary;
     }

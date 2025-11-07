@@ -29,12 +29,19 @@ const ComponentValidationScreen = lazy(() =>
 
 // Wrapper com Suspense para lazy loaded screens
 const withSuspense = <P extends object>(Component: React.ComponentType<P>) => {
-  return (props: P) => (
-    <Suspense fallback={<Loading message="Carregando..." />}>
-      <Component {...props} />
-    </Suspense>
-  );
+  return function SuspendedComponent(props: P) {
+    return (
+      <Suspense fallback={<Loading message="Carregando..." />}>
+        <Component {...props} />
+      </Suspense>
+    );
+  };
 };
+
+const OnboardingScreenSuspended = withSuspense(OnboardingScreen);
+const DailyPlanScreenSuspended = withSuspense(DailyPlanScreen);
+const ContentDetailScreenSuspended = withSuspense(ContentDetailScreen);
+const ComponentValidationScreenSuspended = withSuspense(ComponentValidationScreen);
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -74,7 +81,7 @@ export function AppNavigator() {
           {!isOnboarded ? (
             <Stack.Screen
               name="Onboarding"
-              component={withSuspense(OnboardingScreen)}
+              component={OnboardingScreenSuspended}
               listeners={{
                 focus: () => {
                   // Callback será gerenciado via navigation listener
@@ -86,7 +93,7 @@ export function AppNavigator() {
               <Stack.Screen name="Home" component={TabNavigator} />
               <Stack.Screen
                 name="DailyPlan"
-                component={withSuspense(DailyPlanScreen)}
+                component={DailyPlanScreenSuspended}
                 options={{
                   headerShown: true,
                   title: 'Plano Diário',
@@ -96,7 +103,7 @@ export function AppNavigator() {
               />
               <Stack.Screen
                 name="ContentDetail"
-                component={withSuspense(ContentDetailScreen)}
+                component={ContentDetailScreenSuspended}
                 options={{
                   headerShown: true,
                   title: 'Conteúdo',
@@ -106,7 +113,7 @@ export function AppNavigator() {
               />
               <Stack.Screen
                 name="ComponentValidation"
-                component={withSuspense(ComponentValidationScreen)}
+                component={ComponentValidationScreenSuspended}
                 options={{
                   headerShown: true,
                   title: 'Validação de Componentes',

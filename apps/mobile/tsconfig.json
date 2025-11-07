@@ -18,13 +18,18 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "isolatedModules": true,
+    "types": ["jest", "react", "react-native"],
     "baseUrl": ".",
     "paths": {
       "@nossa-maternidade/shared": ["../../packages/shared/src/index.ts"],
       "@nossa-maternidade/shared/*": ["../../packages/shared/src/*"],
       "@nossa-maternidade/shared-types": ["../../packages/shared-types/src/index.ts"],
       "@nossa-maternidade/shared-types/*": ["../../packages/shared-types/src/*"],
-      "@/*": ["../../src/*"]
+      "@/*": ["../../src/*"],
+      "@testing-library/react-native": ["./node_modules/@testing-library/react-native"],
+      "@testing-library/react-native/*": ["./node_modules/@testing-library/react-native/*"],
+      "expo-blur": ["./node_modules/expo-blur"],
+      "expo-blur/*": ["./node_modules/expo-blur/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "*.ts", "*.tsx", "../../src/**/*.ts", "../../src/**/*.tsx"],

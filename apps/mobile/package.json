@@ -43,6 +43,7 @@
     "date-fns": "^2.30.0",
     "expo": "~54.0.22",
     "expo-av": "~16.0.7",
+    "expo-blur": "~15.0.7",
     "expo-constants": "~18.0.10",
     "expo-linear-gradient": "~15.0.7",
     "expo-notifications": "~0.32.12",
@@ -59,7 +60,6 @@
     "react-native-safe-area-context": "5.6.2",
     "react-native-screens": "~4.16.0",
     "react-native-vector-icons": "^10.3.0",
-    "react-native-web": "~0.21.2",
     "react-native-worklets": "0.5.1",
     "zod": "^3.22.0",
     "zustand": "^4.5.0"
@@ -69,9 +69,11 @@
     "@react-native/eslint-config": "^0.74.0",
     "@react-native/typescript-config": "^0.74.0",
     "@testing-library/jest-native": "^5.4.3",
-    "@testing-library/react-native": "^12.4.3",
+    "@testing-library/react-native": "^12.9.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.10.0",
     "@types/react": "~19.1.17",
+    "@types/react-native": "^0.73.0",
     "@types/react-native-vector-icons": "^6.4.18",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
@@ -86,6 +88,7 @@
     "jest-expo": "~54.0.13",
     "prettier": "^3.1.1",
     "react-dom": "19.1.0",
+    "react-native-web": "~0.21.2",
     "typescript": "^5.3.3"
   }
 }

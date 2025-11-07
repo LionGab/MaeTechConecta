@@ -5,6 +5,7 @@
 Você instalou o **Node.js 25** (muito recente), mas o projeto precisa do **Node.js 20 LTS**.
 
 **Por que Node 20?**
+
 - Expo e React Native são testados com LTS (Long Term Support)
 - Node 25 é experimental e pode ter bugs
 - Dependências podem não funcionar corretamente
@@ -47,11 +48,13 @@ Remove-Item -Path "$env:APPDATA\pnpm" -Recurse -Force -ErrorAction SilentlyConti
 ### Passo 3: Baixar Node.js 20 LTS
 
 **Link direto do instalador:**
+
 ```
 https://nodejs.org/dist/v20.18.1/node-v20.18.1-x64.msi
 ```
 
 **Ou pelo site oficial:**
+
 - https://nodejs.org/
 - Clique no botão verde **"20.18.1 LTS"** (Recommended For Most Users)
 
@@ -70,6 +73,7 @@ https://nodejs.org/dist/v20.18.1/node-v20.18.1-x64.msi
 ### Passo 5: Reiniciar o PowerShell (OBRIGATÓRIO)
 
 **MUITO IMPORTANTE:**
+
 1. Feche **TODAS** as janelas do PowerShell/Terminal
 2. Abra uma **NOVA** janela do PowerShell
 3. O PATH só atualiza em novas sessões
@@ -92,6 +96,7 @@ npm install -g pnpm
 ```
 
 Verifique:
+
 ```powershell
 pnpm -v
 # Deve mostrar: 9.x.x
@@ -123,6 +128,7 @@ pnpm --filter @nossa-maternidade/mobile dev
 **Causa:** Você não reiniciou o PowerShell
 
 **Solução:**
+
 1. Feche TODAS as janelas do PowerShell
 2. Abra uma NOVA janela
 3. Execute `node -v` novamente
@@ -130,6 +136,7 @@ pnpm --filter @nossa-maternidade/mobile dev
 ### Erro "EACCES" ou "permission denied" ao instalar pnpm
 
 **Solução:**
+
 1. Feche o PowerShell
 2. Clique com botão direito no ícone do PowerShell
 3. Escolha **"Executar como Administrador"**
@@ -138,6 +145,7 @@ pnpm --filter @nossa-maternidade/mobile dev
 ### "pnpm install" dá erro de compatibilidade
 
 **Solução:**
+
 ```powershell
 # Limpar cache
 pnpm store prune
@@ -168,13 +176,13 @@ pnpm:     9.x.x     ✅
 
 ## ⚠️ Por Que Não Usar Node 25?
 
-| Node 25 | Node 20 LTS |
-|---------|-------------|
-| ❌ Experimental | ✅ Estável |
-| ❌ Bugs conhecidos | ✅ Testado |
+| Node 25                       | Node 20 LTS             |
+| ----------------------------- | ----------------------- |
+| ❌ Experimental               | ✅ Estável              |
+| ❌ Bugs conhecidos            | ✅ Testado              |
 | ❌ Sem suporte de bibliotecas | ✅ Totalmente suportado |
-| ❌ Pode quebrar builds | ✅ Builds confiáveis |
-| ❌ Sem garantias | ✅ Suporte até 2026 |
+| ❌ Pode quebrar builds        | ✅ Builds confiáveis    |
+| ❌ Sem garantias              | ✅ Suporte até 2026     |
 
 ## 🔗 Links Úteis
 

@@ -24,12 +24,20 @@ const ProfileScreen = lazy(() => import('@/screens/ProfileScreen').then((m) => (
 
 // Wrapper com Suspense para lazy loaded screens
 const withSuspense = <P extends object>(Component: React.ComponentType<P>) => {
-  return (props: P) => (
-    <Suspense fallback={<Loading message="Carregando..." />}>
-      <Component {...props} />
-    </Suspense>
-  );
+  return function SuspendedComponent(props: P) {
+    return (
+      <Suspense fallback={<Loading message="Carregando..." />}>
+        <Component {...props} />
+      </Suspense>
+    );
+  };
 };
+
+const HomeScreenSuspended = withSuspense(HomeScreen);
+const ChatScreenSuspended = withSuspense(ChatScreen);
+const HabitsScreenSuspended = withSuspense(HabitsScreen);
+const ContentFeedScreenSuspended = withSuspense(ContentFeedScreen);
+const ProfileScreenSuspended = withSuspense(ProfileScreen);
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -59,7 +67,7 @@ export function TabNavigator() {
     >
       <Tab.Screen
         name="Home"
-        component={withSuspense(HomeScreen)}
+        component={HomeScreenSuspended}
         options={{
           tabBarLabel: 'Início',
           tabBarIcon: ({ color, size }) => <Icon name="home" size={size} color={color} />,
@@ -68,7 +76,7 @@ export function TabNavigator() {
       />
       <Tab.Screen
         name="Chat"
-        component={withSuspense(ChatScreen)}
+        component={ChatScreenSuspended}
         options={{
           tabBarLabel: 'NathIA',
           tabBarIcon: ({ color, size }) => <Icon name="robot" size={size} color={color} />,
@@ -77,7 +85,7 @@ export function TabNavigator() {
       />
       <Tab.Screen
         name="Habits"
-        component={withSuspense(HabitsScreen)}
+        component={HabitsScreenSuspended}
         options={{
           tabBarLabel: 'Hábitos',
           tabBarIcon: ({ color, size }) => <Icon name="check-circle" size={size} color={color} />,
@@ -86,7 +94,7 @@ export function TabNavigator() {
       />
       <Tab.Screen
         name="Content"
-        component={withSuspense(ContentFeedScreen)}
+        component={ContentFeedScreenSuspended}
         options={{
           tabBarLabel: 'Conteúdos',
           tabBarIcon: ({ color, size }) => <Icon name="play-circle" size={size} color={color} />,
@@ -95,7 +103,7 @@ export function TabNavigator() {
       />
       <Tab.Screen
         name="Profile"
-        component={withSuspense(ProfileScreen)}
+        component={ProfileScreenSuspended}
         options={{
           tabBarLabel: 'Perfil',
           tabBarIcon: ({ color, size }) => <Icon name="account-circle" size={size} color={color} />,

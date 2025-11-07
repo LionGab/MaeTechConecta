@@ -5,7 +5,12 @@
 
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
+
+import { ThemeProvider } from '@/contexts/ThemeContext';
+
 import { ButtonPremium } from '../ButtonPremium';
+
+const renderWithTheme = (ui: React.ReactElement) => render(<ThemeProvider>{ui}</ThemeProvider>);
 
 describe('ButtonPremium', () => {
   // =====================================================
@@ -13,19 +18,15 @@ describe('ButtonPremium', () => {
   // =====================================================
 
   it('should render correctly with children', () => {
-    const { getByText } = render(
-      <ButtonPremium accessibilityLabel="Test Button">
-        Click me
-      </ButtonPremium>
+    const { getByText } = renderWithTheme(
+      <ButtonPremium accessibilityLabel="Test Button">Click me</ButtonPremium>
     );
     expect(getByText('Click me')).toBeTruthy();
   });
 
   it('should render with primary variant by default', () => {
-    const { getByLabelText } = render(
-      <ButtonPremium accessibilityLabel="Test Button">
-        Primary
-      </ButtonPremium>
+    const { getByLabelText } = renderWithTheme(
+      <ButtonPremium accessibilityLabel="Test Button">Primary</ButtonPremium>
     );
     expect(getByLabelText('Test Button')).toBeTruthy();
   });
@@ -35,7 +36,7 @@ describe('ButtonPremium', () => {
   // =====================================================
 
   it('should render with primaryGold variant', () => {
-    const { getByText } = render(
+    const { getByText } = renderWithTheme(
       <ButtonPremium variant="primaryGold" accessibilityLabel="Gold Button">
         Gold
       </ButtonPremium>
@@ -44,7 +45,7 @@ describe('ButtonPremium', () => {
   });
 
   it('should render with outline variant', () => {
-    const { getByText } = render(
+    const { getByText } = renderWithTheme(
       <ButtonPremium variant="outline" accessibilityLabel="Outline Button">
         Outline
       </ButtonPremium>
@@ -53,7 +54,7 @@ describe('ButtonPremium', () => {
   });
 
   it('should render with ghost variant', () => {
-    const { getByText } = render(
+    const { getByText } = renderWithTheme(
       <ButtonPremium variant="ghost" accessibilityLabel="Ghost Button">
         Ghost
       </ButtonPremium>
@@ -66,7 +67,7 @@ describe('ButtonPremium', () => {
   // =====================================================
 
   it('should render with small size', () => {
-    const { getByText } = render(
+    const { getByText } = renderWithTheme(
       <ButtonPremium size="sm" accessibilityLabel="Small Button">
         Small
       </ButtonPremium>
@@ -75,7 +76,7 @@ describe('ButtonPremium', () => {
   });
 
   it('should render with large size', () => {
-    const { getByText } = render(
+    const { getByText } = renderWithTheme(
       <ButtonPremium size="lg" accessibilityLabel="Large Button">
         Large
       </ButtonPremium>
@@ -88,7 +89,7 @@ describe('ButtonPremium', () => {
   // =====================================================
 
   it('should render with left icon', () => {
-    const { getByText } = render(
+    const { getByText } = renderWithTheme(
       <ButtonPremium icon="star" iconPosition="left" accessibilityLabel="Icon Button">
         With Icon
       </ButtonPremium>
@@ -97,7 +98,7 @@ describe('ButtonPremium', () => {
   });
 
   it('should render with right icon', () => {
-    const { getByText } = render(
+    const { getByText } = renderWithTheme(
       <ButtonPremium icon="arrow-right" iconPosition="right" accessibilityLabel="Icon Button">
         Next
       </ButtonPremium>
@@ -111,7 +112,7 @@ describe('ButtonPremium', () => {
 
   it('should call onPress when pressed', () => {
     const onPressMock = jest.fn();
-    const { getByLabelText } = render(
+    const { getByLabelText } = renderWithTheme(
       <ButtonPremium accessibilityLabel="Test Button" onPress={onPressMock}>
         Press Me
       </ButtonPremium>
@@ -123,7 +124,7 @@ describe('ButtonPremium', () => {
 
   it('should not call onPress when disabled', () => {
     const onPressMock = jest.fn();
-    const { getByLabelText } = render(
+    const { getByLabelText } = renderWithTheme(
       <ButtonPremium accessibilityLabel="Disabled Button" onPress={onPressMock} disabled>
         Disabled
       </ButtonPremium>
@@ -135,7 +136,7 @@ describe('ButtonPremium', () => {
 
   it('should not call onPress when loading', () => {
     const onPressMock = jest.fn();
-    const { getByLabelText } = render(
+    const { getByLabelText } = renderWithTheme(
       <ButtonPremium accessibilityLabel="Loading Button" onPress={onPressMock} loading>
         Loading
       </ButtonPremium>
@@ -150,7 +151,7 @@ describe('ButtonPremium', () => {
   // =====================================================
 
   it('should show ActivityIndicator when loading', () => {
-    const { getByLabelText, queryByText } = render(
+    const { getByLabelText, queryByText } = renderWithTheme(
       <ButtonPremium accessibilityLabel="Loading Button" loading>
         Click me
       </ButtonPremium>
@@ -165,31 +166,24 @@ describe('ButtonPremium', () => {
   // =====================================================
 
   it('should have correct accessibility role', () => {
-    const { getByRole } = render(
-      <ButtonPremium accessibilityLabel="Test Button">
-        Button
-      </ButtonPremium>
+    const { getByRole } = renderWithTheme(
+      <ButtonPremium accessibilityLabel="Test Button">Button</ButtonPremium>
     );
 
     expect(getByRole('button')).toBeTruthy();
   });
 
   it('should have accessibility label', () => {
-    const { getByLabelText } = render(
-      <ButtonPremium accessibilityLabel="Custom Label">
-        Button Text
-      </ButtonPremium>
+    const { getByLabelText } = renderWithTheme(
+      <ButtonPremium accessibilityLabel="Custom Label">Button Text</ButtonPremium>
     );
 
     expect(getByLabelText('Custom Label')).toBeTruthy();
   });
 
   it('should have accessibility hint when provided', () => {
-    const { getByLabelText } = render(
-      <ButtonPremium
-        accessibilityLabel="Submit Button"
-        accessibilityHint="Submits the form"
-      >
+    const { getByLabelText } = renderWithTheme(
+      <ButtonPremium accessibilityLabel="Submit Button" accessibilityHint="Submits the form">
         Submit
       </ButtonPremium>
     );
@@ -198,7 +192,7 @@ describe('ButtonPremium', () => {
   });
 
   it('should have disabled accessibility state when disabled', () => {
-    const { getByLabelText } = render(
+    const { getByLabelText } = renderWithTheme(
       <ButtonPremium accessibilityLabel="Disabled Button" disabled>
         Disabled
       </ButtonPremium>
@@ -213,7 +207,7 @@ describe('ButtonPremium', () => {
   // =====================================================
 
   it('should render with full width', () => {
-    const { getByLabelText } = render(
+    const { getByLabelText } = renderWithTheme(
       <ButtonPremium accessibilityLabel="Full Width Button" fullWidth>
         Full Width
       </ButtonPremium>
@@ -228,11 +222,8 @@ describe('ButtonPremium', () => {
 
   it('should accept custom gradient colors', () => {
     const customGradient: [string, string] = ['#FF0000', '#00FF00'];
-    const { getByText } = render(
-      <ButtonPremium
-        accessibilityLabel="Custom Gradient"
-        gradientColors={customGradient}
-      >
+    const { getByText } = renderWithTheme(
+      <ButtonPremium accessibilityLabel="Custom Gradient" gradientColors={customGradient}>
         Custom
       </ButtonPremium>
     );
@@ -240,4 +231,3 @@ describe('ButtonPremium', () => {
     expect(getByText('Custom')).toBeTruthy();
   });
 });
-

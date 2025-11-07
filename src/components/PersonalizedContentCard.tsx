@@ -11,7 +11,7 @@
 
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking, Alert, Share, ActivityIndicator } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { PersonalizedContent } from '@/hooks/usePersonalizedContent';
 import { getShadowStyle } from '@/utils/platformStyles';
 
@@ -145,7 +145,7 @@ export function PersonalizedContentCard({ content, onInteraction, isDark = false
       {/* Cabeçalho com badge de relevância */}
       <View style={styles.header}>
         <View style={[styles.badge, { backgroundColor: colors.badge }]}>
-          <Ionicons name="star" size={12} color={colors.badgeText} />
+          <Icon name="star" size={12} color={colors.badgeText} />
           <Text style={[styles.badgeText, { color: colors.badgeText }]}>Recomendado para você</Text>
         </View>
 
@@ -193,7 +193,7 @@ export function PersonalizedContentCard({ content, onInteraction, isDark = false
           accessibilityLabel="Por que isso foi recomendado?"
           accessibilityHint="Toque para ver a explicação"
         >
-          <Ionicons name={showReason ? 'chevron-up' : 'information-circle-outline'} size={16} color={colors.accent} />
+          <Icon name={showReason ? 'chevron-up' : 'information-outline'} size={16} color={colors.accent} />
           <Text style={[styles.reasonButtonText, { color: colors.accent }]}>Por que isso?</Text>
         </TouchableOpacity>
       )}
@@ -215,7 +215,7 @@ export function PersonalizedContentCard({ content, onInteraction, isDark = false
           accessibilityLabel={isLiked ? 'Remover curtida' : 'Curtir conteúdo'}
           accessibilityRole="button"
         >
-          <Ionicons
+          <Icon
             name={isLiked ? 'heart' : 'heart-outline'}
             size={24}
             color={isLiked ? colors.like : colors.textSecondary}
@@ -232,7 +232,7 @@ export function PersonalizedContentCard({ content, onInteraction, isDark = false
           accessibilityLabel={isSaved ? 'Remover dos salvos' : 'Salvar conteúdo'}
           accessibilityRole="button"
         >
-          <Ionicons
+          <Icon
             name={isSaved ? 'bookmark' : 'bookmark-outline'}
             size={24}
             color={isSaved ? colors.save : colors.textSecondary}
@@ -249,7 +249,7 @@ export function PersonalizedContentCard({ content, onInteraction, isDark = false
           accessibilityLabel="Compartilhar conteúdo"
           accessibilityRole="button"
         >
-          <Ionicons name="share-social-outline" size={24} color={colors.textSecondary} />
+          <Icon name="share-variant" size={24} color={colors.textSecondary} />
           <Text style={[styles.actionText, { color: colors.textSecondary }]}>Compartilhar</Text>
         </TouchableOpacity>
 
@@ -267,7 +267,7 @@ export function PersonalizedContentCard({ content, onInteraction, isDark = false
               <ActivityIndicator size="small" color={colors.accent} />
             ) : (
               <>
-                <Ionicons name="open-outline" size={24} color={colors.accent} />
+                <Icon name="open-in-new" size={24} color={colors.accent} />
                 <Text style={[styles.actionText, { color: colors.accent, fontWeight: '600' }]}>Ver</Text>
               </>
             )}

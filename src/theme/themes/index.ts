@@ -42,6 +42,11 @@ export interface ThemeColors {
   chart3: string;
   chart4: string;
   chart5: string;
+  // Aliases for compatibility
+  text?: string; // alias for foreground
+  surface?: string; // alias for card
+  textSecondary?: string; // alias for mutedForeground
+  onPrimary?: string; // alias for primaryForeground
 }
 
 /**

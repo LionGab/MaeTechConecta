@@ -24,15 +24,22 @@ interface ThemeContextType {
   toggleTheme: () => void;
   setThemeMode: (mode: ThemeMode) => void;
   setThemeName: (name: ThemeName) => void;
-  theme:
-    | ReturnType<typeof getTheme>
-    | {
-        colors: any;
-        shadows: any;
-        typography: any;
-        spacing: any;
-        borderRadius: any;
-      };
+  theme: {
+    colors: ThemeColors & {
+      text?: string;
+      surface?: string;
+      textSecondary?: string;
+      onPrimary?: string;
+      [key: string]: any;
+    };
+    shadows: any;
+    typography: any;
+    spacing: any;
+    borderRadius: any;
+  };
+  spacing?: any;
+  typography?: any;
+  borderRadius?: any;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -194,15 +201,56 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         };
 
   // Garantir estrutura consistente para ambos os temas
+  const themeColors = {
+    ...(themeName === 'bubblegum' ? bubblegumTheme.colors : baseTheme.colors),
+    ...colors, // Sobrescrever com cores do tema atual
+  };
+
+  // Adicionar aliases para compatibilidade
+  const extendedColors = {
+    ...themeColors,
+    text: themeColors.text || themeColors.foreground,
+    surface: themeColors.surface || themeColors.card,
+    textSecondary: themeColors.textSecondary || themeColors.mutedForeground,
+    onPrimary: themeColors.onPrimary || themeColors.primaryForeground,
+  };
+
+  // Extend typography with composite properties
+  const baseTypography = baseTheme.typography || typography;
+  const extendedTypography = {
+    ...baseTypography,
+    h5: { fontSize: baseTypography.sizes?.['3xl'] || 28, fontWeight: baseTypography.weights?.bold || '700' },
+    h6: { fontSize: baseTypography.sizes?.['2xl'] || 24, fontWeight: baseTypography.weights?.semibold || '600' },
+    body1: { fontSize: baseTypography.sizes?.base || 16, fontWeight: baseTypography.weights?.normal || '400' },
+    body2: { fontSize: baseTypography.sizes?.sm || 14, fontWeight: baseTypography.weights?.normal || '400' },
+    button: { fontSize: baseTypography.sizes?.base || 16, fontWeight: baseTypography.weights?.medium || '500' },
+    caption: { fontSize: baseTypography.sizes?.xs || 12, fontWeight: baseTypography.weights?.normal || '400' },
+  };
+
+  // Extend spacing with '2xl', '3xl', etc. if missing
+  const baseSpacing = baseTheme.spacing || spacing;
+  const extendedSpacing = {
+    ...baseSpacing,
+    '2xl': (baseSpacing as any)['2xl'] || (baseSpacing as any).xxl || 48,
+    '3xl': (baseSpacing as any)['3xl'] || (baseSpacing as any).xxxl || 64,
+    '4xl': (baseSpacing as any)['4xl'] || 80,
+    '5xl': (baseSpacing as any)['5xl'] || 96,
+  };
+
+  // Extend borderRadius with '2xl', '3xl', etc. if missing
+  const baseBorderRadius = baseTheme.borderRadius || borderRadius;
+  const extendedBorderRadius = {
+    ...baseBorderRadius,
+    '2xl': baseBorderRadius['2xl'] || 24,
+    '3xl': baseBorderRadius['3xl'] || 32,
+  };
+
   const theme = {
-    colors: {
-      ...(themeName === 'bubblegum' ? bubblegumTheme.colors : baseTheme.colors),
-      ...colors, // Sobrescrever com cores do tema atual
-    },
+    colors: extendedColors,
     shadows: isDark ? shadows.dark : shadows.light,
-    typography: baseTheme.typography || typography,
-    spacing: baseTheme.spacing || spacing,
-    borderRadius: baseTheme.borderRadius || borderRadius,
+    typography: extendedTypography,
+    spacing: extendedSpacing,
+    borderRadius: extendedBorderRadius,
   };
 
   const value: ThemeContextType = {
@@ -214,6 +262,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setThemeMode,
     setThemeName,
     theme,
+    spacing: theme.spacing,
+    typography: theme.typography,
+    borderRadius: theme.borderRadius,
   };
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

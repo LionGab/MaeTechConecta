@@ -2,7 +2,7 @@
  * Plan Daily - Edge Function (JOB PRINCIPAL)
  * Orquestra todo o fluxo de personalização:
  * 1. build-signals → 2. curate-content → 3. compose-copy → 4. salva message_plan
- * 
+ *
  * Roda via pg_cron às 23:15 todo dia
  */
 
@@ -17,6 +17,7 @@ const corsHeaders = {
 interface PlanDailyRequest {
   userId?: string; // Opcional: se fornecido, planeja apenas para este usuário
   forceRegenerate?: boolean;
+  planDate?: string; // Opcional: data alvo no formato YYYY-MM-DD
 }
 
 interface PolicyResult {
@@ -41,15 +42,28 @@ serve(async (req) => {
   }
 
   try {
-    const { userId: singleUserId, forceRegenerate = false }: PlanDailyRequest = await req.json();
+    const {
+      userId: singleUserId,
+      forceRegenerate = false,
+      planDate: requestedPlanDate,
+    }: PlanDailyRequest = await req.json();
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const planDate = tomorrow.toISOString().split('T')[0];
+    if (requestedPlanDate && !/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(requestedPlanDate)) {
+      return new Response(JSON.stringify({ error: 'Invalid planDate format' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const defaultDate = new Date();
+    defaultDate.setDate(defaultDate.getDate() + 1);
+    const defaultPlanDate = defaultDate.toISOString().split('T')[0];
+
+    const planDate = requestedPlanDate || defaultPlanDate;
 
     // 1. Buscar usuários para planejar
     let usersToProcess = [];
@@ -101,17 +115,14 @@ serve(async (req) => {
 
         // 3. STEP 1: Build signals (análise comportamental)
         console.log(`Building signals for user ${user.id}`);
-        const signalsResponse = await fetch(
-          `${supabaseUrl}/functions/v1/build-signals`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${supabaseKey}`,
-            },
-            body: JSON.stringify({ userId: user.id }),
-          }
-        );
+        const signalsResponse = await fetch(`${supabaseUrl}/functions/v1/build-signals`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${supabaseKey}`,
+          },
+          body: JSON.stringify({ userId: user.id }),
+        });
 
         if (!signalsResponse.ok) {
           throw new Error(`build-signals failed: ${signalsResponse.status}`);
@@ -127,20 +138,17 @@ serve(async (req) => {
         let curatedContent = [];
         if (['support', 'belonging', 'habit'].includes(policyResult.priority)) {
           console.log(`Curating content for user ${user.id} with tags ${signal.tags}`);
-          const curateResponse = await fetch(
-            `${supabaseUrl}/functions/v1/curate-content-personalized`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${supabaseKey}`,
-              },
-              body: JSON.stringify({
-                userId: user.id,
-                tags: signal.tags,
-              }),
-            }
-          );
+          const curateResponse = await fetch(`${supabaseUrl}/functions/v1/curate-content-personalized`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${supabaseKey}`,
+            },
+            body: JSON.stringify({
+              userId: user.id,
+              tags: signal.tags,
+            }),
+          });
 
           if (curateResponse.ok) {
             const curateData = await curateResponse.json();
@@ -151,23 +159,20 @@ serve(async (req) => {
         // 6. STEP 4: Compose copy (personalizar mensagens)
         const finalItems = [];
         for (const item of policyResult.items) {
-          const composeResponse = await fetch(
-            `${supabaseUrl}/functions/v1/compose-copy`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${supabaseKey}`,
-              },
-              body: JSON.stringify({
-                template: item.message_text,
-                variables: { nome: user.name },
-                rationale: item.rationale,
-                tone: item.type === 'alert' ? 'urgente' : 'acolhedor',
-                maxLength: 240,
-              }),
-            }
-          );
+          const composeResponse = await fetch(`${supabaseUrl}/functions/v1/compose-copy`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${supabaseKey}`,
+            },
+            body: JSON.stringify({
+              template: item.message_text,
+              variables: { nome: user.name },
+              rationale: item.rationale,
+              tone: item.type === 'alert' ? 'urgente' : 'acolhedor',
+              maxLength: 240,
+            }),
+          });
 
           if (composeResponse.ok) {
             const composeData = await composeResponse.json();
@@ -243,11 +248,7 @@ function applyPolicyEngine(signal: any, user: any): PolicyResult {
   const { tags, scores, risk_level } = signal;
 
   // REGRA 1: ALERTA CRÍTICO (pp_intrusive, harm_thoughts)
-  if (
-    risk_level >= 8 ||
-    tags.includes('pp_intrusive') ||
-    tags.includes('harm_thoughts')
-  ) {
+  if (risk_level >= 8 || tags.includes('pp_intrusive') || tags.includes('harm_thoughts')) {
     return {
       priority: 'alert',
       items: [
@@ -263,16 +264,14 @@ function applyPolicyEngine(signal: any, user: any): PolicyResult {
           scheduled_at: '14:00',
           type: 'alert',
           template_id: 'recursos_imediatos',
-          message_text:
-            'Se você está em crise, ligue AGORA:\n\n🆘 CVV (24h): 188\n🆘 SAMU (emergência): 192',
+          message_text: 'Se você está em crise, ligue AGORA:\n\n🆘 CVV (24h): 188\n🆘 SAMU (emergência): 192',
           rationale: 'Recursos de emergência',
         },
         {
           scheduled_at: '19:30',
           type: 'closure',
           template_id: 'encerramento_positivo',
-          message_text:
-            'Boa noite, {nome}. Você teve coragem de seguir em frente hoje. Isso é força.',
+          message_text: 'Boa noite, {nome}. Você teve coragem de seguir em frente hoje. Isso é força.',
           rationale: 'Encerramento empático',
         },
       ],
@@ -292,8 +291,7 @@ function applyPolicyEngine(signal: any, user: any): PolicyResult {
           scheduled_at: '09:00',
           type: 'check-in',
           template_id: 'checkin_manha',
-          message_text:
-            'Bom dia, {nome}! 🌅 Como você está hoje? Vamos cuidar do seu stress juntas.',
+          message_text: 'Bom dia, {nome}! 🌅 Como você está hoje? Vamos cuidar do seu stress juntas.',
           rationale: `Seu nível de stress está alto (${scores.stress_score}/100)`,
         },
         {
@@ -308,8 +306,7 @@ function applyPolicyEngine(signal: any, user: any): PolicyResult {
           scheduled_at: '19:30',
           type: 'habit',
           template_id: 'respira_simples',
-          message_text:
-            '{nome}, quando sentir que vai explodir: respire 4 tempos, segura 4, solta 4. Repete 3 vezes.',
+          message_text: '{nome}, quando sentir que vai explodir: respire 4 tempos, segura 4, solta 4. Repete 3 vezes.',
           cta: 'Fiz a respiração',
           rationale: 'Técnica de respiração para alívio imediato',
         },
@@ -360,9 +357,7 @@ function applyPolicyEngine(signal: any, user: any): PolicyResult {
       rationale: {
         main: 'Solidão e pouco apoio detectados',
         priority_reason: 'Foco em pertencimento e comunidade',
-        tags: tags.filter((t) =>
-          ['tag_lonely', 'tag_single_mom', 'tag_father_absent'].includes(t)
-        ),
+        tags: tags.filter((t) => ['tag_lonely', 'tag_single_mom', 'tag_father_absent'].includes(t)),
       },
     };
   }
@@ -375,16 +370,14 @@ function applyPolicyEngine(signal: any, user: any): PolicyResult {
         scheduled_at: '09:00',
         type: 'check-in',
         template_id: 'checkin_manha',
-        message_text:
-          'Bom dia, {nome}! 🌅 Como você está hoje? Marque seu humor e receba uma dica personalizada.',
+        message_text: 'Bom dia, {nome}! 🌅 Como você está hoje? Marque seu humor e receba uma dica personalizada.',
         rationale: 'Check-in diário para acompanhamento',
       },
       {
         scheduled_at: '14:00',
         type: 'content',
         template_id: 'conteudo_curado',
-        message_text:
-          '{nome}, separamos um conteúdo especial para você hoje sobre maternidade. 💕',
+        message_text: '{nome}, separamos um conteúdo especial para você hoje sobre maternidade. 💕',
         cta: 'Ver conteúdo',
         rationale: 'Conteúdo curado personalizado',
       },
@@ -392,8 +385,7 @@ function applyPolicyEngine(signal: any, user: any): PolicyResult {
         scheduled_at: '19:30',
         type: 'habit',
         template_id: 'habito_simples_5min',
-        message_text:
-          'Falta pouco, {nome}! 🍼 Marca um hábito rápido: beber 1 copo d\'água agora.',
+        message_text: "Falta pouco, {nome}! 🍼 Marca um hábito rápido: beber 1 copo d'água agora.",
         cta: 'Bebi água',
         rationale: 'Hábito simples para construir autoeficácia',
       },
@@ -404,4 +396,3 @@ function applyPolicyEngine(signal: any, user: any): PolicyResult {
     },
   };
 }
-
