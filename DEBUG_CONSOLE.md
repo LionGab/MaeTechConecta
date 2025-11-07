@@ -5,10 +5,12 @@
 ### 1. Abrir Console do Navegador
 
 **Chrome/Edge:**
+
 - Pressione `F12` ou `Ctrl+Shift+I` (Windows/Linux)
 - Pressione `Cmd+Option+I` (Mac)
 
 **Firefox:**
+
 - Pressione `F12` ou `Ctrl+Shift+K` (Windows/Linux)
 - Pressione `Cmd+Option+K` (Mac)
 
@@ -22,6 +24,7 @@
 ### 3. Filtrar Erros
 
 No console, use os filtros:
+
 - ❌ **Errors** - Apenas erros
 - ⚠️ **Warnings** - Apenas warnings
 - ℹ️ **Info** - Apenas info
@@ -73,4 +76,3 @@ No console, use os filtros:
 ---
 
 **💡 Dica:** Use `console.log()` no código para debug.
-

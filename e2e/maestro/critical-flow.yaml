@@ -1,0 +1,113 @@
+# Maestro E2E - Fluxo Crítico
+# Onboarding → Login → Home → Marcar Hábito → Chat → Post → Artigo
+
+appId: com.nossa.maternidade
+---
+
+# ============================================
+# 1. ONBOARDING
+# ============================================
+- launchApp
+- assertVisible: "Nossa Maternidade"
+- assertVisible: "Bem-vinda"
+
+# Avançar onboarding
+- tapOn: "Continuar"
+- tapOn: "Sou gestante"
+- tapOn: "Continuar"
+- inputText: "Maria"
+- tapOn: "Finalizar"
+
+# ============================================
+# 2. HOME - Dica do Dia
+# ============================================
+- assertVisible: "Olá, Maria"
+- assertVisible: "Dica do dia"
+- assertVisible: "Sequência"
+- assertVisible: "Pontos"
+
+# Verificar botões de ação rápida
+- assertVisible: "Hidratação"
+- assertVisible: "Caminhada"
+- assertVisible: "Meditação"
+
+# ============================================
+# 3. MARCAR HÁBITO
+# ============================================
+- tapOn: "Hábitos"
+- assertVisible: "Meus Hábitos"
+- assertVisible: "Progresso de Hoje"
+
+# Marcar hábito como concluído
+- tapOn: "Hidratação"
+- assertVisible: "+10 pontos"
+# Alternar switch (pode variar por plataforma)
+- tapOn: 
+    id: "habit-toggle-hydration"
+- assertVisible: "🔥 1 dia"
+
+# ============================================
+# 4. CHAT COM NATHIA
+# ============================================
+- tapOn: "NathIA"
+- assertVisible: "NathIA"
+- assertVisible: "Sua amiga virtual"
+
+# Enviar mensagem
+- tapOn:
+    id: "chat-input"
+- inputText: "Como você está?"
+- tapOn:
+    id: "send-button"
+
+# Aguardar resposta
+- assertVisible: "Como você está?"
+# Resposta pode demorar alguns segundos
+- waitForAnimationToEnd:
+    timeout: 10000
+- assertVisible: "Olá"
+
+# ============================================
+# 5. MUNDO NATH - POST
+# ============================================
+- tapOn: "MundoNath"
+- assertVisible: "MundoNath"
+- assertVisible: "por Nathália Valente"
+
+# Verificar posts
+- assertVisible: "Primeira Viagem"
+- assertVisible: "Autocuidado"
+
+# Abrir post
+- tapOn: "Minha Jornada como Mãe"
+- assertVisible: "5 min"
+
+# ============================================
+# 6. MÃE VALENTE - ARTIGO
+# ============================================
+- tapOn: "MãeValente"
+- assertVisible: "MãeValente"
+- assertVisible: "Curadoria inteligente por IA"
+
+# Verificar artigos
+- assertVisible: "maternidade"
+- assertVisible: "% relevante"
+
+# Abrir artigo
+- tapOn: "Desenvolvimento Infantil"
+- assertVisible: "Ler artigo completo"
+
+# ============================================
+# 7. VOLTAR PARA HOME
+# ============================================
+- tapOn: "Home"
+- assertVisible: "Olá, Maria"
+
+# Verificar que pontos aumentaram
+- assertVisible: "Pontos"
+- assertVisible: "Sequência"
+
+# ============================================
+# FIM DO FLUXO CRÍTICO
+# ============================================
+

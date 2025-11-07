@@ -34,6 +34,7 @@ const supabaseAnonKey = rawKey.trim() || dummyKey;
 **Risco**: App pode rodar em produção com credenciais falsas.
 
 **Correção**:
+
 ```typescript
 if (!rawUrl || !rawKey) {
   throw new Error('FATAL: EXPO_PUBLIC_SUPABASE_URL e EXPO_PUBLIC_SUPABASE_ANON_KEY devem estar configurados');
@@ -66,17 +67,18 @@ export const saveChatMessage = async (message: Partial<ChatMessage>) => {
 **Risco**: SQL Injection via objetos malformados, dados inválidos no DB.
 
 **Correção**:
+
 ```typescript
 export const saveChatMessage = async (message: Partial<ChatMessage>) => {
   // Validação de entrada
   if (!message.user_id || !message.message || !message.response) {
     throw new Error('user_id, message e response são obrigatórios');
   }
-  
+
   if (typeof message.message !== 'string' || message.message.length > 5000) {
     throw new Error('message inválida');
   }
-  
+
   // Sanitização
   const sanitizedMessage = {
     user_id: message.user_id.trim(),
@@ -85,17 +87,14 @@ export const saveChatMessage = async (message: Partial<ChatMessage>) => {
     context_data: message.context_data || {},
     created_at: new Date().toISOString(),
   };
-  
-  const { data, error } = await supabase
-    .from('chat_messages')
-    .insert(sanitizedMessage)
-    .select();
-    
+
+  const { data, error } = await supabase.from('chat_messages').insert(sanitizedMessage).select();
+
   if (error) {
     console.error('Erro ao salvar mensagem:', error);
     throw new Error('Falha ao salvar mensagem de chat');
   }
-  
+
   return data;
 };
 ```
@@ -116,6 +115,7 @@ headers: {
 **Risco**: Keys podem vazar se código for exposto.
 
 **Correção**:
+
 - Mover TODAS as chamadas de API para Edge Functions do Supabase
 - Nunca expor API keys no código client-side
 - Usar variáveis de ambiente apenas no backend
@@ -143,6 +143,7 @@ export const chatWithNATIA = async (message: string, context: ChatContext, userI
 **Risco**: Ataques de força bruta, DDoS.
 
 **Correção**:
+
 - Implementar rate limiting no Supabase (políticas RLS + Edge Functions)
 - Adicionar retry com backoff exponencial
 - Limitar tentativas de login (3-5 por minuto)
@@ -160,6 +161,7 @@ content: message, // ❌ Sem sanitização
 **Risco**: Prompt injection, execução de comandos maliciosos.
 
 **Correção**:
+
 ```typescript
 const sanitizeInput = (input: string): string => {
   return input
@@ -193,6 +195,7 @@ export const subscribeToPremium = async (): Promise<boolean> => {
 **Risco**: Usuários podem obter premium gratuitamente.
 
 **Correção**:
+
 - Implementar integração real com Stripe
 - Validar pagamento no backend (Edge Function)
 - Atualizar subscription_tier apenas após confirmação
@@ -211,6 +214,7 @@ catch (error) {
 ```
 
 **Correção**:
+
 ```typescript
 catch (error) {
   console.error('Erro ao gerar vídeo:', error);
@@ -225,6 +229,7 @@ catch (error) {
 **Problema**: Código não verifica se RLS está ativo.
 
 **Correção**:
+
 - Verificar políticas RLS no Supabase
 - Adicionar testes de RLS
 - Documentar políticas esperadas
@@ -240,6 +245,7 @@ redirectTo: 'nossa-maternidade://auth/callback', // ❌ Hardcoded
 ```
 
 **Correção**:
+
 ```typescript
 redirectTo: process.env.EXPO_PUBLIC_OAUTH_REDIRECT_URL || 'nossa-maternidade://auth/callback',
 ```
@@ -261,6 +267,7 @@ import { OnboardingData } from '@/types/onboarding.types'; // ❌ any em context
 **Problema**: Requisições podem travar indefinidamente.
 
 **Correção**:
+
 ```typescript
 const response = await axios.post(url, body, {
   headers,
@@ -275,9 +282,10 @@ const response = await axios.post(url, body, {
 **Problema**: Busca até 50 mensagens de uma vez.
 
 **Correção**:
+
 ```typescript
 export const getChatHistory = async (
-  userId: string, 
+  userId: string,
   limit: number = 20, // Reduzir padrão
   offset: number = 0 // Adicionar paginação
 ) => {
@@ -298,6 +306,7 @@ export const getChatHistory = async (
 **Problema**: `console.error` expõe detalhes de erro.
 
 **Correção**:
+
 - Usar Sentry para logs
 - Não expor stack traces ao usuário
 - Logs apenas em desenvolvimento
@@ -309,6 +318,7 @@ export const getChatHistory = async (
 **Problema**: Lista de keywords pode perder casos.
 
 **Correção**:
+
 - Adicionar mais keywords
 - Usar regex mais robusto
 - Considerar usar IA para detecção
@@ -320,15 +330,12 @@ export const getChatHistory = async (
 **Problema**: Função não busca dados reais.
 
 **Correção**:
+
 ```typescript
 export const checkSubscriptionStatus = async (userId: string): Promise<'free' | 'premium'> => {
   try {
-    const { data, error } = await supabase
-      .from('user_profiles')
-      .select('subscription_tier')
-      .eq('id', userId)
-      .single();
-    
+    const { data, error } = await supabase.from('user_profiles').select('subscription_tier').eq('id', userId).single();
+
     if (error) throw error;
     return data.subscription_tier || 'free';
   } catch (error) {
@@ -381,18 +388,21 @@ export const checkSubscriptionStatus = async (userId: string): Promise<'free' | 
 ## 🎯 Plano de Ação Prioritário
 
 ### Crítico (Fazer AGORA)
+
 1. ✅ Remover valores dummy de `supabase.ts`
 2. ✅ Adicionar validação de entrada em TODAS as funções
 3. ✅ Mover API keys para Edge Functions
 4. ✅ Implementar sanitização de input
 
 ### Alto (Esta Semana)
+
 5. ✅ Adicionar rate limiting
 6. ✅ Implementar pagamentos reais
 7. ✅ Melhorar tratamento de erros
 8. ✅ Verificar e documentar RLS
 
 ### Médio (Este Mês)
+
 9. ✅ Adicionar timeout em requisições
 10. ✅ Implementar paginação
 11. ✅ Melhorar logging (Sentry)
@@ -416,4 +426,3 @@ export const checkSubscriptionStatus = async (userId: string): Promise<'free' | 
 ---
 
 **Relatório gerado pelo Agente 2 (Backend Architect)**
-

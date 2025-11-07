@@ -39,6 +39,7 @@
 **Console errors**: [Erros do console]  
 **Network errors**: [Erros de rede]  
 **Passos para reproduzir**:
+
 1. [Passo 1]
 2. [Passo 2]
 3. [Passo 3]
@@ -60,6 +61,7 @@
 **Console errors**: [Erros do console]  
 **Network errors**: [Erros de rede]  
 **Passos para reproduzir**:
+
 1. [Passo 1]
 2. [Passo 2]
 3. [Passo 3]
@@ -81,6 +83,7 @@
 **Console errors**: [Erros do console]  
 **Network errors**: [Erros de rede]  
 **Passos para reproduzir**:
+
 1. [Passo 1]
 2. [Passo 2]
 3. [Passo 3]
@@ -102,6 +105,7 @@
 **Console errors**: [Erros do console]  
 **Network errors**: [Erros de rede]  
 **Passos para reproduzir**:
+
 1. [Passo 1]
 2. [Passo 2]
 3. [Passo 3]
@@ -177,6 +181,7 @@
 ## ✅ Telas Testadas
 
 ### Onboarding
+
 - [ ] Renderização inicial
 - [ ] Navegação entre slides
 - [ ] Botão de pular
@@ -184,6 +189,7 @@
 - [ ] Transições
 
 ### Home
+
 - [ ] Renderização inicial
 - [ ] Componentes principais
 - [ ] Interações básicas
@@ -191,6 +197,7 @@
 - [ ] Scroll
 
 ### Chat
+
 - [ ] Renderização inicial
 - [ ] Input de mensagem
 - [ ] Envio de mensagem
@@ -201,6 +208,7 @@
 - [ ] Error states
 
 ### Habits
+
 - [ ] Renderização inicial
 - [ ] Lista de hábitos
 - [ ] Criação de hábito
@@ -209,6 +217,7 @@
 - [ ] Integração com Supabase
 
 ### Content
+
 - [ ] Renderização inicial
 - [ ] Lista de conteúdo
 - [ ] Visualização de artigo
@@ -217,6 +226,7 @@
 - [ ] Integração com Supabase
 
 ### Profile
+
 - [ ] Renderização inicial
 - [ ] Dados do usuário
 - [ ] Configurações
@@ -224,12 +234,14 @@
 - [ ] Integração com Supabase
 
 ### DailyPlan
+
 - [ ] Renderização inicial
 - [ ] Plano diário
 - [ ] Interações
 - [ ] Navegação
 
 ### ContentDetail
+
 - [ ] Renderização inicial
 - [ ] Detalhes do conteúdo
 - [ ] Scroll
@@ -240,11 +252,13 @@
 ## 🔄 Hot Reload
 
 ### Status
+
 - [ ] Funcionando corretamente
 - [ ] Problemas encontrados
 - [ ] Não testado
 
 ### Problemas de Hot Reload
+
 - [Problema 1]: [Descrição]
 - [Problema 2]: [Descrição]
 
@@ -253,11 +267,13 @@
 ## 📝 Observações
 
 ### Observações Gerais
+
 - [Observação 1]
 - [Observação 2]
 - [Observação 3]
 
 ### Melhorias Sugeridas
+
 - [Melhoria 1]
 - [Melhoria 2]
 - [Melhoria 3]
@@ -267,11 +283,13 @@
 ## 🎯 Próximos Passos
 
 ### Ações Imediatas
+
 - [ ] Corrigir problemas críticos (Severidade 5)
 - [ ] Corrigir problemas altos (Severidade 4)
 - [ ] Investigar problemas médios (Severidade 3)
 
 ### Ações Futuras
+
 - [ ] Implementar melhorias sugeridas
 - [ ] Adicionar testes para problemas encontrados
 - [ ] Melhorar documentação
@@ -280,4 +298,3 @@
 
 **Última atualização**: [Data]  
 **Versão**: 1.0.0
-

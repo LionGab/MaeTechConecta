@@ -39,10 +39,7 @@ const BadgeComponent: React.FC<BadgeProps> = ({ children, variant = 'info', size
     [variant, size, style]
   );
 
-  const textStyle = useMemo(
-    () => [styles.baseText, styles[`${variant}Text`], styles[`${size}Text`]],
-    [variant, size]
-  );
+  const textStyle = useMemo(() => [styles.baseText, styles[`${variant}Text`], styles[`${size}Text`]], [variant, size]);
 
   return (
     <View

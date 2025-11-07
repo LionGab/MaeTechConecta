@@ -9,6 +9,7 @@
 ## 🎯 Responsabilidades do Agente 1
 
 ### Foco Principal
+
 - **Componentes React Native** - Criar e refatorar componentes reutilizáveis
 - **Telas** - Desenvolver e otimizar telas do app
 - **Navegação** - Configurar e melhorar navegação
@@ -70,6 +71,7 @@ ENTREGUE:
 ## 📚 Exemplos de Uso
 
 ### Criar Componente
+
 ```
 @agent-1-frontend Criar componente Button com variantes (primary, secondary, outline, destructive).
 Props: onPress, title, loading, disabled, icon
@@ -78,6 +80,7 @@ Acessibilidade: labels e states
 ```
 
 ### Refatorar Tela
+
 ```
 @agent-1-frontend Refatorar ChatScreen para usar design system.
 Melhorias: tema consistente, acessibilidade, performance
@@ -85,6 +88,7 @@ Mantendo: funcionalidades existentes
 ```
 
 ### Otimizar Performance
+
 ```
 @agent-1-frontend Otimizar HomeScreen para performance.
 Problemas atuais: re-renders desnecessários
@@ -94,23 +98,27 @@ Metas: 60fps constante, bundle size reduzido
 ## 🎯 Áreas de Atuação
 
 ### Componentes (`src/components/`)
+
 - Criar novos componentes
 - Refatorar componentes existentes
 - Otimizar performance
 - Melhorar acessibilidade
 
 ### Telas (`src/screens/`)
+
 - Desenvolver novas telas
 - Refatorar telas existentes
 - Otimizar navegação
 - Melhorar UX
 
 ### Tema (`src/theme/`)
+
 - Aplicar tema consistentemente
 - Melhorar dark mode
 - Otimizar cores e espaçamentos
 
 ### Navegação (`src/navigation/`)
+
 - Configurar navegação
 - Otimizar deep linking
 - Melhorar transições
@@ -119,4 +127,3 @@ Metas: 60fps constante, bundle size reduzido
 
 **Status**: ✅ Pronto para ativação  
 **Quando usar**: Qualquer necessidade de UI/UX, componentes, telas, animações
-

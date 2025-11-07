@@ -5,7 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { ChatContext, generateDailyPlan } from '@/services/ai';
+import { ChatContext } from '@/services/ai';
+// TODO: Migrar para daily-insight Edge Function (já implementada)
 import { getDailyPlan, saveDailyPlan } from '@/services/supabase';
 import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
 
@@ -55,7 +56,13 @@ export default function DailyPlanScreen() {
       const profileJson = await AsyncStorage.getItem('userProfile');
       const context: ChatContext = profileJson ? JSON.parse(profileJson) : {};
 
-      const planData = await generateDailyPlan(context);
+      // TODO: Migrar para daily-insight Edge Function
+      // Fallback temporário com dados estáticos
+      const planData = {
+        priorities: ['💧 Beber 8 copos de água', '📅 Marcar consulta pré-natal', '🧘 Exercícios leves'],
+        tip: 'Cuidar de você é cuidar do seu bebê! Tire um tempo para respirar hoje. 💕',
+        recipe: 'Vitamina de Banana: 1 banana + 1 copo de leite + 1 colher de mel. Batido com gelo!',
+      };
       setDailyPlan(planData);
 
       // Salvar no Supabase

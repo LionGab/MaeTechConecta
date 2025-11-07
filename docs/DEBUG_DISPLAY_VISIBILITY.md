@@ -20,6 +20,7 @@ console.log('Dimensões:', { width, height });
 ### 2. Verificar Console do Navegador
 
 #### No Chrome DevTools:
+
 1. Abra DevTools (F12)
 2. Vá para a aba **Console**
 3. Procure por:
@@ -28,6 +29,7 @@ console.log('Dimensões:', { width, height });
    - ℹ️ Info (azul)
 
 #### Erros Comuns:
+
 - `Cannot read property 'X' of undefined`
 - `TypeError: ...`
 - `Warning: Cannot update during render`
@@ -97,6 +99,7 @@ const styles = StyleSheet.create({
 ### Problema 1: Elemento Não Aparece
 
 **Possíveis Causas:**
+
 - `display: none` ou `visibility: hidden`
 - `opacity: 0`
 - `position: absolute` fora da tela
@@ -104,6 +107,7 @@ const styles = StyleSheet.create({
 - `overflow: hidden` cortando conteúdo
 
 **Solução:**
+
 ```typescript
 // Verificar estilos
 const styles = StyleSheet.create({
@@ -121,11 +125,13 @@ const styles = StyleSheet.create({
 ### Problema 2: Elemento Sobreposto
 
 **Possíveis Causas:**
+
 - `z-index` muito baixo
 - Elemento renderizado depois no DOM
 - `position: absolute` sem z-index
 
 **Solução:**
+
 ```typescript
 const styles = StyleSheet.create({
   onTop: {
@@ -138,11 +144,13 @@ const styles = StyleSheet.create({
 ### Problema 3: Layout Quebrado
 
 **Possíveis Causas:**
+
 - `flex: 1` faltando em container
 - Dimensões fixas muito pequenas
 - `flexDirection` incorreto
 
 **Solução:**
+
 ```typescript
 const styles = StyleSheet.create({
   container: {
@@ -158,11 +166,13 @@ const styles = StyleSheet.create({
 ### Problema 4: Texto Cortado
 
 **Possíveis Causas:**
+
 - `numberOfLines` muito baixo
 - `overflow: hidden` sem `ellipsizeMode`
 - Altura fixa muito pequena
 
 **Solução:**
+
 ```typescript
 <Text
   numberOfLines={2} // ✅ Limita linhas
@@ -176,11 +186,13 @@ const styles = StyleSheet.create({
 ### Problema 5: Imagens Não Carregam
 
 **Possíveis Causas:**
+
 - Caminho incorreto
 - Formato não suportado
 - Tamanho muito grande
 
 **Solução:**
+
 ```typescript
 // Verificar caminho
 <Image
@@ -298,4 +310,3 @@ Se ainda não encontrar o problema:
 ---
 
 **💡 Dica:** Use o modo de desenvolvimento (`__DEV__`) para logs detalhados e ferramentas de debug.
-

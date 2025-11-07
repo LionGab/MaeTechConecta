@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { Alert } from 'react-native';
-import { ChatContext, chatWithNATIA, chatWithAI, detectUrgency } from '@/services/ai';
+import { ChatContext, chatWithNATIA, detectUrgency } from '@/services/ai';
 import { getChatHistory, saveChatMessage } from '@/services/supabase';
 import { logger } from '@/utils/logger';
 import { hasPendingMessages, saveOfflineMessage, syncPendingMessages } from '@/utils/offlineStorage';
@@ -197,37 +197,22 @@ export function useChatOptimized() {
           throw new Error('userId é obrigatório para chat com NAT-IA');
         }
 
-        let aiResponse: string;
-
-        try {
-          // Tentar usar Edge Function primeiro (produção)
-          aiResponse = await smartRetry(
-            () => chatWithNATIA(content, context, userId),
-            {
-              maxRetries: 3,
-              initialDelay: 1000,
-              onRetry: (attempt, error) => {
-                logger.warn(
-                  `Retry ${attempt} de NAT-IA falhou`,
-                  { attempt, isRecoverable: isRecoverableError(error) },
-                  error
-                );
-              },
+        // Chamar Edge Function NAT-IA (Gemini 2.0 Flash) com retry inteligente
+        const aiResponse: string = await smartRetry(
+          () => chatWithNATIA(content, context, userId),
+          {
+            maxRetries: 3,
+            initialDelay: 1000,
+            onRetry: (attempt, error) => {
+              logger.warn(
+                `Retry ${attempt} de NAT-IA falhou`,
+                { attempt, isRecoverable: isRecoverableError(error) },
+                error
+              );
             },
-            logger
-          );
-        } catch (edgeFunctionError: any) {
-          // Fallback para Claude se Edge Function falhar (desenvolvimento)
-          logger.warn('Edge Function falhou, usando fallback Claude', {}, edgeFunctionError);
-          aiResponse = await smartRetry(
-            () => chatWithAI(content, context, aiMessages),
-            {
-              maxRetries: 2,
-              initialDelay: 1000,
-            },
-            logger
-          );
-        }
+          },
+          logger
+        );
 
         logger.info('Resposta da IA recebida com sucesso', { responseLength: aiResponse.length });
 

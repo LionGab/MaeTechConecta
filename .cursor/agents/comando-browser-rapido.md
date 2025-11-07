@@ -54,6 +54,7 @@ Abra o browser integrado (Ctrl+Shift+B), acesse http://localhost:8081/chat, e te
 ```
 
 **Telas disponíveis para testar:**
+
 - `/` ou `/home` - Home
 - `/onboarding` - Onboarding
 - `/chat` - Chat
@@ -79,7 +80,7 @@ Abra o browser integrado (Ctrl+Shift+B), acesse http://localhost:8081/chat, e te
 
 - **Expo App**: http://localhost:8081
 - **Expo DevTools**: http://localhost:19002 (pode variar, verifique no terminal do Expo)
-- **Metro Bundler UI**: http://localhost:8081/_debugger-ui
+- **Metro Bundler UI**: http://localhost:8081/\_debugger-ui
 
 ---
 
@@ -94,16 +95,19 @@ Abra o browser integrado (Ctrl+Shift+B), acesse http://localhost:8081/chat, e te
 ## 🐛 Troubleshooting Rápido
 
 ### App não carrega
+
 - Verifique se `pnpm dev` está rodando
 - Confirme que a porta 8081 está livre: `netstat -ano | findstr ":8081"`
 - Tente limpar cache: `pnpm -C apps/mobile dev:clear` ou `cd apps/mobile && pnpm dev:clear`
 
 ### Browser não abre
+
 - Use atalho: `Ctrl+Shift+B`
 - Ou comando: `cursor.browser.open`
 - Verifique se o browser integrado está habilitado nas configurações
 
 ### Viewport não funciona
+
 - Abra DevTools (F12)
 - Use Device Toolbar (Ctrl+Shift+M)
 - Configure manualmente: 390x844
@@ -113,6 +117,7 @@ Abra o browser integrado (Ctrl+Shift+B), acesse http://localhost:8081/chat, e te
 ## 🔗 Deep Links
 
 O app suporta deep links:
+
 - `nossa-maternidade://onboarding` - Onboarding
 - `nossa-maternidade://chat` - Chat
 - `nossa-maternidade://habits` - Hábitos
@@ -126,4 +131,3 @@ Teste no browser: `nossa-maternidade://chat`
 ---
 
 **Use este comando no Composer (`Ctrl+I`) para visualização rápida!**
-

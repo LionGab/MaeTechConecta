@@ -192,6 +192,7 @@ npx expo start
 **Soluções:**
 
 1. **Usar TUNNEL (Recomendado):**
+
 ```powershell
 cd apps/mobile
 pnpm dev:tunnel
@@ -202,12 +203,14 @@ pnpm dev:tunnel
    - Verifique IP: `ipconfig | findstr IPv4`
 
 3. **Configurar Firewall:**
+
 ```powershell
 # Como Administrador
 New-NetFirewallRule -DisplayName "Expo Metro Bundler" -Direction Inbound -LocalPort 8081 -Protocol TCP -Action Allow
 ```
 
 4. **Usar script de ajuda:**
+
 ```powershell
 .\scripts\fix-ios-connection.ps1
 ```

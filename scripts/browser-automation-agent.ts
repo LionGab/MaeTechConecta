@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 /**
  * Agente de Automação do Browser
- * 
+ *
  * Navega por todas as telas do app, identifica erros e corrige automaticamente
  */
 
@@ -73,7 +73,7 @@ function navigateToScreen(screen: { name: string; route: string; deepLink: strin
   console.log(`\n📍 Navegando para: ${screen.name}`);
   console.log(`   Rota: ${screen.route}`);
   console.log(`   Deep Link: ${screen.deepLink}`);
-  
+
   // Simula navegação
   const result = executeBrowserCommand(`navigate:${screen.deepLink}`);
   return result === 'success';
@@ -82,10 +82,10 @@ function navigateToScreen(screen: { name: string; route: string; deepLink: strin
 // Função para detectar erros no console
 function detectConsoleErrors(screen: string): ErrorReport[] {
   console.log(`   🔍 Detectando erros no console...`);
-  
+
   // Simula detecção de erros
   const errors: ErrorReport[] = [];
-  
+
   // Exemplo de erro detectado
   // errors.push({
   //   screen,
@@ -94,16 +94,16 @@ function detectConsoleErrors(screen: string): ErrorReport[] {
   //   severity: 'high',
   //   fixed: false,
   // });
-  
+
   return errors;
 }
 
 // Função para detectar erros visuais
 function detectVisualErrors(screen: string): ErrorReport[] {
   console.log(`   👁️ Detectando erros visuais...`);
-  
+
   const errors: ErrorReport[] = [];
-  
+
   // Simula detecção de erros visuais
   // errors.push({
   //   screen,
@@ -112,16 +112,16 @@ function detectVisualErrors(screen: string): ErrorReport[] {
   //   severity: 'medium',
   //   fixed: false,
   // });
-  
+
   return errors;
 }
 
 // Função para detectar erros de performance
 function detectPerformanceErrors(screen: string, loadTime: number): ErrorReport[] {
   console.log(`   ⚡ Detectando erros de performance...`);
-  
+
   const errors: ErrorReport[] = [];
-  
+
   if (loadTime > 3000) {
     errors.push({
       screen,
@@ -131,16 +131,16 @@ function detectPerformanceErrors(screen: string, loadTime: number): ErrorReport[
       fixed: false,
     });
   }
-  
+
   return errors;
 }
 
 // Função para detectar erros de acessibilidade
 function detectAccessibilityErrors(screen: string): ErrorReport[] {
   console.log(`   ♿ Detectando erros de acessibilidade...`);
-  
+
   const errors: ErrorReport[] = [];
-  
+
   // Simula detecção de erros de acessibilidade
   // errors.push({
   //   screen,
@@ -149,54 +149,54 @@ function detectAccessibilityErrors(screen: string): ErrorReport[] {
   //   severity: 'medium',
   //   fixed: false,
   // });
-  
+
   return errors;
 }
 
 // Função para corrigir erro automaticamente
 function fixError(error: ErrorReport): ErrorReport {
   console.log(`   🔧 Tentando corrigir: ${error.message}`);
-  
+
   // Simula correção automática
   // Em produção, isso aplicaria correções reais no código
-  
+
   switch (error.type) {
     case 'console':
       // Adicionar try-catch, validações, etc.
       error.fixed = true;
       error.fixDescription = 'Adicionado try-catch e validações';
       break;
-      
+
     case 'visual':
       // Ajustar estilos, layouts, etc.
       error.fixed = true;
       error.fixDescription = 'Ajustado estilo e layout';
       break;
-      
+
     case 'performance':
       // Adicionar memoização, lazy loading, etc.
       error.fixed = true;
       error.fixDescription = 'Otimizado com memoização';
       break;
-      
+
     case 'accessibility':
       // Adicionar accessibilityLabel, ajustar contraste, etc.
       error.fixed = true;
       error.fixDescription = 'Adicionado accessibilityLabel e ajustado contraste';
       break;
-      
+
     default:
       error.fixed = false;
       error.fixDescription = 'Correção não disponível automaticamente';
   }
-  
+
   return error;
 }
 
 // Função para gerar screenshot
 function takeScreenshot(screen: string): string {
   console.log(`   📸 Gerando screenshot...`);
-  
+
   // Simula geração de screenshot
   const screenshotPath = join(
     process.cwd(),
@@ -206,15 +206,15 @@ function takeScreenshot(screen: string): string {
     'screenshots',
     `${screen.toLowerCase()}.png`
   );
-  
+
   return screenshotPath;
 }
 
 // Função principal de automação
 function runBrowserAutomation(): AutomationReport {
   console.log('🚀 Iniciando Agente de Automação do Browser\n');
-  console.log('=' .repeat(60));
-  
+  console.log('='.repeat(60));
+
   const report: AutomationReport = {
     timestamp: new Date().toISOString(),
     totalScreens: SCREENS.length,
@@ -231,7 +231,7 @@ function runBrowserAutomation(): AutomationReport {
       network: 0,
     },
   };
-  
+
   // Navegar por cada tela
   for (const screen of SCREENS) {
     const screenReport: ScreenReport = {
@@ -241,37 +241,32 @@ function runBrowserAutomation(): AutomationReport {
       errors: [],
       loadTime: Math.random() * 2000 + 1000, // Simula tempo de carregamento
     };
-    
+
     // Navegar para a tela
     const navigated = navigateToScreen(screen);
     screenReport.navigated = navigated;
-    
+
     if (navigated) {
       report.navigatedScreens++;
-      
+
       // Aguardar carregamento
       const loadTime = screenReport.loadTime || 1000;
       console.log(`   ⏱️ Tempo de carregamento: ${loadTime.toFixed(0)}ms`);
-      
+
       // Detectar erros
       const consoleErrors = detectConsoleErrors(screen.name);
       const visualErrors = detectVisualErrors(screen.name);
       const performanceErrors = detectPerformanceErrors(screen.name, loadTime);
       const accessibilityErrors = detectAccessibilityErrors(screen.name);
-      
-      screenReport.errors = [
-        ...consoleErrors,
-        ...visualErrors,
-        ...performanceErrors,
-        ...accessibilityErrors,
-      ];
-      
+
+      screenReport.errors = [...consoleErrors, ...visualErrors, ...performanceErrors, ...accessibilityErrors];
+
       // Contar erros por categoria
       screenReport.errors.forEach((error) => {
         report.errorsByCategory[error.type]++;
         report.totalErrors++;
       });
-      
+
       // Tentar corrigir erros automaticamente
       screenReport.errors = screenReport.errors.map((error) => {
         const fixed = fixError(error);
@@ -282,20 +277,20 @@ function runBrowserAutomation(): AutomationReport {
         }
         return fixed;
       });
-      
+
       // Gerar screenshot
       screenReport.screenshot = takeScreenshot(screen.name);
-      
+
       console.log(`   ✅ Tela navegada: ${screen.name}`);
       console.log(`   📊 Erros encontrados: ${screenReport.errors.length}`);
       console.log(`   🔧 Erros corrigidos: ${screenReport.errors.filter((e) => e.fixed).length}`);
     } else {
       console.log(`   ❌ Falha ao navegar para: ${screen.name}`);
     }
-    
+
     report.screens.push(screenReport);
   }
-  
+
   console.log('\n' + '='.repeat(60));
   console.log('📊 Resumo da Automação:');
   console.log(`   Telas navegadas: ${report.navigatedScreens}/${report.totalScreens}`);
@@ -303,18 +298,18 @@ function runBrowserAutomation(): AutomationReport {
   console.log(`   Erros corrigidos: ${report.fixedErrors}`);
   console.log(`   Erros pendentes: ${report.pendingErrors}`);
   console.log('='.repeat(60));
-  
+
   return report;
 }
 
 // Função para gerar relatório em Markdown
 function generateMarkdownReport(report: AutomationReport): string {
   const timestamp = new Date(report.timestamp).toLocaleString('pt-BR');
-  
+
   let markdown = `# 📊 Relatório de Automação do Browser\n\n`;
   markdown += `**Data**: ${timestamp}\n\n`;
   markdown += `---\n\n`;
-  
+
   // Resumo Executivo
   markdown += `## 📋 Resumo Executivo\n\n`;
   markdown += `- **Total de Telas**: ${report.totalScreens}\n`;
@@ -322,7 +317,7 @@ function generateMarkdownReport(report: AutomationReport): string {
   markdown += `- **Total de Erros**: ${report.totalErrors}\n`;
   markdown += `- **Erros Corrigidos**: ${report.fixedErrors}\n`;
   markdown += `- **Erros Pendentes**: ${report.pendingErrors}\n\n`;
-  
+
   // Erros por Categoria
   markdown += `## 🔍 Erros por Categoria\n\n`;
   markdown += `- **Console**: ${report.errorsByCategory.console}\n`;
@@ -330,10 +325,10 @@ function generateMarkdownReport(report: AutomationReport): string {
   markdown += `- **Performance**: ${report.errorsByCategory.performance}\n`;
   markdown += `- **Acessibilidade**: ${report.errorsByCategory.accessibility}\n`;
   markdown += `- **Network**: ${report.errorsByCategory.network}\n\n`;
-  
+
   // Detalhes por Tela
   markdown += `## 📱 Detalhes por Tela\n\n`;
-  
+
   for (const screen of report.screens) {
     markdown += `### ${screen.screen}\n\n`;
     markdown += `- **Rota**: ${screen.route}\n`;
@@ -341,7 +336,7 @@ function generateMarkdownReport(report: AutomationReport): string {
     markdown += `- **Tempo de Carregamento**: ${screen.loadTime?.toFixed(0)}ms\n`;
     markdown += `- **Erros Encontrados**: ${screen.errors.length}\n`;
     markdown += `- **Erros Corrigidos**: ${screen.errors.filter((e) => e.fixed).length}\n\n`;
-    
+
     if (screen.errors.length > 0) {
       markdown += `#### Erros:\n\n`;
       for (const error of screen.errors) {
@@ -354,31 +349,31 @@ function generateMarkdownReport(report: AutomationReport): string {
         markdown += `\n`;
       }
     }
-    
+
     if (screen.screenshot) {
       markdown += `#### Screenshot:\n\n`;
       markdown += `![${screen.screen}](${screen.screenshot})\n\n`;
     }
   }
-  
+
   // Recomendações
   markdown += `## 💡 Recomendações\n\n`;
-  
+
   if (report.pendingErrors > 0) {
     markdown += `- ⚠️ Existem ${report.pendingErrors} erros pendentes que requerem intervenção manual\n`;
   }
-  
+
   if (report.errorsByCategory.performance > 0) {
     markdown += `- ⚡ Otimizar performance em ${report.errorsByCategory.performance} tela(s)\n`;
   }
-  
+
   if (report.errorsByCategory.accessibility > 0) {
     markdown += `- ♿ Melhorar acessibilidade em ${report.errorsByCategory.accessibility} tela(s)\n`;
   }
-  
+
   markdown += `\n---\n\n`;
   markdown += `**Gerado automaticamente pelo Agente de Automação do Browser**\n`;
-  
+
   return markdown;
 }
 
@@ -388,28 +383,27 @@ function main() {
     // Criar diretório de relatórios se não existir
     const reportsDir = join(process.cwd(), '.cursor', 'agents', 'reports');
     const screenshotsDir = join(reportsDir, 'screenshots');
-    
+
     if (!existsSync(reportsDir)) {
       mkdirSync(reportsDir, { recursive: true });
     }
-    
+
     if (!existsSync(screenshotsDir)) {
       mkdirSync(screenshotsDir, { recursive: true });
     }
-    
+
     // Executar automação
     const report = runBrowserAutomation();
-    
+
     // Gerar relatório em Markdown
     const markdownReport = generateMarkdownReport(report);
-    
+
     // Salvar relatório
     const reportPath = join(reportsDir, 'browser-automation-report.md');
     writeFileSync(reportPath, markdownReport, 'utf-8');
-    
+
     console.log(`\n✅ Relatório salvo em: ${reportPath}`);
     console.log(`\n📖 Para visualizar o relatório completo, abra: ${reportPath}`);
-    
   } catch (error) {
     console.error('❌ Erro ao executar automação:', error);
     process.exit(1);
@@ -422,4 +416,3 @@ if (require.main === module) {
 }
 
 export { runBrowserAutomation, generateMarkdownReport };
-

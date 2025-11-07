@@ -1,11 +1,10 @@
 {
-  "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "jsx": "react-native",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -14,8 +13,9 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "isolatedModules": true,
+    "allowImportingTsExtensions": true,
     "baseUrl": ".",
-    "types": ["node"],
+    "types": ["node", "react", "react-native"],
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
@@ -26,6 +26,6 @@
       "@nossa/shared/*": ["./packages/shared/src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts"],
+  "exclude": ["node_modules", "dist", "build", ".expo", ".expo-shared"]
 }

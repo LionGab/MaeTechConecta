@@ -80,7 +80,7 @@ END $$;
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS user_profiles (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email TEXT UNIQUE,
   name TEXT NOT NULL,
   type user_type NOT NULL,
@@ -118,7 +118,7 @@ CREATE INDEX IF NOT EXISTS idx_user_profiles_last_interaction ON user_profiles(l
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS conversation_history (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
   messages JSONB DEFAULT '[]'::jsonb,
   summary_daily TEXT,
@@ -138,7 +138,7 @@ CREATE INDEX IF NOT EXISTS idx_conversation_history_updated_at ON conversation_h
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS chat_messages (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
   message TEXT NOT NULL,
   response TEXT NOT NULL,
@@ -161,7 +161,7 @@ CREATE INDEX IF NOT EXISTS idx_chat_messages_user_date ON chat_messages(user_id,
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS conversations (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
   message TEXT NOT NULL,
   response TEXT NOT NULL,
@@ -182,7 +182,7 @@ ON conversations (user_id, created_at DESC);
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS daily_plans (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
   date DATE NOT NULL,
   priorities TEXT[] DEFAULT '{}',
@@ -218,7 +218,7 @@ CREATE INDEX IF NOT EXISTS idx_user_feature_flags_updated_at ON user_feature_fla
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS habits (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   description TEXT,
@@ -239,7 +239,7 @@ CREATE INDEX IF NOT EXISTS idx_habits_user_active ON habits(user_id, is_active) 
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS habit_completions (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   habit_id UUID NOT NULL REFERENCES habits(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
   completed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -257,7 +257,7 @@ CREATE INDEX IF NOT EXISTS idx_habit_completions_created_at ON habit_completions
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS content_items (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL,
   description TEXT,
   type content_type NOT NULL,
@@ -281,7 +281,7 @@ CREATE INDEX IF NOT EXISTS idx_content_items_tags ON content_items USING GIN(tag
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS content_favorites (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
   content_id UUID NOT NULL REFERENCES content_items(id) ON DELETE CASCADE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -297,7 +297,7 @@ CREATE INDEX IF NOT EXISTS idx_content_favorites_created_at ON content_favorites
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS moderation_queue (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
   message TEXT NOT NULL,
   category TEXT,
@@ -320,7 +320,7 @@ CREATE INDEX IF NOT EXISTS idx_moderation_queue_action ON moderation_queue(actio
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS risk_alerts (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
   risk_type risk_type NOT NULL,
   severity INTEGER NOT NULL CHECK (severity >= 1 AND severity <= 10),
@@ -342,7 +342,7 @@ CREATE INDEX IF NOT EXISTS idx_risk_alerts_created_at ON risk_alerts(created_at 
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS alert_logs (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES user_profiles(id) ON DELETE CASCADE,
   message_id UUID REFERENCES chat_messages(id) ON DELETE CASCADE,
   risk_level INTEGER CHECK (risk_level >= 0 AND risk_level <= 10),
@@ -364,7 +364,7 @@ CREATE INDEX IF NOT EXISTS idx_alert_logs_handled_at ON alert_logs(handled_at) W
 -- =====================================================
 
 CREATE TABLE IF NOT EXISTS vector_embeddings (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
   content TEXT NOT NULL,
   embedding vector(768) NOT NULL,

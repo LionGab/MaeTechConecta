@@ -7,6 +7,7 @@
 ## 🎯 Objetivo
 
 Este agente automatiza:
+
 1. ✅ Navegação entre todas as telas do app
 2. ✅ Detecção de erros (console, visual, performance)
 3. ✅ Correção automática de erros identificados
@@ -40,41 +41,49 @@ Ctrl+Shift+P → "Cursor: Browser Automation Agent"
 ## 📋 Telas a Navegar
 
 ### 1. Onboarding
+
 - **Rota**: `/onboarding`
 - **Elementos**: Botões de navegação, slides
 - **Ações**: Navegar pelos slides, completar onboarding
 
 ### 2. Home (Tab Navigator)
+
 - **Rota**: `/home`
 - **Elementos**: Cards, botões, lista de conteúdo
 - **Ações**: Scroll, clicar em cards, navegar para outras tabs
 
 ### 3. Chat
+
 - **Rota**: `/chat`
 - **Elementos**: Input de mensagem, lista de mensagens, botão enviar
 - **Ações**: Enviar mensagem, scroll na lista, verificar histórico
 
 ### 4. Hábitos
+
 - **Rota**: `/habits`
 - **Elementos**: Lista de hábitos, checkboxes, botões
 - **Ações**: Marcar hábitos, adicionar hábito, scroll
 
 ### 5. Conteúdo
+
 - **Rota**: `/content`
 - **Elementos**: Lista de conteúdo, cards, botões
 - **Ações**: Scroll, clicar em conteúdo, navegar para detalhes
 
 ### 6. Perfil
+
 - **Rota**: `/profile`
 - **Elementos**: Informações do usuário, botões de ação
 - **Ações**: Visualizar perfil, editar perfil, configurações
 
 ### 7. Plano Diário
+
 - **Rota**: `/daily-plan`
 - **Elementos**: Cards de atividades, botões
 - **Ações**: Scroll, marcar atividades, navegar
 
 ### 8. Detalhes de Conteúdo
+
 - **Rota**: `/content/:contentId`
 - **Elementos**: Conteúdo completo, botões
 - **Ações**: Visualizar conteúdo, voltar
@@ -84,24 +93,28 @@ Ctrl+Shift+P → "Cursor: Browser Automation Agent"
 ## 🔍 Detecção de Erros
 
 ### Console Errors
+
 - Erros JavaScript
 - Warnings
 - Network errors
 - Unhandled promises
 
 ### Visual Errors
+
 - Elementos não renderizados
 - Layout quebrado
 - Imagens não carregadas
 - Textos cortados
 
 ### Performance Errors
+
 - Tempo de carregamento > 3s
 - Memory leaks
 - Re-renders excessivos
 - Scroll lento
 
 ### Acessibilidade Errors
+
 - Elementos sem accessibilityLabel
 - Contraste inadequado
 - Área de toque < 44x44px
@@ -204,16 +217,7 @@ O agente gera um relatório completo em:
 ```json
 {
   "navigation": {
-    "screens": [
-      "Onboarding",
-      "Home",
-      "Chat",
-      "Habits",
-      "Content",
-      "Profile",
-      "DailyPlan",
-      "ContentDetail"
-    ],
+    "screens": ["Onboarding", "Home", "Chat", "Habits", "Content", "Profile", "DailyPlan", "ContentDetail"],
     "deepLinks": true,
     "waitForAnimations": true,
     "scrollDelay": 500
@@ -324,4 +328,3 @@ Execute o agente de browser automation apenas para detectar erros:
 
 **Última atualização**: Janeiro 2025  
 **Versão do Agente**: 1.0.0
-

@@ -123,6 +123,7 @@ Use os comandos personalizados do Cursor:
 ## Relatórios
 
 Os relatórios serão gerados em:
+
 - `.cursor/agents/reports/` - Relatórios individuais por agente
 - `.cursor/review-logs/` - Logs de revisão
 - Console do Cursor - Progresso em tempo real
@@ -130,6 +131,7 @@ Os relatórios serão gerados em:
 ## Agentes Configurados
 
 ### Multi-Agente (8 agentes em paralelo)
+
 - ✅ Frontend (React Native + Expo)
 - ✅ Backend (Supabase + Edge Functions)
 - ✅ IA (NAT-AI + Gemini)
@@ -140,6 +142,7 @@ Os relatórios serão gerados em:
 - ✅ Docs (Documentação + JSDoc)
 
 ### Code Reviewer (Multi-Stage)
+
 - ✅ Code Inspector
 - ✅ Test Runner
 - ✅ Performance Analyzer
@@ -150,6 +153,7 @@ Os relatórios serão gerados em:
 - ✅ Final Report
 
 ### Script Agents (8 agentes)
+
 - ✅ Refactor
 - ✅ Performance
 - ✅ Test
@@ -166,4 +170,3 @@ Os relatórios serão gerados em:
 3. Revise os relatórios gerados
 4. Aplique as correções sugeridas
 5. Valide com `npm run validate`
-

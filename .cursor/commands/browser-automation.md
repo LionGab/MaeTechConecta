@@ -31,6 +31,7 @@ Este comando executa o agente de automação do browser que:
 ## Relatório
 
 O relatório é salvo em:
+
 ```
 .cursor/agents/reports/browser-automation-report.md
 ```
@@ -38,17 +39,19 @@ O relatório é salvo em:
 ## Exemplos
 
 ### Navegação Completa
+
 ```
 @browser-automation Execute navegação completa
 ```
 
 ### Apenas Detecção
+
 ```
 @browser-automation Execute apenas detecção de erros sem correção
 ```
 
 ### Tela Específica
+
 ```
 @browser-automation Execute apenas na tela de Chat
 ```
-

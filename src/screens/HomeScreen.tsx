@@ -1,51 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  SafeAreaView,
-  StatusBar,
-  ActivityIndicator,
-  Linking,
-} from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, StatusBar, Linking } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { generateDailyPlan, ChatContext } from '@/services/ai';
-import { getDailyPlan, saveDailyPlan } from '@/services/supabase';
-import { format } from 'date-fns';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { colors, shadows, spacing, borderRadius, typography } from '@/theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { DailyInsightCard } from '@/components/home/DailyInsightCard';
+import { useDailyInsight } from '@/hooks/useDailyInsight';
+import { RootStackParamList } from '@/navigation/types';
 
-// Blue Theme Constants
-const BLUE_THEME = {
-  darkBlue: '#0A2540',
-  deepBlue: '#0F3460',
-  primaryBlue: '#3B82F6',
-  lightBlue: '#60A5FA',
-  skyBlue: '#93C5FD',
-  mutedBlue: '#475569',
-  white: '#FFFFFF',
-  lightGray: '#F1F5F9',
-  darkGray: '#94A3B8',
-};
+interface QuickActionButtonProps {
+  iconName?: string;
+  iconEmoji?: string;
+  title: string;
+  onPress: () => void;
+  accessibilityLabel: string;
+  gradientColors?: [string, string];
+}
+
+const QuickActionButton: React.FC<QuickActionButtonProps> = ({
+  iconName,
+  iconEmoji,
+  title,
+  onPress,
+  accessibilityLabel,
+  gradientColors,
+}) => (
+  <TouchableOpacity
+    style={styles.quickAction}
+    onPress={onPress}
+    accessible={true}
+    accessibilityLabel={accessibilityLabel}
+    accessibilityRole="button"
+    accessibilityHint={`Abre a tela de ${title.toLowerCase()}`}
+    activeOpacity={0.8}
+  >
+    <View style={styles.quickActionIconContainer}>
+      <LinearGradient
+        colors={gradientColors || colors.gradients.pink}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.quickActionIconGradient}
+      >
+        {iconEmoji ? (
+          <Text style={styles.quickActionEmoji}>{iconEmoji}</Text>
+        ) : (
+          <Icon name={iconName || 'help-circle'} size={28} color="#fff" />
+        )}
+      </LinearGradient>
+    </View>
+    <Text style={styles.quickActionTitle}>{title}</Text>
+  </TouchableOpacity>
+);
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [userName, setUserName] = useState('');
   const [pregnancyWeek, setPregnancyWeek] = useState<number | null>(null);
-  const [dailyPlan, setDailyPlan] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
+
+  // Daily Insight hook
+  const { insight, loading: insightLoading, regenerate, markAsViewed } = useDailyInsight();
 
   useEffect(() => {
     loadUserProfile();
-    loadDailyPlan();
   }, []);
 
   const loadUserProfile = async () => {
@@ -57,77 +78,18 @@ export default function HomeScreen() {
     }
   };
 
-  const loadDailyPlan = async () => {
-    const userId = await AsyncStorage.getItem('userId');
-    const today = format(new Date(), 'yyyy-MM-dd');
+  const handleChatAboutInsight = useCallback(() => {
+    if (insight) {
+      // Marcar como visualizada
+      markAsViewed();
 
-    if (userId) {
-      try {
-        const plan = await getDailyPlan(userId, today);
-        setDailyPlan(plan);
-      } catch (error) {
-        console.log('Nenhum plano encontrado para hoje');
-      }
+      // Navegar para o chat com contexto da dica
+      navigation.navigate('Chat', {
+        context: insight.description,
+        initialPrompt: `Quero conversar sobre: ${insight.title}`,
+      });
     }
-  };
-
-  const generateTodaysPlan = async () => {
-    setLoading(true);
-    try {
-      const profileJson = await AsyncStorage.getItem('userProfile');
-      const context: ChatContext = profileJson ? JSON.parse(profileJson) : {};
-
-      const planData = await generateDailyPlan(context);
-      setDailyPlan(planData);
-
-      // Salvar no Supabase
-      const userId = await AsyncStorage.getItem('userId');
-      const today = format(new Date(), 'yyyy-MM-dd');
-
-      if (userId) {
-        await saveDailyPlan({
-          user_id: userId,
-          date: today,
-          priorities: planData.priorities,
-          tip: planData.tip,
-          recipe: planData.recipe,
-        });
-      }
-    } catch (error) {
-      console.error('Erro ao gerar plano diário:', error);
-      Alert.alert('Erro', 'Não foi possível gerar o plano diário');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const QuickActionButton = ({ iconName, iconEmoji, title, onPress, accessibilityLabel, gradientColors }: any) => (
-    <TouchableOpacity
-      style={styles.quickAction}
-      onPress={onPress}
-      accessible={true}
-      accessibilityLabel={accessibilityLabel}
-      accessibilityRole="button"
-      accessibilityHint={`Abre a tela de ${title.toLowerCase()}`}
-      activeOpacity={0.8}
-    >
-      <View style={styles.quickActionIconContainer}>
-        <LinearGradient
-          colors={gradientColors || [BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.quickActionIconGradient}
-        >
-          {iconEmoji ? (
-            <Text style={styles.quickActionEmoji}>{iconEmoji}</Text>
-          ) : (
-            <Icon name={iconName} size={28} color={BLUE_THEME.white} />
-          )}
-        </LinearGradient>
-      </View>
-      <Text style={styles.quickActionTitle}>{title}</Text>
-    </TouchableOpacity>
-  );
+  }, [insight, markAsViewed, navigation]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -159,93 +121,39 @@ export default function HomeScreen() {
             iconEmoji="💬"
             title="Conversar"
             accessibilityLabel="Botão Conversar"
-            gradientColors={[BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]}
-            onPress={() => navigation.navigate('Chat' as never)}
+            gradientColors={colors.gradients.blue}
+            onPress={() => navigation.navigate('Chat')}
           />
           <QuickActionButton
             iconEmoji="📅"
             title="Plano Diário"
             accessibilityLabel="Botão Plano Diário"
-            gradientColors={['#8B5CF6', '#A78BFA']}
-            onPress={() => navigation.navigate('DailyPlan' as never)}
+            gradientColors={colors.gradients.purple}
+            onPress={() => navigation.navigate('DailyPlan')}
           />
           <QuickActionButton
             iconEmoji="📊"
             title="Progresso"
             accessibilityLabel="Botão Progresso"
-            gradientColors={['#10B981', '#34D399']}
+            gradientColors={colors.gradients.green}
             onPress={() => Alert.alert('Em breve', 'Acompanhe seu progresso aqui!')}
           />
           <QuickActionButton
             iconEmoji="👤"
             title="Perfil"
             accessibilityLabel="Botão Perfil"
-            gradientColors={['#F59E0B', '#FBBF24']}
-            onPress={() => navigation.navigate('Profile' as never)}
+            gradientColors={colors.gradients.amber}
+            onPress={() => navigation.navigate('Profile')}
           />
         </View>
 
-        {/* Plano Diário */}
-        <Card title="Seu Plano de Hoje" icon="target" variant="elevated" style={styles.dailyPlanCard}>
-          <View style={styles.dailyPlanHeader}>
-            <Button
-              variant="outline"
-              size="sm"
-              onPress={generateTodaysPlan}
-              loading={loading}
-              disabled={loading}
-              icon="refresh"
-              accessibilityLabel="Atualizar plano diário"
-              accessibilityHint="Gera um novo plano personalizado para hoje"
-            >
-              Atualizar
-            </Button>
-          </View>
-
-          {dailyPlan ? (
-            <View>
-              <View style={styles.sectionTitleContainer}>
-                <Icon name="checkbox-marked-circle-outline" size={20} color={colors.primary} />
-                <Text style={styles.sectionTitle}>Prioridades:</Text>
-              </View>
-              {dailyPlan.priorities?.map((priority: string, index: number) => (
-                <Text key={index} style={styles.priorityItem}>
-                  • {priority}
-                </Text>
-              ))}
-
-              <View style={[styles.sectionTitleContainer, { marginTop: spacing.lg }]}>
-                <Icon name="lightbulb-outline" size={20} color={colors.primary} />
-                <Text style={styles.sectionTitle}>Dica do Dia:</Text>
-              </View>
-              <Text style={styles.tip}>{dailyPlan.tip}</Text>
-
-              <View style={[styles.sectionTitleContainer, { marginTop: spacing.lg }]}>
-                <Icon name="food-variant" size={20} color={colors.primary} />
-                <Text style={styles.sectionTitle}>Receita:</Text>
-              </View>
-              <Text style={styles.recipe}>{dailyPlan.recipe}</Text>
-            </View>
-          ) : (
-            <View style={styles.emptyStateContainer}>
-              <Icon name="calendar-blank-outline" size={48} color={colors.muted} />
-              <Text style={styles.emptyState}>Nenhum plano gerado ainda para hoje.</Text>
-              <Button
-                variant="primary"
-                size="md"
-                fullWidth
-                onPress={generateTodaysPlan}
-                loading={loading}
-                disabled={loading}
-                icon="sparkles"
-                accessibilityLabel="Gerar plano diário"
-                accessibilityHint="Cria um plano personalizado baseado no seu perfil"
-              >
-                {loading ? 'Gerando...' : 'Gerar Plano Agora'}
-              </Button>
-            </View>
-          )}
-        </Card>
+        {/* Dica Diária Personalizada */}
+        <DailyInsightCard
+          insight={insight}
+          loading={insightLoading}
+          onRefresh={regenerate}
+          onActionPress={handleChatAboutInsight}
+        />
 
         {/* Dicas Rápidas */}
         <Card title="Você sabia?" icon="lightbulb-on" variant="outlined" style={styles.tipsCard}>
@@ -261,7 +169,7 @@ export default function HomeScreen() {
         <Card title="Perguntas Frequentes" icon="help-circle-outline" variant="elevated" style={styles.faqCard}>
           <TouchableOpacity
             style={styles.faqItem}
-            onPress={() => navigation.navigate('Chat' as never)}
+            onPress={() => navigation.navigate('Chat')}
             accessible={true}
             accessibilityLabel="Perguntar: Como aliviar enjoo matinal?"
             accessibilityRole="button"
@@ -275,7 +183,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.faqItem}
-            onPress={() => navigation.navigate('Chat' as never)}
+            onPress={() => navigation.navigate('Chat')}
             accessible={true}
             accessibilityLabel="Perguntar: Quais exercícios posso fazer?"
             accessibilityRole="button"
@@ -289,7 +197,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.faqItem}
-            onPress={() => navigation.navigate('Chat' as never)}
+            onPress={() => navigation.navigate('Chat')}
             accessible={true}
             accessibilityLabel="Perguntar: Quando devo ir ao médico?"
             accessibilityRole="button"
@@ -359,16 +267,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.sm,
-    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+    backgroundColor: colors.overlay.primary,
     padding: spacing.lg,
     borderRadius: borderRadius.xl,
     borderWidth: 1,
-    borderColor: 'rgba(147, 197, 253, 0.2)',
+    borderColor: colors.overlay.primaryBorder,
   },
   greeting: {
     fontSize: typography.sizes['3xl'],
-    fontWeight: typography.weights.bold as any,
-    color: BLUE_THEME.primaryBlue,
+    fontWeight: '700',
+    color: colors.primary,
     textAlign: 'center',
     fontFamily: typography.fontFamily.sans,
     letterSpacing: -0.5,
@@ -397,14 +305,14 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: '45%',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: colors.overlay.white,
     padding: spacing.lg,
     paddingVertical: spacing.xl,
     borderRadius: borderRadius.xl,
     minHeight: 120,
-    ...shadows.dark.lg,
+    ...shadows.light.lg,
     borderWidth: 1,
-    borderColor: 'rgba(147, 197, 253, 0.15)',
+    borderColor: colors.overlay.primaryBorderLight,
   },
   quickActionIconContainer: {
     marginBottom: spacing.md,
@@ -424,59 +332,7 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.sm,
     color: colors.foreground,
     textAlign: 'center',
-    fontWeight: typography.weights.semibold as any,
-    fontFamily: typography.fontFamily.sans,
-  },
-  dailyPlanCard: {
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.xl,
-  },
-  dailyPlanHeader: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
-  emptyStateContainer: {
-    alignItems: 'center',
-    gap: spacing.md,
-    paddingVertical: spacing.xl,
-  },
-  sectionTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-  },
-  sectionTitle: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold as any,
-    color: colors.foreground,
-    fontFamily: typography.fontFamily.sans,
-    marginBottom: spacing.xs,
-  },
-  priorityItem: {
-    fontSize: typography.sizes.base,
-    color: colors.mutedForeground,
-    marginTop: spacing.sm,
-    lineHeight: 24,
-    fontFamily: typography.fontFamily.sans,
-  },
-  tip: {
-    fontSize: typography.sizes.base,
-    color: colors.mutedForeground,
-    lineHeight: 24,
-    fontFamily: typography.fontFamily.sans,
-  },
-  recipe: {
-    fontSize: typography.sizes.base,
-    color: colors.mutedForeground,
-    lineHeight: 24,
-    fontFamily: typography.fontFamily.sans,
-  },
-  emptyState: {
-    fontSize: typography.sizes.base,
-    color: colors.mutedForeground,
-    textAlign: 'center',
+    fontWeight: '600',
     fontFamily: typography.fontFamily.sans,
   },
   tipsCard: {

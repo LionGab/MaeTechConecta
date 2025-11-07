@@ -9,11 +9,13 @@
 3. **Configurar viewport**: `F12` → `Ctrl+Shift+M` → Selecionar iPhone 13 (390x844)
 
 **Verificar se app está rodando**:
+
 ```powershell
 netstat -ano | findstr :8081
 ```
 
 Se não estiver rodando:
+
 ```powershell
 cd apps/mobile
 pnpm dev
@@ -36,12 +38,14 @@ pnpm dev
 **Atalho**: `Ctrl+Shift+B`
 
 **Via PowerShell Script** (abre browser padrão):
+
 ```powershell
 # Do diretório raiz do projeto
 .\.cursor\agents\scripts\abrir-browser.ps1
 ```
 
 **Via Composer** (`Ctrl+I`):
+
 ```
 Abra o browser integrado do Cursor
 ```
@@ -49,6 +53,7 @@ Abra o browser integrado do Cursor
 ### 2. Acessar o App
 
 **URLs disponíveis:**
+
 - **Expo App**: `http://localhost:8081`
 - **Expo App - Onboarding**: `http://localhost:8081/onboarding`
 - **Expo App - Chat**: `http://localhost:8081/chat`
@@ -61,6 +66,7 @@ Abra o browser integrado do Cursor
 ### 3. Configurar Viewport para iPhone 13
 
 **Via DevTools (F12 ou Ctrl+Shift+I):**
+
 1. Abra DevTools
 2. Pressione `Ctrl+Shift+M` para modo mobile
 3. Configure viewport:
@@ -71,10 +77,11 @@ Abra o browser integrado do Cursor
    - **Touch**: Habilitado
 
 **Ou via Console:**
+
 ```javascript
 // Configurar viewport programaticamente
-Object.defineProperty(window, 'innerWidth', {writable: true, configurable: true, value: 390});
-Object.defineProperty(window, 'innerHeight', {writable: true, configurable: true, value: 844});
+Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 390 });
+Object.defineProperty(window, 'innerHeight', { writable: true, configurable: true, value: 844 });
 ```
 
 ### 4. Abrir DevTools para Monitoramento
@@ -82,6 +89,7 @@ Object.defineProperty(window, 'innerHeight', {writable: true, configurable: true
 **Atalho**: `F12` ou `Ctrl+Shift+I`
 
 **Abas importantes:**
+
 - **Console**: Erros, warnings, logs
 - **Network**: Requisições, tempo de resposta
 - **Performance**: FPS, memória, renderização
@@ -156,6 +164,7 @@ Object.defineProperty(window, 'innerHeight', {writable: true, configurable: true
 - [ ] **Network errors**: Verificar erros de rede
 
 **Filtros úteis:**
+
 - `Errors only`: Apenas erros
 - `Warnings`: Apenas warnings
 - `Info`: Apenas informações
@@ -169,6 +178,7 @@ Object.defineProperty(window, 'innerHeight', {writable: true, configurable: true
 - [ ] **Edge Functions**: Verificar chamadas às funções
 
 **Filtros úteis:**
+
 - `XHR`: Apenas requisições AJAX
 - `Fetch`: Apenas fetch requests
 - `WS`: WebSocket connections
@@ -182,6 +192,7 @@ Object.defineProperty(window, 'innerHeight', {writable: true, configurable: true
 - [ ] **Layout time**: Tempo de layout
 
 **Como gravar:**
+
 1. Clique em "Record" (círculo vermelho)
 2. Interaja com o app
 3. Pare a gravação
@@ -199,9 +210,11 @@ Object.defineProperty(window, 'innerHeight', {writable: true, configurable: true
 ## 📸 Captura de Screenshots
 
 ### Atalho do Cursor
+
 - **Screenshot**: `Ctrl+Shift+U`
 
 ### Via DevTools
+
 1. Abra DevTools (F12)
 2. Pressione `Ctrl+Shift+P` (Command Palette)
 3. Digite "Capture screenshot"
@@ -241,6 +254,7 @@ Object.defineProperty(window, 'innerHeight', {writable: true, configurable: true
 ### Troubleshooting
 
 **Se hot reload não funcionar:**
+
 1. Verifique console para erros
 2. Recarregue a página manualmente (F5)
 3. Limpe cache do browser
@@ -262,6 +276,7 @@ Object.defineProperty(window, 'innerHeight', {writable: true, configurable: true
 **Descrição**: [Descrição detalhada do problema]
 
 **Passos para reproduzir**:
+
 1. [Passo 1]
 2. [Passo 2]
 3. [Passo 3]
@@ -293,6 +308,7 @@ Object.defineProperty(window, 'innerHeight', {writable: true, configurable: true
 **Descrição**: O botão de enviar mensagem não responde ao clique
 
 **Passos para reproduzir**:
+
 1. Abrir tela de Chat
 2. Digitar mensagem no input
 3. Clicar no botão "Enviar"
@@ -303,10 +319,12 @@ Object.defineProperty(window, 'innerHeight', {writable: true, configurable: true
 
 **Screenshot**: `.cursor/agents/reports/screenshots/chat-button-issue.png`
 
-**Console errors**: 
+**Console errors**:
 ```
+
 Error: Cannot read property 'sendMessage' of undefined
-    at ChatScreen.sendMessage (ChatScreen.tsx:45)
+at ChatScreen.sendMessage (ChatScreen.tsx:45)
+
 ```
 
 **Network errors**: Nenhuma requisição é feita ao clicar no botão
@@ -330,6 +348,7 @@ Crie um atalho ou execute diretamente:
 ```
 
 **O script faz**:
+
 - ✅ Verifica se porta 8081 está ativa
 - ✅ Abre browser em `http://localhost:8081`
 - ✅ Mostra próximos passos (viewport, monitoramento)
@@ -337,6 +356,7 @@ Crie um atalho ou execute diretamente:
 ### Viewport iPhone 13
 
 **Configuração manual (DevTools)**:
+
 1. Abra DevTools (F12)
 2. Pressione `Ctrl+Shift+M` (modo mobile)
 3. Selecione "iPhone 13" ou configure manualmente:
@@ -345,14 +365,20 @@ Crie um atalho ou execute diretamente:
    - Device Scale Factor: 3
 
 **Configuração via console**:
+
 ```javascript
 // Executar no console do browser (F12)
-Object.defineProperty(window, 'innerWidth', {writable: true, configurable: true, value: 390});
-Object.defineProperty(window, 'innerHeight', {writable: true, configurable: true, value: 844});
-navigator.__defineGetter__('userAgent', () => 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1');
+Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 390 });
+Object.defineProperty(window, 'innerHeight', { writable: true, configurable: true, value: 844 });
+navigator.__defineGetter__(
+  'userAgent',
+  () =>
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1'
+);
 ```
 
 **JSON de referência**:
+
 ```json
 {
   "viewport": {
@@ -399,6 +425,7 @@ navigator.__defineGetter__('userAgent', () => 'Mozilla/5.0 (iPhone; CPU iPhone O
 ## ⚡ Atalhos Rápidos
 
 ### Browser
+
 - **Abrir (Cursor integrado)**: `Ctrl+Shift+B`
 - **Abrir (Browser padrão)**: `.\.cursor\agents\scripts\abrir-browser.ps1`
 - **Fechar**: `Ctrl+Shift+W`
@@ -406,6 +433,7 @@ navigator.__defineGetter__('userAgent', () => 'Mozilla/5.0 (iPhone; CPU iPhone O
 - **Screenshot**: `Ctrl+Shift+U`
 
 ### DevTools
+
 - **Abrir/Fechar**: `F12` ou `Ctrl+Shift+I`
 - **Modo Mobile**: `Ctrl+Shift+M`
 - **Command Palette**: `Ctrl+Shift+P`
@@ -414,6 +442,7 @@ navigator.__defineGetter__('userAgent', () => 'Mozilla/5.0 (iPhone; CPU iPhone O
 - **Performance**: `Ctrl+Shift+P` → "Performance"
 
 ### Navegação
+
 - **Recarregar**: `F5` ou `Ctrl+R`
 - **Recarregar sem cache**: `Ctrl+Shift+R` ou `Ctrl+F5`
 - **Voltar**: `Alt+←`
@@ -428,6 +457,7 @@ Após completar a visualização, salve o relatório em:
 `.cursor/agents/reports/BROWSER_VISUALIZATION_REPORT.md`
 
 **Estrutura do relatório:**
+
 1. **Resumo Executivo**: Visão geral dos problemas encontrados
 2. **Problemas Críticos**: Severidade 5
 3. **Problemas Altos**: Severidade 4
@@ -442,6 +472,7 @@ Após completar a visualização, salve o relatório em:
 ## ✅ Checklist Completo
 
 ### Antes de Começar
+
 - [ ] App está rodando (`pnpm dev` ou verificar porta 8081)
 - [ ] Browser integrado habilitado (Ctrl+Shift+B) ou browser padrão aberto
 - [ ] DevTools disponível (F12)
@@ -449,17 +480,20 @@ Após completar a visualização, salve o relatório em:
 - [ ] Diretório de screenshots existe (`.cursor/agents/reports/screenshots/`)
 
 **Verificar app rodando**:
+
 ```powershell
 netstat -ano | findstr :8081
 ```
 
 Se não estiver rodando:
+
 ```powershell
 cd apps/mobile
 pnpm dev
 ```
 
 ### Durante Visualização
+
 - [ ] Console monitorado (erros, warnings)
 - [ ] Network monitorado (requisições, latência)
 - [ ] Performance monitorado (FPS, memória)
@@ -469,6 +503,7 @@ pnpm dev
 - [ ] Hot reload testado
 
 ### Após Visualização
+
 - [ ] Problemas documentados
 - [ ] Screenshots salvos
 - [ ] Relatório criado
@@ -478,4 +513,3 @@ pnpm dev
 
 **Última atualização**: Janeiro 2025  
 **Versão**: 1.0.0
-

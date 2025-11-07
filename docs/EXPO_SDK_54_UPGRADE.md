@@ -32,6 +32,7 @@ npx expo install --fix
 ```
 
 Este comando atualiza automaticamente:
+
 - ✅ `expo-av`
 - ✅ `expo-constants`
 - ✅ `expo-linear-gradient`
@@ -75,6 +76,7 @@ rm -rf android ios
 ```
 
 Os projetos nativos serão regenerados automaticamente na próxima vez que você executar:
+
 - `npx expo run:ios`
 - `npx expo run:android`
 - `npx expo prebuild`
@@ -125,6 +127,7 @@ pnpm android
 ### 3. Verificar Funcionalidades
 
 Teste as funcionalidades principais do app:
+
 - ✅ Navegação
 - ✅ Notificações
 - ✅ Áudio/Vídeo
@@ -139,6 +142,7 @@ Teste as funcionalidades principais do app:
 ### "Module not found" ou "Cannot find module"
 
 **Solução:**
+
 ```bash
 cd apps/mobile
 
@@ -150,6 +154,7 @@ pnpm install
 ### "Incompatible dependency versions"
 
 **Solução:**
+
 ```bash
 cd apps/mobile
 
@@ -162,6 +167,7 @@ npx expo install --fix --check
 **Soluções:**
 
 1. **Limpar projetos nativos:**
+
 ```bash
 cd apps/mobile
 
@@ -171,12 +177,14 @@ npx expo prebuild
 ```
 
 2. **Limpar cache do Metro:**
+
 ```bash
 cd apps/mobile
 pnpm clean
 ```
 
 3. **Reinstalar pods (iOS):**
+
 ```bash
 cd apps/mobile/ios
 pod deintegrate
@@ -186,6 +194,7 @@ pod install
 ### "Expo CLI version mismatch"
 
 **Solução:**
+
 ```bash
 # Atualizar Expo CLI globalmente
 npm install -g expo-cli@latest
@@ -240,4 +249,3 @@ pnpm dev
 ---
 
 **Execute os passos acima para fazer o upgrade do SDK 52 para 54!** 🎉
-

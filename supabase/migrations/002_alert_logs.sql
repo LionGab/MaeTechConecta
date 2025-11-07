@@ -1,6 +1,6 @@
 -- Tabela para logs de alertas de alto risco
 CREATE TABLE IF NOT EXISTS alert_logs (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES user_profiles(id) ON DELETE CASCADE,
   message_id UUID REFERENCES chat_messages(id) ON DELETE CASCADE,
   risk_level INTEGER CHECK (risk_level >= 0 AND risk_level <= 10),

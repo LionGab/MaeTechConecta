@@ -17,14 +17,17 @@ Abra o browser integrado do Cursor e acesse http://localhost:8081:
 ## 📋 Passos Manuais (Se o Comando Não Funcionar)
 
 ### 1. Abrir Browser Integrado
+
 - **Atalho**: Pressione `Ctrl+Shift+B`
 - **Ou**: Command Palette (`Ctrl+Shift+P`) → Digite `cursor.browser.open`
 
 ### 2. Acessar o App
+
 - **URL**: `http://localhost:8081`
 - **Status**: ✅ App está rodando (porta 8081 ativa)
 
 ### 3. Configurar Viewport iPhone 13
+
 - Abra DevTools: `F12` ou `Ctrl+Shift+I`
 - Ative modo mobile: `Ctrl+Shift+M`
 - Configure:
@@ -35,11 +38,13 @@ Abra o browser integrado do Cursor e acesse http://localhost:8081:
   - **Touch**: Habilitado
 
 ### 4. Monitorar
+
 - **Console** (`Ctrl+Shift+J`): Erros, warnings, logs
 - **Network** (`Ctrl+Shift+E`): Requisições, latência
 - **Performance**: FPS, memória, renderização
 
 ### 5. Testar Telas
+
 - Home (`/`)
 - Chat (`/chat`)
 - Habits (`/habits`)
@@ -61,4 +66,3 @@ Abra o browser integrado do Cursor e acesse http://localhost:8081:
 
 **Status**: ✅ App rodando na porta 8081
 **Pronto para**: Visualização e testes
-

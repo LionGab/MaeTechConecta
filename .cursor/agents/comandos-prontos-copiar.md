@@ -230,6 +230,7 @@ Agente 8: Revisar documentação e JSDoc: JSDoc em componentes públicos, Docume
 ## 🎯 Como Usar
 
 ### Execução Individual (Melhor para Memória)
+
 1. Abra Composer (`Ctrl+I`)
 2. Copie um comando acima (Agente 1 a 8)
 3. Cole e execute
@@ -237,6 +238,7 @@ Agente 8: Revisar documentação e JSDoc: JSDoc em componentes públicos, Docume
 5. Repita para próximo agente
 
 ### Execução Paralela (Mais Rápido)
+
 1. Abra Composer (`Ctrl+I`)
 2. Copie o comando "Execução em Paralelo" acima
 3. Cole e execute
@@ -248,6 +250,7 @@ Agente 8: Revisar documentação e JSDoc: JSDoc em componentes públicos, Docume
 ## 📊 Relatórios
 
 Todos os relatórios serão salvos em:
+
 - `.cursor/agents/reports/AGENT_X_REPORT.md`
 - Console do Cursor mostra progresso em tempo real
 
@@ -292,4 +295,3 @@ CONFIGURAÇÃO AUTOMÁTICA:
 ```
 
 **Veja mais comandos de browser em:** `.cursor/agents/comando-browser-visualizacao.md`
-

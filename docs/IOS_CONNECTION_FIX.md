@@ -22,11 +22,13 @@ Isso geralmente acontece quando o dispositivo iOS não consegue conectar ao serv
 ### Solução 1: Verificar Rede Wi-Fi
 
 **Certifique-se de que:**
+
 - ✅ Dispositivo iOS e computador estão na **mesma rede Wi-Fi**
 - ✅ Wi-Fi está funcionando em ambos
 - ✅ Não está usando VPN que possa interferir
 
 **Teste:**
+
 ```powershell
 # Ver seu IP atual
 ipconfig | findstr IPv4
@@ -52,11 +54,13 @@ npx expo start --tunnel
 ```
 
 **Vantagens:**
+
 - ✅ Funciona mesmo em redes diferentes
 - ✅ Não precisa configurar firewall
 - ✅ Mais confiável
 
 **Desvantagens:**
+
 - ⚠️ Pode ser mais lento
 - ⚠️ Requer internet estável
 
@@ -193,6 +197,7 @@ netstat -ano | findstr ":8081"
 ```
 
 Deve mostrar algo como:
+
 ```
 TCP    0.0.0.0:8081    0.0.0.0:0    LISTENING    12345
 ```
@@ -200,6 +205,7 @@ TCP    0.0.0.0:8081    0.0.0.0:0    LISTENING    12345
 ### 2. Testar conexão do computador
 
 No terminal do Expo, você deve ver:
+
 ```
 Metro waiting on exp://192.168.2.2:8081
 ```
@@ -207,6 +213,7 @@ Metro waiting on exp://192.168.2.2:8081
 ### 3. Testar no navegador
 
 Abra no navegador do computador:
+
 ```
 http://localhost:8081
 ```
@@ -250,4 +257,3 @@ Isso resolve 90% dos problemas de conexão iOS.
 ---
 
 **Execute as soluções acima para resolver o problema de conexão iOS!** 🎉
-

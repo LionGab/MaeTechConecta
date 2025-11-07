@@ -27,12 +27,14 @@ Relatório salvo em: `.cursor/agents/reports/refactor-web-report.md`
 ## ✅ Configurações Aplicadas
 
 ### Browser Integrado
+
 - ✅ Viewport: iPhone 13 (390×844)
 - ✅ DevTools: Ativado
 - ✅ Headless: false (visual)
 - ✅ User Agent: iPhone iOS 17 Safari
 
 ### Agente de Refatoração
+
 - ✅ Escaneia arquivos `.ts`, `.tsx`, `.js`, `.jsx`
 - ✅ Detecta dimensões hardcoded antigas
 - ✅ Verifica área de toque mínima (WCAG 2.1 AA)
@@ -60,4 +62,3 @@ Relatório salvo em: `.cursor/agents/reports/refactor-web-report.md`
 ---
 
 **Pronto para uso!** 🎉
-

@@ -11,6 +11,7 @@
 Com base no relatório do Agente 8, o Agente 2 deve adicionar JSDoc completo nos seguintes arquivos de serviços backend:
 
 ### Prioridade Alta (Severidade 3)
+
 1. ✅ `src/services/supabase.ts` - Funções exportadas sem JSDoc
    - `createTemporaryUser`
    - `saveUserProfile`
@@ -20,6 +21,7 @@ Com base no relatório do Agente 8, o Agente 2 deve adicionar JSDoc completo nos
    - `getDailyPlan`
 
 ### Prioridade Baixa (Severidade 2)
+
 2. ✅ `src/services/payments.ts` - Nenhuma função tem JSDoc
    - `initializeStripe`
    - `subscribeToPremium`
@@ -73,4 +75,3 @@ Seguir formato padrão com:
 
 **Status**: ✅ Pronto para ativação  
 **Browser**: Abrir via `Ctrl+Shift+B` e acessar `http://localhost:8081`
-

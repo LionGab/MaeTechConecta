@@ -47,6 +47,7 @@
 ### Viewports Configurados
 
 #### iPhone 13 (Padrão - Mobile-First)
+
 - **Width**: 390px
 - **Height**: 844px
 - **Device Scale Factor**: 3
@@ -56,18 +57,21 @@
 - **hasTouch**: true
 
 #### Mobile (Alternativo)
+
 - **Width**: 390px
 - **Height**: 844px
 - **Device Scale Factor**: 3
 - **Touch**: true
 
 #### Tablet
+
 - **Width**: 768px
 - **Height**: 1024px
 - **Device Scale Factor**: 2
 - **Touch**: true
 
 #### Desktop
+
 - **Width**: 1920px
 - **Height**: 1080px
 - **Device Scale Factor**: 1
@@ -90,48 +94,48 @@
 
 ### Composer e Multi-Agente
 
-| Atalho | Comando | Descrição |
-|--------|---------|-----------|
-| `Ctrl+I` | `cursor.composer.open` | Abrir Composer |
-| `Ctrl+Shift+M` | `cursor.multiAgent.open` | Abrir Multi-Agente |
-| `Ctrl+Shift+P` | `cursor.composer.openWithPlan` | Composer com Planejamento |
-| `Ctrl+Shift+C` | `cursor.composer.openChat` | Abrir Chat |
-| `Ctrl+Shift+D` | `cursor.composer.openWithDebug` | Composer com Debug |
-| `Ctrl+Shift+F` | `cursor.composer.openWithFiles` | Composer com Arquivos |
-| `Ctrl+Shift+G` | `cursor.composer.openWithGit` | Composer com Git |
-| `Ctrl+Shift+E` | `cursor.composer.openWithErrors` | Composer com Erros |
+| Atalho         | Comando                          | Descrição                 |
+| -------------- | -------------------------------- | ------------------------- |
+| `Ctrl+I`       | `cursor.composer.open`           | Abrir Composer            |
+| `Ctrl+Shift+M` | `cursor.multiAgent.open`         | Abrir Multi-Agente        |
+| `Ctrl+Shift+P` | `cursor.composer.openWithPlan`   | Composer com Planejamento |
+| `Ctrl+Shift+C` | `cursor.composer.openChat`       | Abrir Chat                |
+| `Ctrl+Shift+D` | `cursor.composer.openWithDebug`  | Composer com Debug        |
+| `Ctrl+Shift+F` | `cursor.composer.openWithFiles`  | Composer com Arquivos     |
+| `Ctrl+Shift+G` | `cursor.composer.openWithGit`    | Composer com Git          |
+| `Ctrl+Shift+E` | `cursor.composer.openWithErrors` | Composer com Erros        |
 
 ### Browser
 
-| Atalho | Comando | Descrição |
-|--------|---------|-----------|
-| `Ctrl+Shift+B` | `cursor.browser.open` | Abrir Browser |
-| `Ctrl+Shift+N` | `cursor.browser.newTab` | Nova Aba |
-| `Ctrl+Shift+W` | `cursor.browser.close` | Fechar Browser |
-| `Ctrl+Shift+U` | `cursor.browser.screenshot` | Screenshot |
+| Atalho         | Comando                     | Descrição      |
+| -------------- | --------------------------- | -------------- |
+| `Ctrl+Shift+B` | `cursor.browser.open`       | Abrir Browser  |
+| `Ctrl+Shift+N` | `cursor.browser.newTab`     | Nova Aba       |
+| `Ctrl+Shift+W` | `cursor.browser.close`      | Fechar Browser |
+| `Ctrl+Shift+U` | `cursor.browser.screenshot` | Screenshot     |
 
 ### Validação e Testes
 
-| Atalho | Comando | Descrição |
-|--------|---------|-----------|
-| `Ctrl+Shift+R` | `cursor.reviewCode` | Revisar Código |
-| `Ctrl+Shift+T` | `cursor.runTests` | Executar Testes |
+| Atalho         | Comando                  | Descrição       |
+| -------------- | ------------------------ | --------------- |
+| `Ctrl+Shift+R` | `cursor.reviewCode`      | Revisar Código  |
+| `Ctrl+Shift+T` | `cursor.runTests`        | Executar Testes |
 | `Ctrl+Shift+L` | `cursor.validateProject` | Validar Projeto |
 
 ### Voice Mode
 
-| Atalho | Comando | Descrição |
-|--------|---------|-----------|
-| `Ctrl+Shift+V` | `cursor.voice.toggle` | Toggle Voice Mode |
-| `Ctrl+Shift+S` | `cursor.voice.start` | Iniciar Voice Mode |
+| Atalho         | Comando               | Descrição          |
+| -------------- | --------------------- | ------------------ |
+| `Ctrl+Shift+V` | `cursor.voice.toggle` | Toggle Voice Mode  |
+| `Ctrl+Shift+S` | `cursor.voice.start`  | Iniciar Voice Mode |
 
 ### Outros
 
-| Atalho | Comando | Descrição |
-|--------|---------|-----------|
-| `Ctrl+K Ctrl+K` | `cursor.commandK` | Command K |
-| `F1` | `cursor.showCommandPalette` | Command Palette |
-| `Ctrl+Shift+H` | `cursor.showHelp` | Ajuda |
+| Atalho          | Comando                     | Descrição       |
+| --------------- | --------------------------- | --------------- |
+| `Ctrl+K Ctrl+K` | `cursor.commandK`           | Command K       |
+| `F1`            | `cursor.showCommandPalette` | Command Palette |
+| `Ctrl+Shift+H`  | `cursor.showHelp`           | Ajuda           |
 
 ---
 
@@ -182,6 +186,7 @@
 ### `.cursor/settings.json`
 
 Configurações gerais do Cursor:
+
 - Recursos habilitados
 - Performance
 - Modelos
@@ -192,6 +197,7 @@ Configurações gerais do Cursor:
 ### `.cursor/composer-config.json`
 
 Configurações do Composer e Multi-Agente:
+
 - Configurações do Composer
 - Configurações do Multi-Agente
 - Agentes configurados (8 agentes)
@@ -202,6 +208,7 @@ Configurações do Composer e Multi-Agente:
 ### `.cursor/keybindings.json`
 
 Atalhos de teclado personalizados:
+
 - Composer
 - Multi-Agente
 - Browser
@@ -216,16 +223,19 @@ Atalhos de teclado personalizados:
 ### 1. Abrir Browser Integrado
 
 **Opção 1: Atalho**
+
 ```
 Ctrl+Shift+B
 ```
 
 **Opção 2: Command Palette**
+
 ```
 Ctrl+Shift+P → cursor.browser.open
 ```
 
 **Opção 3: Via Composer**
+
 ```
 Ctrl+I → "Abra o browser e teste o app"
 ```
@@ -283,4 +293,3 @@ Ctrl+Shift+R
 **Última atualização**: Janeiro 2025  
 **Versão do Cursor**: 2.0+  
 **Versão da Configuração**: 2.0.0
-

@@ -37,6 +37,7 @@ sudo xcodebuild -runFirstLaunch -checkForNewerComponents
 ```
 
 Este comando:
+
 - ✅ Aceita os termos de licença
 - ✅ Instala componentes adicionais necessários
 - ✅ Verifica atualizações disponíveis
@@ -187,6 +188,7 @@ npx expo --version
 ### "xcode-select: error: tool 'xcodebuild' requires Xcode"
 
 **Solução:**
+
 ```bash
 # Selecionar Xcode corretamente
 sudo xcode-select -s /Applications/Xcode.app
@@ -198,6 +200,7 @@ xcode-select -p
 ### "Command Line Tools not installed"
 
 **Solução:**
+
 ```bash
 # Instalar Command Line Tools
 xcode-select --install
@@ -209,6 +212,7 @@ xcode-select --install
 ### "CocoaPods not found"
 
 **Solução:**
+
 ```bash
 # Instalar CocoaPods
 sudo gem install cocoapods
@@ -220,6 +224,7 @@ sudo gem install -n /usr/local/bin cocoapods
 ### "Simulator not opening"
 
 **Solução:**
+
 ```bash
 # Abrir simulador manualmente
 open -a Simulator
@@ -231,6 +236,7 @@ xcrun simctl list devices available
 ### "Build failed" no Xcode
 
 **Soluções:**
+
 1. Limpar build: `Product > Clean Build Folder` (Shift+Cmd+K)
 2. Limpar Derived Data: `~/Library/Developer/Xcode/DerivedData`
 3. Reinstalar pods: `cd ios && pod deintegrate && pod install`
@@ -280,4 +286,3 @@ pnpm dev
 ---
 
 **Execute os comandos acima para configurar o Xcode para desenvolvimento iOS!** 🎉
-

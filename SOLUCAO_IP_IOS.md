@@ -33,6 +33,7 @@ npx expo start --tunnel
 ### Passo 3: Aguardar conexão
 
 O Expo irá:
+
 1. Conectar ao servidor do Expo (pode levar alguns segundos)
 2. Mostrar um novo QR code com URL tipo: `exp://xxx-xxx.xxx.exp.direct:80`
 3. Essa URL funciona de qualquer rede!
@@ -90,4 +91,3 @@ pnpm dev:clear && pnpm dev:tunnel
 ---
 
 **Execute `pnpm dev:tunnel` e o iOS deve conectar!** 🎉
-

@@ -211,19 +211,23 @@ Abra o browser e monitore performance do app:
 ## ⚡ Atalhos Rápidos
 
 ### Abrir Browser
+
 - **Atalho**: `Ctrl+Shift+B`
 - **Comando**: `cursor.browser.open`
 - **Via Composer**: `Ctrl+I` → "Abra o browser"
 
 ### Screenshot
+
 - **Atalho**: `Ctrl+Shift+U`
 - **Comando**: `cursor.browser.screenshot`
 
 ### Nova Aba
+
 - **Atalho**: `Ctrl+Shift+N`
 - **Comando**: `cursor.browser.newTab`
 
 ### Fechar Browser
+
 - **Atalho**: `Ctrl+Shift+W`
 - **Comando**: `cursor.browser.close`
 
@@ -253,11 +257,13 @@ O browser está configurado para visualização mobile-first:
 ## 📊 URLs Úteis
 
 ### Desenvolvimento
+
 - **Expo App**: `http://localhost:8081`
 - **Expo DevTools**: `http://localhost:19002`
 - **Metro Bundler**: `http://localhost:8081/_debugger-ui`
 
 ### Produção
+
 - **Supabase Dashboard**: `https://supabase.com/dashboard`
 - **Sentry**: `https://sentry.io/`
 
@@ -266,11 +272,13 @@ O browser está configurado para visualização mobile-first:
 ## ✅ Checklist de Visualização
 
 Antes de visualizar:
+
 - [ ] App está rodando (`pnpm dev`)
 - [ ] Browser integrado habilitado
 - [ ] DevTools disponível
 
 Durante visualização:
+
 - [ ] Verificar console para erros
 - [ ] Testar todas as telas
 - [ ] Verificar responsividade
@@ -279,6 +287,7 @@ Durante visualização:
 - [ ] Monitorar performance
 
 Após visualização:
+
 - [ ] Documentar problemas encontrados
 - [ ] Salvar screenshots relevantes
 - [ ] Criar issues para correções necessárias
@@ -327,4 +336,3 @@ Abra o browser integrado do Cursor e execute visualização completa:
 
 **Última atualização**: Janeiro 2025  
 **Versão**: 1.0.0
-

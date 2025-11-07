@@ -5,7 +5,7 @@
 export type RootStackParamList = {
   Onboarding: { onComplete?: () => void } | undefined;
   Home: undefined;
-  Chat: undefined;
+  Chat: { context?: string; initialPrompt?: string } | undefined;
   DailyPlan: undefined;
   Profile: undefined;
   Habits: undefined;
@@ -16,7 +16,7 @@ export type RootStackParamList = {
 
 export type TabParamList = {
   Home: undefined;
-  Chat: undefined;
+  Chat: { context?: string; initialPrompt?: string } | undefined;
   Habits: undefined;
   Content: undefined;
   Profile: undefined;

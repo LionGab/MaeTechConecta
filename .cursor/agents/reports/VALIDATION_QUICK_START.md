@@ -20,11 +20,13 @@
 ### Opção 2: Manual
 
 1. **Verificar se app está rodando:**
+
    ```powershell
    netstat -ano | findstr ":8081"
    ```
 
 2. **Se não estiver rodando, iniciar:**
+
    ```powershell
    pnpm dev
    ```
@@ -44,6 +46,7 @@
 ## 📋 Checklist de Validação
 
 ### Button Component
+
 - [ ] **Variantes**: Primary, Secondary, Outline, Ghost, Destructive
 - [ ] **Tamanhos**: Small, Medium, Large
 - [ ] **Estados**: Loading, Disabled, Com Ícone
@@ -52,6 +55,7 @@
 - [ ] **TypeScript**: Sem `any`, tipos explícitos
 
 ### Card Component
+
 - [ ] **Variantes**: Elevated, Outlined, Flat
 - [ ] **Clicável**: Card com onPress funciona
 - [ ] **Performance**: useMemo aplicado
@@ -59,6 +63,7 @@
 - [ ] **TypeScript**: Sem type assertions
 
 ### Input Component
+
 - [ ] **Normal**: Input básico funciona
 - [ ] **Com Ícone**: Ícone exibido corretamente
 - [ ] **Com Erro**: Mensagem de erro exibida
@@ -68,12 +73,14 @@
 - [ ] **TypeScript**: Sem type assertions
 
 ### Text Component
+
 - [ ] **Variantes**: H1, H2, H3, Subtitle, Body, Caption
 - [ ] **Performance**: useMemo aplicado
 - [ ] **Tema**: Typography e colors do tema
 - [ ] **TypeScript**: Tipos explícitos
 
 ### Badge Component
+
 - [ ] **Variantes**: Info, Success, Warning, Error
 - [ ] **Tamanhos**: Small, Medium
 - [ ] **Performance**: useMemo aplicado
@@ -81,15 +88,18 @@
 - [ ] **TypeScript**: Sem type assertions
 
 ### GradientView Component
+
 - [ ] **Gradiente**: Renderiza corretamente
 - [ ] **TypeScript**: Tipos explícitos para LinearGradient
 
 ### EnhancedButton Component
+
 - [ ] **Animações**: Funcionam corretamente
 - [ ] **Performance**: useCallback/useMemo aplicados
 - [ ] **Imports**: useCallback/useMemo importados
 
 ### AnimatedCard Component
+
 - [ ] **Animações**: Fade e scale funcionam
 - [ ] **Performance**: useMemo aplicado para animatedStyle
 
@@ -98,20 +108,24 @@
 ## 🔍 Verificações Técnicas
 
 ### Console (F12 → Console)
+
 - [ ] **Sem erros TypeScript**: Nenhum erro de tipo
 - [ ] **Sem warnings**: Nenhum warning crítico
 - [ ] **Logs de debug**: Verificar logs se necessário
 
 ### Network (F12 → Network)
+
 - [ ] **Requisições**: Verificar se há requisições desnecessárias
 - [ ] **Tempo de resposta**: Verificar latência
 
 ### Performance (F12 → Performance)
+
 - [ ] **FPS**: 60fps constante
 - [ ] **Memória**: Sem vazamentos
 - [ ] **Render time**: Tempo de renderização aceitável
 
 ### Accessibility (F12 → Accessibility)
+
 - [ ] **Árvore de acessibilidade**: Estrutura correta
 - [ ] **Labels**: Todos os componentes têm labels
 - [ ] **Roles**: Roles corretos
@@ -122,6 +136,7 @@
 ## 📸 Screenshots
 
 Capture screenshots de:
+
 - ✅ Todos os componentes renderizados
 - ✅ Estados diferentes (loading, disabled, error)
 - ✅ Variantes de cada componente
@@ -164,4 +179,3 @@ Após validar todos os componentes:
 
 **Última atualização**: Janeiro 2025  
 **Versão**: 1.0.0
-

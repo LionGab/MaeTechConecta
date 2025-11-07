@@ -9,6 +9,7 @@
 ### 1. Browser Integrado do Cursor
 
 #### `.cursor/settings.json`
+
 ```json
 {
   "cursor.browser.enabled": true,
@@ -25,6 +26,7 @@
 ```
 
 #### `.cursor/composer-config.json`
+
 ```json
 {
   "browser": {
@@ -52,6 +54,7 @@
 ### 2. Configuração do App Expo
 
 #### `apps/mobile/app.config.js`
+
 ```javascript
 web: {
   favicon: './assets/favicon.png',
@@ -85,16 +88,19 @@ web: {
 ### Abrir Browser Integrado
 
 **Opção 1: Atalho de Teclado**
+
 ```
 Ctrl+Shift+B
 ```
 
 **Opção 2: Command Palette**
+
 ```
 Ctrl+Shift+P → cursor.browser.open
 ```
 
 **Opção 3: Via Composer**
+
 ```
 Ctrl+I → "Abra o browser e teste o app em formato mobile"
 ```
@@ -102,6 +108,7 @@ Ctrl+I → "Abra o browser e teste o app em formato mobile"
 ### Verificar Viewport
 
 O browser abrirá automaticamente com:
+
 - Viewport de 390x844 (iPhone 13)
 - User Agent do iPhone iOS 17
 - Touch habilitado
@@ -112,12 +119,14 @@ O browser abrirá automaticamente com:
 ## ✅ Garantias de Formato Mobile
 
 ### 1. Viewport do Browser
+
 - ✅ Configurado para 390x844 (iPhone 13)
 - ✅ Device Scale Factor: 3x
 - ✅ isMobile: true
 - ✅ hasTouch: true
 
 ### 2. Meta Tags do App
+
 - ✅ `width=device-width` - Usa largura do dispositivo
 - ✅ `initial-scale=1.0` - Zoom inicial 100%
 - ✅ `maximum-scale=1.0` - Previne zoom
@@ -125,11 +134,13 @@ O browser abrirá automaticamente com:
 - ✅ `viewport-fit=cover` - Cobre toda a tela (notch safe)
 
 ### 3. PWA Mobile
+
 - ✅ `mobile-web-app-capable: yes` - App web mobile
 - ✅ `apple-mobile-web-app-capable: yes` - iOS PWA
 - ✅ `theme-color: #FFE5F1` - Cor do tema
 
 ### 4. Orientação
+
 - ✅ `orientation: 'portrait'` - Apenas retrato
 - ✅ `isLandscape: false` - Sem landscape
 
@@ -169,4 +180,3 @@ Para verificar se está funcionando:
 **Última atualização**: Janeiro 2025  
 **Versão**: 1.0.0  
 **Dispositivo**: iPhone 13 (390×844)
-

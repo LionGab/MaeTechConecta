@@ -125,10 +125,34 @@ export const dark = {
 };
 
 /**
+ * 🎨 Cores Overlay e Transparências
+ */
+export const overlay = {
+  primary: 'rgba(232, 145, 181, 0.1)', // Rosa suave transparente
+  primaryBorder: 'rgba(232, 145, 181, 0.2)', // Rosa border suave
+  primaryBorderLight: 'rgba(232, 145, 181, 0.15)', // Rosa border ultra suave
+  white: 'rgba(255, 255, 255, 0.08)', // Branco transparente
+  black: 'rgba(0, 0, 0, 0.5)', // Preto overlay
+};
+
+/**
+ * 🌈 Gradientes
+ */
+export const gradients = {
+  blue: ['#3B82F6', '#60A5FA'] as [string, string], // Azul
+  purple: ['#8B5CF6', '#A78BFA'] as [string, string], // Roxo
+  green: ['#10B981', '#34D399'] as [string, string], // Verde
+  amber: ['#F59E0B', '#FBBF24'] as [string, string], // Âmbar
+  pink: ['#E891B5', '#F0A8C4'] as [string, string], // Rosa (primary)
+  sage: ['#C8E0D4', '#A0C5B4'] as [string, string], // Verde sage
+  lavender: ['#E8C4E8', '#D8B4D8'] as [string, string], // Lavanda
+};
+
+/**
  * Padrão de tema (Light) - CORRIGIDO
  * O tema padrão deve ser light, não dark
  */
-export const colors = light;
+export const colors = { ...light, overlay, gradients };
 
 /**
  * Utilitário para alternar entre temas

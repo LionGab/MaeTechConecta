@@ -112,15 +112,18 @@ Agente 3: Verifique Edge Functions
 ### Como Ativar
 
 **Opção 1: Atalho de Teclado**
+
 1. Pressione `Ctrl+Shift+B` (Windows/Linux) ou `Cmd+Shift+B` (Mac)
 2. O browser integrado será aberto
 
 **Opção 2: Command Palette**
+
 1. Pressione `Ctrl+Shift+P` (Windows/Linux) ou `Cmd+Shift+P` (Mac)
 2. Digite: `Cursor: Open Browser` ou `cursor.browser.open`
 3. Selecione o comando
 
 **Opção 3: Via Composer**
+
 1. Use o Composer (`Ctrl+I`)
 2. Digite: "Abra o browser e teste o app"
 3. O Cursor abrirá o browser integrado

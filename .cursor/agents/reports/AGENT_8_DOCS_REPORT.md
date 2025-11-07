@@ -39,6 +39,7 @@
 **Problema**: Componente tem interface documentada, mas falta JSDoc completo no componente exportado
 
 **Código atual**:
+
 ```typescript
 export interface MessageItemProps {
   message: {
@@ -55,6 +56,7 @@ export const MessageItem = React.memo<MessageItemProps>(({ message, onPress }) =
 ```
 
 **Correção sugerida**:
+
 ```typescript
 /**
  * MessageItem Component - Item de mensagem no chat
@@ -86,12 +88,14 @@ export const MessageItem = React.memo<MessageItemProps>(({ message, onPress }) =
 **Problema**: Todas as funções exportadas não têm JSDoc. Apenas comentários inline básicos.
 
 **Funções afetadas**:
+
 - `generateVideoWithAvatar`
 - `generateImage`
 - `generateListContent`
 - `generateExercises`
 
 **Exemplo de correção sugerida**:
+
 ```typescript
 /**
  * Gera vídeo com avatar usando HeyGen API
@@ -119,12 +123,14 @@ export const generateVideoWithAvatar = async (script: string): Promise<string> =
 **Problema**: Funções exportadas não têm JSDoc. Apenas comentários inline.
 
 **Funções afetadas**:
+
 - `initializeStripe`
 - `subscribeToPremium`
 - `checkSubscriptionStatus`
 - `canUserInteract`
 
 **Exemplo de correção sugerida**:
+
 ```typescript
 /**
  * Inicializa o Stripe para processamento de pagamentos
@@ -158,13 +164,15 @@ export const subscribeToPremium = async (): Promise<boolean> => {
 
 ### 2. Componentes TypingIndicator e MessageSkeleton com JSDoc básico
 
-**Arquivos**: 
+**Arquivos**:
+
 - `src/components/chat/TypingIndicator.tsx`
 - `src/components/chat/MessageSkeleton.tsx`
 
 **Problema**: Têm JSDoc básico, mas falta documentação de props e exemplos
 
 **JSDoc atual**:
+
 ```typescript
 /**
  * TypingIndicator - Indicador de digitação animado
@@ -173,6 +181,7 @@ export const subscribeToPremium = async (): Promise<boolean> => {
 ```
 
 **Correção sugerida**:
+
 ```typescript
 /**
  * TypingIndicator Component - Indicador de digitação animado
@@ -197,6 +206,7 @@ export const TypingIndicator = React.memo(() => {
 **Problema**: Tem comentários, mas não tem JSDoc completo para funções exportadas
 
 **Funções afetadas**:
+
 - `createTemporaryUser`
 - `saveUserProfile`
 - `saveChatMessage`
@@ -205,6 +215,7 @@ export const TypingIndicator = React.memo(() => {
 - `getDailyPlan`
 
 **Exemplo de correção sugerida**:
+
 ```typescript
 /**
  * Cria um usuário temporário para testes/anônimo
@@ -226,11 +237,13 @@ export const createTemporaryUser = async () => {
 ## 📝 Resumo de Arquivos que Precisam de Documentação
 
 ### Componentes (2 arquivos)
+
 1. ✅ `src/components/chat/MessageItem.tsx` - Falta JSDoc no componente
 2. ✅ `src/components/chat/TypingIndicator.tsx` - JSDoc básico, precisa melhorar
 3. ✅ `src/components/chat/MessageSkeleton.tsx` - JSDoc básico, precisa melhorar
 
 ### Serviços (3 arquivos)
+
 1. ✅ `src/services/contentGenerator.ts` - Nenhuma função tem JSDoc
 2. ✅ `src/services/payments.ts` - Nenhuma função tem JSDoc
 3. ✅ `src/services/supabase.ts` - Funções exportadas sem JSDoc
@@ -240,10 +253,12 @@ export const createTemporaryUser = async () => {
 ## 🎯 Plano de Ação
 
 ### Prioridade Alta (Média - Severidade 3)
+
 1. Adicionar JSDoc completo em `MessageItem.tsx`
 2. Adicionar JSDoc em todas as funções de `contentGenerator.ts`
 
 ### Prioridade Baixa (Baixa - Severidade 2)
+
 3. Adicionar JSDoc em `payments.ts`
 4. Melhorar JSDoc em `TypingIndicator.tsx` e `MessageSkeleton.tsx`
 5. Adicionar JSDoc em funções exportadas de `supabase.ts`
@@ -253,6 +268,7 @@ export const createTemporaryUser = async () => {
 ## ✅ Checklist de Documentação
 
 ### Componentes
+
 - [x] Button.tsx - ✅ JSDoc completo
 - [x] Input.tsx - ✅ JSDoc completo
 - [x] Card.tsx - ✅ JSDoc completo
@@ -271,6 +287,7 @@ export const createTemporaryUser = async () => {
 - [x] MessageSkeleton.tsx - ⚠️ JSDoc básico
 
 ### Serviços
+
 - [x] auth.ts - ✅ JSDoc completo
 - [x] ai.ts - ✅ JSDoc completo
 - [x] notifications.ts - ✅ JSDoc completo
@@ -284,4 +301,3 @@ export const createTemporaryUser = async () => {
 ---
 
 **Relatório gerado pelo Agente 8 (Docs)**
-

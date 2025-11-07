@@ -5,6 +5,7 @@
 **IMPORTANTE:** Use os comandos individuais do arquivo `comandos-individuais.md` para máxima eficiência e uso otimizado de memória.
 
 Cada comando foi otimizado para:
+
 - ✅ Trabalhar isoladamente (menor uso de memória)
 - ✅ Foco específico por área (maior qualidade)
 - ✅ Processamento mais rápido (contexto menor)
@@ -42,6 +43,7 @@ Cada comando foi otimizado para:
 ## 📊 Relatórios
 
 Os relatórios serão salvos em:
+
 - `.cursor/agents/reports/AGENT_X_REPORT.md` - Relatórios individuais
 - `.cursor/review-logs/` - Logs de revisão
 - Console do Cursor - Progresso em tempo real
@@ -62,8 +64,8 @@ Os relatórios serão salvos em:
 ## 📖 Documentação Completa
 
 Veja `.cursor/agents/comandos-individuais.md` para:
+
 - Comandos completos de cada agente
 - Instruções detalhadas
 - Exemplos de uso
 - Estrutura de relatórios
-

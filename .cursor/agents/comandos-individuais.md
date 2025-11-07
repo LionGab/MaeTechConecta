@@ -9,6 +9,7 @@ Execute cada comando **separadamente** no Composer (`Ctrl+I`). Cada comando ativ
 ## 📋 Agente 1: Frontend - Componentes React Native
 
 **Execute no Composer:**
+
 ```
 Revisar e melhorar componentes React Native em src/components/:
 
@@ -35,6 +36,7 @@ RELATÓRIO:
 ## 📋 Agente 2: Backend - Serviços e Integrações
 
 **Execute no Composer:**
+
 ```
 Revisar e melhorar serviços e integrações em src/services/:
 
@@ -61,6 +63,7 @@ RELATÓRIO:
 ## 📋 Agente 3: IA - Sistema NAT-AI
 
 **Execute no Composer:**
+
 ```
 Revisar e melhorar sistema NAT-AI em src/lib/nat-ai/:
 
@@ -87,6 +90,7 @@ RELATÓRIO:
 ## 📋 Agente 4: Design - Design System e Tema
 
 **Execute no Composer:**
+
 ```
 Revisar e melhorar design system e tema em src/components/ e src/theme/:
 
@@ -113,6 +117,7 @@ RELATÓRIO:
 ## 📋 Agente 5: QA - Testes e Qualidade
 
 **Execute no Composer:**
+
 ```
 Revisar e melhorar testes e qualidade em __tests__/:
 
@@ -139,6 +144,7 @@ RELATÓRIO:
 ## 📋 Agente 6: Security - Segurança e LGPD
 
 **Execute no Composer:**
+
 ```
 Revisar segurança e compliance LGPD em todo o código:
 
@@ -165,6 +171,7 @@ RELATÓRIO:
 ## 📋 Agente 7: DevOps - Configurações e CI/CD
 
 **Execute no Composer:**
+
 ```
 Revisar e melhorar configurações e CI/CD:
 
@@ -191,6 +198,7 @@ RELATÓRIO:
 ## 📋 Agente 8: Docs - Documentação e JSDoc
 
 **Execute no Composer:**
+
 ```
 Revisar e melhorar documentação e JSDoc:
 
@@ -218,6 +226,7 @@ RELATÓRIO:
 ## 📋 Code Reviewer - Revisão Completa Multi-Stage
 
 **Execute no Composer (após todos os outros agentes):**
+
 ```
 Executar revisão completa multi-stage do código:
 
@@ -273,6 +282,7 @@ Para executar **todos os agentes em paralelo**, use o Multi-Agente do Cursor:
 4. Cada agente trabalha isoladamente para máxima eficiência
 
 **Exemplo de comando paralelo:**
+
 ```
 Agente 1: [Cole comando do Agente 1]
 Agente 2: [Cole comando do Agente 2]
@@ -289,6 +299,7 @@ Agente 8: [Cole comando do Agente 8]
 ## 📊 Relatórios
 
 Todos os relatórios serão salvos em:
+
 - `.cursor/agents/reports/` - Relatórios individuais por agente
 - `.cursor/review-logs/` - Logs de revisão
 - Console do Cursor - Progresso em tempo real
@@ -303,4 +314,3 @@ Todos os relatórios serão salvos em:
 4. **Escalabilidade**: Fácil adicionar/remover agentes
 5. **Debugging**: Mais fácil identificar problemas em agentes específicos
 6. **Reutilização**: Comandos podem ser executados individualmente quando necessário
-

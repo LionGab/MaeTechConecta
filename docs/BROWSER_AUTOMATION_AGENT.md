@@ -116,16 +116,7 @@ As configurações estão em `.cursor/composer-config.json`:
       "autoFix": true,
       "screenshotOnError": true,
       "generateReport": true,
-      "screens": [
-        "Onboarding",
-        "Home",
-        "Chat",
-        "Habits",
-        "Content",
-        "Profile",
-        "DailyPlan",
-        "ContentDetail"
-      ],
+      "screens": ["Onboarding", "Home", "Chat", "Habits", "Content", "Profile", "DailyPlan", "ContentDetail"],
       "errorDetection": {
         "console": true,
         "visual": true,
@@ -253,4 +244,3 @@ Após executar o agente:
 
 **Última atualização**: Janeiro 2025  
 **Versão do Agente**: 1.0.0
-

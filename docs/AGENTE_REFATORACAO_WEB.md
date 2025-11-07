@@ -7,22 +7,26 @@
 ## ✅ O que o Agente Faz
 
 ### 1. Escaneia Arquivos
+
 - Escaneia todos os arquivos `.ts`, `.tsx`, `.js`, `.jsx` em `src/` e `apps/mobile/`
 - Identifica problemas de dimensões, viewport, área de toque e visibilidade
 
 ### 2. Detecta Problemas
+
 - **Dimensões hardcoded**: Detecta dimensões antigas (375x812 - iPhone X/11) e sugere atualização para iPhone 13 (390x844)
 - **Área de toque**: Verifica se elementos têm área de toque mínima WCAG 2.1 AA (44x44px)
 - **Viewport**: Verifica se viewport meta tag está configurado corretamente para mobile
 - **Visibilidade**: Detecta elementos que podem estar ocultos na web
 
 ### 3. Corrige Automaticamente
+
 - Atualiza dimensões hardcoded para iPhone 13
 - Ajusta área de toque mínima para WCAG 2.1 AA
 - Adiciona/atualiza viewport meta tag
 - Adiciona comentários para revisão manual quando necessário
 
 ### 4. Gera Relatório
+
 - Relatório completo em Markdown com todos os problemas encontrados
 - Status de correção (corrigido/pendente)
 - Recomendações para próximos passos
@@ -46,6 +50,7 @@ tsx scripts/refactor-web-agent.ts
 ### 2. Verificar Relatório
 
 O relatório é salvo em:
+
 ```
 .cursor/agents/reports/refactor-web-report.md
 ```
@@ -55,16 +60,19 @@ O relatório é salvo em:
 Após a refatoração, abra o browser integrado para verificar:
 
 **Opção 1: Atalho**
+
 ```
 Ctrl+Shift+B
 ```
 
 **Opção 2: Command Palette**
+
 ```
 Ctrl+Shift+P → cursor.browser.open
 ```
 
 **Opção 3: Via Composer**
+
 ```
 Ctrl+I → "Abra o browser e verifique o app em formato mobile"
 ```
@@ -118,11 +126,12 @@ O browser integrado está configurado com:
 **Problema**: Dimensões antigas (375×812 - iPhone X/11)
 
 **Exemplo**:
+
 ```typescript
 // ❌ Antes
 const styles = StyleSheet.create({
   container: {
-    width: 375,  // iPhone X/11
+    width: 375, // iPhone X/11
     height: 812,
   },
 });
@@ -130,7 +139,7 @@ const styles = StyleSheet.create({
 // ✅ Depois
 const styles = StyleSheet.create({
   container: {
-    width: 390,  // iPhone 13
+    width: 390, // iPhone 13
     height: 844,
   },
 });
@@ -141,11 +150,12 @@ const styles = StyleSheet.create({
 **Problema**: Área de toque menor que 44×44px (WCAG 2.1 AA)
 
 **Exemplo**:
+
 ```typescript
 // ❌ Antes
 const styles = StyleSheet.create({
   button: {
-    minHeight: 36,  // Muito pequeno
+    minHeight: 36, // Muito pequeno
     minWidth: 36,
   },
 });
@@ -153,7 +163,7 @@ const styles = StyleSheet.create({
 // ✅ Depois
 const styles = StyleSheet.create({
   button: {
-    minHeight: 44,  // WCAG 2.1 AA
+    minHeight: 44, // WCAG 2.1 AA
     minWidth: 44,
   },
 });
@@ -164,6 +174,7 @@ const styles = StyleSheet.create({
 **Problema**: Viewport não configurado para mobile
 
 **Exemplo**:
+
 ```javascript
 // ❌ Antes
 web: {
@@ -186,18 +197,19 @@ web: {
 **Problema**: Elementos que podem estar ocultos na web
 
 **Exemplo**:
+
 ```typescript
 // ❌ Antes
 const styles = StyleSheet.create({
   hidden: {
-    display: 'none',  // Pode estar oculto na web
+    display: 'none', // Pode estar oculto na web
   },
 });
 
 // ✅ Depois
 const styles = StyleSheet.create({
   hidden: {
-    display: 'none',  // TODO: Verificar se display: none é necessário na web
+    display: 'none', // TODO: Verificar se display: none é necessário na web
   },
 });
 ```
@@ -274,6 +286,7 @@ const styles = StyleSheet.create({
 ### Agente não encontra arquivos
 
 **Solução**:
+
 ```bash
 # Verificar se arquivos existem
 ls src/**/*.{ts,tsx}
@@ -285,6 +298,7 @@ cat scripts/refactor-web-agent.ts | grep "patterns"
 ### Problemas não são corrigidos
 
 **Solução**:
+
 1. Verificar permissões de escrita nos arquivos
 2. Verificar se arquivos não estão em uso
 3. Revisar relatório para detalhes do erro
@@ -292,6 +306,7 @@ cat scripts/refactor-web-agent.ts | grep "patterns"
 ### Browser não abre
 
 **Solução**:
+
 1. Verificar se browser integrado está habilitado em `.cursor/settings.json`
 2. Verificar se devtools está ativado
 3. Tentar abrir manualmente (Ctrl+Shift+B)
@@ -309,4 +324,3 @@ cat scripts/refactor-web-agent.ts | grep "patterns"
 **Última atualização**: Janeiro 2025  
 **Versão**: 1.0.0  
 **Dispositivo alvo**: iPhone 13 (390×844)
-

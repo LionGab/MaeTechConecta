@@ -15,6 +15,7 @@
 **Atalho**: `Ctrl+Shift+B`
 
 Ou via Composer (`Ctrl+I`):
+
 ```
 Abra o browser integrado do Cursor
 ```
@@ -26,6 +27,7 @@ Abra o browser integrado do Cursor
 ### 3. Configurar Viewport
 
 **Via DevTools (F12):**
+
 1. Pressione `Ctrl+Shift+M` (modo mobile)
 2. Configure:
    - **Width**: 390px
@@ -47,14 +49,17 @@ Abra o browser integrado do Cursor
 ## 🔍 Monitoramento Essencial
 
 ### Console (F12 → Console)
+
 - ❌ **Erros**: Verificar erros vermelhos
 - ⚠️ **Warnings**: Verificar avisos amarelos
 
 ### Network (F12 → Network)
+
 - 📡 **Requisições**: Verificar chamadas ao Supabase
 - ⏱️ **Tempo**: Verificar latência
 
 ### Performance (F12 → Performance)
+
 - 🎯 **FPS**: Deve ser 60fps constante
 - 💾 **Memória**: Verificar vazamentos
 
@@ -65,6 +70,7 @@ Abra o browser integrado do Cursor
 **Atalho**: `Ctrl+Shift+U`
 
 **Quando capturar:**
+
 - ❌ Erros visuais
 - ❌ Layout quebrado
 - ❌ Problemas de responsividade
@@ -100,4 +106,3 @@ Abra o browser integrado do Cursor
 ---
 
 **Pronto para começar!** 🎉
-

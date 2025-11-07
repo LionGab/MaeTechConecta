@@ -36,12 +36,14 @@
 **Problema**: Valores dummy hardcoded podem ser um risco de segurança se usados em produção
 
 **Código Atual**:
+
 ```typescript
 const dummyUrl = 'https://placeholder.supabase.co';
 const dummyKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
 ```
 
-**Correção Sugerida**: 
+**Correção Sugerida**:
+
 - Remover valores dummy em produção
 - Lançar erro se variáveis de ambiente não estiverem configuradas
 - Usar apenas em desenvolvimento
@@ -55,6 +57,7 @@ const dummyKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
 **Problema**: `validateWithGPT` retorna `true` em caso de erro, permitindo respostas não validadas
 
 **Código Atual**:
+
 ```typescript
 } catch (error) {
   console.error('Erro na validação GPT:', error);
@@ -86,6 +89,7 @@ const dummyKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
 **Problema**: Uso de `any` em tipos importantes
 
 **Código Atual**:
+
 ```typescript
 export const onAuthStateChange = (callback: (session: any) => void) => {
 export const chatWithAI = async (message: string, context: ChatContext, history: any[] = []): Promise<string> => {
@@ -132,6 +136,7 @@ export const chatWithAI = async (message: string, context: ChatContext, history:
 **Problema**: Uso de `(data as any)` para acessar propriedades
 
 **Código Atual**:
+
 ```typescript
 const value = (data as any)[question.id];
 ```
@@ -189,22 +194,26 @@ Adicionar métricas de performance e uso dos serviços
 ## 📋 Checklist de Conformidade
 
 ### Segurança
+
 - ⚠️ Validação de inputs: Faltando em auth service
 - ⚠️ Rate limiting: Não implementado
 - ✅ Tratamento de erros: Presente
 - ⚠️ Sanitização de dados: Pode ser melhorada
 
 ### TypeScript
+
 - ⚠️ Uso de `any`: Presente em vários lugares
 - ⚠️ Type assertions: Múltiplos usos
 - ✅ Interfaces: Bem definidas
 
 ### Integração Supabase
+
 - ✅ Cliente configurado corretamente
 - ⚠️ RLS: Verificar se está configurado no Supabase
 - ⚠️ Valores dummy: Risco de segurança
 
 ### Tratamento de Erros
+
 - ✅ Try-catch presente
 - ⚠️ Retry logic: Não implementado
 - ⚠️ Logs: Podem expor dados sensíveis
@@ -231,4 +240,3 @@ Adicionar métricas de performance e uso dos serviços
 
 **Relatório gerado pelo Agente 2 (Backend)**  
 **Próximo**: Agente 3 (IA)
-
