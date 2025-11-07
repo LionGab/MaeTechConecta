@@ -10,11 +10,13 @@
 ## 🚀 Deploy Imediato
 
 ### Arquivos Criados:
+
 1. `GUIA_RAPIDO_INFLUENCIADORA.md` - **Instruções simplificadas para a influenciadora**
 2. `DEPLOY_WEB_NETLIFY.md` - Guia técnico completo
 3. `netlify.toml` - Configuração automática de deploy (já existe e está OK)
 
 ### Build Local (já testado):
+
 ```bash
 cd apps/mobile
 pnpm build:web
@@ -25,18 +27,21 @@ pnpm build:web
 ## 📋 Variáveis de Ambiente Necessárias
 
 ### Obrigatórias (app não funciona sem):
+
 ```
 EXPO_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
 EXPO_PUBLIC_SUPABASE_ANON_KEY=sua_chave_anonima_aqui
 ```
 
 ### Recomendadas (para funcionalidades completas):
+
 ```
 EXPO_PUBLIC_GEMINI_API_KEY=sua_chave_gemini_aqui
 EXPO_PUBLIC_SENTRY_DSN=https://xxx@sentry.io/xxx
 ```
 
 ### Opcionais:
+
 ```
 EXPO_PUBLIC_CLAUDE_API_KEY=sua_chave_claude_aqui
 EXPO_PUBLIC_OPENAI_API_KEY=sua_chave_openai_aqui
@@ -48,6 +53,7 @@ EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxx
 ## 🎯 Próximos Passos (5 minutos)
 
 1. **Commitar mudanças:**
+
 ```bash
 git add .
 git commit -m "feat: configurar versão web para deploy no Netlify"
@@ -70,6 +76,7 @@ git push origin main
 ## 📱 O que Funciona na Web
 
 ### ✅ Totalmente Funcional:
+
 - Login/Cadastro
 - Navegação entre telas
 - Formulários e validações
@@ -83,11 +90,13 @@ git push origin main
 - Layout responsivo
 
 ### ⚡ Funcional com Limitações:
+
 - Notificações (via navegador)
 - Câmera/Galeria (via API web)
 - Áudio (com permissão do navegador)
 
 ### ❌ Não Funciona:
+
 - Vibração (haptic feedback)
 - Notificações push nativas
 - Background tasks
@@ -133,16 +142,19 @@ apps/mobile/dist/
 ## 🎨 Personalização Pós-Deploy
 
 ### Domínio Personalizado:
+
 - Configure `app.nossamaternidade.com.br`
 - SSL automático pelo Netlify
 - CDN global incluído
 
 ### Analytics:
+
 - Ative no Netlify (grátis)
 - Monitore acessos e performance
 - Veja quais telas são mais usadas
 
 ### Preview URLs:
+
 - Cada PR gera uma URL única
 - Teste antes de fazer merge
 - Compartilhe com stakeholders
@@ -152,6 +164,7 @@ apps/mobile/dist/
 Esta é uma **versão de demonstração/testes**.
 
 Para o app completo em produção:
+
 - **iOS**: Use EAS Build + TestFlight/App Store
 - **Android**: Use EAS Build + Google Play
 - **Web**: Use Netlify/Vercel (para demos e PWA)
@@ -159,18 +172,21 @@ Para o app completo em produção:
 ## 🆘 Suporte
 
 ### Se o build falhar:
+
 1. Verificar logs no Netlify
 2. Rodar `pnpm typecheck` localmente
 3. Testar `pnpm build:web` localmente
 4. Verificar se as variáveis de ambiente estão configuradas
 
 ### Se a página ficar em branco:
+
 1. Abrir DevTools do navegador (F12)
 2. Ver o console para erros
 3. Verificar se as variáveis de ambiente estão corretas
 4. Limpar cache do navegador (Ctrl+Shift+Del)
 
 ### Contatos:
+
 - Netlify Docs: https://docs.netlify.com
 - Expo Web Docs: https://docs.expo.dev/workflow/web/
 - Issues do Projeto: [link do GitHub]

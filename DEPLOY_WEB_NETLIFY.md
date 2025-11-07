@@ -23,6 +23,7 @@ Guia rápido para fazer deploy da versão web do app no Netlify para testes.
 O Netlify vai detectar automaticamente o arquivo `netlify.toml` na raiz do projeto.
 
 Confirme as configurações:
+
 - **Base directory**: `.` (raiz do projeto)
 - **Build command**: `pnpm install && cd apps/mobile && pnpm run build:web`
 - **Publish directory**: `apps/mobile/dist`
@@ -83,6 +84,7 @@ netlify deploy --prod
 ### Funcionalidades Testáveis
 
 ✅ **Funcionam perfeitamente na web:**
+
 - Navegação entre telas
 - Formulários e inputs
 - Temas (light/dark mode)
@@ -93,6 +95,7 @@ netlify deploy --prod
 - Animações CSS
 
 ⚠️ **Funcionalidades limitadas na web:**
+
 - Notificações push (apenas notificações do navegador)
 - Gravação de áudio (pode precisar de permissão do navegador)
 - Câmera e galeria (usando API do navegador)
@@ -100,6 +103,7 @@ netlify deploy --prod
 - Deep linking (funciona diferente)
 
 ❌ **Não funcionam na web:**
+
 - Funcionalidades nativas específicas do mobile
 - Background tasks
 - Widgets nativos
@@ -125,6 +129,7 @@ netlify deploy --prod
 ### Build falhando?
 
 **Erro: "Module not found"**
+
 ```bash
 # Limpe o cache e reinstale
 rm -rf node_modules
@@ -133,6 +138,7 @@ pnpm build:web
 ```
 
 **Erro: "Out of memory"**
+
 ```bash
 # Aumente o limite de memória do Node
 NODE_OPTIONS="--max-old-space-size=4096" pnpm build:web
@@ -147,6 +153,7 @@ NODE_OPTIONS="--max-old-space-size=4096" pnpm build:web
 ### Performance lenta?
 
 A versão web é otimizada para testes, não para produção. Para melhorar:
+
 - Ative o cache no Netlify
 - Use domínio personalizado
 - Configure CDN do Netlify
@@ -167,6 +174,7 @@ A versão web é otimizada para testes, não para produção. Para melhorar:
 ## 🎨 Preview URLs
 
 Cada deploy gera uma URL única para preview:
+
 - **Production**: `https://nossamaternidade.netlify.app`
 - **Branch deploys**: `https://branch-name--nossamaternidade.netlify.app`
 - **Deploy previews**: `https://deploy-preview-123--nossamaternidade.netlify.app`
@@ -185,18 +193,21 @@ Cada deploy gera uma URL única para preview:
 ⚠️ **Esta é uma versão de TESTE/DEMO**
 
 A versão web serve apenas para:
+
 - Demonstração de funcionalidades
 - Testes rápidos
 - Preview para stakeholders
 - Validação de UI/UX
 
 Para o app completo, use:
+
 - **iOS**: Deploy via App Store (usando EAS Build)
 - **Android**: Deploy via Google Play (usando EAS Build)
 
 ## 📞 Suporte
 
 Problemas com o deploy? Verifique:
+
 1. [Netlify Docs](https://docs.netlify.com)
 2. [Expo Web Docs](https://docs.expo.dev/workflow/web/)
 3. Logs do build no Netlify
