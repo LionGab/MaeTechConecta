@@ -12,6 +12,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Loading } from '@/shared/components/Loading';
 import { useTheme } from '@/contexts/ThemeContext';
+import { theme } from '@/theme/nathTheme';
 
 import { RootStackParamList } from './types';
 import { TabNavigator } from './TabNavigator';
@@ -46,7 +47,7 @@ const ComponentValidationScreenSuspended = withSuspense(ComponentValidationScree
 const Stack = createStackNavigator<RootStackParamList>();
 
 export function AppNavigator() {
-  const { isDark, colors } = useTheme();
+  const { isDark } = useTheme();
   const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -97,8 +98,8 @@ export function AppNavigator() {
                 options={{
                   headerShown: true,
                   title: 'Plano Diário',
-                  headerStyle: { backgroundColor: colors.background },
-                  headerTintColor: colors.foreground,
+                  headerStyle: { backgroundColor: theme.colors.bg },
+                  headerTintColor: theme.colors.text,
                 }}
               />
               <Stack.Screen
@@ -107,8 +108,8 @@ export function AppNavigator() {
                 options={{
                   headerShown: true,
                   title: 'Conteúdo',
-                  headerStyle: { backgroundColor: colors.background },
-                  headerTintColor: colors.foreground,
+                  headerStyle: { backgroundColor: theme.colors.bg },
+                  headerTintColor: theme.colors.text,
                 }}
               />
               <Stack.Screen
@@ -117,8 +118,8 @@ export function AppNavigator() {
                 options={{
                   headerShown: true,
                   title: 'Validação de Componentes',
-                  headerStyle: { backgroundColor: colors.background },
-                  headerTintColor: colors.foreground,
+                  headerStyle: { backgroundColor: theme.colors.bg },
+                  headerTintColor: theme.colors.text,
                 }}
               />
             </>

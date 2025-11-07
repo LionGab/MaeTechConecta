@@ -2,26 +2,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Alert, ScrollView, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ChatContext } from '@/services/ai';
 // TODO: Migrar para daily-insight Edge Function (já implementada)
 import { getDailyPlan, saveDailyPlan } from '@/services/supabase';
-import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
-
-// Blue Theme Constants
-const BLUE_THEME = {
-  darkBlue: '#0A2540',
-  deepBlue: '#0F3460',
-  primaryBlue: '#3B82F6',
-  lightBlue: '#60A5FA',
-  skyBlue: '#93C5FD',
-  mutedBlue: '#475569',
-  white: '#FFFFFF',
-  lightGray: '#F1F5F9',
-  darkGray: '#94A3B8',
-};
+import { makeStyles, theme } from '@/theme/nathTheme';
+import { EmptyState } from '@/shared/components/EmptyState';
+import { Card } from '@/components/Card';
+import { Button } from '@/components/Button';
 
 export default function DailyPlanScreen() {
   const navigation = useNavigation();
@@ -99,75 +88,76 @@ export default function DailyPlanScreen() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.headerBack}>← Voltar</Text>
-        </TouchableOpacity>
+        <Button
+          variant="ghost"
+          icon="arrow-left"
+          onPress={() => navigation.goBack()}
+          accessibilityLabel="Voltar"
+          size="sm"
+        >
+          Voltar
+        </Button>
         <Text style={styles.headerTitle}>Plano Diário</Text>
-        <View style={{ width: 60 }} />
+        <View style={{ width: 80 }} />
       </View>
 
       <View style={styles.content}>
         {!dailyPlan ? (
-          <View style={styles.emptyState}>
-            <Text style={styles.emptyStateIcon}>📅</Text>
-            <Text style={styles.emptyStateTitle}>Nenhum plano para hoje</Text>
-            <Text style={styles.emptyStateDescription}>
-              Gere seu plano personalizado diário com prioridades, dicas e receitas!
-            </Text>
-            <TouchableOpacity style={styles.generateButton} onPress={handleGeneratePlan} disabled={generating}>
-              <Text style={styles.generateButtonText}>{generating ? 'Gerando...' : 'Gerar Plano Agora'}</Text>
-            </TouchableOpacity>
-          </View>
+          <EmptyState
+            icon="sprout"
+            title="Nenhum plano para hoje"
+            description="Gere seu plano personalizado diário com prioridades, dicas e receitas para cuidar de você!"
+            actionLabel={generating ? 'Gerando...' : 'Gerar Plano Agora'}
+            onAction={handleGeneratePlan}
+          />
         ) : (
           <>
             {/* Prioridades */}
-            <View style={styles.sectionCard}>
+            <Card variant="elevated" style={styles.sectionCard}>
               <View style={styles.sectionHeader}>
-                <View style={styles.sectionIconContainer}>
-                  <LinearGradient
-                    colors={[BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.sectionIconGradient}
-                  >
-                    <Text style={styles.sectionEmoji}>🎯</Text>
-                  </LinearGradient>
-                </View>
+                <Icon name="target" size={24} color={theme.colors.primary} />
                 <Text style={styles.sectionTitle}>Prioridades de Hoje</Text>
               </View>
               {dailyPlan.priorities?.map((priority: string, index: number) => (
                 <View key={index} style={styles.priorityItem}>
-                  <LinearGradient
-                    colors={[BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.priorityNumberGradient}
-                  >
-                    <Text style={styles.priorityNumber}>{index + 1}</Text>
-                  </LinearGradient>
+                  <View style={styles.priorityNumber}>
+                    <Text style={styles.priorityNumberText}>{index + 1}</Text>
+                  </View>
                   <Text style={styles.priorityText}>{priority}</Text>
                 </View>
               ))}
-            </View>
+            </Card>
 
             {/* Dica do Dia */}
-            <View style={styles.sectionCard}>
-              <Text style={styles.sectionTitle}>💡 Dica do Dia</Text>
+            <Card variant="elevated" style={styles.sectionCard}>
+              <View style={styles.sectionHeader}>
+                <Icon name="lightbulb-outline" size={24} color={theme.colors.accent} />
+                <Text style={styles.sectionTitle}>Dica do Dia</Text>
+              </View>
               <Text style={styles.tipText}>{dailyPlan.tip}</Text>
-            </View>
+            </Card>
 
             {/* Receita */}
-            <View style={styles.sectionCard}>
-              <Text style={styles.sectionTitle}>🍽️ Receita Especial</Text>
+            <Card variant="elevated" style={styles.sectionCard}>
+              <View style={styles.sectionHeader}>
+                <Icon name="food-apple" size={24} color={theme.colors.success} />
+                <Text style={styles.sectionTitle}>Receita Especial</Text>
+              </View>
               <Text style={styles.recipeText}>{dailyPlan.recipe}</Text>
-            </View>
+            </Card>
 
             {/* Botão para gerar novo plano */}
-            <TouchableOpacity style={styles.regenerateButton} onPress={handleGeneratePlan} disabled={generating}>
-              <Text style={styles.regenerateButtonText}>
-                {generating ? 'Gerando novo plano...' : '🔄 Gerar Novo Plano'}
-              </Text>
-            </TouchableOpacity>
+            <Button
+              variant="ghost"
+              icon="refresh"
+              onPress={handleGeneratePlan}
+              disabled={generating}
+              accessibilityLabel="Gerar novo plano"
+              style={styles.regenerateButton}
+              fullWidth
+            >
+              {generating ? 'Gerando novo plano...' : 'Gerar Novo Plano'}
+            </Button>
           </>
         )}
       </View>
@@ -175,169 +165,92 @@ export default function DailyPlanScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = makeStyles((t) => ({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: t.colors.bg,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.background,
+    backgroundColor: t.colors.bg,
   },
   loadingText: {
-    fontSize: typography.sizes.base,
-    color: colors.mutedForeground,
+    ...t.typography.body,
+    color: t.colors.textMuted,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: spacing.lg,
-    backgroundColor: colors.card,
+    padding: t.spacing.lg,
+    backgroundColor: t.colors.card,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  headerBack: {
-    fontSize: typography.sizes.base,
-    color: colors.primary,
+    borderBottomColor: t.colors.border,
   },
   headerTitle: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold as any,
-    color: colors.foreground,
+    ...t.typography.h1,
+    color: t.colors.text,
   },
   content: {
-    padding: spacing.lg,
-  },
-  emptyState: {
-    backgroundColor: colors.card,
-    padding: spacing['2xl'],
-    borderRadius: borderRadius.lg,
-    alignItems: 'center',
-    ...shadows.light.md,
-  },
-  emptyStateIcon: {
-    fontSize: 64,
-    marginBottom: spacing.lg,
-  },
-  emptyStateTitle: {
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold as any,
-    color: colors.foreground,
-    marginBottom: spacing.sm,
-  },
-  emptyStateDescription: {
-    fontSize: typography.sizes.sm,
-    color: colors.mutedForeground,
-    textAlign: 'center',
-    marginBottom: spacing['2xl'],
-  },
-  generateButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: spacing.lg,
-    paddingHorizontal: spacing['2xl'],
-    borderRadius: borderRadius.md,
-    ...shadows.light.md,
-  },
-  generateButtonText: {
-    color: colors.primaryForeground,
-    fontSize: typography.sizes.base,
-    fontWeight: typography.weights.bold as any,
+    padding: t.spacing.lg,
   },
   sectionCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    padding: spacing.xl,
-    borderRadius: borderRadius.xl,
-    marginBottom: spacing.lg,
-    borderWidth: 1,
-    borderColor: 'rgba(147, 197, 253, 0.15)',
-    ...shadows.dark.lg,
+    marginBottom: t.spacing.lg,
   },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.md,
-    marginBottom: spacing.lg,
-  },
-  sectionIconContainer: {
-    marginBottom: 0,
-  },
-  sectionIconGradient: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...shadows.dark.md,
-  },
-  sectionEmoji: {
-    fontSize: 24,
+    marginBottom: t.spacing.md,
+    gap: t.spacing.sm,
   },
   sectionTitle: {
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold as any,
-    color: colors.foreground,
-    fontFamily: typography.fontFamily.sans,
+    ...t.typography.h2,
+    color: t.colors.text,
     flex: 1,
   },
   priorityItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: spacing.md,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md,
-    backgroundColor: 'rgba(59, 130, 246, 0.05)',
-    borderRadius: borderRadius.lg,
-    borderWidth: 1,
-    borderColor: 'rgba(147, 197, 253, 0.1)',
-  },
-  priorityNumberGradient: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: spacing.md,
-    ...shadows.dark.sm,
+    marginBottom: t.spacing.md,
+    paddingVertical: t.spacing.sm,
+    paddingHorizontal: t.spacing.md,
+    backgroundColor: t.colors.primarySoft,
+    borderRadius: t.radius.sm,
   },
   priorityNumber: {
-    color: BLUE_THEME.white,
-    fontSize: typography.sizes.base,
-    fontWeight: typography.weights.bold as any,
-    fontFamily: typography.fontFamily.sans,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: t.colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: t.spacing.md,
+  },
+  priorityNumberText: {
+    ...t.typography.body,
+    fontWeight: '600',
+    color: t.colors.card,
   },
   priorityText: {
     flex: 1,
-    fontSize: typography.sizes.base,
-    color: colors.foreground,
-    fontFamily: typography.fontFamily.sans,
+    ...t.typography.body,
+    color: t.colors.text,
     lineHeight: 22,
   },
   tipText: {
-    fontSize: typography.sizes.base,
-    color: colors.mutedForeground,
+    ...t.typography.body,
+    color: t.colors.textMuted,
     lineHeight: 24,
     fontStyle: 'italic',
   },
   recipeText: {
-    fontSize: typography.sizes.sm,
-    color: colors.foreground,
+    ...t.typography.body,
+    color: t.colors.text,
     lineHeight: 22,
   },
   regenerateButton: {
-    backgroundColor: colors.secondary,
-    padding: spacing.lg,
-    borderRadius: borderRadius.md,
-    alignItems: 'center',
     marginBottom: 40,
-    borderWidth: 1,
-    borderColor: colors.primary,
   },
-  regenerateButtonText: {
-    color: colors.primary,
-    fontSize: typography.sizes.base,
-    fontWeight: typography.weights.bold as any,
-  },
-});
+}));

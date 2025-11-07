@@ -3,6 +3,8 @@
  *
  * Feed de conteúdos exclusivos da Natália Valente
  * Artigos, vídeos, áudios, posts com filtros e favoritos
+ *
+ * Refactored with Nath Design System
  */
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
@@ -10,26 +12,14 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Alert, Scrol
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Card } from '@/components/Card';
+import { Button } from '@/components/Button';
 import { Badge } from '@/components/Badge';
 import { Input } from '@/components/Input';
-import { colors, spacing, typography, borderRadius, shadows } from '@/theme/colors';
+import theme from '@/constants/theme';
 import { supabase } from '@/services/supabase';
 import { EmptyState } from '@/shared/components/EmptyState';
 import { SkeletonPresets } from '@/shared/components/Skeleton';
 import { useDebounce } from '@/hooks/useMemoizedCallback';
-
-// Blue Theme Constants
-const BLUE_THEME = {
-  darkBlue: '#0A2540',
-  deepBlue: '#0F3460',
-  primaryBlue: '#3B82F6',
-  lightBlue: '#60A5FA',
-  skyBlue: '#93C5FD',
-  mutedBlue: '#475569',
-  white: '#FFFFFF',
-  lightGray: '#F1F5F9',
-  darkGray: '#94A3B8',
-};
 
 interface ContentItem {
   id: string;
@@ -183,7 +173,7 @@ function ContentFeedScreen() {
               <Icon
                 name={item.is_favorite ? 'heart' : 'heart-outline'}
                 size={24}
-                color={item.is_favorite ? colors.destructive : colors.mutedForeground}
+                color={item.is_favorite ? theme.colors.primary : theme.colors.mutedForeground}
               />
             </TouchableOpacity>
           </View>
@@ -194,6 +184,15 @@ function ContentFeedScreen() {
             </Text>
           )}
           {item.category && <Text style={styles.contentCategory}>{item.category}</Text>}
+          <Button
+            variant="ghost"
+            size="sm"
+            onPress={() => toggleFavorite(item.id, item.is_favorite)}
+            accessibilityLabel={item.is_favorite ? 'Remover dos favoritos' : 'Salvar conteúdo'}
+            style={styles.saveButton}
+          >
+            {item.is_favorite ? 'Salvo' : 'Salvar'}
+          </Button>
         </View>
       </Card>
     ),
@@ -256,7 +255,7 @@ function ContentFeedScreen() {
           <Icon
             name="heart"
             size={16}
-            color={showFavoritesOnly ? colors.primary : colors.mutedForeground}
+            color={showFavoritesOnly ? '#FFFFFF' : theme.colors.foreground}
             style={styles.filterIcon}
           />
           <Text style={[styles.filterChipText, showFavoritesOnly && styles.filterChipTextActive]}>Favoritos</Text>
@@ -284,7 +283,7 @@ function ContentFeedScreen() {
         </View>
       ) : filteredContent.length === 0 ? (
         <EmptyState
-          emoji="📚"
+          icon={showFavoritesOnly ? 'heart-outline' : searchQuery ? 'book-search' : 'book-open-variant'}
           title="Nenhum conteúdo encontrado"
           description={
             showFavoritesOnly
@@ -326,99 +325,106 @@ function ContentFeedScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: theme.colors.background,
   },
   searchContainer: {
-    padding: spacing.lg,
-    paddingBottom: spacing.md,
+    padding: theme.spacing.lg,
+    paddingBottom: theme.spacing.md,
   },
   searchInput: {
     marginBottom: 0,
   },
   filtersContainer: {
-    marginBottom: spacing.md,
+    marginBottom: theme.spacing.md,
   },
   filtersContent: {
-    paddingHorizontal: spacing.lg,
-    gap: spacing.sm,
+    paddingHorizontal: theme.spacing.lg,
+    gap: theme.spacing.sm,
   },
   filterChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: borderRadius.full,
-    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
+    borderRadius: theme.borderRadius.full,
+    backgroundColor: `${theme.colors.primary}15`, // primarySoft equivalent
     borderWidth: 1,
-    borderColor: 'rgba(147, 197, 253, 0.2)',
-    marginRight: spacing.sm,
+    borderColor: `${theme.colors.primary}20`,
+    marginRight: theme.spacing.sm,
     minHeight: 40,
   },
   filterChipActive: {
-    backgroundColor: BLUE_THEME.primaryBlue,
-    borderColor: BLUE_THEME.primaryBlue,
-    ...shadows.dark.sm,
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
+    ...theme.shadows.sm,
   },
   filterChipText: {
-    fontSize: typography.sizes.sm,
-    color: colors.foreground,
-    fontFamily: typography.fontFamily.sans,
-    fontWeight: typography.weights.medium as any,
+    fontSize: theme.typography.sizes.sm,
+    color: theme.colors.foreground,
+    fontFamily: theme.typography.fontFamily.primary,
+    fontWeight: theme.typography.weights.medium as any,
   },
   filterChipTextActive: {
-    color: BLUE_THEME.white,
-    fontWeight: typography.weights.semibold as any,
+    color: '#FFFFFF',
+    fontWeight: theme.typography.weights.semibold as any,
   },
   filterIcon: {
-    marginRight: spacing.xs,
+    marginRight: theme.spacing.xs,
   },
   contentList: {
-    padding: spacing.lg,
+    padding: theme.spacing.lg,
   },
   contentCard: {
-    marginBottom: spacing.md,
+    marginBottom: theme.spacing.md,
     overflow: 'hidden',
   },
   thumbnail: {
     width: '100%',
     height: 200,
-    backgroundColor: colors.muted,
+    backgroundColor: theme.colors.muted,
+    borderRadius: theme.borderRadius.md,
   },
   contentInfo: {
-    padding: spacing.md,
+    padding: theme.spacing.md,
   },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: spacing.sm,
+    marginBottom: theme.spacing.sm,
   },
   typeBadge: {
-    marginRight: spacing.sm,
+    marginRight: theme.spacing.sm,
   },
   favoriteButton: {
-    padding: spacing.xs,
+    padding: theme.spacing.xs,
   },
   contentTitle: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.semibold as any,
-    color: colors.foreground,
-    marginBottom: spacing.xs,
-    fontFamily: typography.fontFamily.sans,
+    fontSize: theme.typography.sizes['2xl'],
+    fontWeight: theme.typography.weights.semibold as any,
+    color: theme.colors.foreground,
+    marginBottom: theme.spacing.xs,
+    fontFamily: theme.typography.fontFamily.primary,
   },
   contentDescription: {
-    fontSize: typography.sizes.sm,
-    color: colors.mutedForeground,
-    marginBottom: spacing.xs,
-    fontFamily: typography.fontFamily.sans,
+    fontSize: theme.typography.sizes.base,
+    color: theme.colors.mutedForeground,
+    marginBottom: theme.spacing.xs,
+    fontFamily: theme.typography.fontFamily.primary,
+    lineHeight: theme.typography.lineHeights.normal,
   },
   contentCategory: {
-    fontSize: typography.sizes.xs,
-    color: colors.primary,
-    fontFamily: typography.fontFamily.sans,
+    fontSize: theme.typography.sizes.xs,
+    color: theme.colors.primary,
+    fontFamily: theme.typography.fontFamily.primary,
+    marginBottom: theme.spacing.sm,
+  },
+  saveButton: {
+    marginTop: theme.spacing.sm,
+    alignSelf: 'flex-start',
   },
   skeletonContainer: {
-    padding: spacing.lg,
+    padding: theme.spacing.lg,
   },
 });
 

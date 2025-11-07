@@ -231,11 +231,12 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete, route }
     return (
       <View style={styles.slide}>
         <ScrollView
+          style={styles.slideScroll}
           contentContainerStyle={styles.slideScrollContent}
           showsVerticalScrollIndicator={false}
           bounces={false}
         >
-          <Animated.View style={[styles.slideContent, { opacity }]}>
+          <Animated.View style={[styles.slideContent, styles.slideContentAnimated, { opacity }]}>
             {/* Logo completa */}
             <View style={styles.logoContainerSlide}>
               <Logo size={getResponsiveValue(SCREEN_WIDTH * 0.2, SCREEN_WIDTH * 0.25, SCREEN_WIDTH * 0.3)} />
@@ -480,6 +481,14 @@ const baseStyles = StyleSheet.create({
 // Função para obter estilos responsivos
 const getStyles = () => ({
   ...baseStyles,
+  slideScroll: {
+    flex: 1,
+    width: '100%' as const,
+  },
+  slideContentAnimated: {
+    flexGrow: 1,
+    justifyContent: 'center' as const,
+  },
   header: {
     flexDirection: 'row' as const,
     justifyContent: 'space-between' as const,

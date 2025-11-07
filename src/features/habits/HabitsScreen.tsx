@@ -3,17 +3,17 @@
  *
  * Sistema completo de checklist de hábitos
  * 5 hábitos pré-definidos + progresso + streaks
+ * Refatorado com Nath Design System
  */
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Card } from '@/components/Card';
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
-import { colors, spacing, typography, borderRadius, shadows } from '@/theme/colors';
+import { makeStyles, theme } from '@/theme/nathTheme';
 import { supabase } from '@/services/supabase';
 import { EmptyState } from '@/shared/components/EmptyState';
 import { SkeletonPresets } from '@/shared/components/Skeleton';
@@ -24,19 +24,6 @@ import {
   scheduleStreakCelebration,
   requestNotificationPermissions,
 } from '@/services/notifications';
-
-// Blue Theme Constants
-const BLUE_THEME = {
-  darkBlue: '#0A2540',
-  deepBlue: '#0F3460',
-  primaryBlue: '#3B82F6',
-  lightBlue: '#60A5FA',
-  skyBlue: '#93C5FD',
-  mutedBlue: '#475569',
-  white: '#FFFFFF',
-  lightGray: '#F1F5F9',
-  darkGray: '#94A3B8',
-};
 
 interface Habit {
   id: string;
@@ -250,9 +237,9 @@ export default function HabitsScreen() {
 
       {habits.length === 0 ? (
         <EmptyState
-          emoji="✨"
+          icon="heart-outline"
           title="Nenhum hábito criado"
-          description="Crie seus hábitos diários para cuidar de si mesma com carinho e consistência."
+          description="Vamos começar sua jornada juntas. Criar hábitos saudáveis é um ato de amor próprio."
           actionLabel="Criar primeiro hábito"
           onAction={() => Alert.alert('Em breve', 'Funcionalidade de criar hábito será adicionada em breve!')}
         />
@@ -272,27 +259,33 @@ export default function HabitsScreen() {
                   onPress={() => toggleHabit(habit.id, !habit.completed_today)}
                   accessible={false}
                 >
-                  <LinearGradient
-                    colors={
-                      habit.completed_today
-                        ? [BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]
-                        : ['transparent', 'transparent']
-                    }
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={[styles.checkbox, habit.completed_today && styles.checkboxCompleted]}
+                  <View
+                    style={[
+                      styles.checkbox,
+                      habit.completed_today && styles.checkboxCompleted,
+                    ]}
                   >
-                    {habit.completed_today && <Icon name="check" size={24} color={BLUE_THEME.white} />}
-                  </LinearGradient>
+                    {habit.completed_today && (
+                      <Icon name="check" size={24} color={theme.colors.card} />
+                    )}
+                  </View>
                 </TouchableOpacity>
 
                 <View style={styles.habitInfo}>
                   <Text style={styles.habitName}>{habit.name}</Text>
                   {habit.description && <Text style={styles.habitDescription}>{habit.description}</Text>}
                   {habit.streak_days > 0 && (
-                    <Badge variant="success" size="sm" style={styles.streakBadge}>
-                      🔥 {habit.streak_days} dias seguidos
-                    </Badge>
+                    <View style={styles.streakBadge}>
+                      <Text style={styles.streakText}>
+                        🔥 {habit.streak_days} dias seguidos
+                      </Text>
+                    </View>
+                  )}
+                  {/* Progress bar */}
+                  {habit.completed_today && (
+                    <View style={styles.progressBarContainer}>
+                      <View style={styles.progressBar} />
+                    </View>
                   )}
                 </View>
               </View>
@@ -304,89 +297,104 @@ export default function HabitsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = makeStyles((t) => ({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: t.colors.bg,
   },
   header: {
-    padding: spacing.xl,
-    paddingBottom: spacing.md,
+    padding: t.spacing.xl,
+    paddingBottom: t.spacing.md,
   },
   title: {
-    fontSize: typography.sizes['3xl'],
-    fontWeight: typography.weights.bold as any,
-    color: colors.foreground,
-    marginBottom: spacing.sm,
-    fontFamily: typography.fontFamily.sans,
+    ...t.typography.h1,
+    color: t.colors.text,
+    marginBottom: t.spacing.sm,
   },
   subtitle: {
-    fontSize: typography.sizes.base,
-    color: colors.mutedForeground,
-    fontFamily: typography.fontFamily.sans,
+    ...t.typography.body,
+    color: t.colors.textMuted,
   },
   stats: {
-    paddingHorizontal: spacing.xl,
-    marginBottom: spacing.lg,
+    paddingHorizontal: t.spacing.xl,
+    marginBottom: t.spacing.lg,
   },
   statLabel: {
-    fontSize: typography.sizes.sm,
-    color: colors.mutedForeground,
-    marginBottom: spacing.xs,
-    fontFamily: typography.fontFamily.sans,
+    ...t.typography.sub,
+    color: t.colors.textMuted,
+    marginBottom: t.spacing.xs,
   },
   statValue: {
-    fontSize: typography.sizes['2xl'],
-    fontWeight: typography.weights.bold as any,
-    color: colors.primary,
-    fontFamily: typography.fontFamily.sans,
+    ...t.typography.h1,
+    fontSize: 24,
+    color: t.colors.primary,
   },
   habitsList: {
-    paddingHorizontal: spacing.xl,
-    paddingBottom: spacing.xl,
+    paddingHorizontal: t.spacing.xl,
+    paddingBottom: t.spacing.xl,
   },
   habitCard: {
-    marginBottom: spacing.md,
+    marginBottom: t.spacing.lg,
   },
   habitContent: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   checkboxWrapper: {
-    marginRight: spacing.md,
+    marginRight: t.spacing.md,
   },
   checkbox: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    borderWidth: 3,
-    borderColor: 'rgba(147, 197, 253, 0.3)',
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    borderWidth: 2,
+    borderColor: t.colors.border,
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
   },
   checkboxCompleted: {
-    borderColor: 'transparent',
-    ...shadows.dark.md,
+    borderColor: t.colors.primary,
+    backgroundColor: t.colors.primary,
   },
   habitInfo: {
     flex: 1,
   },
   habitName: {
-    fontSize: typography.sizes.base,
-    fontWeight: typography.weights.semibold as any,
-    color: colors.foreground,
-    marginBottom: spacing.xs,
-    fontFamily: typography.fontFamily.sans,
+    ...t.typography.h2,
+    color: t.colors.text,
+    marginBottom: t.spacing.xs,
   },
   habitDescription: {
-    fontSize: typography.sizes.sm,
-    color: colors.mutedForeground,
-    marginBottom: spacing.xs,
-    fontFamily: typography.fontFamily.sans,
+    ...t.typography.body,
+    color: t.colors.textMuted,
+    marginBottom: t.spacing.sm,
   },
   streakBadge: {
-    marginTop: spacing.xs,
+    marginTop: t.spacing.xs,
     alignSelf: 'flex-start',
+    paddingHorizontal: t.spacing.sm,
+    paddingVertical: t.spacing.xs,
+    backgroundColor: t.colors.success,
+    borderRadius: t.radius.sm,
   },
-});
+  streakText: {
+    ...t.typography.sub,
+    fontSize: 14,
+    color: t.colors.card,
+    fontWeight: '600',
+  },
+  progressBarContainer: {
+    height: 4,
+    backgroundColor: t.colors.primarySoft,
+    borderRadius: 2,
+    marginTop: t.spacing.sm,
+    overflow: 'hidden',
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: t.colors.primary,
+    borderRadius: 2,
+    width: '100%',
+  },
+}));

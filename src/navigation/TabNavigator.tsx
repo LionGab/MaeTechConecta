@@ -9,7 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { lazy, Suspense } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Loading } from '@/shared/components/Loading';
-import { colors, spacing } from '@/theme/colors';
+import { theme } from '@/theme/nathTheme';
 
 import { TabParamList } from './types';
 
@@ -46,22 +46,24 @@ export function TabNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.mutedForeground,
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.textMuted,
         tabBarStyle: {
-          backgroundColor: colors.background,
-          borderTopColor: colors.border,
+          backgroundColor: theme.colors.card,
+          borderTopColor: theme.colors.border,
           borderTopWidth: 1,
-          height: 60,
-          paddingBottom: spacing.sm,
-          paddingTop: spacing.sm,
+          height: 64,
+          paddingBottom: theme.spacing.sm,
+          paddingTop: theme.spacing.sm,
+          borderTopLeftRadius: theme.radius.md,
+          borderTopRightRadius: theme.radius.md,
         },
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: '500',
         },
         tabBarIconStyle: {
-          marginTop: spacing.xs,
+          marginTop: theme.spacing.xs,
         },
       }}
     >

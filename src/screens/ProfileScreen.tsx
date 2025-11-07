@@ -4,21 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Logo } from '@/components/Logo';
-import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
-
-// Blue Theme Constants
-const BLUE_THEME = {
-  darkBlue: '#0A2540',
-  deepBlue: '#0F3460',
-  primaryBlue: '#3B82F6',
-  lightBlue: '#60A5FA',
-  skyBlue: '#93C5FD',
-  mutedBlue: '#475569',
-  white: '#FFFFFF',
-  lightGray: '#F1F5F9',
-  darkGray: '#94A3B8',
-};
+import { Card } from '@/components/Card';
+import theme from '@/constants/theme';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -83,66 +70,68 @@ export default function ProfileScreen() {
           {profile?.pregnancy_week && <Text style={styles.weekInfo}>Semana {profile.pregnancy_week}</Text>}
         </View>
 
-        {/* Stats */}
-        <View style={styles.statsCard}>
-          <View style={styles.statItem}>
-            <View style={styles.statIconContainer}>
-              <LinearGradient
-                colors={[BLUE_THEME.primaryBlue, BLUE_THEME.lightBlue]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.statIconGradient}
-              >
-                <Text style={styles.statEmoji}>📅</Text>
-              </LinearGradient>
+        {/* Stats - Using Card for SurfaceCard */}
+        <Card variant="elevated" style={styles.statsCard}>
+          <View style={styles.statsRow}>
+            <View style={styles.statItem}>
+              <View style={styles.statIconContainer}>
+                <LinearGradient
+                  colors={theme.colors.gradients.pink}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.statIconGradient}
+                >
+                  <Text style={styles.statEmoji}>📅</Text>
+                </LinearGradient>
+              </View>
+              <Text style={styles.statNumber}>0</Text>
+              <Text style={styles.statLabel}>Dias no app</Text>
             </View>
-            <Text style={styles.statNumber}>0</Text>
-            <Text style={styles.statLabel}>Dias no app</Text>
-          </View>
-          <View style={styles.statItem}>
-            <View style={styles.statIconContainer}>
-              <LinearGradient
-                colors={['#8B5CF6', '#A78BFA']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.statIconGradient}
-              >
-                <Text style={styles.statEmoji}>💬</Text>
-              </LinearGradient>
+            <View style={styles.statItem}>
+              <View style={styles.statIconContainer}>
+                <LinearGradient
+                  colors={theme.colors.gradients.lavender}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.statIconGradient}
+                >
+                  <Text style={styles.statEmoji}>💬</Text>
+                </LinearGradient>
+              </View>
+              <Text style={styles.statNumber}>{profile?.daily_interactions || 0}</Text>
+              <Text style={styles.statLabel}>Interações hoje</Text>
             </View>
-            <Text style={styles.statNumber}>{profile?.daily_interactions || 0}</Text>
-            <Text style={styles.statLabel}>Interações hoje</Text>
-          </View>
-          <View style={styles.statItem}>
-            <View style={styles.statIconContainer}>
-              <LinearGradient
-                colors={['#F59E0B', '#FBBF24']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.statIconGradient}
-              >
-                <Text style={styles.statEmoji}>{profile?.subscription_tier === 'premium' ? '⭐' : '🎁'}</Text>
-              </LinearGradient>
+            <View style={styles.statItem}>
+              <View style={styles.statIconContainer}>
+                <LinearGradient
+                  colors={theme.colors.gradients.amber}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.statIconGradient}
+                >
+                  <Text style={styles.statEmoji}>{profile?.subscription_tier === 'premium' ? '⭐' : '🎁'}</Text>
+                </LinearGradient>
+              </View>
+              <Text style={styles.statNumber}>{profile?.subscription_tier === 'premium' ? 'Pro' : 'Free'}</Text>
+              <Text style={styles.statLabel}>Plano</Text>
             </View>
-            <Text style={styles.statNumber}>{profile?.subscription_tier === 'premium' ? 'Pro' : 'Free'}</Text>
-            <Text style={styles.statLabel}>Plano</Text>
           </View>
-        </View>
+        </Card>
 
         {/* Preferences */}
         {profile?.preferences && profile.preferences.length > 0 && (
-          <View style={styles.sectionCard}>
+          <Card variant="elevated" style={styles.sectionCard}>
             <Text style={styles.sectionTitle}>Interesses</Text>
             {profile.preferences.map((pref: string, index: number) => (
               <View key={index} style={styles.preferenceItem}>
                 <Text style={styles.preferenceText}>{pref}</Text>
               </View>
             ))}
-          </View>
+          </Card>
         )}
 
         {/* Settings */}
-        <View style={styles.sectionCard}>
+        <Card variant="elevated" style={styles.sectionCard}>
           <Text style={styles.sectionTitle}>Configurações</Text>
 
           <TouchableOpacity
@@ -152,8 +141,14 @@ export default function ProfileScreen() {
             accessibilityRole="button"
             accessibilityLabel="Notificações - Em breve"
           >
-            <Text style={styles.settingText}>🔔 Notificações</Text>
-            <Text style={styles.settingArrow}>→</Text>
+            <View style={styles.settingLeft}>
+              <Icon name="bell-outline" size={24} color={theme.colors.foreground} style={styles.settingIcon} />
+              <View>
+                <Text style={styles.settingText}>Notificações</Text>
+                <Text style={styles.settingSubtitle}>Gerencie suas notificações</Text>
+              </View>
+            </View>
+            <Icon name="chevron-right" size={24} color={theme.colors.mutedForeground} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -163,8 +158,14 @@ export default function ProfileScreen() {
             accessibilityRole="button"
             accessibilityLabel="Aparência - Em breve"
           >
-            <Text style={styles.settingText}>🎨 Aparência</Text>
-            <Text style={styles.settingArrow}>→</Text>
+            <View style={styles.settingLeft}>
+              <Icon name="palette-outline" size={24} color={theme.colors.foreground} style={styles.settingIcon} />
+              <View>
+                <Text style={styles.settingText}>Aparência</Text>
+                <Text style={styles.settingSubtitle}>Tema e personalização</Text>
+              </View>
+            </View>
+            <Icon name="chevron-right" size={24} color={theme.colors.mutedForeground} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -174,8 +175,14 @@ export default function ProfileScreen() {
             accessibilityRole="button"
             accessibilityLabel="Privacidade - Em breve"
           >
-            <Text style={styles.settingText}>🔒 Privacidade</Text>
-            <Text style={styles.settingArrow}>→</Text>
+            <View style={styles.settingLeft}>
+              <Icon name="lock-outline" size={24} color={theme.colors.foreground} style={styles.settingIcon} />
+              <View>
+                <Text style={styles.settingText}>Privacidade</Text>
+                <Text style={styles.settingSubtitle}>Dados e segurança</Text>
+              </View>
+            </View>
+            <Icon name="chevron-right" size={24} color={theme.colors.mutedForeground} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -185,19 +192,25 @@ export default function ProfileScreen() {
             accessibilityRole="button"
             accessibilityLabel="Ajuda & Suporte - Em breve"
           >
-            <Text style={styles.settingText}>❓ Ajuda & Suporte</Text>
-            <Text style={styles.settingArrow}>→</Text>
+            <View style={styles.settingLeft}>
+              <Icon name="help-circle-outline" size={24} color={theme.colors.foreground} style={styles.settingIcon} />
+              <View>
+                <Text style={styles.settingText}>Ajuda & Suporte</Text>
+                <Text style={styles.settingSubtitle}>Tire suas dúvidas</Text>
+              </View>
+            </View>
+            <Icon name="chevron-right" size={24} color={theme.colors.mutedForeground} />
           </TouchableOpacity>
-        </View>
+        </Card>
 
         {/* About */}
-        <View style={styles.sectionCard}>
+        <Card variant="elevated" style={styles.sectionCard}>
           <Text style={styles.sectionTitle}>Sobre</Text>
           <Text style={styles.aboutText}>
-            Nossa Maternidade é sua assistente virtual personalizada para gravidez e maternidade. 💕
+            Nossa Maternidade é sua assistente virtual personalizada para gravidez e maternidade.
           </Text>
           <Text style={styles.versionText}>Versão 1.0.0</Text>
-        </View>
+        </Card>
 
         {/* Logout */}
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
@@ -211,84 +224,84 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: theme.colors.background,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: spacing.lg,
-    backgroundColor: colors.card,
+    padding: theme.spacing.lg,
+    backgroundColor: theme.colors.card,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: theme.colors.border,
   },
   headerBack: {
-    fontSize: typography.sizes.base,
-    color: colors.primary,
+    fontSize: theme.typography.sizes.base,
+    color: theme.colors.primary,
   },
   headerTitle: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold as any,
-    color: colors.foreground,
+    fontSize: theme.typography.sizes.lg,
+    fontWeight: theme.typography.weights.bold as any,
+    color: theme.colors.foreground,
   },
   content: {
-    padding: spacing.lg,
+    padding: theme.spacing.lg,
   },
   avatarSection: {
     alignItems: 'center',
-    backgroundColor: colors.card,
-    padding: spacing['2xl'],
-    borderRadius: borderRadius.lg,
-    marginBottom: spacing.lg,
-    ...shadows.light.md,
+    backgroundColor: theme.colors.card,
+    padding: theme.spacing['2xl'],
+    borderRadius: theme.borderRadius.lg,
+    marginBottom: theme.spacing.lg,
+    ...theme.shadows.md,
   },
   avatarContainer: {
-    marginBottom: spacing.lg,
+    marginBottom: theme.spacing.lg,
     width: 120,
     height: 120,
     borderRadius: 60,
     overflow: 'hidden',
     borderWidth: 3,
-    borderColor: BLUE_THEME.primaryBlue,
-    ...shadows.light.lg,
+    borderColor: theme.colors.primary,
+    ...theme.shadows.lg,
   },
   avatarImage: {
     width: '100%',
     height: '100%',
   },
   userName: {
-    fontSize: typography.sizes['2xl'],
-    fontWeight: typography.weights.bold as any,
-    color: colors.foreground,
-    marginBottom: spacing.sm,
+    fontSize: theme.typography.sizes['2xl'],
+    fontWeight: theme.typography.weights.bold as any,
+    color: theme.colors.foreground,
+    marginBottom: theme.spacing.sm,
+    fontFamily: theme.typography.fontFamily.primary,
   },
   userType: {
-    fontSize: typography.sizes.base,
-    color: colors.mutedForeground,
-    marginBottom: spacing.sm,
+    fontSize: theme.typography.sizes.base,
+    color: theme.colors.mutedForeground,
+    marginBottom: theme.spacing.sm,
+    fontFamily: theme.typography.fontFamily.primary,
   },
   weekInfo: {
-    fontSize: typography.sizes.sm,
-    color: colors.primary,
-    fontWeight: typography.weights.bold as any,
+    fontSize: theme.typography.sizes.sm,
+    color: theme.colors.primary,
+    fontWeight: theme.typography.weights.bold as any,
+    fontFamily: theme.typography.fontFamily.primary,
   },
   statsCard: {
+    marginBottom: theme.spacing.lg,
+  },
+  statsRow: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    padding: spacing.xl,
-    borderRadius: borderRadius.xl,
-    marginBottom: spacing.lg,
     justifyContent: 'space-evenly',
-    borderWidth: 1,
-    borderColor: 'rgba(147, 197, 253, 0.15)',
-    ...shadows.dark.lg,
   },
   statItem: {
+    flex: 1,
     alignItems: 'center',
-    gap: spacing.sm,
+    gap: theme.spacing.sm,
   },
   statIconContainer: {
-    marginBottom: spacing.xs,
+    marginBottom: theme.spacing.xs,
   },
   statIconGradient: {
     width: 56,
@@ -296,87 +309,101 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
-    ...shadows.dark.md,
+    ...theme.shadows.md,
   },
   statEmoji: {
     fontSize: 28,
   },
   statNumber: {
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold as any,
-    color: colors.foreground,
-    fontFamily: typography.fontFamily.sans,
+    fontSize: theme.typography.sizes['2xl'],
+    fontWeight: theme.typography.weights.bold as any,
+    color: theme.colors.foreground,
+    fontFamily: theme.typography.fontFamily.primary,
   },
   statLabel: {
-    fontSize: typography.sizes.xs,
-    color: colors.mutedForeground,
-    fontFamily: typography.fontFamily.sans,
+    fontSize: theme.typography.sizes.xs,
+    color: theme.colors.mutedForeground,
+    fontFamily: theme.typography.fontFamily.primary,
     textAlign: 'center',
   },
   sectionCard: {
-    backgroundColor: colors.card,
-    padding: spacing.lg,
-    borderRadius: borderRadius.lg,
-    marginBottom: spacing.lg,
-    ...shadows.light.sm,
+    marginBottom: theme.spacing.lg,
   },
   sectionTitle: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.bold as any,
-    color: colors.primary,
-    marginBottom: spacing.lg,
+    fontSize: theme.typography.sizes.lg,
+    fontWeight: theme.typography.weights.bold as any,
+    color: theme.colors.primary,
+    marginBottom: theme.spacing.lg,
+    fontFamily: theme.typography.fontFamily.primary,
   },
   preferenceItem: {
-    backgroundColor: colors.background,
-    padding: spacing.sm,
-    borderRadius: borderRadius.md,
-    marginBottom: spacing.sm,
+    backgroundColor: theme.colors.background,
+    padding: theme.spacing.sm,
+    borderRadius: theme.borderRadius.md,
+    marginBottom: theme.spacing.sm,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: theme.colors.border,
   },
   preferenceText: {
-    fontSize: typography.sizes.sm,
-    color: colors.foreground,
+    fontSize: theme.typography.sizes.sm,
+    color: theme.colors.foreground,
+    fontFamily: theme.typography.fontFamily.primary,
   },
   settingItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: spacing.md,
+    paddingVertical: theme.spacing.md,
+    minHeight: 56,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: theme.colors.border,
+  },
+  settingLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  settingIcon: {
+    marginRight: theme.spacing.md,
   },
   settingText: {
-    fontSize: typography.sizes.sm,
-    color: colors.foreground,
+    fontSize: theme.typography.sizes.base,
+    color: theme.colors.foreground,
+    fontFamily: theme.typography.fontFamily.primary,
+    fontWeight: theme.typography.weights.medium as any,
   },
-  settingArrow: {
-    fontSize: typography.sizes.lg,
-    color: colors.primary,
+  settingSubtitle: {
+    fontSize: theme.typography.sizes.xs,
+    color: theme.colors.mutedForeground,
+    fontFamily: theme.typography.fontFamily.primary,
+    marginTop: 2,
   },
   aboutText: {
-    fontSize: typography.sizes.sm,
-    color: colors.mutedForeground,
-    lineHeight: 20,
-    marginBottom: spacing.lg,
+    fontSize: theme.typography.sizes.base,
+    color: theme.colors.mutedForeground,
+    lineHeight: theme.typography.lineHeights.normal,
+    marginBottom: theme.spacing.lg,
+    fontFamily: theme.typography.fontFamily.primary,
   },
   versionText: {
-    fontSize: typography.sizes.xs,
-    color: colors.muted,
+    fontSize: theme.typography.sizes.xs,
+    color: theme.colors.mutedForeground,
+    fontFamily: theme.typography.fontFamily.primary,
   },
   logoutButton: {
-    backgroundColor: colors.card,
-    padding: spacing.lg,
-    borderRadius: borderRadius.lg,
+    backgroundColor: theme.colors.card,
+    padding: theme.spacing.lg,
+    borderRadius: theme.borderRadius.lg,
     alignItems: 'center',
     marginBottom: 40,
     borderWidth: 2,
-    borderColor: colors.destructive,
-    ...shadows.light.sm,
+    borderColor: theme.colors.destructive,
+    ...theme.shadows.sm,
   },
   logoutText: {
-    fontSize: typography.sizes.base,
-    color: colors.destructive,
-    fontWeight: typography.weights.bold as any,
+    fontSize: theme.typography.sizes.base,
+    color: theme.colors.destructive,
+    fontWeight: theme.typography.weights.bold as any,
+    fontFamily: theme.typography.fontFamily.primary,
   },
 });
