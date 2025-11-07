@@ -4,42 +4,49 @@
  * Context para gerenciar tema global, preferências do usuário e seleção de temas
  */
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { getTheme } from '@/constants/theme';
-
 import { getThemeColors, ThemeName, defaultTheme } from '@/theme/themes';
 import type { ThemeColors } from '@/theme/themes';
-import { shadows, typography, spacing, borderRadius } from '@/theme/colors';
+import { createTheme, type Theme } from '@/theme';
 
 type ThemeMode = 'light' | 'dark' | 'auto';
+
+type ColorScale = Record<50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900, string>;
+
+interface ThemeContextColors extends Theme['colors'], ThemeColors {
+  primaryScale: ColorScale;
+  secondaryScale: ColorScale;
+  neutral: Record<0 | 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900, string>;
+  backgroundScale: {
+    primary: string;
+    secondary: string;
+    tertiary: string;
+  };
+  success: string;
+  warning: string;
+  info: string;
+  error: string;
+  text: string;
+  surface: string;
+  textSecondary: string;
+  onPrimary: string;
+}
 
 interface ThemeContextType {
   isDark: boolean;
   themeMode: ThemeMode;
   themeName: ThemeName;
-  colors: ThemeColors;
+  colors: ThemeContextColors;
   toggleTheme: () => void;
   setThemeMode: (mode: ThemeMode) => void;
   setThemeName: (name: ThemeName) => void;
-  theme: {
-    colors: ThemeColors & {
-      text?: string;
-      surface?: string;
-      textSecondary?: string;
-      onPrimary?: string;
-      [key: string]: any;
-    };
-    shadows: any;
-    typography: any;
-    spacing: any;
-    borderRadius: any;
-  };
-  spacing?: any;
-  typography?: any;
-  borderRadius?: any;
+  theme: Theme;
+  spacing: Theme['spacing'];
+  typography: Theme['typography'];
+  borderRadius: Theme['borderRadius'];
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -47,12 +54,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 const THEME_STORAGE_KEY = '@nossa_maternidade:theme_mode';
 const THEME_NAME_STORAGE_KEY = '@nossa_maternidade:theme_name';
 
-/**
- * Helper para gerar escala de cores baseada em uma cor base
- */
-function generateColorScale(baseColor: string, isDark: boolean) {
-  // Simplificação: retorna escala baseada no tema
-  // Em produção, você pode usar uma biblioteca como polished ou color2k
+function generateColorScale(baseColor: string, isDark: boolean): ColorScale {
   const scales = {
     50: isDark ? '#1A1A1A' : '#FFF5F7',
     100: isDark ? '#2D2D2D' : '#FFE3E8',
@@ -65,12 +67,10 @@ function generateColorScale(baseColor: string, isDark: boolean) {
     800: isDark ? '#CCCCCC' : '#C45172',
     900: isDark ? '#E6E6E6' : '#B2355E',
   };
+
   return scales;
 }
 
-/**
- * Helper para gerar escala de cores neutras
- */
 function generateNeutralScale(isDark: boolean) {
   return {
     0: '#FFFFFF',
@@ -89,49 +89,41 @@ function generateNeutralScale(isDark: boolean) {
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const systemColorScheme = useColorScheme();
-  const [themeMode, setThemeModeState] = useState<ThemeMode>('dark'); // ✅ Modo escuro habilitado
+  const [themeMode, setThemeModeState] = useState<ThemeMode>('dark');
   const [themeName, setThemeNameState] = useState<ThemeName>(defaultTheme);
   const [isDark, setIsDark] = useState<boolean>(true);
 
-  // Carregar preferências salvas
-  useEffect(() => {
-    loadThemePreferences();
-  }, []);
-
-  // Atualizar isDark baseado em themeMode
-  useEffect(() => {
-    const shouldBeDark = themeMode === 'dark' || (themeMode === 'auto' && systemColorScheme === 'dark');
-    setIsDark(shouldBeDark);
-  }, [themeMode, systemColorScheme]);
-
-  const loadThemePreferences = async () => {
+  const loadThemePreferences = useCallback(async () => {
     try {
-      // Forçar modo escuro por padrão - salvar 'dark' se não existir
       const savedMode = await AsyncStorage.getItem(THEME_STORAGE_KEY);
       if (!savedMode) {
-        // Se não há preferência salva, forçar modo escuro
         await AsyncStorage.setItem(THEME_STORAGE_KEY, 'dark');
         setThemeModeState('dark');
       } else if (['light', 'dark', 'auto'].includes(savedMode)) {
-        // Se há preferência salva, usar ela (mas padrão é 'dark')
         setThemeModeState(savedMode as ThemeMode);
       } else {
-        // Se preferência inválida, forçar modo escuro
         await AsyncStorage.setItem(THEME_STORAGE_KEY, 'dark');
         setThemeModeState('dark');
       }
 
-      // Carregar theme name (bubblegum/v0-app)
       const savedThemeName = await AsyncStorage.getItem(THEME_NAME_STORAGE_KEY);
       if (savedThemeName && ['bubblegum', 'v0-app'].includes(savedThemeName)) {
         setThemeNameState(savedThemeName as ThemeName);
       }
     } catch (error) {
       console.error('Erro ao carregar preferências de tema:', error);
-      // Em caso de erro, garantir modo escuro
       setThemeModeState('dark');
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadThemePreferences();
+  }, [loadThemePreferences]);
+
+  useEffect(() => {
+    const shouldBeDark = themeMode === 'dark' || (themeMode === 'auto' && systemColorScheme === 'dark');
+    setIsDark(shouldBeDark);
+  }, [systemColorScheme, themeMode]);
 
   const setThemeMode = useCallback(async (mode: ThemeMode) => {
     try {
@@ -156,116 +148,57 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setThemeMode(newMode);
   }, [isDark, setThemeMode]);
 
-  // Obter cores do tema atual
-  const colors = getThemeColors(themeName, isDark);
+  const palette = useMemo(() => getThemeColors(themeName, isDark), [isDark, themeName]);
+  const tokens = useMemo(() => createTheme(isDark), [isDark]);
 
-  // Tema completo (compatibilidade com código existente)
-  // Se o tema for bubblegum, usa getTheme, senão constrói do tema atual
-  const bubblegumTheme = getTheme(isDark);
+  const colors = useMemo<ThemeContextColors>(
+    () => ({
+      ...tokens.colors,
+      ...palette,
+      primaryScale: generateColorScale(palette.primary, isDark),
+      secondaryScale: generateColorScale(palette.secondary, isDark),
+      neutral: generateNeutralScale(isDark),
+      backgroundScale: {
+        primary: palette.background,
+        secondary: palette.card,
+        tertiary: isDark ? '#1A1A1A' : '#FFFFFF',
+      },
+      success: '#81C784',
+      warning: '#FFB74D',
+      info: '#64B5F6',
+      error: palette.destructive,
+      text: palette.foreground,
+      surface: palette.card,
+      textSecondary: palette.mutedForeground,
+      onPrimary: palette.primaryForeground,
+    }),
+    [isDark, palette, tokens.colors],
+  );
 
-  const baseTheme =
-    themeName === 'bubblegum'
-      ? bubblegumTheme
-      : {
-          colors: {
-            ...colors,
-            // Adicionar escalas dinâmicas baseadas na cor primária
-            primaryScale: generateColorScale(colors.primary, isDark),
-            secondaryScale: generateColorScale(colors.secondary, isDark),
-            neutral: generateNeutralScale(isDark),
-            success: '#81C784',
-            warning: '#FFB74D',
-            error: colors.destructive,
-            info: '#64B5F6',
-            backgroundScale: {
-              primary: colors.background,
-              secondary: colors.card,
-              tertiary: isDark ? '#1A1A1A' : '#FFFFFF',
-            },
-          },
-          shadows: isDark ? shadows.dark : shadows.light,
-          typography: {
-            ...typography,
-            lineHeights: {
-              tight: 1.2,
-              normal: 1.5,
-              relaxed: 1.8,
-            },
-          },
-          spacing: {
-            ...spacing,
-            xxl: 48,
-            xxxl: 64,
-          },
-          borderRadius,
-        };
+  const theme = useMemo<Theme>(
+    () => ({
+      ...tokens,
+      colors,
+    }),
+    [colors, tokens],
+  );
 
-  // Garantir estrutura consistente para ambos os temas
-  const themeColors = {
-    ...(themeName === 'bubblegum' ? bubblegumTheme.colors : baseTheme.colors),
-    ...colors, // Sobrescrever com cores do tema atual
-  };
-
-  // Adicionar aliases para compatibilidade
-  const extendedColors = {
-    ...themeColors,
-    text: themeColors.text || themeColors.foreground,
-    surface: themeColors.surface || themeColors.card,
-    textSecondary: themeColors.textSecondary || themeColors.mutedForeground,
-    onPrimary: themeColors.onPrimary || themeColors.primaryForeground,
-  };
-
-  // Extend typography with composite properties
-  const baseTypography = baseTheme.typography || typography;
-  const extendedTypography = {
-    ...baseTypography,
-    h5: { fontSize: baseTypography.sizes?.['3xl'] || 28, fontWeight: baseTypography.weights?.bold || '700' },
-    h6: { fontSize: baseTypography.sizes?.['2xl'] || 24, fontWeight: baseTypography.weights?.semibold || '600' },
-    body1: { fontSize: baseTypography.sizes?.base || 16, fontWeight: baseTypography.weights?.normal || '400' },
-    body2: { fontSize: baseTypography.sizes?.sm || 14, fontWeight: baseTypography.weights?.normal || '400' },
-    button: { fontSize: baseTypography.sizes?.base || 16, fontWeight: baseTypography.weights?.medium || '500' },
-    caption: { fontSize: baseTypography.sizes?.xs || 12, fontWeight: baseTypography.weights?.normal || '400' },
-  };
-
-  // Extend spacing with '2xl', '3xl', etc. if missing
-  const baseSpacing = baseTheme.spacing || spacing;
-  const extendedSpacing = {
-    ...baseSpacing,
-    '2xl': (baseSpacing as any)['2xl'] || (baseSpacing as any).xxl || 48,
-    '3xl': (baseSpacing as any)['3xl'] || (baseSpacing as any).xxxl || 64,
-    '4xl': (baseSpacing as any)['4xl'] || 80,
-    '5xl': (baseSpacing as any)['5xl'] || 96,
-  };
-
-  // Extend borderRadius with '2xl', '3xl', etc. if missing
-  const baseBorderRadius = baseTheme.borderRadius || borderRadius;
-  const extendedBorderRadius = {
-    ...baseBorderRadius,
-    '2xl': baseBorderRadius['2xl'] || 24,
-    '3xl': baseBorderRadius['3xl'] || 32,
-  };
-
-  const theme = {
-    colors: extendedColors,
-    shadows: isDark ? shadows.dark : shadows.light,
-    typography: extendedTypography,
-    spacing: extendedSpacing,
-    borderRadius: extendedBorderRadius,
-  };
-
-  const value: ThemeContextType = {
-    isDark,
-    themeMode,
-    themeName,
-    colors,
-    toggleTheme,
-    setThemeMode,
-    setThemeName,
-    theme,
-    spacing: theme.spacing,
-    typography: theme.typography,
-    borderRadius: theme.borderRadius,
-  };
+  const value = useMemo<ThemeContextType>(
+    () => ({
+      isDark,
+      themeMode,
+      themeName,
+      colors,
+      toggleTheme,
+      setThemeMode,
+      setThemeName,
+      theme,
+      spacing: theme.spacing,
+      typography: theme.typography,
+      borderRadius: theme.borderRadius,
+    }),
+    [colors, isDark, setThemeMode, setThemeName, theme, themeMode, themeName, toggleTheme],
+  );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
