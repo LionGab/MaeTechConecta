@@ -1,94 +1,98 @@
-import React from 'react';
-import { Text, TouchableOpacity, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { theme } from '@/theme/nathTheme';
+import React, { useCallback, useMemo } from 'react';
+import { Pressable, PressableProps, StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
 
-interface PillChipProps {
-  text: string;
-  icon?: string;
-  onPress?: () => void;
+import useThemeStyles from '@/shared/hooks/useThemeStyles';
+
+export interface PillChipProps extends Omit<PressableProps, 'style'> {
+  label: string;
+  selected?: boolean;
+  leadingIcon?: React.ReactNode;
+  trailingIcon?: React.ReactNode;
   disabled?: boolean;
-  variant?: 'default' | 'urgent';
-  style?: ViewStyle;
-  textStyle?: TextStyle;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
-export const PillChip: React.FC<PillChipProps> = ({
-  text,
-  icon,
-  onPress,
+const BasePillChip: React.FC<PillChipProps> = ({
+  label,
+  selected = false,
+  leadingIcon,
+  trailingIcon,
   disabled = false,
-  variant = 'default',
+  onPress,
   style,
   textStyle,
+  accessibilityLabel,
+  accessibilityHint,
+  ...rest
 }) => {
-  const isUrgent = variant === 'urgent';
+  const { space, text, makeStyles } = useThemeStyles();
+
+  // Estilos ajustam automaticamente as cores conforme o estado selecionado.
+  const styles = useMemo(
+    () =>
+      makeStyles(({ color: themeColor, space: themeSpace, radius: themeRadius }) => {
+        const backgroundColor = selected ? themeColor('accent') : themeColor('bgMuted');
+        const borderColor = selected ? themeColor('accentForeground') : themeColor('borderPrimary');
+
+        return {
+          container: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingVertical: themeSpace('xs'),
+            paddingHorizontal: themeSpace('md'),
+            borderRadius: themeRadius('full'),
+            backgroundColor,
+            borderWidth: 1,
+            borderColor,
+            opacity: disabled ? 0.5 : 1,
+          },
+          iconOffset: {
+            marginRight: themeSpace('sm'),
+          },
+          iconTrailing: {
+            marginLeft: themeSpace('sm'),
+          },
+          label: {
+            ...text('bodySmall', {
+              color: selected ? themeColor('textOnAccent') : themeColor('textPrimary'),
+            }),
+          },
+          pressed: {
+            transform: [{ scale: 0.97 }],
+          },
+        };
+      }),
+    [disabled, makeStyles, selected, text],
+  );
+
+  const handlePress = useCallback(() => {
+    // Evita alterar filtros quando chip estiver inativo.
+    if (disabled) {
+      return;
+    }
+    onPress?.();
+  }, [disabled, onPress]);
 
   return (
-    <TouchableOpacity
-      style={[
-        styles.container,
-        isUrgent && styles.containerUrgent,
-        disabled && styles.containerDisabled,
-        style,
-      ]}
-      onPress={onPress}
-      disabled={disabled}
-      activeOpacity={0.7}
-      accessible={true}
+    <Pressable
+      {...rest}
+      onPress={handlePress}
+      // Efeito de escala transmite feedback tátil nas interações.
+      style={({ pressed }) => [styles.container, pressed && !disabled ? styles.pressed : null, style]}
+      accessible
       accessibilityRole="button"
-      accessibilityLabel={text}
-      accessibilityState={{ disabled }}
+      accessibilityLabel={accessibilityLabel ?? label}
+      accessibilityHint={accessibilityHint}
+      accessibilityState={{ disabled, selected }}
+      hitSlop={space('xs')}
     >
-      {icon && <Text style={styles.icon}>{icon}</Text>}
-      <Text
-        style={[
-          styles.text,
-          isUrgent && styles.textUrgent,
-          disabled && styles.textDisabled,
-          textStyle,
-        ]}
-        numberOfLines={1}
-      >
-        {text}
-      </Text>
-    </TouchableOpacity>
+      {leadingIcon ? <View style={styles.iconOffset}>{leadingIcon}</View> : null}
+      <Text style={[styles.label, textStyle]}>{label}</Text>
+      {trailingIcon ? <View style={styles.iconTrailing}>{trailingIcon}</View> : null}
+    </Pressable>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.xs,
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.sm,
-    backgroundColor: theme.colors.primarySoft,
-    borderRadius: theme.radius.pill,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    minHeight: 44,
-  },
-  containerUrgent: {
-    backgroundColor: 'rgba(255, 139, 163, 0.15)',
-    borderColor: 'rgba(255, 139, 163, 0.3)',
-  },
-  containerDisabled: {
-    opacity: 0.5,
-    backgroundColor: theme.colors.border,
-  },
-  icon: {
-    fontSize: 20,
-  },
-  text: {
-    fontSize: 14,
-    color: theme.colors.text,
-    fontWeight: '600',
-  },
-  textUrgent: {
-    color: theme.colors.accent,
-    fontWeight: '700',
-  },
-  textDisabled: {
-    color: theme.colors.textMuted,
-  },
-});
+export const PillChip = React.memo(BasePillChip);
+PillChip.displayName = 'PillChip';

@@ -259,15 +259,8 @@ export default function HabitsScreen() {
                   onPress={() => toggleHabit(habit.id, !habit.completed_today)}
                   accessible={false}
                 >
-                  <View
-                    style={[
-                      styles.checkbox,
-                      habit.completed_today && styles.checkboxCompleted,
-                    ]}
-                  >
-                    {habit.completed_today && (
-                      <Icon name="check" size={24} color={theme.colors.card} />
-                    )}
+                  <View style={[styles.checkbox, habit.completed_today && styles.checkboxCompleted]}>
+                    {habit.completed_today && <Icon name="check" size={24} color={theme.colors.card} />}
                   </View>
                 </TouchableOpacity>
 
@@ -276,9 +269,7 @@ export default function HabitsScreen() {
                   {habit.description && <Text style={styles.habitDescription}>{habit.description}</Text>}
                   {habit.streak_days > 0 && (
                     <View style={styles.streakBadge}>
-                      <Text style={styles.streakText}>
-                        🔥 {habit.streak_days} dias seguidos
-                      </Text>
+                      <Text style={styles.streakText}>🔥 {habit.streak_days} dias seguidos</Text>
                     </View>
                   )}
                   {/* Progress bar */}

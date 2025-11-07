@@ -1,164 +1,118 @@
-import React from "react";
-import {
-  TouchableOpacity,
-  Text,
-  ActivityIndicator,
-  ViewStyle,
-  TextStyle,
-  TouchableOpacityProps,
-} from "react-native";
-import { theme, makeStyles } from "@/theme/nathTheme";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import React, { useCallback, useMemo } from 'react';
+import { ActivityIndicator, Pressable, PressableProps, StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
 
-interface PrimaryButtonProps extends Omit<TouchableOpacityProps, "style"> {
-  children: React.ReactNode;
-  onPress: () => void;
+import useThemeStyles from '@/shared/hooks/useThemeStyles';
+
+/**
+ * Botão principal com preenchimento sólido.
+ *
+ * Usa tokens do tema para garantir consistência visual e acessibilidade.
+ */
+export interface PrimaryButtonProps extends Omit<PressableProps, 'style'> {
+  label: string;
+  icon?: React.ReactNode;
   loading?: boolean;
   disabled?: boolean;
-  icon?: string;
-  variant?: "primary" | "secondary" | "ghost";
-  style?: ViewStyle;
-  textStyle?: TextStyle;
-  accessibilityLabel: string;
-  accessibilityHint?: string;
+  fullWidth?: boolean;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
-export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
-  children,
-  onPress,
+const BasePrimaryButton: React.FC<PrimaryButtonProps> = ({
+  label,
+  icon,
   loading = false,
   disabled = false,
-  icon,
-  variant = "primary",
+  fullWidth = false,
+  onPress,
   style,
   textStyle,
   accessibilityLabel,
   accessibilityHint,
-  ...props
+  ...rest
 }) => {
-  const styles = useStyles();
+  const { color, space, text, shadow, makeStyles } = useThemeStyles();
 
-  const isDisabled = disabled || loading;
+  // Memoizamos estilos para evitar recomputações em cada render.
+  const styles = useMemo(
+    () =>
+      makeStyles(({ color: themeColor, space: themeSpace, radius: themeRadius }) => ({
+        container: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: themeColor('primary'),
+          paddingVertical: themeSpace('md'),
+          paddingHorizontal: themeSpace('xl'),
+          borderRadius: themeRadius('xl'),
+          minHeight: 52,
+          opacity: disabled ? 0.6 : 1,
+        },
+        containerFullWidth: {
+          alignSelf: 'stretch',
+        },
+        content: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        iconWrapper: {
+          marginRight: themeSpace('sm'),
+        },
+        pressed: {
+          opacity: 0.92,
+        },
+        label: {
+          ...text('button', { color: themeColor('textOnPrimary') }),
+        },
+        labelLoading: {
+          opacity: 0.8,
+        },
+      })),
+    [disabled, makeStyles, text],
+  );
 
-  const getContainerStyle = () => {
-    const baseStyle = [styles.button];
-
-    if (variant === "primary") {
-      baseStyle.push(styles.primaryButton);
-    } else if (variant === "secondary") {
-      baseStyle.push(styles.secondaryButton);
-    } else if (variant === "ghost") {
-      baseStyle.push(styles.ghostButton);
+  const handlePress = useCallback(() => {
+    // Evita múltiplos disparos enquanto o botão está desabilitado ou carregando.
+    if (disabled || loading) {
+      return;
     }
-
-    if (isDisabled) {
-      baseStyle.push(styles.disabledButton);
-    }
-
-    if (style) {
-      baseStyle.push(style);
-    }
-
-    return baseStyle;
-  };
-
-  const getTextStyle = () => {
-    const baseStyle = [styles.buttonText];
-
-    if (variant === "primary") {
-      baseStyle.push(styles.primaryButtonText);
-    } else if (variant === "secondary") {
-      baseStyle.push(styles.secondaryButtonText);
-    } else if (variant === "ghost") {
-      baseStyle.push(styles.ghostButtonText);
-    }
-
-    if (isDisabled) {
-      baseStyle.push(styles.disabledButtonText);
-    }
-
-    if (textStyle) {
-      baseStyle.push(textStyle);
-    }
-
-    return baseStyle;
-  };
+    onPress?.();
+  }, [disabled, loading, onPress]);
 
   return (
-    <TouchableOpacity
-      style={getContainerStyle()}
-      onPress={onPress}
-      disabled={isDisabled}
-      accessible={true}
+    <Pressable
+      {...rest}
+      onPress={handlePress}
+      // Aplicamos tokens do tema + feedback visual quando o botão é pressionado.
+      style={({ pressed }) => [
+        styles.container,
+        shadow('md'),
+        fullWidth ? styles.containerFullWidth : null,
+        pressed ? styles.pressed : null,
+        style,
+      ]}
+      accessible
       accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel}
+      accessibilityLabel={accessibilityLabel ?? label}
       accessibilityHint={accessibilityHint}
-      accessibilityState={{ disabled: isDisabled }}
-      activeOpacity={0.8}
-      {...props}
+      accessibilityState={{ disabled: disabled || loading, busy: loading }}
+      hitSlop={space('xs')}
     >
-      {loading ? (
-        <ActivityIndicator color={variant === "primary" ? "#FFFFFF" : theme.colors.primary} />
-      ) : (
-        <>
-          {icon && (
-            <Icon
-              name={icon}
-              size={20}
-              color={variant === "primary" ? "#FFFFFF" : theme.colors.primary}
-              style={styles.icon}
-            />
-          )}
-          <Text style={getTextStyle()}>{children}</Text>
-        </>
-      )}
-    </TouchableOpacity>
+      <View style={styles.content} pointerEvents="none">
+        {/* Indicador de carregamento ou ícone à esquerda */}
+        {loading ? (
+          <ActivityIndicator size="small" color={color('textOnPrimary')} />
+        ) : icon ? (
+          <View style={styles.iconWrapper}>{icon}</View>
+        ) : null}
+
+        {/* Texto mantém legibilidade mesmo em estados carregando/disabled */}
+        <Text style={[styles.label, loading ? styles.labelLoading : null, textStyle]}>{label}</Text>
+      </View>
+    </Pressable>
   );
 };
 
-const useStyles = () =>
-  makeStyles((t) => ({
-    button: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      minHeight: 48,
-      paddingHorizontal: t.spacing.lg,
-      paddingVertical: t.spacing.md,
-      borderRadius: t.radius.md,
-      gap: t.spacing.sm,
-    },
-    primaryButton: {
-      backgroundColor: t.colors.primary,
-      ...t.shadow.card,
-    },
-    secondaryButton: {
-      backgroundColor: t.colors.primarySoft,
-      ...t.shadow.card,
-    },
-    ghostButton: {
-      backgroundColor: "transparent",
-    },
-    disabledButton: {
-      opacity: 0.5,
-    },
-    buttonText: {
-      fontSize: 16,
-      fontWeight: "600",
-    },
-    primaryButtonText: {
-      color: "#FFFFFF",
-    },
-    secondaryButtonText: {
-      color: t.colors.primary,
-    },
-    ghostButtonText: {
-      color: t.colors.primary,
-    },
-    disabledButtonText: {
-      color: t.colors.textMuted,
-    },
-    icon: {
-      marginRight: t.spacing.xs,
-    },
-  }));
+export const PrimaryButton = React.memo(BasePrimaryButton);
+PrimaryButton.displayName = 'PrimaryButton';

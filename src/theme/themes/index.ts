@@ -6,8 +6,9 @@
 
 import { light as bubblegumLight, dark as bubblegumDark } from '../colors';
 import { v0AppLight, v0AppDark } from './v0-app';
+import { momBlueLight, momBlueDark } from './mom-blue';
 
-export type ThemeName = 'bubblegum' | 'v0-app';
+export type ThemeName = 'bubblegum' | 'v0-app' | 'mom-blue';
 
 export interface ThemeColors {
   background: string;
@@ -61,6 +62,10 @@ export const themes = {
     light: v0AppLight as ThemeColors,
     dark: v0AppDark as ThemeColors,
   },
+  'mom-blue': {
+    light: momBlueLight as ThemeColors,
+    dark: momBlueDark as ThemeColors,
+  },
 } as const;
 
 /**
@@ -73,4 +78,4 @@ export const getThemeColors = (themeName: ThemeName = 'bubblegum', isDark: boole
 /**
  * Tema padrão (Bubblegum)
  */
-export const defaultTheme: ThemeName = 'bubblegum';
+export const defaultTheme: ThemeName = 'mom-blue';

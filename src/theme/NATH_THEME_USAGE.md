@@ -1,25 +1,27 @@
 # Nath Theme System - Usage Guide
 
 ## Design Identity: "Mae Guerreira"
+
 Emotional design system that transforms pain into strength, providing warmth and care.
 
 ## Theme Colors
 
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `bg` | #FFF8F3 | Warm, welcoming background |
-| `card` | #FFFFFF | Clean neutral cards |
-| `primary` | #6DA9E4 | Comforting blue |
+| Token         | Hex     | Usage                        |
+| ------------- | ------- | ---------------------------- |
+| `bg`          | #FFF8F3 | Warm, welcoming background   |
+| `card`        | #FFFFFF | Clean neutral cards          |
+| `primary`     | #6DA9E4 | Comforting blue              |
 | `primarySoft` | #DCEBFA | Soft blue (chips/highlights) |
-| `accent` | #FF8BA3 | Emotional pink detail |
-| `text` | #6A5450 | Warm brown (main text) |
-| `textMuted` | #9E928C | Warm gray (supporting text) |
-| `border` | #EFE7E2 | Soft dividers |
-| `success` | #6BC3A3 | Care/progress green |
+| `accent`      | #FF8BA3 | Emotional pink detail        |
+| `text`        | #6A5450 | Warm brown (main text)       |
+| `textMuted`   | #9E928C | Warm gray (supporting text)  |
+| `border`      | #EFE7E2 | Soft dividers                |
+| `success`     | #6BC3A3 | Care/progress green          |
 
 ## Import Methods
 
 ### Method 1: Direct Theme Import
+
 ```typescript
 import { nathTheme } from '@/theme';
 
@@ -31,6 +33,7 @@ const MyComponent = () => (
 ```
 
 ### Method 2: makeStyles Hook (Recommended)
+
 ```typescript
 import { makeStyles } from '@/theme';
 
@@ -58,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
 ```
 
 ### Method 3: useThemeStyles Hook (Inline)
+
 ```typescript
 import { useThemeStyles } from '@/theme';
 // OR
@@ -86,6 +90,7 @@ const MyComponent = () => {
 ## Design Tokens
 
 ### Spacing
+
 - `xs: 4px` - Minimal spacing
 - `sm: 8px` - Small spacing
 - `md: 16px` - Standard spacing (most common)
@@ -94,12 +99,14 @@ const MyComponent = () => {
 - `xxl: 40px` - Maximum spacing
 
 ### Border Radius
+
 - `sm: 12px` - Small corners (buttons, inputs)
 - `md: 18px` - Medium corners (cards)
 - `lg: 26px` - Large corners (large cards)
 - `pill: 999px` - Pill shape (badges, tags)
 
 ### Typography
+
 ```typescript
 h1: { fontSize: 22, fontWeight: "600", lineHeight: 28 }
 h2: { fontSize: 18, fontWeight: "600", lineHeight: 24 }
@@ -108,6 +115,7 @@ sub: { fontSize: 15, fontWeight: "500", lineHeight: 20, opacity: 0.85 }
 ```
 
 ### Shadow
+
 ```typescript
 card: {
   shadowColor: "#000",
@@ -174,6 +182,7 @@ const useStyles = makeStyles((theme) => ({
 ## Migration from Old Theme
 
 ### Before (Old Bubblegum Theme)
+
 ```typescript
 import { colors } from '@/theme';
 
@@ -181,6 +190,7 @@ import { colors } from '@/theme';
 ```
 
 ### After (New Nath Theme)
+
 ```typescript
 import { nathTheme } from '@/theme';
 
