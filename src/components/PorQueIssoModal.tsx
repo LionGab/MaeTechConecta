@@ -3,11 +3,39 @@
  * Modal de transparência: mostra o motivo do plano
  */
 
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { useTheme } from '@/contexts/ThemeContext';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+const SPACING_DEFAULTS = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+} as const;
+
+const PRIORITY_LABELS: Record<string, string> = {
+  alert: '🆘 Alerta crítico',
+  stress: '💆‍♀️ Gerenciamento de stress',
+  support: '🤝 Construção de apoio',
+  belonging: '💕 Pertencimento e comunidade',
+  habit: '🍼 Hábitos saudáveis',
+};
+
+const TAG_LABELS: Record<string, string> = {
+  tag_father_absent: 'Você mencionou que o pai é ausente',
+  tag_lonely: 'Você sinalizou sentir solidão',
+  tag_single_mom: 'Você é mãe solo',
+  support_low: 'Você tem pouco apoio prático',
+  stress_high: 'Seu nível de stress está alto',
+  sleep_low: 'Sua qualidade de sono está baixa',
+  pp_intrusive: 'Detectamos pensamentos intrusivos (busque ajuda)',
+  harm_thoughts: 'Detectamos pensamentos de auto-dano (busque ajuda)',
+};
 
 export interface PorQueIssoModalProps {
   /** Visibilidade do modal */
@@ -42,24 +70,20 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
 
     // Mapear escalas de espaçamento e tipografia com fallback
     const spacingScale = (currentTheme.spacing ?? {}) as Record<string, number>;
+    const spacingValues = {
+      xs: spacingScale.xs ?? SPACING_DEFAULTS.xs,
+      sm: spacingScale.sm ?? SPACING_DEFAULTS.sm,
+      md: spacingScale.md ?? SPACING_DEFAULTS.md,
+      lg: spacingScale.lg ?? SPACING_DEFAULTS.lg,
+      xl: spacingScale.xl ?? SPACING_DEFAULTS.xl,
+    };
+    const { xs, sm, md, lg } = spacingValues;
     const typographyScale = currentTheme.typography as {
       sizes?: Record<string, number>;
       weights?: Record<string, string>;
     };
     const borderRadiusScale = (currentTheme.borderRadius ?? {}) as Record<string, number>;
     const themeColorScale = (currentTheme.colors ?? {}) as Record<string, string>;
-
-    const spacingDefaults = {
-      xs: 4,
-      sm: 8,
-      md: 16,
-      lg: 24,
-      xl: 32,
-      xxl: 48,
-    } as const;
-
-    const getSpacingValue = <K extends keyof typeof spacingDefaults>(key: K): number =>
-      spacingScale[key] ?? spacingDefaults[key];
 
     const headingFontSize = typographyScale?.sizes?.xl ?? 20;
     const headingFontWeight = (typographyScale?.weights?.semibold ?? '600') as '600';
@@ -70,7 +94,6 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
     const buttonFontWeight = (typographyScale?.weights?.semibold ?? '600') as '600';
 
     const borderRadiusMd = borderRadiusScale.md ?? 16;
-    const borderRadiusLg = borderRadiusScale.lg ?? 24;
     const borderRadiusXl = borderRadiusScale.xl ?? 32;
 
     const textColor = colors.foreground ?? themeColorScale.foreground ?? '#1A1A1A';
@@ -81,52 +104,33 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
     const onPrimaryColor = colors.primaryForeground ?? themeColorScale.primaryForeground ?? '#FFFFFF';
 
     // Tradução de prioridades
-    const priorityLabels = useMemo<Record<string, string>>(
-      () => ({
-        alert: '🆘 Alerta crítico',
-        stress: '💆‍♀️ Gerenciamento de stress',
-        support: '🤝 Construção de apoio',
-        belonging: '💕 Pertencimento e comunidade',
-        habit: '🍼 Hábitos saudáveis',
-      }),
-      []
-    );
+    const priorityLabels = PRIORITY_LABELS;
 
     // Tradução de tags
-    const tagLabels = useMemo<Record<string, string>>(
-      () => ({
-        tag_father_absent: 'Você mencionou que o pai é ausente',
-        tag_lonely: 'Você sinalizou sentir solidão',
-        tag_single_mom: 'Você é mãe solo',
-        support_low: 'Você tem pouco apoio prático',
-        stress_high: 'Seu nível de stress está alto',
-        sleep_low: 'Sua qualidade de sono está baixa',
-        pp_intrusive: 'Detectamos pensamentos intrusivos (busque ajuda)',
-        harm_thoughts: 'Detectamos pensamentos de auto-dano (busque ajuda)',
-      }),
-      []
-    );
+    const tagLabels = TAG_LABELS;
 
     // Renderizar motivos
     const renderReasons = useCallback(() => {
-      if (!rationale) return null;
+      if (!rationale) {
+        return null;
+      }
 
       const { tags, scores, reasons } = rationale;
 
       return (
-        <View style={{ marginTop: getSpacingValue('md') }}>
+        <View style={{ marginTop: md }}>
           {/* Tags detectadas */}
           {tags && tags.length > 0 && (
-            <View style={{ marginBottom: getSpacingValue('lg') }}>
+            <View style={{ marginBottom: lg }}>
               <Text
                 style={[
                   styles.sectionTitle,
-                    {
-                      color: textColor,
-                      fontSize: headingFontSize,
-                      fontWeight: headingFontWeight,
-                      marginBottom: getSpacingValue('sm'),
-                    },
+                  {
+                    color: textColor,
+                    fontSize: headingFontSize,
+                    fontWeight: headingFontWeight,
+                    marginBottom: sm,
+                  },
                 ]}
               >
                 O que percebemos:
@@ -139,7 +143,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                     {
                       color: textColor,
                       fontSize: bodyFontSize,
-                      marginBottom: getSpacingValue('xs'),
+                      marginBottom: xs,
                     },
                   ]}
                 >
@@ -151,16 +155,16 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
 
           {/* Scores (se relevantes) */}
           {scores && Object.keys(scores).length > 0 && (
-            <View style={{ marginBottom: getSpacingValue('lg') }}>
+            <View style={{ marginBottom: lg }}>
               <Text
                 style={[
                   styles.sectionTitle,
-                {
-                  color: textColor,
-                  fontSize: headingFontSize,
-                  fontWeight: headingFontWeight,
-                  marginBottom: getSpacingValue('sm'),
-                },
+                  {
+                    color: textColor,
+                    fontSize: headingFontSize,
+                    fontWeight: headingFontWeight,
+                    marginBottom: sm,
+                  },
                 ]}
               >
                 Seus indicadores:
@@ -169,11 +173,11 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                 <Text
                   style={[
                     styles.reasonItem,
-                {
-                  color: textColor,
-                  fontSize: bodyFontSize,
-                  marginBottom: getSpacingValue('xs'),
-                },
+                    {
+                      color: textColor,
+                      fontSize: bodyFontSize,
+                      marginBottom: xs,
+                    },
                   ]}
                 >
                   • Stress: {scores.stress_score}/100 {scores.stress_score > 70 && '⚠️'}
@@ -183,11 +187,11 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                 <Text
                   style={[
                     styles.reasonItem,
-                {
-                  color: textColor,
-                  fontSize: bodyFontSize,
-                  marginBottom: getSpacingValue('xs'),
-                },
+                    {
+                      color: textColor,
+                      fontSize: bodyFontSize,
+                      marginBottom: xs,
+                    },
                   ]}
                 >
                   • Apoio: {scores.support_score}/100 {scores.support_score < 40 && '⚠️'}
@@ -197,11 +201,11 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                 <Text
                   style={[
                     styles.reasonItem,
-                {
-                  color: textColor,
-                  fontSize: bodyFontSize,
-                  marginBottom: getSpacingValue('xs'),
-                },
+                    {
+                      color: textColor,
+                      fontSize: bodyFontSize,
+                      marginBottom: xs,
+                    },
                   ]}
                 >
                   • Sono: {scores.sleep_quality}/100 {scores.sleep_quality < 50 && '⚠️'}
@@ -212,7 +216,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
 
           {/* Motivos adicionais */}
           {reasons && Object.keys(reasons).length > 0 && (
-            <View style={{ marginBottom: getSpacingValue('lg') }}>
+            <View style={{ marginBottom: lg }}>
               <Text
                 style={[
                   styles.sectionTitle,
@@ -220,7 +224,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                     color: textColor,
                     fontSize: headingFontSize,
                     fontWeight: headingFontWeight,
-                    marginBottom: getSpacingValue('sm'),
+                    marginBottom: sm,
                   },
                 ]}
               >
@@ -231,11 +235,11 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                   key={key}
                   style={[
                     styles.reasonItem,
-                  {
-                    color: textColor,
-                    fontSize: bodyFontSize,
-                    marginBottom: getSpacingValue('xs'),
-                  },
+                    {
+                      color: textColor,
+                      fontSize: bodyFontSize,
+                      marginBottom: xs,
+                    },
                   ]}
                 >
                   • {value}
@@ -245,15 +249,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
           )}
         </View>
       );
-    }, [
-      rationale,
-      textColor,
-      headingFontSize,
-      headingFontWeight,
-      bodyFontSize,
-      getSpacingValue,
-      tagLabels,
-    ]);
+    }, [rationale, textColor, headingFontSize, headingFontWeight, bodyFontSize, md, lg, sm, xs, tagLabels]);
 
     return (
       <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
@@ -265,7 +261,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                 backgroundColor,
                 borderTopLeftRadius: borderRadiusXl,
                 borderTopRightRadius: borderRadiusXl,
-                padding: getSpacingValue('lg'),
+                padding: lg,
               },
             ]}
           >
@@ -286,10 +282,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
             </View>
 
             {/* Content */}
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              style={[styles.content, { marginTop: getSpacingValue('md') }]}
-            >
+            <ScrollView showsVerticalScrollIndicator={false} style={[styles.content, { marginTop: md }]}>
               {/* Prioridade */}
               {rationale && (
                 <View
@@ -298,8 +291,8 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                     {
                       backgroundColor: surfaceColor,
                       borderRadius: borderRadiusMd,
-                      padding: getSpacingValue('md'),
-                      marginBottom: getSpacingValue('lg'),
+                      padding: md,
+                      marginBottom: lg,
                     },
                   ]}
                 >
@@ -325,7 +318,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                   {
                     color: secondaryTextColor,
                     fontSize: secondaryBodyFontSize,
-                    marginBottom: getSpacingValue('md'),
+                    marginBottom: md,
                     lineHeight: 20,
                   },
                 ]}
@@ -344,8 +337,8 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                   {
                     backgroundColor: surfaceColor,
                     borderRadius: borderRadiusMd,
-                    padding: getSpacingValue('md'),
-                    marginTop: getSpacingValue('lg'),
+                    padding: md,
+                    marginTop: lg,
                   },
                 ]}
               >
@@ -366,7 +359,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
             </ScrollView>
 
             {/* Footer */}
-            <View style={[styles.footer, { marginTop: getSpacingValue('lg') }]}>
+            <View style={[styles.footer, { marginTop: lg }]}>
               {/* Botão "Diminuir lembretes" */}
               {onDecreaseFrequency && (
                 <TouchableOpacity
@@ -376,9 +369,9 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                       borderColor: primaryColor,
                       borderWidth: 1,
                       borderRadius: borderRadiusMd,
-                      paddingVertical: getSpacingValue('sm'),
-                      paddingHorizontal: getSpacingValue('md'),
-                      marginBottom: getSpacingValue('sm'),
+                      paddingVertical: sm,
+                      paddingHorizontal: md,
+                      marginBottom: sm,
                     },
                   ]}
                   onPress={onDecreaseFrequency}
@@ -408,7 +401,7 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
                   {
                     backgroundColor: primaryColor,
                     borderRadius: borderRadiusMd,
-                    paddingVertical: getSpacingValue('md'),
+                    paddingVertical: md,
                     minHeight: 48,
                   },
                 ]}
@@ -437,6 +430,8 @@ export const PorQueIssoModal: React.FC<PorQueIssoModalProps> = React.memo(
     );
   }
 );
+
+PorQueIssoModal.displayName = 'PorQueIssoModal';
 
 const styles = StyleSheet.create({
   overlay: {

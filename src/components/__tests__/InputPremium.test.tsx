@@ -88,9 +88,7 @@ describe('InputPremium', () => {
 
   it('should call onFocus when focused', () => {
     const onFocusMock = jest.fn();
-    const { getByPlaceholderText } = renderWithTheme(
-      <InputPremium placeholder="Enter text" onFocus={onFocusMock} />
-    );
+    const { getByPlaceholderText } = renderWithTheme(<InputPremium placeholder="Enter text" onFocus={onFocusMock} />);
 
     fireEvent(getByPlaceholderText('Enter text'), 'focus');
     expect(onFocusMock).toHaveBeenCalled();
@@ -98,9 +96,7 @@ describe('InputPremium', () => {
 
   it('should call onBlur when blurred', () => {
     const onBlurMock = jest.fn();
-    const { getByPlaceholderText } = renderWithTheme(
-      <InputPremium placeholder="Enter text" onBlur={onBlurMock} />
-    );
+    const { getByPlaceholderText } = renderWithTheme(<InputPremium placeholder="Enter text" onBlur={onBlurMock} />);
 
     fireEvent(getByPlaceholderText('Enter text'), 'blur');
     expect(onBlurMock).toHaveBeenCalled();
@@ -145,9 +141,7 @@ describe('InputPremium', () => {
   // =====================================================
 
   it('should accept keyboard type prop', () => {
-    const { getByPlaceholderText } = renderWithTheme(
-      <InputPremium placeholder="Email" keyboardType="email-address" />
-    );
+    const { getByPlaceholderText } = renderWithTheme(<InputPremium placeholder="Email" keyboardType="email-address" />);
     expect(getByPlaceholderText('Email')).toBeTruthy();
   });
 
@@ -156,9 +150,7 @@ describe('InputPremium', () => {
   // =====================================================
 
   it('should accept secureTextEntry prop', () => {
-    const { getByPlaceholderText } = renderWithTheme(
-      <InputPremium placeholder="Password" secureTextEntry />
-    );
+    const { getByPlaceholderText } = renderWithTheme(<InputPremium placeholder="Password" secureTextEntry />);
     expect(getByPlaceholderText('Password')).toBeTruthy();
   });
 });

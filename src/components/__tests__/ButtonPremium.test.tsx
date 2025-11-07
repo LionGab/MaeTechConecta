@@ -18,16 +18,12 @@ describe('ButtonPremium', () => {
   // =====================================================
 
   it('should render correctly with children', () => {
-    const { getByText } = renderWithTheme(
-      <ButtonPremium accessibilityLabel="Test Button">Click me</ButtonPremium>
-    );
+    const { getByText } = renderWithTheme(<ButtonPremium accessibilityLabel="Test Button">Click me</ButtonPremium>);
     expect(getByText('Click me')).toBeTruthy();
   });
 
   it('should render with primary variant by default', () => {
-    const { getByLabelText } = renderWithTheme(
-      <ButtonPremium accessibilityLabel="Test Button">Primary</ButtonPremium>
-    );
+    const { getByLabelText } = renderWithTheme(<ButtonPremium accessibilityLabel="Test Button">Primary</ButtonPremium>);
     expect(getByLabelText('Test Button')).toBeTruthy();
   });
 
@@ -166,9 +162,7 @@ describe('ButtonPremium', () => {
   // =====================================================
 
   it('should have correct accessibility role', () => {
-    const { getByRole } = renderWithTheme(
-      <ButtonPremium accessibilityLabel="Test Button">Button</ButtonPremium>
-    );
+    const { getByRole } = renderWithTheme(<ButtonPremium accessibilityLabel="Test Button">Button</ButtonPremium>);
 
     expect(getByRole('button')).toBeTruthy();
   });
