@@ -12,6 +12,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { DailyInsightCard } from '@/components/home/DailyInsightCard';
 import { useDailyInsight } from '@/hooks/useDailyInsight';
 import { RootStackParamList } from '@/navigation/types';
+import { PlanoDoDia } from '@/components/PlanoDoDia';
+import { PorQueIssoModal } from '@/components/PorQueIssoModal';
+import { usePlanoDoDia } from '@/hooks/usePlanoDoDia';
+import { supabase } from '@/services/supabase';
+import { updateFrequencyCap, ingestEvent } from '@/services/personalization';
+import { usePersonalizedContent } from '@/hooks/usePersonalizedContent';
+import { PersonalizedContentCard } from '@/components/PersonalizedContentCard';
 
 interface QuickActionButtonProps {
   iconName?: string;
@@ -61,9 +68,26 @@ export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [userName, setUserName] = useState('');
   const [pregnancyWeek, setPregnancyWeek] = useState<number | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [showWhyThisModal, setShowWhyThisModal] = useState(false);
 
   // Daily Insight hook
   const { insight, loading: insightLoading, regenerate, markAsViewed } = useDailyInsight();
+
+  // Plano do Dia hook
+  const { plan, isLoading: planLoading, replan, isReplanning } = usePlanoDoDia(userId || '', !!userId);
+
+  // Personalized Content hook
+  const {
+    content: personalizedContent,
+    isLoading: contentLoading,
+    trackInteraction,
+    refetch: refetchContent
+  } = usePersonalizedContent({
+    userId: userId || '',
+    limit: 5,
+    autoFetch: !!userId
+  });
 
   useEffect(() => {
     loadUserProfile();
@@ -76,7 +100,59 @@ export default function HomeScreen() {
       setUserName(profile.name || 'Querida');
       setPregnancyWeek(profile.pregnancy_week);
     }
+
+    // Carregar userId da sessão
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      setUserId(user.id);
+    }
   };
+
+  const handleItemCtaPressed = useCallback(async (item: any) => {
+    if (!userId) return;
+
+    // Registrar evento de CTA clicado
+    try {
+      await ingestEvent(userId, 'notification_opened', {
+        type: item.type,
+        cta: item.cta,
+        scheduled_at: item.scheduled_at,
+      });
+
+      // Ação baseada no tipo
+      if (item.type === 'habit') {
+        // Navegar para Meus Hábitos
+        navigation.navigate('Habits' as any);
+      } else if (item.type === 'content') {
+        // Navegar para Mãe Valente
+        navigation.navigate('MaeValente' as any);
+      } else if (item.type === 'check-in') {
+        // Navegar para Chat
+        navigation.navigate('Chat');
+      }
+
+      Alert.alert('✅ Ação registrada!', 'Continuamos te acompanhando. 💕');
+    } catch (error) {
+      console.error('Error handling CTA:', error);
+    }
+  }, [userId, navigation]);
+
+  const handleDecreaseFrequency = useCallback(async () => {
+    if (!userId) return;
+
+    try {
+      // Reduzir frequency_cap em 1 (mín. 0)
+      await updateFrequencyCap(userId, 1);
+      setShowWhyThisModal(false);
+      Alert.alert(
+        '✅ Frequência atualizada',
+        'Você receberá menos lembretes por dia. Você pode ajustar isso quando quiser.'
+      );
+    } catch (error) {
+      console.error('Error updating frequency:', error);
+      Alert.alert('Erro', 'Não foi possível atualizar a frequência.');
+    }
+  }, [userId]);
 
   const handleChatAboutInsight = useCallback(() => {
     if (insight) {
@@ -114,6 +190,72 @@ export default function HomeScreen() {
             </View>
           )}
         </View>
+
+        {/* Plano do Dia Personalizado */}
+        {userId && plan && plan.items.length > 0 && (
+          <Card
+            title="💕 Seu Plano de Hoje"
+            icon="calendar-star"
+            variant="outlined"
+            style={styles.planCard}
+          >
+            <PlanoDoDia
+              items={plan.items}
+              rationale={plan.rationale}
+              onWhyThisPressed={() => setShowWhyThisModal(true)}
+              onItemCtaPressed={handleItemCtaPressed}
+              isLoading={planLoading}
+            />
+            {isReplanning ? (
+              <View style={styles.replanningContainer}>
+                <Text style={styles.replanningText}>Replanejando...</Text>
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={styles.replanButton}
+                onPress={replan}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="Replanejar hoje"
+              >
+                <Icon name="refresh" size={18} color={colors.primary} />
+                <Text style={styles.replanButtonText}>Replanejar hoje</Text>
+              </TouchableOpacity>
+            )}
+          </Card>
+        )}
+
+        {/* Conteúdo Personalizado */}
+        {userId && personalizedContent.length > 0 && (
+          <View style={styles.personalizedContentSection}>
+            <View style={styles.sectionHeader}>
+              <Icon name="star-outline" size={24} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Recomendado para Você</Text>
+            </View>
+            <View style={styles.personalizedContentContainer}>
+              {personalizedContent.slice(0, 3).map((item) => (
+                <PersonalizedContentCard
+                  key={item.id}
+                  content={item}
+                  onInteraction={trackInteraction}
+                  isDark={false}
+                />
+              ))}
+            </View>
+            {personalizedContent.length > 3 && (
+              <TouchableOpacity
+                style={styles.viewMoreButton}
+                onPress={() => Alert.alert('Em breve', 'Você poderá ver mais conteúdos personalizados!')}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="Ver mais conteúdos recomendados"
+              >
+                <Text style={styles.viewMoreText}>Ver mais conteúdos</Text>
+                <Icon name="chevron-right" size={20} color={colors.primary} />
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
 
         {/* Botões de ação rápida */}
         <View style={styles.quickActionsContainer}>
@@ -238,6 +380,14 @@ export default function HomeScreen() {
           Emergência - SAMU 192
         </Button>
       </ScrollView>
+
+      {/* Modal "Por que isso?" */}
+      <PorQueIssoModal
+        visible={showWhyThisModal}
+        onClose={() => setShowWhyThisModal(false)}
+        rationale={plan?.rationale}
+        onDecreaseFrequency={handleDecreaseFrequency}
+      />
     </SafeAreaView>
   );
 }
@@ -386,5 +536,72 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing.lg,
     marginTop: spacing.lg,
     marginBottom: spacing['3xl'],
+  },
+  // Plano do Dia
+  planCard: {
+    marginBottom: spacing.xl,
+  },
+  replanButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    marginTop: spacing.md,
+    gap: spacing.xs,
+  },
+  replanButtonText: {
+    fontSize: typography.sizes.base,
+    color: colors.primary,
+    fontWeight: '600',
+    fontFamily: typography.fontFamily.sans,
+  },
+  replanningContainer: {
+    alignItems: 'center',
+    paddingVertical: spacing.sm,
+    marginTop: spacing.md,
+  },
+  replanningText: {
+    fontSize: typography.sizes.base,
+    color: colors.mutedForeground,
+    fontFamily: typography.fontFamily.sans,
+  },
+  // Conteúdo Personalizado
+  personalizedContentSection: {
+    marginBottom: spacing.xl,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    marginBottom: spacing.md,
+  },
+  sectionTitle: {
+    fontSize: typography.sizes.xl,
+    fontWeight: '700',
+    color: colors.foreground,
+    fontFamily: typography.fontFamily.sans,
+  },
+  personalizedContentContainer: {
+    gap: spacing.md,
+  },
+  viewMoreButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.md,
+    backgroundColor: colors.overlay.primary,
+    borderRadius: borderRadius.lg,
+    gap: spacing.xs,
+  },
+  viewMoreText: {
+    fontSize: typography.sizes.base,
+    color: colors.primary,
+    fontWeight: '600',
+    fontFamily: typography.fontFamily.sans,
   },
 });
