@@ -62,7 +62,7 @@
 
 - `pnpm` workspace com monorepo (apps + packages). Comandos `validate`, `validate:full`, `ci` abrangem lint, type-check, testes.
 - Husky + lint-staged configurados (`package.json`).
-- Turborepo caches (`turbo.json`) otimizam builds; workflows reusam caches (confirmado em `docs/CONSOLIDACAO_DEVOPS.md`).
+- Turborepo caches (`turbo.json`) otimizam builds, mas dependem de workflows ausentes; ao restaurá-los, garantir reaproveitamento de cache conforme orientado em `docs/CONSOLIDACAO_DEVOPS.md`.
 
 ### 4.2 Cobertura de Testes e Qualidade
 
@@ -72,9 +72,9 @@
 
 ### 4.3 Pipelines CI/CD
 
-- Workflows: `ci.yml` (lint/typecheck/tests), `build.yml`, `deploy.yml` (EAS), `post-merge-validation.yml`, `codeql.yml`, `observability.yml`. Necessário garantir que `codeql` está habilitado (ver alert backlog).
+- **Ausência de workflows versionados**: o snapshot auditado não contém diretório `.github/workflows`. Documentos como `docs/CONSOLIDACAO_DEVOPS.md` listam pipelines (`ci.yml`, `deploy.yml`, `post-merge-validation.yml`, `codeql.yml`), indicando que foram configurados, porém não estão versionados atualmente.
 - Scripts de agentes: `scripts/auto-approve.js` confirma auto-aprovação (risco de bypass review se mal gerenciado).
-- Falta pipeline documentado para contract tests e segurança (Snyk, npm audit). `package.json` inclui script `audit` mas não automatizado.
+- Falta pipeline automatizado para contract tests, análise SAST/DAST e `pnpm audit`. Recomenda reconstruir os workflows ausentes e incorporar verificações de segurança.
 
 ## 5. Avaliação de Segurança
 
@@ -125,7 +125,7 @@
 
 | Risco                                            | Categoria         | Evidência                                                 | Impacto                     | Probabilidade | Avaliação       | Controle Atual                  | Lacuna                                                    |
 | ------------------------------------------------ | ----------------- | --------------------------------------------------------- | --------------------------- | ------------- | --------------- | ------------------------------- | --------------------------------------------------------- |
-| Falta de testes de contrato para RLS em produção | Segurança / Dados | Checklist em `docs/SECURITY.md` marcado como pendente     | Alto (exposição de dados)   | Médio         | **Crítico (5)** | Documentação, intenção de tests | Implementar e automatizar testes RLS                      |
+| Contract tests RLS incompletos (dependem de variáveis fictícias) | Segurança / Dados | `__tests__/contracts/rls-policies.test.ts` usa `testUserId` sem criação real | Alto (exposição de dados)   | Médio         | **Crítico (5)** | Testes esqueleto no repo          | Finalizar setup automatizado com seeds e CI               |
 | Auto-aprovação indiscriminada de builds          | Governança        | `scripts/auto-approve.js all` ligado a auto-approve geral | Alto (mudanças sem revisão) | Alta          | **Crítico (5)** | Script manual + doc             | Adicionar controles (branch allowlist, logs, require ack) |
 | Falta de evidência de backup/restore testes      | Operacional       | Documentação não menciona runbooks                        | Alto                        | Médio         | **Alto (4)**    | Supabase backups padrão         | Criar DR plan com testes trimestrais                      |
 | Performance monitoring pendente                  | Operacional       | `docs/CONSOLIDACAO_DEVOPS.md` status ⚠️                   | Médio                       | Médio         | **Médio (3)**   | Sentry errors                   | Implementar Sentry Performance + dashboards               |
