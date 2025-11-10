@@ -1903,7 +1903,7 @@ packages:
     engines: {node: '>=18'}
 
   '@sentry-internal/browser-utils@10.22.0':
-    resolution: {integrity: sha512-BpJoLZEyJr7ORzkCrIjxRTnFWwO1mJNICVh3B9g5d9245niGT4OJvRozmLz89WgJkZFHWu84ls6Xfq5b/3tGFQ==}
+    resolution: {integrity: sha512-BpJoLZREDACTED_JWT/3tGFQ==}
     engines: {node: '>=18'}
 
   '@sentry-internal/feedback@10.12.0':
@@ -15044,3 +15044,4 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.1.17
       react: 19.1.0
+

@@ -496,3 +496,4 @@ export class GamificationManager {
       .in('achievement_id', achievementIds);
   }
 }
+

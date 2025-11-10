@@ -285,3 +285,4 @@ Se você tiver um plano concreto de se machucar, vá imediatamente ao hospital m
 Você não está sozinha. Há ajuda disponível, e você merece cuidado e apoio profissional agora. Não hesite em buscar ajuda.
 
 Estou aqui para você, mas a ajuda profissional é essencial neste momento. 💝`;
+

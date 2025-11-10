@@ -314,3 +314,4 @@ Todos os relatórios serão salvos em:
 4. **Escalabilidade**: Fácil adicionar/remover agentes
 5. **Debugging**: Mais fácil identificar problemas em agentes específicos
 6. **Reutilização**: Comandos podem ser executados individualmente quando necessário
+

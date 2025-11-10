@@ -223,3 +223,4 @@ Responda APENAS em JSON válido, sem markdown ou explicações extras.`,
     );
   }
 });
+

@@ -6,7 +6,7 @@ Write-Host "🚀 Configurando Gemini 1.5 Pro + Memória Vetorial" -ForegroundCol
 Write-Host ""
 
 # Variáveis
-$GEMINI_API_KEY = "AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg"
+$GEMINI_API_KEY = "AIzaREDACTED"
 $SUPABASE_PROJECT_REF = "bbcwitnbnosyfpjtzkr"
 $MIGRATION_FILE = "supabase\migrations\001_gemini_memory.sql"
 
@@ -141,4 +141,5 @@ Write-Host "   - Se houver erros, execute manualmente no Dashboard" -ForegroundC
 Write-Host "   - Verifique logs em: Edge Functions > Logs" -ForegroundColor White
 Write-Host "   - SQL Migration: $MIGRATION_FILE" -ForegroundColor White
 Write-Host ""
+
 

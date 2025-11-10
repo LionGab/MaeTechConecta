@@ -101,3 +101,4 @@ const BaseSectionHeader: React.FC<SectionHeaderProps> = ({
 
 export const SectionHeader = React.memo(BaseSectionHeader);
 SectionHeader.displayName = 'SectionHeader';
+

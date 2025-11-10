@@ -92,7 +92,7 @@
 ```bash
 # Supabase
 EXPO_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
-EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+EXPO_PUBLIC_SUPABASE_ANON_KEY=REDACTED_JWT...
 
 # Sentry
 EXPO_PUBLIC_SENTRY_DSN=https://xxxxx@sentry.io/xxxxx
@@ -109,7 +109,7 @@ EXPO_PUBLIC_ENV=development
 ```bash
 # Supabase
 EXPO_PUBLIC_SUPABASE_URL=https://xxxxx-staging.supabase.co
-EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+EXPO_PUBLIC_SUPABASE_ANON_KEY=REDACTED_JWT...
 
 # Sentry
 EXPO_PUBLIC_SENTRY_DSN=https://xxxxx@sentry.io/xxxxx
@@ -126,7 +126,7 @@ EXPO_PUBLIC_ENV=staging
 ```bash
 # Supabase
 EXPO_PUBLIC_SUPABASE_URL=https://xxxxx-prod.supabase.co
-EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+EXPO_PUBLIC_SUPABASE_ANON_KEY=REDACTED_JWT...
 
 # Sentry
 EXPO_PUBLIC_SENTRY_DSN=https://xxxxx@sentry.io/xxxxx
@@ -226,3 +226,4 @@ EXPO_PUBLIC_ENV=production
 
 **Última atualização**: 2025-01-XX  
 **Mantido por**: Time Nossa Maternidade
+

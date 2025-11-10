@@ -84,3 +84,4 @@ await AsyncStorage.removeItem('onboarded');
 2. Validar animações
 3. Verificar performance
 4. Ajustar design se necessário
+

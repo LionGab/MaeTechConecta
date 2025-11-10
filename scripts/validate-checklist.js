@@ -282,3 +282,4 @@ if (failed === 0 && pending === 0) {
 
   process.exit(failed > 0 ? 1 : 0);
 }
+

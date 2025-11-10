@@ -39,7 +39,7 @@
 
 ```typescript
 const dummyUrl = 'https://placeholder.supabase.co';
-const dummyKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+const dummyKey = 'REDACTED_JWT...';
 ```
 
 **Correção Sugerida**:
@@ -240,3 +240,4 @@ Adicionar métricas de performance e uso dos serviços
 
 **Relatório gerado pelo Agente 2 (Backend)**  
 **Próximo**: Agente 3 (IA)
+

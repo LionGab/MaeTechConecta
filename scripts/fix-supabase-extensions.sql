@@ -19,3 +19,4 @@ WHERE extname IN ('uuid-ossp', 'pgcrypto');
 
 -- ✅ Agora você pode executar: supabase db push
 
+

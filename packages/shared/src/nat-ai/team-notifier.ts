@@ -94,3 +94,4 @@ export function generateWebhookPayload(alert: RiskAlert & { userName?: string; u
     ],
   };
 }
+

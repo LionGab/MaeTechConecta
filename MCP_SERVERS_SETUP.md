@@ -324,3 +324,4 @@ Esperado: Lista de erros recentes
 ---
 
 **Status:** 🟡 Aguardando entrada de credenciais
+

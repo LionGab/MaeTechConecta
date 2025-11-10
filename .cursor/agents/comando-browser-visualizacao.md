@@ -336,3 +336,4 @@ Abra o browser integrado do Cursor e execute visualização completa:
 
 **Última atualização**: Janeiro 2025  
 **Versão**: 1.0.0
+

@@ -61,3 +61,4 @@ Esta política deve conter:
 **Status:** ⚠️ PENDENTE  
 **Criado em:** 2025-11-06  
 **Responsável:** [Definir]
+

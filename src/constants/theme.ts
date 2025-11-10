@@ -184,3 +184,4 @@ export const getTheme = (isDark: boolean) => {
 };
 
 export default theme;
+

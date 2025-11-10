@@ -313,3 +313,4 @@ const styles = StyleSheet.create({
 
 // Memoizar componente
 export const InputPremium = React.memo(InputPremiumComponent);
+

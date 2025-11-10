@@ -32,3 +32,4 @@ Write-Host "✅ Git Keep Ours Auto concluído!" -ForegroundColor Green
 Write-Host "💡 Próximo passo: git commit" -ForegroundColor Cyan
 Write-Host ""
 
+

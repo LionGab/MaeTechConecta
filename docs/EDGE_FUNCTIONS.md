@@ -83,11 +83,11 @@ Edge Functions do Supabase para processar requisições do app, incluindo chat c
 
 ---
 
-### 3. risk-classifier
+### 3. risk-REDACTED
 
 **Função**: Classificação de risco emocional
 
-**Endpoint**: `POST /functions/v1/risk-classifier`
+**Endpoint**: `POST /functions/v1/risk-REDACTED`
 
 **Request**:
 
@@ -202,7 +202,7 @@ supabase link --project-ref seu-project-ref
 # Deploy individual
 supabase functions deploy nathia-chat
 supabase functions deploy moderation-service
-supabase functions deploy risk-classifier
+supabase functions deploy risk-REDACTED
 supabase functions deploy behavior-analysis
 supabase functions deploy lgpd-requests
 supabase functions deploy transcribe-audio
@@ -216,7 +216,7 @@ supabase functions deploy
 No Supabase Dashboard → Edge Functions → Secrets:
 
 - `GEMINI_API_KEY` - Para nathia-chat e moderation-service
-- `ANTHROPIC_API_KEY` - Para risk-classifier
+- `ANTHROPIC_API_KEY` - Para risk-REDACTED
 - `SUPABASE_URL` - Para todas as funções
 - `SUPABASE_SERVICE_ROLE_KEY` - Para todas as funções
 
@@ -275,3 +275,4 @@ Acesse o Supabase Dashboard → Edge Functions para ver:
 1. Verificar limites configurados
 2. Implementar retry com backoff
 3. Monitorar uso por usuário
+

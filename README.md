@@ -280,3 +280,4 @@ MIT License - ver `LICENSE` para detalhes.
 ---
 
 Made with 💕 for mães, gestantes e tentantes brasileiras.
+

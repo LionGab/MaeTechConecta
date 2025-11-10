@@ -18,3 +18,4 @@ export const InsightSection: React.FC<InsightSectionProps> = ({ insight, loading
 );
 
 InsightSection.displayName = 'InsightSection';
+

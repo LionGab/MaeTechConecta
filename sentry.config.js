@@ -10,3 +10,4 @@ module.exports = {
   tracesSampleRate: 1.0,
   environment: process.env.NODE_ENV || 'development',
 };
+

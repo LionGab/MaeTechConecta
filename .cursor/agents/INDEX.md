@@ -141,3 +141,4 @@ cat .cursor/agents/workflows/release.md
 
 **Última atualização:** 2025-01-XX
 **Versão:** 1.0.0
+

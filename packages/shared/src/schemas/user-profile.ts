@@ -37,3 +37,4 @@ export const UpdateUserProfileSchema = UserProfileSchema.partial().omit({
 });
 
 export type UpdateUserProfile = z.infer<typeof UpdateUserProfileSchema>;
+

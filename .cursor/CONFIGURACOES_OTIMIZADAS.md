@@ -319,3 +319,4 @@ As seguintes extensões foram marcadas como não recomendadas porque conflitam c
 **Versão do Cursor**: 2.0+  
 **Versão da Configuração**: 2.0.0  
 **Baseado em**: [cursor.com/docs](https://cursor.com/docs)
+

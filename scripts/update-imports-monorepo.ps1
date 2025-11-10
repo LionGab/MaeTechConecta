@@ -37,3 +37,4 @@ Write-Host "1. Verificar se não há erros: pnpm typecheck"
 Write-Host "2. Testar: pnpm build"
 Write-Host "3. Testar: pnpm test"
 
+

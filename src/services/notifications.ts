@@ -298,3 +298,4 @@ export async function savePushTokenToSupabase(token: string): Promise<void> {
     console.error('Erro ao salvar token de push:', error);
   }
 }
+

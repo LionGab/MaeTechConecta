@@ -66,3 +66,4 @@ export const PlanSection: React.FC<PlanSectionProps> = ({
 };
 
 PlanSection.displayName = 'PlanSection';
+

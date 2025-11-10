@@ -53,3 +53,4 @@
 ---
 
 _Manter este documento atualizado à medida que o time aprender novas lições ou padrões._
+

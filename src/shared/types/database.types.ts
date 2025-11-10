@@ -178,3 +178,4 @@ export type UpdateHabit = Partial<InsertHabit>;
 export type InsertHabitLog = Omit<HabitLog, 'id' | 'logged_at'>;
 
 export type InsertChatMessage = Omit<ChatMessage, 'id' | 'created_at'>;
+

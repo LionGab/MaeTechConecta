@@ -33,3 +33,4 @@ main().catch((error) => {
   console.error('❌ Falha ao validar logger.error:', error);
   process.exit(1);
 });
+

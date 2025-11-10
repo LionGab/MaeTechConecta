@@ -53,3 +53,4 @@ COMMENT ON COLUMN rate_limit_events.created_at IS 'Timestamp da requisição';
 -- Se existir a tabela antiga rate_limit_requests, removê-la
 DROP TABLE IF EXISTS rate_limit_requests CASCADE;
 
+

@@ -76,3 +76,4 @@ export function useChatOptimized() {
 > Pronto para ser executado via Composer ou passo-a-passo, garantindo melhoria real no código!
 
 Se quiser, posso também salvar este prompt como arquivo `.cursor/prompts/refactor-chat-quickwin.md` para consulta e uso recorrente no time, ou já criar a arquitetura inicial dos arquivos!
+

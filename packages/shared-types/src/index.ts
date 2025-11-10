@@ -183,3 +183,4 @@ export const isMãe = (user: UserProfile): boolean => user.type === 'mãe';
 export const isTentante = (user: UserProfile): boolean => user.type === 'tentante';
 
 export const isEmergency = (message: ChatMessage): boolean => message.metadata?.urgency === 'emergency';
+

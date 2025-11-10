@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0",
+  "description": "Configuração segura de auto-aprovação - Requer CI_PASSED e branch na allowlist",
+  "enabled": false,
+  "auto_approve": {
+    "enabled": false,
+    "require_ci_passed": true,
+    "require_branch_allowlist": true,
+    "allowlist_branches": ["main", "master", "develop", "release/*"],
+    "blocked_patterns": [
+      "**/.env*",
+      "**/supabase/**",
+      "**/eas.json",
+      "**/app.json",
+      "**/package.json",
+      "**/pnpm-lock.yaml"
+    ]
+  },
+  "skip_awaiting_review": {
+    "enabled": false
+  },
+  "approval_rules": {
+    "default_action": "require_approval",
+    "timeout": 30000,
+    "require_ci": true
+  }
+}
+

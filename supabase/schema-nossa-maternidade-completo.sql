@@ -458,3 +458,4 @@ WHERE table_schema = 'public'
     'vector_embeddings'
   );
 
+

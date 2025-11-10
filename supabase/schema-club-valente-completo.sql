@@ -457,3 +457,4 @@ WHERE table_schema = 'public'
     'risk_alerts',
     'vector_embeddings'
   );
+

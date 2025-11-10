@@ -152,3 +152,4 @@ export async function clearOldInsightCache(): Promise<void> {
     console.error('[DailyInsight] Error clearing cache:', error);
   }
 }
+

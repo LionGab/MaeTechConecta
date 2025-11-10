@@ -164,3 +164,4 @@ Antes de considerar feature completa:
 - Expo Documentation
 - WCAG 2.1 Guidelines
 - React Native Performance
+

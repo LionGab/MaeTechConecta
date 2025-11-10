@@ -26,3 +26,4 @@ if (pct < threshold) {
 
 console.log(`✅ Cobertura OK: ${pct}% ≥ ${threshold}%`);
 process.exit(0);
+

@@ -56,3 +56,4 @@ supabase/
 - Supabase: `bbcwitnbnosyfpjtzkr`
 - Gemini API: Configurada
 - Moderação: 3 camadas ativa
+

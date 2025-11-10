@@ -26,7 +26,7 @@
 
 ```typescript
 const dummyUrl = 'https://placeholder.supabase.co';
-const dummyKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+const dummyKey = 'REDACTED_JWT...';
 const supabaseUrl = rawUrl.trim() || dummyUrl;
 const supabaseAnonKey = rawKey.trim() || dummyKey;
 ```
@@ -426,3 +426,4 @@ export const checkSubscriptionStatus = async (userId: string): Promise<'free' | 
 ---
 
 **Relatório gerado pelo Agente 2 (Backend Architect)**
+

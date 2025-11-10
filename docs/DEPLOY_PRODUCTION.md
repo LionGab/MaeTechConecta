@@ -170,7 +170,7 @@ npx eas submit --platform android --latest --track production
 - [ ] Edge Functions deployadas
   - [ ] `nathia-chat`
   - [ ] `moderation-service`
-  - [ ] `risk-classifier`
+  - [ ] `risk-REDACTED`
   - [ ] `behavior-analysis`
   - [ ] `lgpd-requests`
   - [ ] `transcribe-audio`
@@ -315,3 +315,4 @@ Consulte **[docs/ENVIRONMENTS.md](./ENVIRONMENTS.md)** para lista completa de se
 
 **Última atualização**: 2025-01-XX  
 **Mantido por**: Time Nossa Maternidade
+

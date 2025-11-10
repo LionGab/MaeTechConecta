@@ -58,3 +58,4 @@ export function getEmotionBorder(emotion: EmotionType, opacity: number = 20) {
   const colors = emotionColors[emotion] || emotionColors.feliz;
   return `${colors.border}/${opacity}`;
 }
+

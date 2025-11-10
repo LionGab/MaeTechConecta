@@ -60,7 +60,7 @@ console.log('\n⚡ 3. EDGE FUNCTIONS\n');
 const edgeFunctions = [
   'nathia-chat',
   'moderation-service',
-  'risk-classifier',
+  'risk-REDACTED',
   'behavior-analysis',
   'lgpd-requests',
   'transcribe-audio',
@@ -151,3 +151,4 @@ if (errors === 0) {
   console.error('\n⚠️  Corrija os erros acima antes de prosseguir.');
   process.exit(1);
 }
+

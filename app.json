@@ -44,3 +44,4 @@
     "plugins": ["expo-notifications", "expo-av", "@react-native-voice/voice"]
   }
 }
+

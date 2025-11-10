@@ -13,6 +13,14 @@ Este documento descreve as políticas de segurança, moderação, compliance LGP
 
 ## 🔐 Segurança de Dados
 
+### Governança de Pipelines e Aprovações
+
+- `CI_PASSED` obrigatório para qualquer auto-approve (`scripts/auto-approve.js`).
+- Branch allowlist: `release/agents`, `infra/automation`, `infra/ci` (customizável via `AUTO_APPROVE_BRANCHES`).
+- Todos os eventos de auto-approve e agentes são armazenados em `logs/approvals` e `logs/agents`.
+- Branch protection (`main`, `develop`) exige checks `CI / *` e `Vercel Preview Deploy / Deploy Preview`.
+- Overrides (`AUTO_APPROVE_OVERRIDE`, `--force`) exigem justificativa registrada via `scripts/register-agent-activity.ts`.
+
 ### Row Level Security (RLS)
 
 **Todas as tabelas** no Supabase devem ter RLS habilitado.
@@ -84,7 +92,7 @@ CREATE POLICY "user_insert_own_profile"
 
 ## 🚨 Detecção de Risco
 
-### Edge Function: `risk-classifier`
+### Edge Function: `risk-REDACTED`
 
 **Responsabilidade**: Classificar risco de crise (suicídio, violência, abuso).
 
@@ -189,7 +197,7 @@ REGRA CRÍTICA: NUNCA forneça conselhos médicos diretos.
 - Se detectar emergência, redirecione para SAMU (192)
 
 REGRA DE SEGURANÇA: Sempre classifique risco antes de responder.
-- Use risk-classifier para avaliar nível de risco
+- Use risk-REDACTED para avaliar nível de risco
 - Se risco CRITICAL, ative protocolo de crise
 
 REGRA DE MODERAÇÃO: Sempre modere conteúdo.
@@ -318,3 +326,4 @@ Ver **[CONTRACT_TESTS.md](./CONTRACT_TESTS.md)** para testes de contrato RLS e E
 
 **Última atualização**: 2025-01-XX  
 **Mantido por**: Time Nossa Maternidade
+

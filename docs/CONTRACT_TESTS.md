@@ -329,7 +329,7 @@ describe('Edge Functions - nathia-chat', () => {
 
 - [ ] **nathia-chat**: Autenticação, rate limiting, guardrails, moderação
 - [ ] **moderation-service**: Validação de conteúdo, 3 camadas
-- [ ] **risk-classifier**: Classificação de risco (LOW/MEDIUM/HIGH/CRITICAL)
+- [ ] **risk-REDACTED**: Classificação de risco (LOW/MEDIUM/HIGH/CRITICAL)
 - [ ] **behavior-analysis**: Análise comportamental
 - [ ] **lgpd-requests**: Exportação/deleção de dados
 - [ ] **transcribe-audio**: Transcrição de áudio
@@ -449,7 +449,7 @@ Os contract tests são executados automaticamente no GitHub Actions:
 - [ ] Criar `__tests__/contracts/edge-functions.test.ts`
 - [ ] Implementar testes para `nathia-chat`
 - [ ] Implementar testes para `moderation-service`
-- [ ] Implementar testes para `risk-classifier`
+- [ ] Implementar testes para `risk-REDACTED`
 - [ ] Implementar testes para `lgpd-requests`
 - [ ] Validar cobertura ≥ 70%
 
@@ -472,3 +472,4 @@ Os contract tests são executados automaticamente no GitHub Actions:
 
 **Última atualização**: 2025-01-XX  
 **Mantido por**: Time Nossa Maternidade
+

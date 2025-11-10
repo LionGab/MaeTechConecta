@@ -224,3 +224,4 @@ function createStyles({ colors, spacing, borderRadius, typography, shadows }: St
 
 // Memoizar componente para evitar re-renders desnecessários
 export const Card = React.memo(CardComponent);
+

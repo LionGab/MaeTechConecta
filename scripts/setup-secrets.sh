@@ -54,7 +54,7 @@ echo "=== SECRETS DO SUPABASE ==="
 echo ""
 
 set_secret "GEMINI_API_KEY" "API Key do Google Gemini (usado em nathia-chat, moderation-service, behavior-analysis)"
-set_secret "ANTHROPIC_API_KEY" "API Key do Anthropic Claude (usado em nat-ai-chat, risk-classifier)"
+set_secret "ANTHROPIC_API_KEY" "API Key do Anthropic Claude (usado em nat-ai-chat, risk-REDACTED)"
 set_secret "OPENAI_API_KEY" "API Key do OpenAI (usado em transcribe-audio)"
 set_secret "SUPABASE_URL" "URL do projeto Supabase (geralmente já configurado automaticamente)"
 set_secret "SUPABASE_ANON_KEY" "Chave anônima do Supabase (geralmente já configurado automaticamente)"
@@ -71,4 +71,5 @@ echo "📋 Próximos passos:"
 echo "1. Verifique se todos os secrets necessários foram configurados"
 echo "2. Teste as Edge Functions para garantir que estão acessando os secrets corretamente"
 echo "3. Configure os secrets no GitHub Actions (se ainda não fez)"
+
 

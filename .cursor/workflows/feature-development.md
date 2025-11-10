@@ -178,3 +178,4 @@ npm run format
 3. Use Browser para ajustes visuais
 4. Valide frequentemente
 5. Documente enquanto desenvolve
+

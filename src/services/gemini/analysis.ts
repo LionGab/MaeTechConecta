@@ -230,3 +230,4 @@ export function createAnalysisService(customClient?: GeminiClient) {
     config: client.config,
   };
 }
+

@@ -506,7 +506,7 @@ supabase functions deploy curate-content
 
 ```bash
 # Claude API
-supabase secrets set CLAUDE_API_KEY=sk-ant-api03-...
+supabase secrets set CLAUDE_API_KEY=sk-REDACTED...
 
 # Perplexity API
 supabase secrets set PERPLEXITY_API_KEY=pplx-...
@@ -591,3 +591,4 @@ curl -X POST http://localhost:54321/functions/v1/daily-insight \
 ---
 
 **🎉 80% DO BACKEND ESTÁ PRONTO. AGORA É INTEGRAR NO FRONTEND! 🎉**
+

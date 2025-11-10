@@ -32,9 +32,9 @@
 - **Status:** ⏳ Não deployada
 - **Descrição:** Análise de comportamento do usuário
 
-### 4. risk-classifier
+### 4. risk-REDACTED
 
-- **Arquivo:** `supabase/functions/risk-classifier/index.ts`
+- **Arquivo:** `supabase/functions/risk-REDACTED/index.ts`
 - **Status:** ⏳ Não deployada
 - **Descrição:** Classificação de risco
 
@@ -124,3 +124,4 @@ supabase secrets set GEMINI_API_KEY=your_key_here
 - As Edge Functions principais (`nathia-chat` e `moderation-service`) estão prontas para uso
 - O secret `GEMINI_API_KEY` está configurado e funcionando
 - Para deployar outras Edge Functions, use: `supabase functions deploy <function-name>`
+

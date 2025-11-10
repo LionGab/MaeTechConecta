@@ -108,3 +108,4 @@ const BasePillChip: React.FC<PillChipProps> = ({
 
 export const PillChip = React.memo(BasePillChip);
 PillChip.displayName = 'PillChip';
+

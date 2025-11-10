@@ -75,3 +75,4 @@ Seguir formato padrão com:
 
 **Status**: ✅ Pronto para ativação  
 **Browser**: Abrir via `Ctrl+Shift+B` e acessar `http://localhost:8081`
+

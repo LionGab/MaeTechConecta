@@ -40,7 +40,7 @@ describe('Edge Functions Integration', () => {
     });
   });
 
-  describe('risk-classifier', () => {
+  describe('risk-REDACTED', () => {
     it('should classify risk level', async () => {
       // Teste de classificação
       expect(true).toBe(true);
@@ -57,3 +57,4 @@ describe('Edge Functions Integration', () => {
     });
   });
 });
+

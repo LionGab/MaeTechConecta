@@ -112,3 +112,4 @@ export function usePlanoDoDia(userId: string, autoRefresh = true): UsePlanoDoDia
     isReplanning,
   };
 }
+

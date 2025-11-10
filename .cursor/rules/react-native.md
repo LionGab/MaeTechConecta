@@ -6,3 +6,4 @@
 - Gerenciar estado global com solução definida (ex.: Zustand/Redux) quando necessário.
 - Evitar lógica complexa dentro do JSX; criar helpers/memoization (`useMemo`, `useCallback`).
 - Acessibilidade: `accessibilityLabel`, `accessible`, toques e foco adequados.
+

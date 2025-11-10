@@ -50,3 +50,4 @@ SELECT
     ELSE '❌ MIGRATION NÃO EXECUTADA - Execute o arquivo EXECUTAR_AGORA.sql'
   END as resultado_final;
 
+

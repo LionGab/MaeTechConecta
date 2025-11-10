@@ -120,3 +120,4 @@ SELECT
     ELSE '⚠️ ALGUMAS VALIDAÇÕES FALHARAM - Verifique os resultados acima'
   END as status;
 
+

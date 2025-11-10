@@ -22,3 +22,4 @@ if ($portCheck) {
     Write-Host "Porta 8081 nao esta ativa" -ForegroundColor Red
     Write-Host "Execute pnpm dev primeiro para iniciar o app" -ForegroundColor Yellow
 }
+

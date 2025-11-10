@@ -27,9 +27,11 @@ Este documento consolida todas as melhorias DevOps/Infraestrutura implementadas 
 
 1. **[vercel.json](../vercel.json)** - Configuração Vercel (preview deployments)
 2. **[.github/workflows/vercel-preview.yml](../.github/workflows/vercel-preview.yml)** - Preview automático por PR
-3. **[.github/workflows/post-merge-validation.yml](../.github/workflows/post-merge-validation.yml)** - Validação pós-merge
-4. **[turbo.json](../turbo.json)** - Cache otimizado (atualizado)
-5. **[.github/workflows/ci.yml](../.github/workflows/ci.yml)** - Cache layers (atualizado)
+3. **[.github/workflows/post-merge-validation.yml](../.github/workflows/post-merge-validation.yml)** - Validação pós-merge (nightly + manual)
+4. **[.github/workflows/ci.yml](../.github/workflows/ci.yml)** - Checks obrigatórios (lint/type/test/format/coverage)
+5. **[turbo.json](../turbo.json)** - Cache otimizado (atualizado)
+6. **[scripts/auto-approve.js](../scripts/auto-approve.js)** - Guardrails para auto-approve (branch allowlist + CI verde)
+7. **[scripts/register-agent-activity.ts](../scripts/register-agent-activity.ts)** - Auditoria de ações de agentes Cursor
 
 ### 📦 Código
 
@@ -119,6 +121,22 @@ Este documento consolida todas as melhorias DevOps/Infraestrutura implementadas 
 
 ---
 
+### 6. Governança de Auto-Approve e Agentes Cursor
+
+**Problema**: Auto-aprovação irrestrita permitia merges sem revisão humana ou CI verde.
+
+**Solução**: `scripts/auto-approve.js` agora valida `CI_PASSED=true`, verifica allowlist de branches e gera auditoria em `logs/approvals`. Agentes devem registrar ações via `scripts/register-agent-activity.ts`.
+
+**Impacto**:
+
+- 🔐 **Compliance**: 100% de aprovações vinculadas ao pipeline
+- 📜 **Auditoria**: Registro diário de decisões (`logs/approvals`, `logs/agents`)
+- 👥 **Segregação**: Necessidade explícita de revisão humana fora da allowlist
+
+**Status**: ✅ Implementado
+
+---
+
 ## 📋 Checklist de Implementação
 
 ### ✅ Fase 1: Base (Completo)
@@ -143,6 +161,8 @@ Este documento consolida todas as melhorias DevOps/Infraestrutura implementadas 
 - [ ] Implementar performance monitoring
 - [ ] Testar preview deployments
 - [ ] Validar contract tests
+- [ ] Ativar branch protection (`main`, `develop`) exigindo checks `CI / *` e `Vercel Preview Deploy`
+- [ ] Configurar rotina para registrar atividades dos agentes (`scripts/register-agent-activity.ts`)
 
 ---
 
@@ -258,3 +278,4 @@ Este documento consolida todas as melhorias DevOps/Infraestrutura implementadas 
 **Última atualização**: 2025-01-XX  
 **Status**: ✅ Completo  
 **Mantido por**: Time Nossa Maternidade
+

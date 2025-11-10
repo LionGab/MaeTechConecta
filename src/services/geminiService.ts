@@ -158,3 +158,4 @@ export async function testGeminiConnection(): Promise<{
     };
   }
 }
+

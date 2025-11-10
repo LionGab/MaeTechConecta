@@ -90,3 +90,4 @@ Write-Host "3. Executar: pnpm install"
 Write-Host "4. Testar: pnpm build"
 Write-Host "5. Testar: pnpm test"
 
+

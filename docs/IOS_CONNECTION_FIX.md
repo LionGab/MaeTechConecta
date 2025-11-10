@@ -257,3 +257,4 @@ Isso resolve 90% dos problemas de conexão iOS.
 ---
 
 **Execute as soluções acima para resolver o problema de conexão iOS!** 🎉
+

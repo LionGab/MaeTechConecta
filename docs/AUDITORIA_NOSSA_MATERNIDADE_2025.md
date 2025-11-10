@@ -1,184 +1,160 @@
 # Auditoria Técnica 360º - Nossa Maternidade
 
 ## 1. Objetivo, Critérios e Escopo
+- **Objetivo**: avaliar maturidade técnica, segurança, confiabilidade operacional e governança do projeto Nossa Maternidade para suportar MVP mobile-first com IA assistiva.
+- **Normas/Referências**: LGPD, OWASP Mobile Top 10 (2024), OWASP API Security Top 10 (2023), boas práticas Supabase RLS, Expo/React Native production checklist, Vercel/Next.js deploy guidance.
+- **Escopo**:
+  - Frontend: `apps/mobile`, `src/components`, `src/screens`, `packages/shared`.
+  - Serviços: `src/services` (Supabase, IA, notifications, payments), `src/lib/nat-ai`.
+  - Backend/Supabase: diretório `supabase/` (schemas, policies, functions).
+  - Infra/ops: scripts (`scripts/`), documentação em `docs/`, workflows GitHub (ausentes), automações (`auto-approve`).
+  - Integrações externas: Supabase, Gemini, Anthropic, Sentry, Amplitude, Expo EAS, MCP servers.
+- **Fora de escopo**: contratos legais, hardware da equipe, apps experimentais (`fotosapp/`).
 
-- **Objetivo**: avaliar maturidade técnica, segurança, operações e governança do ecossistema Nossa Maternidade para suportar expansão mobile-first com IA assistiva.
-- **Critérios de conformidade**: LGPD (Lei 13.709/18), OWASP Mobile Top 10 (2024), OWASP API Security Top 10 (2023), recomendações Supabase RLS, guias Expo/React Native para apps em produção.
-- **Referências principais**: `docs/ARCHITECTURE.md`, `docs/SECURITY.md`, `docs/CONSOLIDACAO_DEVOPS.md`, `docs/ENVIRONMENTS.md`, `docs/DEPLOY_PRODUCTION.md`, `.github/workflows/*.yml`, `src/services/*`, `apps/mobile`.
-- **Escopo cobre**:
-  - Aplicativo mobile (`apps/mobile`) e bibliotecas compartilhadas (`packages/shared`).
-  - Serviços backend via Supabase (`supabase/`), Edge Functions e integrações IA (`src/services/gemini`, `src/lib/nat-ai`).
-  - Integrações externas (Supabase, Gemini, Anthropic, Amplitude, Sentry, Vercel/EAS, MCP/GitHub).
-  - Pipelines CI/CD (`.github/workflows`, `scripts/`).
-  - Documentação operacional e de segurança (`docs/`), processos de equipe e governança (auto-approve, agentes Cursor).
-- **Fora de escopo (não avaliados)**: contratos legais com parceiros, infraestrutura física de dispositivos de time, suporte ao app de fotos (`fotosapp/`).
+## 2. Metodologia
+1. Revisão documental (`ARCHITECTURE.md`, `SECURITY.md`, `CONSOLIDACAO_DEVOPS.md`, `ENVIRONMENTS.md`).
+2. Inspeção de código (`src/services`, `src/lib/nat-ai`, `scripts/auto-approve.js`, `supabase/**/*.sql`).
+3. Verificação de infraestrutura (ausência de `.github/workflows`, scripts de deploy, configurações EAS/Vercel).
+4. Avaliação de segurança (credenciais, RLS, autenticação, criptografia, logs, guardrails IA).
+5. Revisão operacional (backup/DR, monitoramento, auto-approve, segregação de funções).
+6. Mapeamento de riscos (impacto x probabilidade) e recomendações priorizadas.
 
-## 2. Metodologia de Auditoria
+## 3. Arquitetura e Fluxos
+### 3.1 Componentes
+- **Mobile app** (`apps/mobile`): Expo/React Native, integra temas (`src/theme`, `src/components`).
+- **Shared libs** (`packages/shared`): analytics, UI, tipos.
+- **Services** (`src/services`): wrappers Supabase (`supabase.ts`), autenticação, IA (`gemini`, `nat-ai`), notificações.
+- **IA stack** (`src/lib/nat-ai/*`): context manager, guardrails, risk analyzer integrados a edge functions.
+- **Supabase** (`supabase/`): schemas SQL, edge functions (moderation, risk-classifier, lgpd) e RLS policies.
+- **Automação**: scripts `auto-approve.js`, `auto-review-changes.js`, agentes Cursor.
 
-1. Revisão documental (arquitetura, devops, segurança, envs).
-2. Inspeção de código e configuração (TypeScript, Expo, Supabase, pipelines). Ferramentas: busca semântica (`grep`), leitura dirigida.
-3. Análise de segurança (credenciais, RLS, guardrails IA, autenticação).
-4. Avaliação operacional (deploy, monitoramento, backups, logs, agentes automatizados).
-5. Matriz de riscos com priorização (probabilidade x impacto) e verificação de controles.
-6. Recomendações classificadas por prazo (imediato, curto, médio) e área responsável.
+### 3.2 Fluxos de Dados
+- **Autenticação**: Supabase Auth via `SUPABASE_ANON_KEY` (cliente), Service Role reservado para backend/CI (`ENVIRONMENTS.md`).
+- **Chat IA**: `services/gemini` → guardrails (`nat-ai/guardrails.ts`) → edge functions de moderação/risk antes de responder.
+- **Conteúdo personalizado**: hooks `usePersonalizedContent`, `services/personalization.ts` consumindo dados Supabase.
+- **Analytics**: `packages/shared/src/analytics` integra Amplitude (status de adoção parcial).
+- **Notificações**: `services/notifications.ts` usa Expo.
 
-## 3. Visão Geral da Arquitetura e Fluxos de Dados
+### 3.3 Integrações & Estado
+| Integração | Uso | Evidência | Observações |
+| --- | --- | --- | --- |
+| Supabase | Auth, DB, Edge Functions | `src/services/supabase.ts`, `supabase/**/*.sql` | RLS documentado em `docs/SECURITY.md`, mas testes pendentes.
+| Gemini | IA generativa | `src/services/gemini/*` | Guardrails presentes, falta monitoramento de limites.
+| Anthropic | IA alternativa | `src/services/claudeService.ts` | Não usado ativamente; revisar chaves.
+| Sentry | Observabilidade | `sentry.config.js`, docs | Performance monitoring pendente.
+| Amplitude | Analytics | `packages/shared/src/analytics` | Necessário validar eventos.
+| Expo EAS | Builds | `eas.json`, docs | Depende de secrets configurados.
+| MCP Servers | Automação | `ARCHITECTURE.md` | Requer auditoria periódica de permissões.
+| Vercel | Previews web | `docs/CONSOLIDACAO_DEVOPS.md` | Workflows referenciados, mas repos não contém `.github`.
 
-### 3.1 Componentes Principais
+## 4. Análise Técnica
+### 4.1 Versionamento & Scripts
+- `pnpm` monorepo com comandos `validate`, `validate:full`, `ci` (lint/typecheck/test) — ver `package.json`.
+- Husky + lint-staged configurados para format/lint (JS/TS/MD).
+- Turborepo cache (`turbo.json`) otimizado, mas sem workflows os benefícios não se materializam.
 
-- **Frontend Mobile** (`apps/mobile`): React Native + Expo (SDK 51+), integrações com tema `mom-blue`, componentes em `src/components`.
-- **Shared Libraries** (`packages/shared`): analytics, UI compartilhada, tipos.
-- **Serviços Aplicacionais** (`src/services`): wrappers para Supabase (`supabase.ts`), IA (Gemini, Anthropic), notificações Expo, pagamentos, onboarding.
-- **IA & Guardrails** (`src/lib/nat-ai`, `services/gemini`): context manager, risk analyzer, guardrails obrigatórios conforme `docs/SECURITY.md`.
-- **Backend Supabase** (`supabase/`): schema SQL, policies RLS, edge functions (moderation, risk-classifier, lgpd).
-- **Infra CI/CD**: GitHub Actions workflows (lint, build, e2e, release, deploy), integração com Vercel previews (`docs/CONSOLIDACAO_DEVOPS.md`).
-- **Agentes Automatizados** (`scripts/auto-approve.js`, `agents/*`): aprovam builds, assistem revisões.
+### 4.2 Testes & Qualidade
+- Vitest configurado (`vitest.config.ts`). Suites em `__tests__/` cobrem chat, services, contracts, etc.
+- Contract tests RLS (`__tests__/contracts/rls-policies.test.ts`) usam `testUserId` sem criação real → esqueleto.
+- E2E Maestro scripts (`e2e/maestro/*.yaml`) existem, porém não integrados a CI.
 
-### 3.2 Fluxos de Dados Críticos
+### 4.3 Pipelines
+- **Ausência de `.github/workflows`**: não há automação em repositório atual (risco crítico). Docs referenciam pipelines (`ci.yml`, `deploy.yml`, `post-merge-validation.yml`, `codeql.yml`), mas arquivos não presentes.
+- Scripts `auto-approve.js` e `auto-review-changes.js` aprovam mudanças automaticamente sem validação manual (risco de governança).
+- Sem pipeline para `pnpm audit`, CodeQL, Snyk ou contract tests.
 
-- **Autenticação**: Supabase Auth; tokens consumidos via `SUPABASE_URL` e `SUPABASE_ANON_KEY` (App, Edge Functions). Service Role reservado para CI/funções (`docs/ENVIRONMENTS.md`).
-- **Chat IA (NathIA)**: fluxo `src/services/gemini/*` → guardrails (`nat-ai/guardrails.ts`) → moderação → risk analyzer (Edge Functions). Logs críticos enviados ao Sentry.
-- **Conteúdo personalizado**: hooks (`src/hooks/usePersonalizedContent.ts`) e `services/personalization.ts` consomem dados Supabase, IA.
-- **Analytics**: `packages/shared/src/analytics` integra Amplitude; status de adoção parcial (ver resultados).
-- **Push & Notifications**: `services/notifications.ts` + Expo.
-- **Deploy Mobile**: EAS Build (tokens via secrets), pipeline GitHub (`.github/workflows/deploy.yml`).
-
-### 3.3 Integrações Externas e Estado
-
-| Integração                           | Uso                           | Configuração Atual                                              | Observações                                                       |
-| ------------------------------------ | ----------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------- |
-| **Supabase**                         | Auth, DB, Edge Functions, RLS | Chaves listadas em `docs/ENVIRONMENTS.md`; SQL em `supabase/`   | Policies documentadas; necessidade de validar testes de contrato. |
-| **Gemini (Google)**                  | Geração de conteúdos IA       | Chaves `GEMINI_API_KEY` (CI/EAS)                                | Guardrails presentes, falta evidência de auditoria de limites.    |
-| **Anthropic**                        | Alternativa IA (NathIA)       | `ANTHROPIC_API_KEY`                                             | Documentado, não há código ativo recente (verificar).             |
-| **Sentry**                           | Monitoramento de erros        | `SENTRY_DSN`, `sentry.config.js`                                | Performance monitoring pendente (`docs/CONSOLIDACAO_DEVOPS.md`).  |
-| **Amplitude**                        | Analytics                     | `packages/shared/src/analytics`                                 | Integração inicial, falta confirmação de eventos em app.          |
-| **Expo EAS**                         | Build & OTA                   | `eas.json`, tokens em secrets                                   | Fluxo `docs/DEPLOY_PRODUCTION.md` bem definido.                   |
-| **Vercel**                           | Preview Web                   | Configs referenciadas (ver doc); repo não contém app web ativo. |
-| **MCP Servers (GitHub, Sentry, FS)** | Automações Cursor/Copilot     | Config em `ARCHITECTURE.md`                                     | Exigem revisão de permissões periódica.                           |
-
-## 4. Análise Técnica do Código e Pipelines
-
-### 4.1 Práticas de Versionamento e Scripts
-
-- `pnpm` workspace com monorepo (apps + packages). Comandos `validate`, `validate:full`, `ci` abrangem lint, type-check, testes.
-- Husky + lint-staged configurados (`package.json`).
-- Turborepo caches (`turbo.json`) otimizam builds, mas dependem de workflows ausentes; ao restaurá-los, garantir reaproveitamento de cache conforme orientado em `docs/CONSOLIDACAO_DEVOPS.md`.
-
-### 4.2 Cobertura de Testes e Qualidade
-
-- Testes unitários com Vitest (`vitest.config.ts`). Suites principais em `__tests__/` (chat, contracts, services). Cobertura objetivo 70% (documentado). Falta relatório atual de cobertura; recomenda rodar `pnpm run test:coverage` no CI periódico.
-- Não há testes end-to-end mobile automatizados além de `e2e/maestro` (scripts presentes). Necessidade de integrar pipeline `e2e-android.yml` com triggers regulares.
-- Code style reforçado (`docs/CURSOR_2.0_BEST_PRACTICES.md`). Componentes usam TypeScript estrito em sua maioria.
-
-### 4.3 Pipelines CI/CD
-
-- **Ausência de workflows versionados**: o snapshot auditado não contém diretório `.github/workflows`. Documentos como `docs/CONSOLIDACAO_DEVOPS.md` listam pipelines (`ci.yml`, `deploy.yml`, `post-merge-validation.yml`, `codeql.yml`), indicando que foram configurados, porém não estão versionados atualmente.
-- Scripts de agentes: `scripts/auto-approve.js` confirma auto-aprovação (risco de bypass review se mal gerenciado).
-- Falta pipeline automatizado para contract tests, análise SAST/DAST e `pnpm audit`. Recomenda reconstruir os workflows ausentes e incorporar verificações de segurança.
-
-## 5. Avaliação de Segurança
-
-### 5.1 Gestão de Credenciais
-
-- Secrets definidos em `docs/ENVIRONMENTS.md`; rotação recomendada a cada 90 dias. Não há evidência de automação para rotacionar ou monitorar expiração.
-- `.env.example` (verificar) deve evitar credenciais reais. Recomenda validar se existe script `validate:env` (referenciado) implementado.
+## 5. Segurança
+### 5.1 Credenciais
+- Secrets listados em `docs/ENVIRONMENTS.md`; rotação recomendada, porém sem evidência de automação.
+- `.env.example` não possui valores reais; script `validate:env` citado na doc não existe → gap de verificação.
+- Expo/Supabase tokens dependem de manutenção manual; ausência de inventário de expiração.
 
 ### 5.2 Autenticação e Autorização
+- `supabase.ts` usa somente ANON key (bom). Funções `createTemporaryUser`, `saveChatMessage` dependem de RLS.
+- Edge functions documentadas para exigir header `Authorization` (ANON). Necessário validar enforcement.
 
-- Supabase Auth + RLS policies (exemplos em `supabase/`). Checklist em `docs/SECURITY.md`. Necessário validar se todas tabelas têm RLS e se tests `__tests__/contracts` cobrem.
-- Edge Functions exigem ANON key via header; garantir ausência de Service Role no app (`ENVIRONMENTS.md` reforça).
+### 5.3 Proteção de Dados
+- Sessões armazenadas em `AsyncStorage` (não criptografado). Recomendado SecureStore ou force reauthentication.
+- Funções `sanitizeObject` aplicadas antes de persistir mensagens/perfis.
 
-### 5.3 Criptografia e Dados Sensíveis
+### 5.4 IA
+- Guardrails `nat-ai/guardrails.ts`, `risk-analyzer.ts` seguem doc; fallback quando serviços falham apenas loga erro (não há plano de contingência).
 
-- Depende da camada Supabase (TLS). No app, verificar armazenamento local (AsyncStorage) para tokens – recomenda criptografia ou revogação periódica.
+### 5.5 Ferramentas de Segurança
+- Sem CodeQL, Dependabot, Snyk ou outra SAST/DAST ativa (por ausência de workflows).
+- `scripts/validate-logger-errors.ts` apenas revisa logs; não substitui SAST.
 
-### 5.4 IA Guardrails
+## 6. Operações & Governança
+### 6.1 Backup & DR
+- Dependência em backups automáticos do Supabase. `docs/CONSOLIDACAO_DEVOPS.md` indica pendente a criação de runbook/teste de restore.
+- Expo EAS/OTA: docs descrevem processos, mas não há checklist de rollback ou owners.
 
-- `src/lib/nat-ai/guardrails.ts` implementa moderação e risk classifier; compliance com doc. Checar logs e fallback quando serviços indisponíveis.
+### 6.2 Logs & Observabilidade
+- Sentry configurado para erros; performance monitoring não implementado.
+- Edge functions logam no console Supabase, sem centralização (Logflare/Datadog).
+- Logs locais podem ser varridos por `scripts/validate-logger-errors.ts` (manual).
 
-### 5.5 Vulnerabilidades e Ferramentas
+### 6.3 Mudanças & Segregação
+- Auto-approve sem restrição = mudanças podem ser aprovadas sem revisão humana.
+- Sem branch protection/status checks (faltam workflows). Não há definição de papéis (dev, reviewer, ops).
 
-- Não há integração obrigatória com CodeQL/Snyk confirmada. Workflow `codeql.yml` existe, mas recomenda verificar execução semanal e triagem de alertas.
-- `scripts/validate-logger-errors.ts` útil para logs, mas não substitui SAST/DAST.
+### 6.4 Automação de Agentes
+- Agentes Cursor com permissões amplas; sem SLA de revisão ou trilha de auditoria descrita.
 
-## 6. Revisão Operacional e Controles
+## 7. Matriz de Riscos
+| Risco | Categoria | Evidência | Impacto | Prob. | Avaliação | Controle Atual | Lacuna |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Ausência de pipelines CI/CD | Governança | `list_dir` sem `.github/workflows` | Alto (builds sem gate) | Alta | **Crítico (5)** | Documentação indica intenção | Restaurar workflows e branch protection |
+| Auto-approve irrestrito | Governança | `scripts/auto-approve.js` auto aprova tudo | Alto | Alta | **Crítico (5)** | Logs simples no `.cursor` | Restringir a branches, exigir aprovação humana |
+| Contract tests RLS incompletos | Segurança/Dados | `__tests__/contracts/rls-policies.test.ts` sem seeds | Alto | Médio | **Crítico (5)** | Testes esqueleto | Criar seeds e executar em CI |
+| Backup/restore não testado | Operacional | `docs/CONSOLIDACAO_DEVOPS.md` (pendente) | Alto | Médio | **Alto (4)** | Backups automáticos Supabase | Runbook e teste trimestral |
+| Falta de SAST/DAST | Segurança | Sem CodeQL/Snyk | Alto | Médio | **Alto (4)** | `pnpm audit` manual | Reativar CodeQL, Dependabot, Snyk |
+| Sessions em AsyncStorage | Segurança | `src/services/supabase.ts` | Médio | Médio | **Médio (3)** | Nenhum | Usar SecureStore/rotacionar tokens |
+| Observabilidade parcial | Operacional | Sentry sem performance, logs dispersos | Médio | Médio | **Médio (3)** | Sentry errors | Implementar Sentry Performance/log aggregation |
+| Segregação de funções frágil | Governança | Falta de papéis e gates | Médio | Alto | **Alto (4)** | Checklists em docs | Definir owners e approvals |
+| Amplitude sem validação | Produto/Dados | SDK sem evidência de uso | Médio | Médio | **Médio (3)** | Integração parcial | Checklist de eventos e dashboards |
 
-### 6.1 Backup e Disaster Recovery
-
-- Dependência do Supabase (backups automáticos). Não há plano documentado de restore ni ciclos testados. Recomenda adicionar runbook.
-- Expo EAS + OTA: requer fallback plan se build falhar; `docs/DEPLOY_PRODUCTION.md` cobre manualmente.
-
-### 6.2 Logs e Observabilidade
-
-- Sentry configurado (erros); monitoramento de performance pendente (doc). Edge Functions log via Supabase. Falta agregação centralizada (ex.: Logflare ou BigQuery) para auditoria.
-
-### 6.3 Gestão de Mudanças e Segregação
-
-- Auto-approve scripts aprovam builds automaticamente; risco se agentes acionados sem supervisão. Recomenda restringir a branches confiáveis ou revisar logs.
-- Não há menção a ambientes com roles distintos (dev/staging/prod) quanto a permissões de deploy. Documentos sugerem gating por tags.
-
-### 6.4 Operação de Agentes e Automação
-
-- Cursor auto-approve e multi-agente configurados; precisa monitorar outputs. Documentar responsabilidades dos operadores humanos.
-
-## 7. Mapeamento de Riscos e Lacunas
-
-| Risco                                            | Categoria         | Evidência                                                 | Impacto                     | Probabilidade | Avaliação       | Controle Atual                  | Lacuna                                                    |
-| ------------------------------------------------ | ----------------- | --------------------------------------------------------- | --------------------------- | ------------- | --------------- | ------------------------------- | --------------------------------------------------------- |
-| Contract tests RLS incompletos (dependem de variáveis fictícias) | Segurança / Dados | `__tests__/contracts/rls-policies.test.ts` usa `testUserId` sem criação real | Alto (exposição de dados)   | Médio         | **Crítico (5)** | Testes esqueleto no repo          | Finalizar setup automatizado com seeds e CI               |
-| Auto-aprovação indiscriminada de builds          | Governança        | `scripts/auto-approve.js all` ligado a auto-approve geral | Alto (mudanças sem revisão) | Alta          | **Crítico (5)** | Script manual + doc             | Adicionar controles (branch allowlist, logs, require ack) |
-| Falta de evidência de backup/restore testes      | Operacional       | Documentação não menciona runbooks                        | Alto                        | Médio         | **Alto (4)**    | Supabase backups padrão         | Criar DR plan com testes trimestrais                      |
-| Performance monitoring pendente                  | Operacional       | `docs/CONSOLIDACAO_DEVOPS.md` status ⚠️                   | Médio                       | Médio         | **Médio (3)**   | Sentry errors                   | Implementar Sentry Performance + dashboards               |
-| Falta de SAST/DAST automatizados                 | Segurança         | `codeql.yml` sem confirmação + sem Snyk                   | Alto                        | Médio         | **Alto (4)**    | Manual `audit`                  | Ativar CodeQL semanal, integrar Snyk/OWASP ZAP            |
-| Integração Amplitude não verificada              | Dados/Produto     | Doc indica pendente de validação                          | Médio                       | Médio         | **Médio (3)**   | SDK configurado                 | Criar checklist de eventos e monitoramento                |
-| Segregação de funções limitada                   | Governança        | Pequena equipe, auto-approve, sem RBAC deploy             | Médio                       | Alto          | **Alto (4)**    | Documentos checklists           | Definir processo formal de revisão & approval             |
-
-## 8. Recomendações Prioritárias
-
+## 8. Recomendações
 ### 8.1 Imediatas (0-2 semanas)
-
-1. **Restringir Auto-Approve**: ajustar `scripts/auto-approve.js` para exigir branch allowlist e logging de auditoria; incluir alerta Slack.
-2. **Implementar Contract Tests RLS**: usar `docs/CONTRACT_TESTS.md` para criar suite automatizada (`pnpm run test:contracts`) e adicioná-la ao CI.
-3. **Ativar CodeQL e dependabot alerts**: garantir execução agendada e triagem semanal; adicionar Snyk (ou `pnpm audit`) no CI.
-4. **Runbook DR Supabase**: documentar e testar restore; armazenar snapshots controlados.
+1. **Restaurar pipelines CI/CD**: recriar `.github/workflows` com lint, typecheck, tests, build, CodeQL; configurar branch protection.
+2. **Restringir auto-approve**: limitar script a branches autorizadas, exigir aprovação humana ou desativar; registrar auditoria.
+3. **Finalizar contract tests RLS**: criar seeds supabase, parametrizar `testUserId`, rodar `pnpm run test:contracts` no CI.
+4. **Ativar CodeQL/Dependabot/Snyk**: garantir execução agendada e triagem semanal.
+5. **Runbook DR Supabase**: script de restore, teste e registro de tempos (RPO/RTO).
 
 ### 8.2 Curto Prazo (2-6 semanas)
-
-1. **Performance Monitoring**: integrar Sentry Performance + métricas custom no app; configurar alertas.
-2. **Analytics QA**: checklist de eventos, dashboards Amplitude, validação de dados.
-3. **Gestão de Secrets**: automatizar rotação (ex.: script `scripts/rotate-secrets.ts`) e monitor; auditar `.env.example`.
-4. **Revisão de Edge Functions**: adicionar testes unitários/integration para `moderation`, `risk-classifier`, `lgpd` com mocks controlados.
+1. **Instrumentar Sentry Performance & métricas custom**.
+2. **Validar Amplitude**: painel de eventos críticos, monitoramento semanal.
+3. **Automatizar rotação de secrets**: inventário com datas e script de rotação.
+4. **Testes Edge Functions**: unit/integration para moderation, risk-classifier, lgpd.
 
 ### 8.3 Médio Prazo (6-12 semanas)
-
-1. **Segregação e Governança**: definir papéis (dev, reviewer, release manager), atualizar processos no `docs/` e Slack.
-2. **Centralização de Logs**: integrar Supabase logs + app logs em plataforma (Logflare/Datadog) com retenção >30 dias.
-3. **Hardening Mobile**: revisar armazenamento local, habilitar obfuscation (Metro bundler), aplicar recomendações OWASP Mobile.
+1. **Segregação de Funções**: definir papéis (dev, reviewer, release manager) e atualizar docs.
+2. **Centralizar logs**: pipeline para Supabase + app (Logflare/Datadog) com retenção >30 dias.
+3. **Hardening Mobile**: armazenamento seguro (SecureStore), obfuscation, checklist OWASP Mobile.
 
 ## 9. Painel de Ações Prioritárias
-
-| Prioridade | Ação                                       | Responsável  | Prazo      | KPI de Sucesso                            |
-| ---------- | ------------------------------------------ | ------------ | ---------- | ----------------------------------------- |
-| Alta       | Limitar auto-approve e registrar auditoria | Eng. Líder   | 1 semana   | 100% builds com log de aprovação          |
-| Alta       | Adicionar contract tests RLS no CI         | Backend      | 2 semanas  | Testes passam 100% das execuções          |
-| Alta       | Testar restore Supabase e documentar       | DevOps       | 2 semanas  | Relatório de restore e tempo <30min       |
-| Média      | Instrumentar Sentry Performance            | Mobile       | 4 semanas  | Dashboards p95 < objetivos                |
-| Média      | Validar eventos Amplitude                  | Produto/Data | 4 semanas  | Painel com eventos críticos confirmados   |
-| Média      | Automatizar rotação de secrets             | DevOps       | 6 semanas  | Planilha de rotação e script automatizado |
-| Média      | Centralizar logs críticos                  | DevOps       | 8 semanas  | Log retention 90 dias com alertas         |
-| Baixa      | Revisão OWASP Mobile & Hardening           | Mobile       | 12 semanas | Checklist OWASP ≥80% completo             |
+| Prioridade | Ação | Responsável | Prazo | KPI |
+| --- | --- | --- | --- | --- |
+| Alta | Restaurar workflows CI/CD completos | DevOps | 1 semana | Workflows verdes em 2 execuções |
+| Alta | Limitar auto-approve e registrar auditoria | Eng. Líder | 1 semana | 100% builds com log + aprovação humana |
+| Alta | Adicionar contract tests RLS no CI | Backend | 2 semanas | Suite passa 100% |
+| Alta | Testar restore Supabase e documentar | DevOps | 2 semanas | Tempo de restore <30min |
+| Média | Instrumentar Sentry Performance | Mobile | 4 semanas | p95 monitorado em dashboard |
+| Média | Validar eventos Amplitude | Produto/Data | 4 semanas | Painel com eventos críticos |
+| Média | Automatizar rotação de secrets | DevOps | 6 semanas | Matriz de expiração + script |
+| Média | Centralizar logs críticos | DevOps | 8 semanas | Retenção 90 dias + alertas |
+| Baixa | Revisão OWASP Mobile | Mobile | 12 semanas | Checklist ≥80% completo |
 
 ## 10. Conclusão
-
-O projeto possui boa base documental, pipelines estruturados e foco em segurança (RLS, guardrails IA). Entretanto, controles críticos dependem de execução manual (tests RLS, rotação de secrets, revisão de builds). Implementar as recomendações elevará maturidade e reduzirá riscos de vazamento, mudança não revisada e indisponibilidade.
+Projeto possui base técnica sólida e documentação extensa, porém controles críticos (CI, revisão humana, testes RLS) estão desativados ou incompletos. Recomendações imediatas priorizam restabelecer governança de build, garantir confidencialidade via RLS testado e preparar rollback/DR. Implementar follow-up de segurança e observabilidade fortalece sustentação do MVP.
 
 ## 11. Evidências Consultadas
-
-- `docs/ARCHITECTURE.md`, linhas iniciais (arquitetura, MCP servers).
-- `docs/SECURITY.md` (RLS, guardrails IA, LGPD, rate limiting).
-- `docs/CONSOLIDACAO_DEVOPS.md` (melhorias DevOps, pendências).
-- `docs/ENVIRONMENTS.md` (secrets e rotação).
-- `.github/workflows/*.yml` (CI/CD pipelines variados).
-- `src/services/*`, `src/lib/nat-ai/*` (implementação de serviços e guardrails).
-- `scripts/auto-approve.js`, `scripts/auto-review-changes.js` (governança de aprovações).
-- `supabase/**/*.sql` (políticas e schema).
+- `ARCHITECTURE.md` (arquitetura, MCP).
+- `docs/SECURITY.md` (RLS, guardrails, LGPD).
+- `docs/CONSOLIDACAO_DEVOPS.md` (pendências DevOps).
+- `docs/ENVIRONMENTS.md` (secrets/rotation).
+- `scripts/auto-approve.js` (auto aprovação).
+- `src/services/supabase.ts`, `src/lib/nat-ai/*`, `src/services/gemini/*` (fluxos e segurança).
+- `__tests__/contracts/rls-policies.test.ts` (contract tests incompletos).
+- Ausência de `.github/workflows` (via `list_dir`).

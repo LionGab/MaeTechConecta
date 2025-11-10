@@ -247,3 +247,4 @@ SELECT * FROM user_profiles WHERE name = 'Teste Validação';
 -- Limpar teste
 DELETE FROM user_profiles WHERE name = 'Teste Validação';
 */
+

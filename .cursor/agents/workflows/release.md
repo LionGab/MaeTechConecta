@@ -71,3 +71,4 @@ supabase db push
 ---
 
 **Tempo estimado:** 15-30 minutos (com validações)
+

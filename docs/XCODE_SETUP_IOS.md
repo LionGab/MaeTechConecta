@@ -286,3 +286,4 @@ pnpm dev
 ---
 
 **Execute os comandos acima para configurar o Xcode para desenvolvimento iOS!** 🎉
+

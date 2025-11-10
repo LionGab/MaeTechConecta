@@ -129,3 +129,4 @@
 ## Fontes de Dados Prioritárias
 
 - Google Trends, TikTok Creative Center, BrandWatch, Pinterest Trends, Supabase Analytics, GA4, dados internos de NPS e Pesquisas in-app.
+

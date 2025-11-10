@@ -286,3 +286,4 @@ export function createGeminiClient(partialConfig: Partial<GeminiClientConfig> = 
     config,
   };
 }
+

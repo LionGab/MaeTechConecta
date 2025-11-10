@@ -441,3 +441,4 @@ if (require.main === module) {
 }
 
 export { scanAllFiles, generateReport, IPHONE_13, EXPECTED_DIMENSIONS };
+

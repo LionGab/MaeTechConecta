@@ -276,7 +276,7 @@ supabase functions deploy nathia-chat
 
 ```bash
 # Claude API (Daily Insight + Curate Content)
-supabase secrets set CLAUDE_API_KEY=sk-ant-api03-...
+supabase secrets set CLAUDE_API_KEY=sk-REDACTED...
 
 # Perplexity API (Curate Content)
 supabase secrets set PERPLEXITY_API_KEY=pplx-...
@@ -476,3 +476,4 @@ npm start
 ---
 
 **🎯 VOCÊ ESTÁ 60% DO CAMINHO! VAMOS TERMINAR ISSO! 🚀**
+

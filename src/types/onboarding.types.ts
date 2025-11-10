@@ -379,3 +379,4 @@ export function calculateProgress(currentStep: OnboardingStep): number {
   const currentIndex = steps.indexOf(currentStep);
   return Math.round(((currentIndex + 1) / steps.length) * 100);
 }
+

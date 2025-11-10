@@ -46,3 +46,4 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host "✅ Validação local concluída!" -ForegroundColor Green
 
+

@@ -359,3 +359,4 @@ export function createContentService(customClient?: GeminiClient) {
     config: client.config,
   };
 }
+

@@ -10,3 +10,4 @@ export interface QuickAction {
   onPress: () => void;
   accessibilityLabel: string;
 }
+

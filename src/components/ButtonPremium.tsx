@@ -358,3 +358,4 @@ const styles = StyleSheet.create({
 
 // Memoizar componente
 export const ButtonPremium = React.memo(ButtonPremiumComponent);
+

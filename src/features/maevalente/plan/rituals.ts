@@ -84,3 +84,4 @@ export const MAE_VALENTE_WEEKLY_RITUALS: readonly WeeklyRitual[] = [
     ],
   },
 ] as const;
+

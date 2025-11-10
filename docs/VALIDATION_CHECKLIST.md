@@ -37,7 +37,7 @@
 
 - [ ] nathia-chat deployada e funcionando
 - [ ] moderation-service deployada e funcionando
-- [ ] risk-classifier deployada e funcionando
+- [ ] risk-REDACTED deployada e funcionando
 - [ ] Todas as outras funções deployadas
 
 ### Integrações
@@ -100,3 +100,4 @@ Se algo falhar:
 2. Verificar logs das Edge Functions
 3. Verificar logs do GitHub Actions
 4. Consultar documentação em `docs/`
+

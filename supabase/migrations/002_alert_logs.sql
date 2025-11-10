@@ -29,3 +29,4 @@ ALTER TABLE alert_logs ENABLE ROW LEVEL SECURITY;
 --   USING (auth.jwt() ->> 'role' = 'admin');
 
 COMMENT ON TABLE alert_logs IS 'Logs de alertas de alto risco para auditoria e acompanhamento pela equipe';
+

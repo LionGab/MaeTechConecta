@@ -33,10 +33,10 @@ $envContent = @"
 # ----------------------------------6-------------------------------------------
 # ⚠️ IMPORTANTE: Expo requer prefixo EXPO_PUBLIC_* para variáveis públicas
 EXPO_PUBLIC_SUPABASE_URL=https://bbcwitnbnosyfpfjtzkr.supabase.co
-EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJiY3dpdG5ibm9zeWZwZmp0emtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAyODI3NjgsImV4cCI6MjA3NTg1ODc2OH0.a9g_JqrWWnLli_PV0sPikz8KPAWiKY81mQ1hJAbNtCo
+EXPO_PUBLIC_SUPABASE_ANON_KEY=REDACTED_JWT.REDACTED_JWT.a9g_JqrWWnLli_PV0sPikz8KPAWiKY81mQ1hJAbNtCo
 
 # Service Role Key (NUNCA exponha publicamente - não usar EXPO_PUBLIC_*)
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJiY3dpdG5ibm9zeWZwZmp0emtyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MDI4Mjc2OCwiZXhwIjoyMDc1ODU4NzY4fQ.K0H61Di0itgPw-CTFVGtWG_XAYwg2mxKS8H_s1WKW-M
+SUPABASE_SERVICE_ROLE_KEY=REDACTED_JWT.REDACTED_JWT.K0H61Di0itgPw-CTFVGtWG_XAYwg2mxKS8H_s1WKW-M
 
 # Redirect URLs
 NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL=http://localhost:3000/onboarding
@@ -45,26 +45,26 @@ NEXT_PUBLIC_PROD_SUPABASE_REDIRECT_URL=https://nossamaternidade.netlify.app/onbo
 # ----------------------------------------------------------------------------- 
 # ANTHROPIC - Claude AI
 # -----------------------------------------------------------------------------
-EXPO_PUBLIC_CLAUDE_API_KEY=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
-ANTHROPIC_API_KEY=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
+EXPO_PUBLIC_CLAUDE_API_KEY=sk-REDACTED
+ANTHROPIC_API_KEY=sk-REDACTED
 
 # ----------------------------------------------------------------------------- 
 # OPENAI - GPT-4 / GPT-4o (conteúdo e recomendações)
 # -----------------------------------------------------------------------------
-EXPO_PUBLIC_OPENAI_API_KEY=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
-OPENAI_API_KEY=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
+EXPO_PUBLIC_OPENAI_API_KEY=sk-REDACTED
+OPENAI_API_KEY=sk-REDACTED
 
 # ----------------------------------------------------------------------------- 
 # GOOGLE AI (Gemini)
 # -----------------------------------------------------------------------------
-EXPO_PUBLIC_GEMINI_API_KEY=AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg
-GOOGLE_AI_API_KEY=AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg
+EXPO_PUBLIC_GEMINI_API_KEY=AIzaREDACTED
+GOOGLE_AI_API_KEY=AIzaREDACTED
 
 # ----------------------------------------------------------------------------- 
 # PERPLEXITY - IA de busca contextual
 # -----------------------------------------------------------------------------
-EXPO_PUBLIC_PERPLEXITY_API_KEY=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
-PERPLEXITY_API_KEY=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
+EXPO_PUBLIC_PERPLEXITY_API_KEY=pplx-REDACTED
+PERPLEXITY_API_KEY=pplx-REDACTED
 
 # ----------------------------------------------------------------------------- 
 # CONFIGURAÇÕES DE AMBIENTE
@@ -114,4 +114,5 @@ try {
     Write-Host "❌ Erro ao criar arquivo: $_" -ForegroundColor Red
     exit 1
 }
+
 

@@ -265,7 +265,7 @@
   - Risco psicológico (0-10)
   - Ações recomendadas
   - Alertas automáticos
-- ✅ Edge Function `risk-classifier`
+- ✅ Edge Function `risk-REDACTED`
 
 **Agent 6:**
 
@@ -565,3 +565,4 @@
 ---
 
 **Próximo passo:** Começar com Semana 1, Dia 1! 🚀
+

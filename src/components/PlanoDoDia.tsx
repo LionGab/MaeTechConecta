@@ -269,3 +269,4 @@ export const PlanoDoDia: React.FC<PlanoDoDiaProps> = React.memo(
     );
   }
 );
+

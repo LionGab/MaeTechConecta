@@ -6,3 +6,4 @@
 - Preferir early-returns e evitar nesting profundo (>2 níveis).
 - Não capturar exceções sem tratamento significativo.
 - Manter consistência de formatação e seguir o linter/formatter do projeto.
+

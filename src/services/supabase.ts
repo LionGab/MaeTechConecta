@@ -261,3 +261,4 @@ export const getDailyPlan = async (userId: string, date: string) => {
   if (error && error.code !== 'PGRST116') throw error;
   return data;
 };
+

@@ -51,7 +51,7 @@ Write-Host "=== SECRETS DO SUPABASE ===" -ForegroundColor Cyan
 Write-Host ""
 
 Set-Secret -Name "GEMINI_API_KEY" -Description "API Key do Google Gemini (usado em nathia-chat, moderation-service, behavior-analysis)"
-Set-Secret -Name "ANTHROPIC_API_KEY" -Description "API Key do Anthropic Claude (usado em nat-ai-chat, risk-classifier)"
+Set-Secret -Name "ANTHROPIC_API_KEY" -Description "API Key do Anthropic Claude (usado em nat-ai-chat, risk-REDACTED)"
 Set-Secret -Name "OPENAI_API_KEY" -Description "API Key do OpenAI (usado em transcribe-audio)"
 Set-Secret -Name "SUPABASE_URL" -Description "URL do projeto Supabase (geralmente já configurado automaticamente)"
 Set-Secret -Name "SUPABASE_ANON_KEY" -Description "Chave anônima do Supabase (geralmente já configurado automaticamente)"
@@ -68,4 +68,5 @@ Write-Host "📋 Próximos passos:"
 Write-Host "1. Verifique se todos os secrets necessários foram configurados"
 Write-Host "2. Teste as Edge Functions para garantir que estão acessando os secrets corretamente"
 Write-Host "3. Configure os secrets no GitHub Actions (se ainda não fez)"
+
 

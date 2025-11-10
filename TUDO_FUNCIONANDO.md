@@ -477,3 +477,4 @@ Seu app vai de **MVP** para **Plataforma de Saúde Mental Profissional** com:
 
 _Implementação concluída: 2025-11-10_
 _Pronto para testar e refinar!_
+

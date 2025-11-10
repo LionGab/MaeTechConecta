@@ -407,3 +407,4 @@ BEGIN
   RAISE NOTICE '⚡ Funções auxiliares: 2 (calculate_engagement_score, get_user_top_tags)';
   RAISE NOTICE '📈 Views criadas: 2 (user_engagement_stats, popular_content_stats)';
 END $$;
+

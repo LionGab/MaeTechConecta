@@ -69,3 +69,4 @@ Veja `.cursor/agents/comandos-individuais.md` para:
 - Instruções detalhadas
 - Exemplos de uso
 - Estrutura de relatórios
+

@@ -417,3 +417,4 @@ import { useDailyInsight } from '@/hooks/useDailyInsight';
 **⚠️ ATENÇÃO**: Mas precisa de deploy URGENTE para funcionar!
 
 **Qual opção você escolhe? (1, 2 ou 3)** 🚀
+

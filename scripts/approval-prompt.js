@@ -140,3 +140,4 @@ if (!approval) {
 requestApproval(approval).then((approved) => {
   process.exit(approved ? 0 : 1);
 });
+

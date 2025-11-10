@@ -75,3 +75,4 @@ if (result.success) {
   console.error('❌ Git Keep Theirs Auto falhou!\n');
   process.exit(1);
 }
+

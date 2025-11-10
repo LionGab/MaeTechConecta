@@ -58,7 +58,7 @@ Se preferir configurar manualmente no Dashboard:
 1. No Dashboard, vá em **Edge Functions** > **Secrets**
 2. Adicione novo secret:
    - **Name**: `GEMINI_API_KEY`
-   - **Value**: `AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg`
+   - **Value**: `AIzaREDACTED`
 3. Salve
 
 ### 3. Deploy Edge Functions
@@ -81,3 +81,4 @@ pnpm dev
 ---
 
 **Execute `supabase login` no seu terminal e depois o script de configuração!** 🎉
+

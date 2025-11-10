@@ -130,3 +130,4 @@ serve(async (req) => {
 ---
 
 **Quando usar:** Schemas, migrations, Edge Functions, queries, segurança de dados
+

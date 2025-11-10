@@ -327,19 +327,30 @@ export async function generateConversationSummary(messages: ClaudeMessage[]): Pr
  * Helper: Constrói system prompt personalizado
  */
 function buildSystemPrompt(onboardingData: OnboardingData): string {
-  const { name, pregnancy_stage, emotional_state, main_challenges, support_network, communication_style, goals } =
-    onboardingData;
+  const {
+    name,
+    maternal_stage,
+    emotional_state,
+    main_challenges,
+    support_network,
+    communication_style,
+    expectations,
+  } = onboardingData;
+
+  const stageLabel = maternal_stage ? maternal_stage.replace(/_/g, ' ') : 'maternidade';
+  const expectationsLabel =
+    expectations && expectations.length > 0 ? expectations.map((item) => item.replace(/_/g, ' ')).join(', ') : null;
 
   return `Você é NathIA, a assistente virtual carinhosa e especializada da Nossa Maternidade.
 
 PERFIL DA MÃE:
 - Nome: ${name || 'Mãe'}
-- Fase: ${pregnancy_stage || 'maternidade'}
+- Fase: ${stageLabel}
 - Estado emocional: ${emotional_state || 'não informado'}
 - Principais desafios: ${main_challenges?.join(', ') || 'não informados'}
 - Rede de apoio: ${support_network || 'não informada'}
 - Estilo de comunicação preferido: ${communication_style || 'equilibrado'}
-- Objetivos: ${goals?.join(', ') || 'bem-estar geral'}
+- Objetivos: ${expectationsLabel || 'bem-estar geral'}
 
 SUAS DIRETRIZES:
 1. **Tom e Linguagem:**
@@ -494,3 +505,4 @@ export async function generateQuickSuggestions(onboardingData: OnboardingData): 
     };
   }
 }
+

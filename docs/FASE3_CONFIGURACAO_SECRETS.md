@@ -29,8 +29,8 @@ SUPABASE_PROJECT_ID=your-project-id
 #### APIs de IA
 
 ```
-ANTHROPIC_API_KEY=sk-ant-your-key
-OPENAI_API_KEY=sk-proj-your-key (opcional)
+ANTHROPIC_API_KEY=sk-REDACTED
+OPENAI_API_KEY=sk-REDACTED (opcional)
 GOOGLE_AI_API_KEY=your-gemini-key
 ```
 
@@ -168,8 +168,8 @@ chmod +x scripts/setup-secrets.sh
 ```bash
 # Configurar secrets nas Edge Functions
 supabase secrets set GEMINI_API_KEY=your-gemini-key
-supabase secrets set ANTHROPIC_API_KEY=sk-ant-your-key
-supabase secrets set OPENAI_API_KEY=sk-proj-your-key
+supabase secrets set ANTHROPIC_API_KEY=sk-REDACTED
+supabase secrets set OPENAI_API_KEY=sk-REDACTED
 
 # Verificar
 supabase secrets list
@@ -192,7 +192,7 @@ supabase secrets list
 | Secret              | Uso                                                | Obrigatório          |
 | ------------------- | -------------------------------------------------- | -------------------- |
 | `GEMINI_API_KEY`    | nathia-chat, moderation-service, behavior-analysis | ✅                   |
-| `ANTHROPIC_API_KEY` | nat-ai-chat, risk-classifier                       | ✅                   |
+| `ANTHROPIC_API_KEY` | nat-ai-chat, risk-REDACTED                       | ✅                   |
 | `OPENAI_API_KEY`    | transcribe-audio                                   | ⚠️ Opcional          |
 | `SUPABASE_URL`      | Todas as Edge Functions                            | ✅ (geralmente auto) |
 | `SUPABASE_ANON_KEY` | Todas as Edge Functions                            | ✅ (geralmente auto) |
@@ -322,3 +322,4 @@ Após configurar todos os secrets:
 ---
 
 **Última atualização:** 2025-01-04
+

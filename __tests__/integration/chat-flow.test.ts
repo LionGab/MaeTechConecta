@@ -47,7 +47,7 @@ describe('Chat Flow Integration', () => {
       expect(true).toBe(true);
     });
 
-    it('should call risk-classifier', async () => {
+    it('should call risk-REDACTED', async () => {
       // Teste de classificação de risco
       expect(true).toBe(true);
     });
@@ -70,3 +70,4 @@ describe('Chat Flow Integration', () => {
     });
   });
 });
+

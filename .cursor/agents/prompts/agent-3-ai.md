@@ -136,3 +136,4 @@ async function chatWithAI(message: string, context: ChatContext): Promise<string
 ---
 
 **Quando usar:** Integrações de IA, prompts, validação, análise de risco, memória conversacional
+

@@ -228,3 +228,4 @@ Peça para o chat revisar commits focando em: qualidade, bugs, performance e seg
 ---
 
 **Para dúvidas ou otimização do seu workflow, consulte este arquivo!**
+

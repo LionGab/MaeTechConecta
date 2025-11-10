@@ -110,9 +110,9 @@ describe('Edge Functions - Contract Tests', () => {
     });
   });
 
-  describe('risk-classifier', () => {
+  describe('risk-REDACTED', () => {
     it('deve classificar mensagem como segura', async () => {
-      const response = await fetch(`${baseUrl}/risk-classifier`, {
+      const response = await fetch(`${baseUrl}/risk-REDACTED`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ describe('Edge Functions - Contract Tests', () => {
     });
 
     it('deve classificar mensagem de crise como alta prioridade', async () => {
-      const response = await fetch(`${baseUrl}/risk-classifier`, {
+      const response = await fetch(`${baseUrl}/risk-REDACTED`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -147,3 +147,4 @@ describe('Edge Functions - Contract Tests', () => {
     });
   });
 });
+

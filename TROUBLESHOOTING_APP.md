@@ -240,3 +240,4 @@ E o app deve estar acessível em:
 ---
 
 **Execute os passos acima para iniciar o app!** 🎉
+

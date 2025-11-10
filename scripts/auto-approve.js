@@ -1,274 +1,254 @@
 #!/usr/bin/env node
 
 /**
- * Auto Approve - Aprovação Automática de Reviews
+ * Auto Approve Guarded - Fluxo endurecido para aprovações automáticas
  *
- * Aprova automaticamente todas as mudanças pendentes
- * Configurado para pular awaiting review
+ * - Requer CI bem-sucedido (CI_PASSED=true) ou override explícito (--force)
+ * - Limita auto-approve a uma allowlist de branches segura
+ * - Registra todas as decisões em `logs/approvals/YYYY-MM-DD.json`
+ * - Mantém compatibilidade com os arquivos `.cursor` para histórico legado
  */
 
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const CONFIG_PATH = path.join(__dirname, '../.cursor/cli.json');
-const APPROVALS_FILE = path.join(__dirname, '../.cursor/review-logs/pending-approvals.json');
-const REVIEW_LOGS_DIR = path.join(__dirname, '../.cursor/review-logs');
+const ROOT = path.join(__dirname, '..');
+const CONFIG_PATH = path.join(ROOT, '.cursor/cli.json');
+const CURSOR_REVIEW_LOGS_DIR = path.join(ROOT, '.cursor/review-logs');
+const PENDING_APPROVALS_FILE = path.join(CURSOR_REVIEW_LOGS_DIR, 'pending-approvals.json');
+const AUDIT_LOG_DIR = path.join(ROOT, 'logs/approvals');
 
-console.log('✅ Auto Approve - Aprovação Automática (SKIP PERMISSIONS)\n');
+const DEFAULT_BRANCH_ALLOWLIST = ['release/agents', 'infra/automation', 'infra/ci'];
+const ALLOWED_BRANCHES = (process.env.AUTO_APPROVE_BRANCHES || DEFAULT_BRANCH_ALLOWLIST.join(','))
+  .split(',')
+  .map((branch) => branch.trim())
+  .filter(Boolean);
 
-/**
- * Carregar configuração
- */
-function loadConfig() {
-  try {
-    if (fs.existsSync(CONFIG_PATH)) {
-      return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
-    }
-  } catch (error) {
-    // Configuração padrão se não existir
+const CI_PASSED = process.env.CI_PASSED === 'true';
+const CI_PIPELINE_ID = process.env.GITHUB_RUN_ID || process.env.CI_RUN_ID || null;
+const ACTOR = process.env.GITHUB_ACTOR || process.env.USER || 'unknown-actor';
+const OVERRIDE_ENV = process.env.AUTO_APPROVE_OVERRIDE === 'true';
+const FORCE_MODE = process.argv.includes('--force') || OVERRIDE_ENV;
+const COMMAND = process.argv[2] || 'all';
+const COMMAND_ARGS = process.argv.slice(3);
+
+function loadJson(filePath, fallback) {
+  if (!fs.existsSync(filePath)) {
+    return fallback;
   }
 
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  } catch (error) {
+    console.error(`❌ Falha ao ler ${filePath}: ${error.message}`);
+    return fallback;
+  }
+}
+
+function writeJson(filePath, data) {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+
+function getCurrentBranch() {
+  try {
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', { stdio: ['ignore', 'pipe', 'ignore'] })
+      .toString()
+      .trim();
+    return branch;
+  } catch (error) {
+    console.error('❌ Não foi possível identificar a branch atual.');
+    throw error;
+  }
+}
+
+function ensureGuards() {
+  const branch = getCurrentBranch();
+
+  if (!ALLOWED_BRANCHES.includes(branch) && !FORCE_MODE) {
+    console.error(`❌ Branch '${branch}' não está na allowlist: ${ALLOWED_BRANCHES.join(', ')}`);
+    console.error('   Use revisão humana ou execute com --force após analisar riscos.');
+    process.exit(1);
+  }
+
+  if (!CI_PASSED && !FORCE_MODE) {
+    console.error('❌ Auto-approve bloqueado: variável CI_PASSED precisa ser "true" (pipeline verde).');
+    console.error('   Rode as checagens locais (pnpm run validate) ou reexecute o CI.');
+    process.exit(1);
+  }
+}
+
+function buildAuditLogEntry(payload) {
   return {
-    auto_approve: true,
-    skip_awaiting_review: true,
-    approval_timeout: 0,
+    ...payload,
+    timestamp: new Date().toISOString(),
+    actor: ACTOR,
+    branch: getCurrentBranch(),
+    ci_pipeline_id: CI_PIPELINE_ID,
+    ci_passed: CI_PASSED,
+    force_mode: FORCE_MODE,
   };
 }
 
-/**
- * Auto-aprovar todas as mudanças pendentes
- */
-function autoApproveAll() {
-  console.log('='.repeat(60));
-  console.log('🔍 Procurando aprovações pendentes...');
-  console.log('='.repeat(60));
+function appendAuditLog(entry) {
+  fs.mkdirSync(AUDIT_LOG_DIR, { recursive: true });
+  const filename = `approvals-${new Date().toISOString().split('T')[0]}.json`;
+  const filePath = path.join(AUDIT_LOG_DIR, filename);
 
-  // Criar diretório se não existir
-  if (!fs.existsSync(REVIEW_LOGS_DIR)) {
-    fs.mkdirSync(REVIEW_LOGS_DIR, { recursive: true });
+  const currentLogs = loadJson(filePath, []);
+  currentLogs.push(entry);
+  writeJson(filePath, currentLogs);
+}
+
+function loadPendingApprovals() {
+  return loadJson(PENDING_APPROVALS_FILE, []);
+}
+
+function savePendingApprovals(approvals) {
+  writeJson(PENDING_APPROVALS_FILE, approvals);
+}
+
+function guardConfig() {
+  const config = loadJson(CONFIG_PATH, {});
+
+  // Travar defaults seguros
+  config.auto_approve = false;
+  config.skip_awaiting_review = false;
+  config.approval_timeout = config.approval_timeout ?? 0;
+  config.approval = {
+    ...(config.approval || {}),
+    default_action: 'review',
+    auto_approve: false,
+  };
+
+  writeJson(CONFIG_PATH, config);
+
+  console.log('⚙️  Configuração atualizada: auto_approve desativado por padrão.');
+}
+
+function listStatus() {
+  const pending = loadPendingApprovals();
+  console.log(`📊 ${pending.length} aprovação(ões) pendente(s).`);
+  pending.forEach((item, index) => {
+    console.log(`  ${index + 1}. ${item.id} · ${item.action} · ${item.file || 'sem arquivo'}`);
+  });
+}
+
+function approveAll() {
+  ensureGuards();
+  const pending = loadPendingApprovals();
+
+  if (pending.length === 0) {
+    console.log('✅ Nenhuma aprovação pendente.');
+    appendAuditLog(buildAuditLogEntry({ type: 'auto-approve', approvals_found: 0, approvals_granted: 0 }));
+    return;
   }
 
-  let pendingApprovals = [];
+  console.log(`📝 Encontradas ${pending.length} aprovações pendentes.`);
 
-  // Carregar aprovações pendentes
-  if (fs.existsSync(APPROVALS_FILE)) {
-    try {
-      pendingApprovals = JSON.parse(fs.readFileSync(APPROVALS_FILE, 'utf-8'));
-    } catch (error) {
-      console.log('⚠️  Nenhuma aprovação pendente encontrada\n');
-      return { approved: 0, total: 0 };
-    }
-  }
+  const approvedIds = [];
 
-  if (pendingApprovals.length === 0) {
-    console.log('✅ Nenhuma aprovação pendente\n');
-    return { approved: 0, total: 0 };
-  }
+  pending.forEach((item, index) => {
+    console.log(`[${index + 1}/${pending.length}] Aprovando ${item.id} (${item.action})`);
 
-  console.log(`\n📝 ${pendingApprovals.length} aprovação(ões) pendente(s)\n`);
+    appendAuditLog(
+      buildAuditLogEntry({
+        type: 'auto-approve-item',
+        approval_id: item.id,
+        action: item.action,
+        file: item.file || null,
+        severity: item.severity || null,
+        agent_id: item.agent_id || 'auto-approver',
+        decision: 'approved',
+      })
+    );
 
-  // Auto-aprovar todas
-  const approved = [];
-  const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(REVIEW_LOGS_DIR, `review-${today}.json`);
-
-  pendingApprovals.forEach((approval, index) => {
-    console.log(`[${index + 1}/${pendingApprovals.length}] Aprovando: ${approval.id}`);
-    console.log(`   Ação: ${approval.action}`);
-    console.log(`   Arquivo: ${approval.file || 'N/A'}`);
-    console.log(`   Severidade: ${approval.severity || 'N/A'}\n`);
-
-    // Registrar aprovação
-    const approvalLog = {
-      timestamp: new Date().toISOString(),
-      agent_id: approval.agent_id || 'auto-approver',
-      action: approval.action,
-      file: approval.file || null,
-      severity: approval.severity || null,
-      result: 'auto_approved',
-      approval_id: approval.id,
-      approved_by: 'auto',
-      approved_at: new Date().toISOString(),
-      skip_awaiting_review: true,
-    };
-
-    // Salvar no log
-    let logs = [];
-    if (fs.existsSync(logFile)) {
-      try {
-        logs = JSON.parse(fs.readFileSync(logFile, 'utf-8'));
-      } catch (error) {
-        logs = [];
-      }
-    }
-    logs.push(approvalLog);
-    fs.writeFileSync(logFile, JSON.stringify(logs, null, 2));
-
-    approved.push(approval.id);
+    approvedIds.push(item.id);
   });
 
-  // Limpar aprovações pendentes
-  fs.writeFileSync(APPROVALS_FILE, JSON.stringify([], null, 2));
-
-  console.log(`\n✅ ${approved.length}/${pendingApprovals.length} aprovação(ões) aprovada(s) automaticamente!\n`);
-
-  return { approved: approved.length, total: pendingApprovals.length };
+  savePendingApprovals([]);
+  appendAuditLog(buildAuditLogEntry({ type: 'auto-approve', approvals_found: pending.length, approvals_granted: approvedIds.length }));
+  console.log(`✅ ${approvedIds.length}/${pending.length} aprovações liberadas.`);
 }
 
-/**
- * Aprovar ação específica
- */
-function approveAction(approvalId) {
-  let pendingApprovals = [];
+function approveSingle(id) {
+  ensureGuards();
+  const pending = loadPendingApprovals();
+  const target = pending.find((item) => item.id === id);
 
-  if (fs.existsSync(APPROVALS_FILE)) {
-    try {
-      pendingApprovals = JSON.parse(fs.readFileSync(APPROVALS_FILE, 'utf-8'));
-    } catch (error) {
-      console.error(`❌ Erro ao carregar aprovações: ${error.message}\n`);
-      return false;
-    }
+  if (!target) {
+    console.error(`❌ Aprovação ${id} não encontrada.`);
+    appendAuditLog(buildAuditLogEntry({ type: 'auto-approve-item', approval_id: id, decision: 'not_found' }));
+    process.exit(1);
   }
 
-  const approval = pendingApprovals.find((a) => a.id === approvalId);
+  appendAuditLog(
+    buildAuditLogEntry({
+      type: 'auto-approve-item',
+      approval_id: target.id,
+      action: target.action,
+      file: target.file || null,
+      severity: target.severity || null,
+      agent_id: target.agent_id || 'auto-approver',
+      decision: 'approved',
+    })
+  );
 
-  if (!approval) {
-    console.error(`❌ Aprovação ${approvalId} não encontrada\n`);
-    return false;
-  }
-
-  console.log(`✅ Aprovando: ${approvalId}\n`);
-  console.log(`   Ação: ${approval.action}`);
-  console.log(`   Arquivo: ${approval.file || 'N/A'}\n`);
-
-  // Registrar aprovação
-  const today = new Date().toISOString().split('T')[0];
-  const logFile = path.join(REVIEW_LOGS_DIR, `review-${today}.json`);
-
-  const approvalLog = {
-    timestamp: new Date().toISOString(),
-    agent_id: approval.agent_id || 'auto-approver',
-    action: approval.action,
-    file: approval.file || null,
-    severity: approval.severity || null,
-    result: 'auto_approved',
-    approval_id: approvalId,
-    approved_by: 'auto',
-    approved_at: new Date().toISOString(),
-  };
-
-  let logs = [];
-  if (fs.existsSync(logFile)) {
-    try {
-      logs = JSON.parse(fs.readFileSync(logFile, 'utf-8'));
-    } catch (error) {
-      logs = [];
-    }
-  }
-  logs.push(approvalLog);
-  fs.writeFileSync(logFile, JSON.stringify(logs, null, 2));
-
-  // Remover da lista pendente
-  pendingApprovals = pendingApprovals.filter((a) => a.id !== approvalId);
-  fs.writeFileSync(APPROVALS_FILE, JSON.stringify(pendingApprovals, null, 2));
-
-  console.log(`✅ Aprovação ${approvalId} registrada\n`);
-  return true;
+  savePendingApprovals(pending.filter((item) => item.id !== id));
+  console.log(`✅ Aprovação ${id} concluída.`);
 }
 
-/**
- * Configurar auto-aprovação global
- */
-function configureAutoApprove() {
-  console.log('='.repeat(60));
-  console.log('⚙️  CONFIGURANDO AUTO-APROVAÇÃO');
-  console.log('='.repeat(60));
-
-  const config = loadConfig();
-
-  // Atualizar configuração
-  config.auto_approve = true;
-  config.skip_awaiting_review = true;
-  config.approval_timeout = 0;
-  config.approval = config.approval || {};
-  config.approval.default_action = 'approve';
-  config.approval.auto_approve = true;
-
-  // Salvar configuração
-  const configDir = path.dirname(CONFIG_PATH);
-  if (!fs.existsSync(configDir)) {
-    fs.mkdirSync(configDir, { recursive: true });
-  }
-
-  fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
-
-  console.log('\n✅ Configuração de auto-aprovação salva!\n');
-  console.log('📋 Configurações aplicadas:');
-  console.log('   - auto_approve: true');
-  console.log('   - skip_awaiting_review: true');
-  console.log('   - approval_timeout: 0');
-  console.log('   - default_action: approve\n');
-}
-
-// CLI
-const command = process.argv[2] || 'all';
-const approvalId = process.argv[3];
-
-switch (command) {
-  case 'all':
-    const result = autoApproveAll();
-    console.log(`\n📊 Resumo: ${result.approved}/${result.total} aprovadas\n`);
-    break;
-
-  case 'config':
-    configureAutoApprove();
-    break;
-
-  case 'approve':
-    if (!approvalId) {
-      console.error('❌ ID de aprovação necessário\n');
-      console.log('Usage: node scripts/auto-approve.js approve <approval_id>\n');
-      process.exit(1);
-    }
-    approveAction(approvalId);
-    break;
-
-  case 'status':
-    let pending = [];
-    if (fs.existsSync(APPROVALS_FILE)) {
-      try {
-        pending = JSON.parse(fs.readFileSync(APPROVALS_FILE, 'utf-8'));
-      } catch (error) {
-        pending = [];
-      }
-    }
-    console.log(`\n📊 Status: ${pending.length} aprovação(ões) pendente(s)\n`);
-    if (pending.length > 0) {
-      pending.forEach((a, i) => {
-        console.log(`  ${i + 1}. ${a.id} - ${a.action} - ${a.file || 'N/A'}`);
-      });
-    }
-    break;
-
-  default:
-    console.log(`
+function showUsage() {
+  console.log(`
 Usage: node scripts/auto-approve.js <command> [args]
 
 Commands:
-  all                    - Aprova todas as aprovações pendentes
-  config                 - Configura auto-aprovação global
-  approve <id>           - Aprova aprovação específica
-  status                 - Mostra status de aprovações pendentes
+  all                    Aprova todas as mudanças pendentes (respeitando guardrails)
+  approve <id>           Aprova uma mudança específica
+  status                 Lista aprovações pendentes
+  configure              Reescreve .cursor/cli.json com defaults seguros
 
-Examples:
-  node scripts/auto-approve.js all
-  node scripts/auto-approve.js config
-  node scripts/auto-approve.js approve approval-123
-  node scripts/auto-approve.js status
-    `);
-    process.exit(1);
+Flags:
+  --force                Ignora validações (usar apenas com registro manual da revisão)
+
+Variáveis de ambiente:
+  CI_PASSED              Deve ser 'true' após pipeline verde
+  AUTO_APPROVE_BRANCHES  Lista de branches permitidas (separadas por vírgula)
+  AUTO_APPROVE_OVERRIDE  Use 'true' apenas em incidentes para liberar auto-approve
+`);
 }
 
-console.log('✅ Auto-approve concluído!\n');
-process.exit(0);
+(function main() {
+  fs.mkdirSync(CURSOR_REVIEW_LOGS_DIR, { recursive: true });
+  fs.mkdirSync(AUDIT_LOG_DIR, { recursive: true });
+
+  switch (COMMAND) {
+    case 'all': {
+      approveAll();
+      break;
+    }
+    case 'approve': {
+      const target = COMMAND_ARGS[0];
+      if (!target) {
+        console.error('❌ Informe o ID de aprovação.');
+        showUsage();
+        process.exit(1);
+      }
+      approveSingle(target);
+      break;
+    }
+    case 'status': {
+      listStatus();
+      break;
+    }
+    case 'configure': {
+      guardConfig();
+      break;
+    }
+    default: {
+      showUsage();
+      process.exit(1);
+    }
+  }
+})();

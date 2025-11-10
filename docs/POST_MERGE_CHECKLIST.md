@@ -8,6 +8,17 @@ Validar automaticamente após cada merge para garantir qualidade e estabilidade.
 
 ## 📋 Checklist Automática (GitHub Actions)
 
+### Checks obrigatórios no GitHub
+
+- `CI / Lint`
+- `CI / Type Check`
+- `CI / Unit Tests`
+- `CI / Format Check`
+- `CI / Coverage & Reports`
+- `Vercel Preview Deploy / Deploy Preview`
+
+Todos os itens acima devem estar verdes antes do merge. Configure branch protection para exigir esses checks e bloquear merges sem aprovação humana.
+
 ### 1. Validação de Build ✅
 
 ```yaml
@@ -188,57 +199,66 @@ Validar automaticamente após cada merge para garantir qualidade e estabilidade.
 
 ```yaml
 # .github/workflows/post-merge-validation.yml
-name: Post-Merge Validation
+name: Post Merge Validation
 
 on:
-  push:
-    branches: [main, develop]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'
 
 jobs:
-  validate:
+  nightly-validation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
           version: 9
-
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: 'pnpm'
-
+          node-version: 20
+          cache: pnpm
       - name: Install dependencies
-        run: pnpm -w install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
+      - name: Security audit
+        run: pnpm run audit
+      - name: Full validation
+        run: pnpm run validate:full
 
-      - name: Build Validation
-        run: pnpm -w run build
-
-      - name: Test Validation
-        run: pnpm -w run test
-
-      - name: Lint Validation
-        run: pnpm -w run lint
-
-      - name: TypeScript Validation
-        run: pnpm -w run typecheck
-
-      - name: Security Scan
-        run: pnpm audit --audit-level=moderate || true
-
-      - name: Notify on Failure
-        if: failure()
-        uses: actions/github-script@v7
+  contract-tests:
+    needs: nightly-validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
         with:
-          script: |
-            github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `🚨 Post-Merge Validation Failed - ${context.sha.substring(0, 7)}`,
-              body: `Validation failed after merge to \`${context.ref}\`\n\nCommit: ${context.sha}\n\nPlease review and fix.`,
-              labels: ['bug', 'validation-failed']
-            });
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+      - name: Start Supabase stack
+        run: supabase start
+      - name: Export Supabase credentials
+        run: |
+          set -eo pipefail
+          STATUS=$(supabase status --json)
+          echo "SUPABASE_URL=http://127.0.0.1:54321" >> $GITHUB_ENV
+          echo "SUPABASE_ANON_KEY=$(echo "$STATUS" | jq -r '.credentials.anon.api_key')" >> $GITHUB_ENV
+          echo "SUPABASE_SERVICE_ROLE_KEY=$(echo "$STATUS" | jq -r '.credentials.service_role.api_key')" >> $GITHUB_ENV
+      - name: Run RLS contract tests
+        env:
+          SUPABASE_URL: ${{ env.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ env.SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ env.SUPABASE_SERVICE_ROLE_KEY }}
+        run: pnpm exec vitest run __tests__/contracts/rls-policies.test.ts --runInBand
+      - name: Stop Supabase stack
+        if: always()
+        run: supabase stop
 ```
 
 ---
@@ -293,7 +313,8 @@ jobs:
 
 ## 📝 Notas
 
-- Checklist roda automaticamente após cada merge em `main` ou `develop`
-- Falhas bloqueiam deploy automático até correção
+- Checklist roda como rotina noturna (`post-merge-validation`) e via acionamento manual (`workflow_dispatch`)
+- Falhas bloqueiam deploy automático até correção e geram auditoria nos logs (`logs/approvals`, `logs/agents`)
 - Métricas são coletadas e armazenadas para análise de tendências
 - Alertas são enviados para Slack/Email (configurável)
+

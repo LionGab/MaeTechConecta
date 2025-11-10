@@ -2168,3 +2168,4 @@ R$ 15k de auditoria previne R$ 50 milhões de multa.
 ---
 
 **⚠️ LEMBRETE FINAL**: Este é um app de **dados sensíveis de saúde de gestantes**. A responsabilidade ética, jurídica e moral é ENORME. Priorize conformidade e segurança acima de features e prazos de mercado. Um vazamento não apenas gera multa - pode arruinar vidas.
+

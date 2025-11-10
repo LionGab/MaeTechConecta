@@ -122,3 +122,4 @@ describe('Gamificação - Níveis e Badges', () => {
     expect(BADGES.every((badge) => badge.id && badge.name && badge.requirement)).toBe(true);
   });
 });
+

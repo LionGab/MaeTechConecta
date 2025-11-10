@@ -148,3 +148,4 @@ Se nada funcionar:
 - Verifique logs: `supabase db push --debug`
 - Abra issue no GitHub
 - Contato: dev@nossa-maternidade.com.br
+

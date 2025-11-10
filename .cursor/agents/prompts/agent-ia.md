@@ -172,7 +172,7 @@ Implemente classificador de risco médico/psicológico:
    - Disparar encaminhamento (CVV 188)
    - Notificar equipe Natália
 
-Edge Function: supabase/functions/risk-classifier/index.ts
+Edge Function: supabase/functions/risk-REDACTED/index.ts
 ```
 
 ---
@@ -253,3 +253,4 @@ const CRISIS_KEYWORDS = {
 - Prompt Engineering Best Practices
 - LLM Safety Guidelines
 - LGPD Compliance para IA
+

@@ -46,3 +46,4 @@ Write-Host "   1. Reinicie o Cursor/VS Code" -ForegroundColor White
 Write-Host "   2. Certifique-se de ter as variáveis de ambiente configuradas" -ForegroundColor White
 Write-Host "   3. Execute: npm run mcp:validate" -ForegroundColor White
 Write-Host "`n📖 Para mais informações, veja MCP_SETUP.md" -ForegroundColor Gray
+

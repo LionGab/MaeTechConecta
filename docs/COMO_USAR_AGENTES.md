@@ -498,3 +498,4 @@ Ctrl+I → "Execute o agente de browser automation para navegar por todas as tel
 - ✅ Comandos personalizados aceleram tarefas padronizadas
 - ✅ Validação automática garante qualidade
 - ✅ Workflows organizam processos complexos
+

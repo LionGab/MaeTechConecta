@@ -29,3 +29,4 @@ pnpm run format:check || echo "⚠️  Formatação inconsistente"
 
 echo "✅ Validação local concluída!"
 
+

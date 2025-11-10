@@ -115,3 +115,4 @@ export function TabNavigator() {
     </Tab.Navigator>
   );
 }
+

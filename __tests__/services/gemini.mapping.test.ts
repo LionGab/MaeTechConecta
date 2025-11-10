@@ -17,3 +17,4 @@ describe('Gemini model mapping', () => {
     expect(() => getGeminiEndpointForModel('foo-bar' as any)).toThrow(GeminiError);
   });
 });
+

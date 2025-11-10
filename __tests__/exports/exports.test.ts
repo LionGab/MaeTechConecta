@@ -10,3 +10,4 @@ describe('exports barrel', () => {
     expect(typeof getGeminiEndpointForModel).toBe('function');
   });
 });
+

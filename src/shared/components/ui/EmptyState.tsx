@@ -111,3 +111,4 @@ const BaseEmptyState: React.FC<EmptyStateProps> = ({
 
 export const EmptyState = React.memo(BaseEmptyState);
 EmptyState.displayName = 'EmptyState';
+

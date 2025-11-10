@@ -369,3 +369,4 @@ COMMENT ON TABLE vector_embeddings IS 'Embeddings vetoriais para RAG (memória s
 -- 3. Cole e execute
 -- 4. Verifique se todas as tabelas foram criadas
 -- 5. Teste as políticas RLS
+

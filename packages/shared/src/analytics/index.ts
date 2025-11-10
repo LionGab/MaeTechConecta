@@ -216,3 +216,4 @@ export function setUserProperties(properties: Record<string, unknown>) {
     console.error('Failed to set user properties:', error);
   }
 }
+

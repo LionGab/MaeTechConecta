@@ -84,3 +84,4 @@ if (-not $supabaseInstalled) {
 Write-Host ""
 Write-Host "Instalacao concluida!" -ForegroundColor Green
 
+

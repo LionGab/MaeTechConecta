@@ -113,3 +113,4 @@ if (failed === 0) {
   console.log('💡 Revisar erros acima para mais detalhes.\n');
   process.exit(0); // Exit 0 mesmo com falhas (não bloquear)
 }
+

@@ -409,3 +409,4 @@ async function ensureAuthenticatedUser(expectedUserId?: string): Promise<void> {
     throw new Error('userId diferente do usuário autenticado');
   }
 }
+

@@ -35,7 +35,7 @@
 - [x] Todas as 7 Edge Functions documentadas:
   - `nathia-chat`
   - `moderation-service`
-  - `risk-classifier`
+  - `risk-REDACTED`
   - `behavior-analysis`
   - `lgpd-requests`
   - `transcribe-audio`
@@ -129,3 +129,4 @@ Projeto consolidado com:
 - ✅ Infraestrutura de produção (CI/CD + Testes + Deploy)
 - ✅ Documentação completa
 - ✅ Pronto para produção
+

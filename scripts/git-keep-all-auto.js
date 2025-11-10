@@ -138,3 +138,4 @@ if (keepResult.success) {
   console.error('❌ Git Keep All Auto falhou!\n');
   process.exit(1);
 }
+

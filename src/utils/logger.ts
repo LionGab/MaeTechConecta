@@ -212,3 +212,4 @@ class Logger {
 
 // Singleton instance
 export const logger = new Logger(__DEV__ ? LogLevel.DEBUG : LogLevel.INFO);
+

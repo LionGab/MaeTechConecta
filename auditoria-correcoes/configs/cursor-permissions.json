@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "description": "Permissões Cursor - Bloqueio de arquivos sensíveis",
+  "permissions": {
+    "blocked_patterns": [
+      "**/.env*",
+      "**/supabase/secrets/**",
+      "**/eas.json",
+      "**/app.json",
+      "**/package.json",
+      "**/pnpm-lock.yaml",
+      "**/.cursor/**"
+    ],
+    "require_approval_for": [
+      "write",
+      "delete",
+      "shell"
+    ]
+  }
+}
+

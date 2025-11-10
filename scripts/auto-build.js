@@ -70,7 +70,7 @@ function deployFunctions() {
     const functions = [
       'nathia-chat',
       'moderation-service',
-      'risk-classifier',
+      'risk-REDACTED',
       'behavior-analysis',
       'lgpd-requests',
       'transcribe-audio',
@@ -166,3 +166,4 @@ Flags automáticos aplicados:
 
 console.log('\n✅ Build automático concluído!\n');
 process.exit(0);
+

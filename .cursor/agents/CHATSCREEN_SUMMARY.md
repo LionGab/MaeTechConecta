@@ -313,3 +313,4 @@ Implementar retry + logging + offline desde o início:
 **Tempo total:** ~2 horas com Multi-Agent
 **Tempo sem Multi-Agent:** Estimado 16+ horas
 **Ganho de velocidade:** **8x** 🚀
+

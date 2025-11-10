@@ -22,7 +22,7 @@
 │  ┌──────────────────────────────────────────────────────┐  │
 │  │              Edge Functions (Deno)                    │  │
 │  │  - nathia-chat     - nat-ai-chat                     │  │
-│  │  - risk-classifier - moderation-service              │  │
+│  │  - risk-REDACTED - moderation-service              │  │
 │  │  - transcribe-audio - behavior-analysis              │  │
 │  └──────────────────────────────────────────────────────┘  │
 │                                                              │
@@ -171,3 +171,4 @@ Response → App
 - **CI/CD**: GitHub Actions
 - **Build**: EAS Build
 - **Monorepo**: pnpm + Turborepo
+

@@ -105,3 +105,4 @@ COMMENT ON COLUMN conversations.embedding IS 'Embedding vetorial de 768 dimensõ
 COMMENT ON FUNCTION match_conversations IS 'Busca conversas relevantes usando similaridade vetorial (cosine similarity)';
 COMMENT ON FUNCTION delete_old_conversations IS 'Remove conversas com mais de 30 dias para manter base de dados otimizada';
 
+

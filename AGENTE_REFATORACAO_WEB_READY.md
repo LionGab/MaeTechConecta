@@ -62,3 +62,4 @@ Relatório salvo em: `.cursor/agents/reports/refactor-web-report.md`
 ---
 
 **Pronto para uso!** 🎉
+

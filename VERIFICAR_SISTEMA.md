@@ -191,3 +191,4 @@ npm run test
 2. Execute scripts de validação
 3. Teste o app manualmente
 4. Verifique logs e erros
+

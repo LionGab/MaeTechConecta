@@ -484,3 +484,4 @@ WHERE table_schema = 'public'
     'curated_content',
     'user_saved_content'
   );
+

@@ -49,3 +49,4 @@ WHERE tablename = 'conversations';
 SELECT COUNT(*) as total_conversas
 FROM conversations;
 
+

@@ -42,7 +42,7 @@ SELECT routine_name FROM information_schema.routines WHERE routine_name = 'match
 3. Clique em **Add Secret** ou **New Secret**
 4. Preencha:
    - **Name**: `GEMINI_API_KEY`
-   - **Value**: `AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg`
+   - **Value**: `AIzaREDACTED`
 5. Clique em **Save**
 
 ---
@@ -118,3 +118,4 @@ pnpm dev
 ---
 
 **Tudo pronto! Execute os 3 passos acima e está configurado!** 🎉
+

@@ -1,0 +1,40 @@
+name: EAS Preview
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  preview-android:
+    name: Build Android Preview
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EAS_TOKEN }}
+
+      - name: Build Android Preview
+        run: |
+          cd apps/mobile
+          eas build --platform android --profile preview --non-interactive
+

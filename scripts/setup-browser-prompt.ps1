@@ -142,3 +142,4 @@ Write-Host "   1. Feche e reabra o terminal PowerShell" -ForegroundColor White
 Write-Host "   2. O browser aparecerá no prompt automaticamente" -ForegroundColor White
 Write-Host "   3. Execute 'Get-ActiveBrowser' para ver detalhes" -ForegroundColor White
 Write-Host "`n📖 Para testar agora, execute: . `$PROFILE" -ForegroundColor Gray
+

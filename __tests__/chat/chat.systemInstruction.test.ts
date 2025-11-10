@@ -78,3 +78,4 @@ describe('chat systemInstruction', () => {
     expect(lastCallArgs?.systemInstruction).toBe('Você é a NathIA, acolhedora e segura.');
   });
 });
+

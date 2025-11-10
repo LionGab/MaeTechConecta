@@ -310,3 +310,4 @@ Após completar, você terá:
 **Instruções detalhadas:** `C:\Users\Usuario\Documents\NossaMaternidade\MCP_SERVERS_SETUP.md`
 
 **Status:** 🟡 Aguardando configuração de credenciais (2 passos fáceis!)
+

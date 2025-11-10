@@ -253,3 +253,4 @@ Metro waiting on exp://192.168.x.x:8081
 ---
 
 **🎉 Agora você está pronto para desenvolver com preview sempre visível e hot reload ativo!**
+

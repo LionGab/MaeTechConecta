@@ -62,3 +62,4 @@ appId: com.nossamaternidade.app
 - tapOn: "Sair" # Se existir
 - assertVisible: "Nossa Maternidade"
 - takeScreenshot: "10-logout"
+

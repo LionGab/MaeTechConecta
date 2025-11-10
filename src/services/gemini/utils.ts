@@ -366,3 +366,4 @@ export function parseChallengesResponse(response: GeminiResponseData): Array<{
     cta: typeof item.cta === 'string' ? item.cta : undefined,
   }));
 }
+

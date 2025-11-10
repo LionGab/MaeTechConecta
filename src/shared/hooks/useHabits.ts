@@ -223,3 +223,4 @@ export function useHabits(userId: string | null) {
     refresh: fetchHabits,
   };
 }
+

@@ -81,3 +81,4 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
     </Animated.View>
   );
 };
+

@@ -25,3 +25,4 @@ export const RiskAnalysisSchema = z.object({
 });
 
 export type RiskAnalysis = z.infer<typeof RiskAnalysisSchema>;
+

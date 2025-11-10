@@ -17,3 +17,4 @@ npm run lint --quiet || echo "⚠️  Lint warnings (continuando...)"
 npm run type-check --quiet || echo "⚠️  Type check warnings (continuando...)"
 
 echo "✅ Pre-commit concluído!"
+

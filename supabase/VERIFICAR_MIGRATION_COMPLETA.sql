@@ -91,3 +91,4 @@ SELECT
     ELSE '❌ MIGRATION INCOMPLETA - EXECUTE O ARQUIVO 001_gemini_memory.sql'
   END as status;
 
+

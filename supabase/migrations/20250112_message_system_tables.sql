@@ -450,3 +450,4 @@ BEGIN
   RAISE NOTICE '🔒 RLS habilitado em todas as tabelas';
   RAISE NOTICE '📈 Views criadas: 2 (delivery_stats, recent_events_summary)';
 END $$;
+

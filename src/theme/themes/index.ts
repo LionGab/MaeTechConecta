@@ -79,3 +79,4 @@ export const getThemeColors = (themeName: ThemeName = 'bubblegum', isDark: boole
  * Tema padrão (Bubblegum)
  */
 export const defaultTheme: ThemeName = 'mom-blue';
+

@@ -82,3 +82,4 @@ Write-Host "   4. Feche e reabra o terminal após mudanças" -ForegroundColor Wh
 
 Write-Host ""
 Write-Host "✨ Diagnóstico concluído!" -ForegroundColor Green
+

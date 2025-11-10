@@ -363,3 +363,4 @@ describe('Streak Calculation', () => {
 - **Hooks**: `src/hooks/useHabits.ts`
 - **Components**: `src/components/habits/`
 - **Screen**: `src/app/(tabs)/habitos.tsx`
+

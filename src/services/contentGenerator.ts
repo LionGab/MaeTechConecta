@@ -67,3 +67,4 @@ export const generateExercises = async (pregnancyWeek: number, preferences: stri
   const result = await invokeContentGenerator<any[]>('generateExercises', { pregnancyWeek, preferences });
   return result ?? [];
 };
+

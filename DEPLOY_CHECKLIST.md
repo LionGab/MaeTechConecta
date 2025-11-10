@@ -138,7 +138,7 @@ Abra `.env` e preencha:
 ```env
 # Supabase (OBRIGATÓRIO)
 EXPO_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
-EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+EXPO_PUBLIC_SUPABASE_ANON_KEY=REDACTED_JWT...
 
 # Gemini AI (OBRIGATÓRIO para chat)
 GEMINI_API_KEY=AIzaSy...
@@ -402,3 +402,4 @@ pnpm validate:quick
 
 **Tempo total gasto:** **\_** horas  
 **Status final:** ☐ Completo
+

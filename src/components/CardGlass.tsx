@@ -261,3 +261,4 @@ const styles = StyleSheet.create({
 
 // Memoizar componente
 export const CardGlass = React.memo(CardGlassComponent);
+

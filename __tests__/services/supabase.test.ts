@@ -64,3 +64,4 @@ describe('Supabase Service', () => {
     expect(data).toBeDefined();
   });
 });
+

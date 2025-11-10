@@ -41,3 +41,4 @@ Write-Host "  - Network: Requisições" -ForegroundColor White
 Write-Host "  - Performance: FPS e memória" -ForegroundColor White
 Write-Host "  - Accessibility: Árvore de acessibilidade" -ForegroundColor White
 
+

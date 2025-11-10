@@ -112,3 +112,4 @@ Write-Host ""
 Write-Host "✅ Commit e push concluídos com sucesso!" -ForegroundColor Green
 Write-Host ""
 
+

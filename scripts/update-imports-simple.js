@@ -84,3 +84,4 @@ console.log(`\n✅ Concluído!`);
 console.log(`   Arquivos atualizados: ${totalFiles}`);
 console.log(`   Total de substituições: ${totalReplacements}`);
 console.log(`\n⚠️  Execute 'npm run typecheck' para validar`);
+

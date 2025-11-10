@@ -132,3 +132,4 @@ const BaseGhostButton: React.FC<GhostButtonProps> = ({
 
 export const GhostButton = React.memo(BaseGhostButton);
 GhostButton.displayName = 'GhostButton';
+

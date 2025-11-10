@@ -34,7 +34,7 @@
   - `nathia-chat` - Chat com Gemini 2.0 Flash
   - `moderation-service` - Moderação 3 camadas
   - `behavior-analysis` - Análise de comportamento
-  - `risk-classifier` - Classificação de risco
+  - `risk-REDACTED` - Classificação de risco
   - `lgpd-requests` - Requisições LGPD
   - `transcribe-audio` - Transcrição de áudio
 
@@ -82,3 +82,4 @@ supabase functions logs nathia-chat
 - O projeto está linkado ao Supabase remoto
 - Para desenvolvimento local, é necessário Docker Desktop
 - Para produção, use o Supabase Dashboard ou CLI com projeto linkado
+

@@ -47,7 +47,7 @@ Sistema de personalização inteligente que cria **planos diários** personaliza
 - [x] Gemini API Key (já configurado)
 - [x] Claude API Key (já configurado)
 - [x] **OpenAI API Key** (GPT-4o fallback)
-- [x] **Perplexity API Key:** `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`
+- [x] **Perplexity API Key:** `pplx-REDACTED`
 - [x] Expo Push Notifications configurado
 
 ## 🚀 Instalação
@@ -76,7 +76,7 @@ No **Supabase Dashboard > Settings > Edge Functions**:
 supabase secrets set GEMINI_API_KEY="sua-gemini-key"
 supabase secrets set CLAUDE_API_KEY="sua-claude-key"
 supabase secrets set OPENAI_API_KEY="sua-openai-key"
-supabase secrets set PERPLEXITY_API_KEY="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"
+supabase secrets set PERPLEXITY_API_KEY="pplx-REDACTED"
 supabase secrets set SUPABASE_URL="https://seu-projeto.supabase.co"
 supabase secrets set SUPABASE_SERVICE_ROLE_KEY="sua-service-role-key"
 ```
@@ -546,3 +546,4 @@ Isso permite monitorar a frequência de falhas e tomar ações corretivas.
 **Data:** 11 de Janeiro de 2025
 **Versão:** 1.0.0
 **Atualização (Fallback Multi-API):** 11 de Janeiro de 2025
+

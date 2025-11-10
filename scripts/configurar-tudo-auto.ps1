@@ -8,7 +8,7 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
 # Variaveis
-$GEMINI_API_KEY = "AIzaSyC9YVWRmnGyGu4c9y7g-mNkkipDqb5JBZg"
+$GEMINI_API_KEY = "AIzaREDACTED"
 $SUPABASE_PROJECT_REF = "mnszbkeuerjcevjvdqme"
 $MIGRATION_FILE = "supabase\migrations\001_gemini_memory.sql"
 
@@ -257,3 +257,4 @@ Write-Host "Proximos Passos:" -ForegroundColor Cyan
 Write-Host "  1. Teste o chat no app" -ForegroundColor White
 Write-Host "  2. Verifique logs em: Dashboard > Edge Functions > Logs" -ForegroundColor White
 Write-Host ""
+

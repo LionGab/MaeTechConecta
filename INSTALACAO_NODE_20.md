@@ -158,3 +158,4 @@ Ao final, você deve ver no terminal:
 - pnpm Docs: https://pnpm.io/installation
 - Expo Docs: https://docs.expo.dev/get-started/installation/
 - Expo Go App (iOS): https://apps.apple.com/app/expo-go/id982107779
+

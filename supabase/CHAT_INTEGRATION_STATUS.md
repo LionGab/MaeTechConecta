@@ -98,3 +98,4 @@ Verificar se a tabela `chat_messages` tem as colunas necessárias:
 - Embeddings vetoriais ainda não estão sendo gerados
 - Busca semântica não está sendo usada ainda
 - Tudo está pronto para implementar embeddings quando necessário
+

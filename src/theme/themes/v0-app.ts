@@ -124,3 +124,4 @@ export const v0AppDark = {
  * Export default (light mode)
  */
 export const v0AppColors = v0AppLight;
+

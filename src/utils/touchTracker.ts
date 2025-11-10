@@ -99,3 +99,4 @@ export class TouchTracker {
 
 // Instância singleton para uso global
 export const touchTracker = new TouchTracker();
+

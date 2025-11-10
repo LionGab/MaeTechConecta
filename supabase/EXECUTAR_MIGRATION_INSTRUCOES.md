@@ -61,3 +61,4 @@ Após executar a migration:
 1. ✅ Verificar se tudo foi criado corretamente
 2. ⏳ Testar busca semântica via Edge Function
 3. ⏳ Verificar se embeddings estão sendo salvos
+

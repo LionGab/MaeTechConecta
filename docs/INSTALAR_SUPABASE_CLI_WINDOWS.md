@@ -156,3 +156,4 @@ supabase secrets list
 ---
 
 **Última atualização:** 2025-01-04
+

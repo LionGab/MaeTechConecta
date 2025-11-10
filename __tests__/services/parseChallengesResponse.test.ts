@@ -43,3 +43,4 @@ describe('parseChallengesResponse', () => {
     expect(() => parseChallengesResponse(buildResponse(bad))).toThrow();
   });
 });
+

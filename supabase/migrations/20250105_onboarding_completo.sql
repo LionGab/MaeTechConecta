@@ -199,3 +199,4 @@ COMMENT ON TABLE onboarding_responses IS 'Respostas individuais do onboarding';
 COMMENT ON FUNCTION get_onboarding_context IS 'Gera contexto do onboarding para NathIA usar no chat';
 
 
+

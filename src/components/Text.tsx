@@ -118,3 +118,4 @@ export const H3: React.FC<Omit<TextProps, 'variant'>> = memo((props) => <Text va
 export const Body: React.FC<Omit<TextProps, 'variant'>> = memo((props) => <Text variant="body" {...props} />);
 
 export const Caption: React.FC<Omit<TextProps, 'variant'>> = memo((props) => <Text variant="caption" {...props} />);
+

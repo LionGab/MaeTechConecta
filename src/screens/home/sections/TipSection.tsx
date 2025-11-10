@@ -39,3 +39,4 @@ export const TipSection: React.FC = () => {
 };
 
 TipSection.displayName = 'TipSection';
+

@@ -210,3 +210,4 @@ export const logger = new Logger();
  * // API Error
  * logger.apiError('POST', '/api/chat', error as Error, { userId: '123', statusCode: 500 })
  */
+

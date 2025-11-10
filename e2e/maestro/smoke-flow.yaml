@@ -36,3 +36,4 @@ appId: com.nossamaternidade.app
 - tapOn: "Perfil"
 - assertVisible: "Perfil"
 - takeScreenshot: "profile"
+

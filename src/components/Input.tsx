@@ -248,3 +248,4 @@ const styles = StyleSheet.create({
 
 // Memoizar componente para evitar re-renders desnecessários
 export const Input = React.memo(InputComponent);
+

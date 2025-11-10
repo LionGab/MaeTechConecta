@@ -37,3 +37,4 @@ CREATE POLICY "Users can update own onboarding responses"
   ON onboarding_responses FOR UPDATE
   USING (auth.uid() = user_id);
 
+

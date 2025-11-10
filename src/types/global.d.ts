@@ -19,3 +19,4 @@ declare namespace NodeJS {
 
 declare const process: NodeJS.Process;
 declare const window: Window & typeof globalThis;
+

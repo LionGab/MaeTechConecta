@@ -83,3 +83,4 @@ export function usePosts(category?: string) {
     refresh,
   };
 }
+

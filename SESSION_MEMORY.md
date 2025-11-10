@@ -48,12 +48,12 @@ Montar um **ambiente imbatível** para desenvolvimento de Nossa Maternidade com 
 **Credenciais Fornecidas:**
 
 ```
-Notion:    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
-Linear:    lin_wh_ryHazSPhZzVXqAuGiGNUfeadRHRT6o7AIWHqGB0BxISh
-Sentry:    7c54483e2021e1b7bae427e8940d6992
-GitHub:    bc3737662ae54fe0348592a940a57c55e3c99ca3
+Notion:    **REDACTED**
+Linear:    **REDACTED**
+Sentry:    **REDACTED**
+GitHub:    **REDACTED**
 Supabase:  https://mnszbkeuerjcevjvdqme.supabase.co
-           (ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...)
+           (ANON_KEY: **REDACTED**)
 ```
 
 **Arquivo Compartilhado:**
@@ -231,3 +231,4 @@ Recomendo começar por:
 **Próxima Revisão:** Quando retomar em claude --continue
 
 ✅ **AMBIENTE PRONTO PARA PRÓXIMA FASE**
+

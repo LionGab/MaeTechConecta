@@ -63,3 +63,4 @@
 ---
 
 **Relatório gerado pelo Agente 3 (IA)**
+

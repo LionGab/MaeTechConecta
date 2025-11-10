@@ -18,3 +18,4 @@ BEGIN
   RAISE NOTICE '   - pgcrypto: %', (SELECT installed_version FROM pg_available_extensions WHERE name = 'pgcrypto');
 END $$;
 
+

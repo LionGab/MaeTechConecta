@@ -249,3 +249,4 @@ Verifique se a mensagem não foi bloqueada por safety settings. Tente ajustar `s
 - [Gemini API Docs](https://ai.google.dev/gemini-api/docs)
 - [Pricing](https://ai.google.dev/pricing)
 - [Safety Settings](https://ai.google.dev/gemini-api/docs/safety-settings)
+

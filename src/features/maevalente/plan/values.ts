@@ -13,3 +13,4 @@ export const MAE_VALENTE_SPRINT_IDS = ['retorno-ao-trabalho', 'sono-do-bebe', 'r
 export type MaeValentePillarId = (typeof MAE_VALENTE_PILLAR_IDS)[number];
 export type MaeValenteRitualId = (typeof MAE_VALENTE_RITUAL_IDS)[number];
 export type MaeValenteSprintId = (typeof MAE_VALENTE_SPRINT_IDS)[number];
+

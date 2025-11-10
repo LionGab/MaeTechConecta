@@ -49,3 +49,4 @@ export const debounce = (func: Function, wait: number) => {
     timeout = setTimeout(later, wait);
   };
 };
+

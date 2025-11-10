@@ -430,3 +430,4 @@ const styles = StyleSheet.create({
 
 // Memoizar componente para evitar re-renders desnecessários
 export default React.memo(ContentFeedScreen);
+

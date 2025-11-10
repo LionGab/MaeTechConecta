@@ -569,3 +569,4 @@ npm install tailwindcss@next @tailwindcss/postcss@next
 
 **Última Atualização:** Janeiro 2025
 **Versão Tailwind CSS:** 4.0+
+

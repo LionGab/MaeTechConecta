@@ -24,7 +24,7 @@ Após o projeto ser criado:
 1. Vá em **Settings** → **API**
 2. Copie:
    - **Project URL** (ex: `https://abcdefgh.supabase.co`)
-   - **anon/public key** (ex: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`)
+   - **anon/public key** (ex: `REDACTED_JWT...`)
 
 ### 3️⃣ Configurar .env
 
@@ -32,7 +32,7 @@ Crie/edite `.env` na raiz do projeto:
 
 ```bash
 EXPO_PUBLIC_SUPABASE_URL=https://abcdefgh.supabase.co
-EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+EXPO_PUBLIC_SUPABASE_ANON_KEY=REDACTED_JWT...
 ```
 
 ---
@@ -147,3 +147,4 @@ CREATE EXTENSION IF NOT EXISTS vector;
 ---
 
 **🚀 Happy coding!**
+

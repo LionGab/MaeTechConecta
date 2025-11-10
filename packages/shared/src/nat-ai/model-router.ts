@@ -129,3 +129,4 @@ export const DEFAULT_ROUTING: Partial<Record<TaskType, AIModel>> = {
   research: 'perplexity',
   execution: 'manus',
 };
+

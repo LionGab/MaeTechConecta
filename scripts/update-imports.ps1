@@ -116,3 +116,4 @@ Write-Host "`n✅ Concluído!" -ForegroundColor Green
 Write-Host "   Arquivos atualizados: $totalFiles" -ForegroundColor Cyan
 Write-Host "   Total de substituições: $totalReplacements" -ForegroundColor Cyan
 Write-Host "`n⚠️  Execute 'npm run typecheck' para validar os imports" -ForegroundColor Yellow
+

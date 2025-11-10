@@ -109,3 +109,4 @@ CREATE TRIGGER on_auth_user_created
 - O fluxo atual depende do onboarding para criar perfil
 - Sign in anônimo permite usar app sem perfil completo
 - Recomendado criar trigger automático para garantir perfil sempre existe
+

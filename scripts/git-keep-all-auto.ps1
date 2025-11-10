@@ -66,3 +66,4 @@ Write-Host "   - AUTO_PUSH=true npm run git:keep-all - Para push automático" -F
 Write-Host "   - AUTO_COMMIT=true AUTO_PUSH=true npm run git:keep-all 'mensagem' - Tudo automático" -ForegroundColor White
 Write-Host ""
 
+

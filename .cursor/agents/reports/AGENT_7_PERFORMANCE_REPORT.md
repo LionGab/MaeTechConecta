@@ -382,3 +382,4 @@ useEffect(() => {
 ---
 
 **Performance Geral:** ✅ Bom | ⚠️ Com espaço para otimização
+

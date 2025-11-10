@@ -298,3 +298,4 @@
 
 **Última atualização**: [Data]  
 **Versão**: 1.0.0
+

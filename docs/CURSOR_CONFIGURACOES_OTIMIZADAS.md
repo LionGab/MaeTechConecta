@@ -293,3 +293,4 @@ Ctrl+Shift+R
 **Última atualização**: Janeiro 2025  
 **Versão do Cursor**: 2.0+  
 **Versão da Configuração**: 2.0.0
+

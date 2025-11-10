@@ -396,3 +396,4 @@ export function generateOnboardingInsights(data: OnboardingData): Record<string,
 
   return insights;
 }
+

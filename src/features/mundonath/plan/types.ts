@@ -38,3 +38,4 @@ export interface MundoNathPlan {
   readonly integrations: readonly IntegrationTouchpoint[];
   readonly analytics: readonly AnalyticsNeed[];
 }
+
