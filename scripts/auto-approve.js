@@ -291,3 +291,4 @@ Gates de Segurança:
 
 console.log('✅ Auto-approve seguro concluído!\n');
 process.exit(0);
+

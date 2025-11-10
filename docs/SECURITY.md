@@ -326,3 +326,4 @@ Ver **[CONTRACT_TESTS.md](./CONTRACT_TESTS.md)** para testes de contrato RLS e E
 
 **Última atualização**: 2025-01-XX  
 **Mantido por**: Time Nossa Maternidade
+
