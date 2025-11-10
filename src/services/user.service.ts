@@ -5,6 +5,7 @@
 
 import { supabase, UserProfile } from './supabase';
 import { OnboardingData } from '@/types/onboarding.types';
+import { sanitizeObject, validateProfile } from '@/utils/validation';
 
 export interface UserProfileData {
   id: string;
@@ -23,23 +24,77 @@ export interface UserProfileData {
   updated_at?: string;
 }
 
+function sanitizeStringValue(value?: string | null, maxLength: number = 120): string | undefined {
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return undefined;
+  }
+
+  return trimmed.slice(0, maxLength);
+}
+
+function normalizePreferences(preferences?: string[]): string[] {
+  if (!Array.isArray(preferences)) {
+    return [];
+  }
+
+  return preferences
+    .filter((item) => typeof item === 'string')
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0)
+    .slice(0, 50);
+}
+
+function buildProfilePayload(
+  userId: string,
+  data: Partial<UserProfileData>,
+  context: 'create' | 'update' | 'upsert'
+): Partial<UserProfile> {
+  const payload: Partial<UserProfile> = {
+    id: userId,
+    name: sanitizeStringValue(data.name),
+    email: sanitizeStringValue(data.email)?.toLowerCase(),
+    type:
+      data.maternal_stage ??
+      (context === 'create' || context === 'upsert' ? ('mae' as UserProfile['type']) : undefined),
+    pregnancy_week: data.pregnancy_week,
+    baby_name: sanitizeStringValue(data.baby_name),
+    preferences: normalizePreferences(data.preferences),
+  };
+
+  if (context !== 'update') {
+    payload.subscription_tier = 'free';
+    payload.daily_interactions = 0;
+  }
+
+  payload.last_interaction_date = new Date().toISOString();
+
+  return sanitizeObject(payload, 500);
+}
+
+function stripUndefined<T extends Record<string, unknown>>(input: T): T {
+  const output: Record<string, unknown> = {};
+
+  Object.entries(input).forEach(([key, value]) => {
+    if (value !== undefined) {
+      output[key] = value;
+    }
+  });
+
+  return output as T;
+}
+
 /**
  * Cria perfil inicial do usuário
  */
 export async function createUserProfile(userId: string, data: Partial<UserProfileData>): Promise<UserProfileData> {
   try {
-    const profile: Partial<UserProfile> = {
-      id: userId,
-      name: data.name || '',
-      email: data.email,
-      type: data.maternal_stage || 'mae',
-      pregnancy_week: data.pregnancy_week,
-      baby_name: data.baby_name,
-      preferences: data.preferences || [],
-      subscription_tier: data.subscription_tier || 'free',
-      daily_interactions: 0,
-      last_interaction_date: new Date().toISOString(),
-    };
+    const profile = buildProfilePayload(userId, data, 'create');
+    validateProfile(profile);
 
     const { data: createdProfile, error } = await supabase.from('user_profiles').insert(profile).select().single();
 
@@ -78,15 +133,17 @@ export async function getUserProfile(userId: string): Promise<UserProfileData | 
  */
 export async function updateUserProfile(userId: string, updates: Partial<UserProfileData>): Promise<UserProfileData> {
   try {
-    const { data, error } = await supabase
-      .from('user_profiles')
-      .update({
-        ...updates,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', userId)
-      .select()
-      .single();
+    const profile = buildProfilePayload(userId, updates, 'update');
+    delete profile.subscription_tier;
+    delete profile.daily_interactions;
+    validateProfile({ ...profile, id: userId });
+
+    const payload = stripUndefined({
+      ...profile,
+      updated_at: new Date().toISOString(),
+    });
+
+    const { data, error } = await supabase.from('user_profiles').update(payload).eq('id', userId).select().single();
 
     if (error) throw error;
     return data as UserProfileData;
@@ -101,18 +158,8 @@ export async function updateUserProfile(userId: string, updates: Partial<UserPro
  */
 export async function upsertUserProfile(userId: string, data: Partial<UserProfileData>): Promise<UserProfileData> {
   try {
-    const profile: Partial<UserProfile> = {
-      id: userId,
-      name: data.name,
-      email: data.email,
-      type: data.maternal_stage,
-      pregnancy_week: data.pregnancy_week,
-      baby_name: data.baby_name,
-      preferences: data.preferences || [],
-      subscription_tier: data.subscription_tier || 'free',
-      daily_interactions: data.daily_interactions || 0,
-      last_interaction_date: new Date().toISOString(),
-    };
+    const profile = buildProfilePayload(userId, data, 'upsert');
+    validateProfile(profile);
 
     const { data: upsertedProfile, error } = await supabase
       .from('user_profiles')

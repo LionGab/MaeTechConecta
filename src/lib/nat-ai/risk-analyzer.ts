@@ -5,7 +5,7 @@
  */
 
 import axios from 'axios';
-import { getRiskLevel } from './guardrails';
+import { detectRiskSignals, getRiskLevel } from './guardrails';
 
 const CLAUDE_API_KEY = process.env.EXPO_PUBLIC_CLAUDE_API_KEY || '';
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
@@ -140,88 +140,61 @@ export async function analyzeRisk(message: string): Promise<RiskAnalysis> {
  * Análise de risco usando fallback (regex-based)
  */
 export function fallbackRiskAnalysis(message: string): RiskAnalysis {
-  const lowerMessage = message.toLowerCase();
-  const normalizedMessage = lowerMessage
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
+  const signals = detectRiskSignals(message);
 
   let level = getRiskLevel(message); // Usa função dos guardrails
   const flags: string[] = [];
-  const suggestedResources: string[] = [];
+  const resourceSet = new Set<string>();
 
   // Detecção específica de flags
-  if (
-    normalizedMessage.includes('suicidio') ||
-    normalizedMessage.includes('me matar') ||
-    normalizedMessage.includes('quero morrer') ||
-    normalizedMessage.includes('não vale a pena viver')
-  ) {
+  if (signals.suicidalIdeation) {
     flags.push('suicidal_ideation');
     level = Math.max(level, 10);
-    suggestedResources.push('cvv', 'emergency');
+    resourceSet.add('cvv');
+    resourceSet.add('emergency');
   }
 
-  if (
-    normalizedMessage.includes('machucar o bebe') ||
-    normalizedMessage.includes('fazer mal ao bebe') ||
-    normalizedMessage.includes('quero machucar o bebe')
-  ) {
+  if (signals.harmToBaby) {
     flags.push('harm_to_baby');
     level = Math.max(level, 10);
-    suggestedResources.push('emergency', 'caps');
+    resourceSet.add('emergency');
+    resourceSet.add('caps');
   }
 
-  if (
-    normalizedMessage.includes('ouvir vozes') ||
-    normalizedMessage.includes('ver coisas') ||
-    normalizedMessage.includes('delirio')
-  ) {
+  if (signals.psychosis) {
     flags.push('psychosis');
     level = Math.max(level, 9);
-    suggestedResources.push('emergency', 'caps');
+    resourceSet.add('emergency');
+    resourceSet.add('caps');
   }
 
-  if (
-    normalizedMessage.includes('me cortar') ||
-    normalizedMessage.includes('me machucar') ||
-    normalizedMessage.includes('auto-agressão')
-  ) {
+  if (signals.selfHarm) {
     flags.push('self_harm');
     level = Math.max(level, 8);
-    suggestedResources.push('cvv', 'therapy');
+    resourceSet.add('cvv');
+    resourceSet.add('therapy');
   }
 
-  if (
-    normalizedMessage.includes('não consigo levantar') ||
-    normalizedMessage.includes('não consigo cuidar do bebe') ||
-    normalizedMessage.includes('não saio da cama')
-  ) {
+  if (signals.severeDepression) {
     flags.push('severe_depression');
     level = Math.max(level, 7);
-    suggestedResources.push('therapy', 'caps');
+    resourceSet.add('therapy');
+    resourceSet.add('caps');
   }
 
-  if (
-    normalizedMessage.includes('depressão pós-parto') ||
-    normalizedMessage.includes('depressao pos parto') ||
-    normalizedMessage.includes('ppd')
-  ) {
+  if (signals.postpartumDepression) {
     flags.push('ppd');
     level = Math.max(level, 6);
-    suggestedResources.push('therapy', 'caps');
+    resourceSet.add('therapy');
+    resourceSet.add('caps');
   }
 
-  if (
-    normalizedMessage.includes('não aguento mais') ||
-    normalizedMessage.includes('sem energia') ||
-    normalizedMessage.includes('exausta')
-  ) {
+  if (signals.burnout || signals.overload) {
     flags.push('burnout');
     level = Math.max(level, 4);
   }
 
-  if (level <= 2) {
+  if (level <= 2 || signals.normalStress) {
     flags.push('normal_stress');
   }
 
@@ -229,7 +202,7 @@ export function fallbackRiskAnalysis(message: string): RiskAnalysis {
     level,
     flags,
     requires_intervention: level >= 7,
-    suggested_resources: suggestedResources.length > 0 ? suggestedResources : [],
+    suggested_resources: resourceSet.size > 0 ? Array.from(resourceSet) : [],
     reasoning: `Análise baseada em detecção de padrões: nível ${level} detectado${flags.length > 0 ? ` com flags: ${flags.join(', ')}` : ''}.`,
   };
 }

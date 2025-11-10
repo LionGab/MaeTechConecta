@@ -204,7 +204,7 @@ export default function HabitsScreen() {
       <View style={styles.container}>
         <View style={styles.header}>
           <SkeletonPresets.Text width="60%" height={32} />
-          <SkeletonPresets.Text width="40%" height={16} style={{ marginTop: spacing.sm }} />
+          <SkeletonPresets.Text width="40%" height={16} style={{ marginTop: theme.spacing.sm }} />
         </View>
         <View style={styles.habitsList}>
           {Array.from({ length: 5 }).map((_, i) => (

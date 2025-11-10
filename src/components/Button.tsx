@@ -1,4 +1,3 @@
-import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
 import React, { useCallback, useMemo } from 'react';
 import {
   ActivityIndicator,
@@ -11,6 +10,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTheme } from '@/contexts/ThemeContext';
 
 // Haptics é opcional - só funciona se expo-haptics estiver instalado
 interface HapticsType {
@@ -102,8 +102,18 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   accessibilityHint,
   ...touchableProps
 }) => {
+  const { colors, spacing, borderRadius, typography, theme } = useTheme();
+
+  const styles = useMemo(
+    () => createStyles({ colors, spacing, borderRadius, typography, shadows: theme.shadows }),
+    [borderRadius, colors, spacing, theme.shadows, typography]
+  );
+
   // Memoizar valores calculados
-  const iconColor = useMemo(() => getIconColor(variant, disabled || loading), [variant, disabled, loading]);
+  const iconColor = useMemo(
+    () => getIconColor({ variant, disabled: disabled || loading, colors }),
+    [colors, disabled, loading, variant]
+  );
   const iconSize = useMemo(() => getIconSize(size), [size]);
 
   // Memoizar estilos do container
@@ -132,7 +142,10 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   );
 
   // Memoizar estilo do wrapper
-  const wrapperStyle = useMemo(() => (fullWidth ? styles.fullWidthWrapper : undefined), [fullWidth]);
+  const wrapperStyle = useMemo(
+    () => (fullWidth ? styles.fullWidthWrapper : undefined),
+    [fullWidth, styles.fullWidthWrapper]
+  );
 
   // Callback para handlePress com haptic feedback
   const handlePress = useCallback(
@@ -188,21 +201,20 @@ const ButtonComponent: React.FC<ButtonProps> = ({
 };
 
 // Helpers para cores e tamanhos
-function getIconColor(variant: ButtonVariant, disabled: boolean): string {
-  if (disabled) return colors.mutedForeground;
+interface IconColorParams {
+  variant: ButtonVariant;
+  disabled: boolean;
+  colors: ReturnType<typeof useTheme>['colors'];
+}
 
-  switch (variant) {
-    case 'primary':
-    case 'destructive':
-      return colors.primaryForeground;
-    case 'secondary':
-      return colors.foreground;
-    case 'outline':
-    case 'ghost':
-      return colors.primary;
-    default:
-      return colors.foreground;
-  }
+function getIconColor({ variant, disabled, colors }: IconColorParams): string {
+  if (disabled) return colors.textMuted;
+
+  if (variant === 'primary' || variant === 'destructive') return colors.textOnPrimary;
+  if (variant === 'secondary') return colors.textPrimary;
+  if (variant === 'outline' || variant === 'ghost') return colors.textPrimary;
+
+  return colors.textPrimary;
 }
 
 function getIconSize(size: ButtonSize): number {
@@ -218,133 +230,143 @@ function getIconSize(size: ButtonSize): number {
   }
 }
 
-const styles = StyleSheet.create({
-  // Base
-  base: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: borderRadius.lg,
-    // Área de toque mínima WCAG: 44x44px
-    minHeight: 44,
-    minWidth: 44,
-  },
+interface StyleParams {
+  colors: ReturnType<typeof useTheme>['colors'];
+  spacing: ReturnType<typeof useTheme>['spacing'];
+  borderRadius: ReturnType<typeof useTheme>['borderRadius'];
+  typography: ReturnType<typeof useTheme>['typography'];
+  shadows: ReturnType<typeof useTheme>['theme']['shadows'];
+}
 
-  baseText: {
-    fontFamily: typography.fontFamily.sans,
-    fontWeight: typography.weights.semibold,
-    textAlign: 'center',
-  },
+function createStyles({ colors, spacing, borderRadius, typography, shadows }: StyleParams) {
+  return StyleSheet.create({
+    // Base
+    base: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: borderRadius.lg,
+      // Área de toque mínima WCAG: 44x44px
+      minHeight: 44,
+      minWidth: 44,
+    },
 
-  content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    baseText: {
+      fontFamily: typography.fontFamily.sans,
+      fontWeight: typography.weights.semibold,
+      textAlign: 'center',
+    },
 
-  fullWidth: {
-    width: '100%',
-  },
+    content: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
 
-  fullWidthWrapper: {
-    width: '100%',
-  },
+    fullWidth: {
+      width: '100%',
+    },
 
-  // Variantes de Container
-  primaryContainer: {
-    backgroundColor: colors.primary,
-    ...shadows.light.md,
-  },
+    fullWidthWrapper: {
+      width: '100%',
+    },
 
-  secondaryContainer: {
-    backgroundColor: colors.secondary,
-    ...shadows.light.sm,
-  },
+    // Variantes de Container
+    primaryContainer: {
+      backgroundColor: colors.primary,
+      ...shadows.md,
+    },
 
-  outlineContainer: {
-    backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: colors.primary,
-  },
+    secondaryContainer: {
+      backgroundColor: colors.secondary,
+      ...shadows.sm,
+    },
 
-  ghostContainer: {
-    backgroundColor: 'transparent',
-  },
+    outlineContainer: {
+      backgroundColor: colors.surfaceSecondary,
+      borderWidth: 2,
+      borderColor: colors.primary,
+    },
 
-  destructiveContainer: {
-    backgroundColor: colors.destructive,
-    ...shadows.light.md,
-  },
+    ghostContainer: {
+      backgroundColor: colors.overlaySoft,
+    },
 
-  disabledContainer: {
-    backgroundColor: colors.muted,
-    opacity: 0.6,
-    ...shadows.light.xs, // Sombra reduzida
-  },
+    destructiveContainer: {
+      backgroundColor: colors.destructive,
+      ...shadows.md,
+    },
 
-  // Variantes de Texto
-  primaryText: {
-    color: colors.primaryForeground,
-  },
+    disabledContainer: {
+      backgroundColor: colors.bgMuted,
+      opacity: 0.65,
+      ...shadows.xs, // Sombra reduzida
+    },
 
-  secondaryText: {
-    color: colors.foreground,
-  },
+    // Variantes de Texto
+    primaryText: {
+      color: colors.textOnPrimary,
+    },
 
-  outlineText: {
-    color: colors.primary,
-  },
+    secondaryText: {
+      color: colors.textPrimary,
+    },
 
-  ghostText: {
-    color: colors.primary,
-  },
+    outlineText: {
+      color: colors.textPrimary,
+    },
 
-  destructiveText: {
-    color: colors.primaryForeground,
-  },
+    ghostText: {
+      color: colors.textPrimary,
+    },
 
-  disabledText: {
-    color: colors.mutedForeground,
-  },
+    destructiveText: {
+      color: colors.textOnPrimary,
+    },
 
-  // Tamanhos de Container
-  smContainer: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-  },
+    disabledText: {
+      color: colors.textMuted,
+    },
 
-  mdContainer: {
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-  },
+    // Tamanhos de Container
+    smContainer: {
+      paddingHorizontal: spacing.md,
+      paddingVertical: spacing.sm,
+    },
 
-  lgContainer: {
-    paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.lg,
-  },
+    mdContainer: {
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.md,
+    },
 
-  // Tamanhos de Texto
-  smText: {
-    fontSize: typography.sizes.sm,
-  },
+    lgContainer: {
+      paddingHorizontal: spacing.xl,
+      paddingVertical: spacing.lg,
+    },
 
-  mdText: {
-    fontSize: typography.sizes.base,
-  },
+    // Tamanhos de Texto
+    smText: {
+      fontSize: typography.sizes.sm,
+    },
 
-  lgText: {
-    fontSize: typography.sizes.lg,
-  },
+    mdText: {
+      fontSize: typography.sizes.base,
+    },
 
-  // Ícones
-  iconLeft: {
-    marginRight: spacing.sm,
-  },
+    lgText: {
+      fontSize: typography.sizes.lg,
+    },
 
-  iconRight: {
-    marginLeft: spacing.sm,
-  },
-});
+    // Ícones
+    iconLeft: {
+      marginRight: spacing.sm,
+    },
+
+    iconRight: {
+      marginLeft: spacing.sm,
+    },
+  });
+}
 
 // Memoizar componente para evitar re-renders desnecessários
 export const Button = React.memo(ButtonComponent);

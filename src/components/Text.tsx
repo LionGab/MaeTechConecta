@@ -4,10 +4,11 @@
  * Todas as variantes tipográficas do design system
  */
 
-import { theme } from '@/constants/theme';
-import { colors, typography } from '@/theme/colors';
-import React, { useMemo } from 'react';
-import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from 'react-native';
+import React, { memo, useMemo } from 'react';
+import { StyleSheet, Text as RNText, type StyleProp, TextProps as RNTextProps, TextStyle } from 'react-native';
+
+import { useTheme } from '@/contexts/ThemeContext';
+import type { Theme } from '@/theme';
 
 export type TextVariant =
   | 'h1'
@@ -28,107 +29,75 @@ export interface TextProps extends RNTextProps {
   /** Cor customizada (override) */
   color?: string;
   /** Estilo customizado */
-  style?: TextStyle;
+  style?: StyleProp<TextStyle>;
 }
 
-const getVariantStyles = (variant: TextVariant): TextStyle => {
+const buildTextStyle = (
+  size: number,
+  weight: NonNullable<TextStyle['fontWeight']>,
+  color: string,
+  lineHeightMultiplier: number
+): TextStyle => ({
+  fontSize: size,
+  fontWeight: weight,
+  lineHeight: Math.round(size * lineHeightMultiplier),
+  color,
+});
+
+function getVariantStyles(variant: TextVariant, colors: Theme['colors'], typography: Theme['typography']): TextStyle {
+  const { sizes, weights, lineHeight } = typography;
+  const textPrimary = colors.textPrimary ?? colors.foreground;
+  const textSecondary = colors.textSecondary ?? colors.mutedForeground;
+
   switch (variant) {
     case 'h1':
-      return {
-        fontSize: typography.sizes['4xl'],
-        fontWeight: typography.weights.bold,
-        lineHeight: typography.sizes['4xl'] * 1.2,
-        color: colors.foreground,
-      };
+      return buildTextStyle(sizes['4xl'], weights.bold, textPrimary, lineHeight.tight);
     case 'h2':
-      return {
-        fontSize: typography.sizes['3xl'],
-        fontWeight: typography.weights.bold,
-        lineHeight: typography.sizes['3xl'] * 1.2,
-        color: colors.foreground,
-      };
+      return buildTextStyle(sizes['3xl'], weights.bold, textPrimary, lineHeight.tight);
     case 'h3':
-      return {
-        fontSize: typography.sizes['2xl'],
-        fontWeight: typography.weights.semibold,
-        lineHeight: typography.sizes['2xl'] * 1.2,
-        color: colors.foreground,
-      };
+      return buildTextStyle(sizes['2xl'], weights.semibold, textPrimary, lineHeight.tight);
     case 'bodyLarge':
-      return {
-        fontSize: typography.sizes.lg,
-        fontWeight: typography.weights.normal,
-        lineHeight: typography.sizes.lg * 1.5,
-        color: colors.foreground,
-      };
+      return buildTextStyle(sizes.lg, weights.normal, textPrimary, lineHeight.normal);
     case 'body':
-      return {
-        fontSize: typography.sizes.base,
-        fontWeight: typography.weights.normal,
-        lineHeight: typography.sizes.base * 1.5,
-        color: colors.foreground,
-      };
+      return buildTextStyle(sizes.base, weights.normal, textPrimary, lineHeight.normal);
     case 'bodySmall':
-      return {
-        fontSize: typography.sizes.sm,
-        fontWeight: typography.weights.normal,
-        lineHeight: typography.sizes.sm * 1.5,
-        color: colors.foreground,
-      };
+      return buildTextStyle(sizes.sm, weights.normal, textPrimary, lineHeight.normal);
     case 'caption':
-      return {
-        fontSize: typography.sizes.xs,
-        fontWeight: typography.weights.normal,
-        lineHeight: typography.sizes.xs * 1.5,
-        color: colors.mutedForeground,
-      };
+      return buildTextStyle(sizes.xs, weights.medium, textSecondary, lineHeight.tight);
     case 'label':
-      return {
-        fontSize: typography.sizes.sm,
-        fontWeight: typography.weights.medium,
-        lineHeight: typography.sizes.sm * 1.5,
-        color: colors.foreground,
-      };
+      return buildTextStyle(sizes.sm, weights.medium, textPrimary, lineHeight.normal);
     case 'error':
-      return {
-        fontSize: typography.sizes.sm,
-        fontWeight: typography.weights.medium,
-        lineHeight: typography.sizes.sm * 1.5,
-        color: colors.destructive,
-      };
+      return buildTextStyle(sizes.sm, weights.medium, colors.destructive, lineHeight.normal);
     case 'success':
-      return {
-        fontSize: typography.sizes.sm,
-        fontWeight: typography.weights.medium,
-        lineHeight: typography.sizes.sm * 1.5,
-        color: theme.colors.success,
-      };
+      return buildTextStyle(sizes.sm, weights.medium, colors.success, lineHeight.normal);
     case 'warning':
-      return {
-        fontSize: typography.sizes.sm,
-        fontWeight: typography.weights.medium,
-        lineHeight: typography.sizes.sm * 1.5,
-        color: theme.colors.warning,
-      };
+      return buildTextStyle(sizes.sm, weights.medium, colors.warning, lineHeight.normal);
     default:
-      return {
-        fontSize: typography.sizes.base,
-        fontWeight: typography.weights.normal,
-        lineHeight: typography.sizes.base * 1.5,
-        color: colors.foreground,
-      };
+      return buildTextStyle(sizes.base, weights.normal, textPrimary, lineHeight.normal);
   }
-};
+}
 
-export const Text: React.FC<TextProps> = ({ variant = 'body', color, style, children, ...props }) => {
-  // Memoizar estilos da variante
-  const variantStyles = useMemo(() => getVariantStyles(variant), [variant]);
+const TextComponent: React.FC<TextProps> = ({ variant = 'body', color, style, children, ...props }) => {
+  const { typography, colors } = useTheme();
 
-  // Memoizar estilo final
-  const finalStyle = useMemo(
-    () => [styles.base, variantStyles, color ? { color } : null, style].filter(Boolean) as TextStyle[],
-    [variantStyles, color, style]
+  const baseStyle = useMemo<TextStyle>(
+    () => ({
+      fontFamily: typography.fontFamily.sans,
+    }),
+    [typography.fontFamily.sans]
   );
+
+  const variantStyles = useMemo<TextStyle>(
+    () => getVariantStyles(variant, colors, typography),
+    [variant, colors, typography]
+  );
+
+  const finalStyle = useMemo<TextStyle>(() => {
+    const composed: StyleProp<TextStyle> = [baseStyle, variantStyles, color ? { color } : undefined, style];
+
+    const flattened = StyleSheet.flatten(composed);
+    return (flattened ?? baseStyle) as TextStyle;
+  }, [baseStyle, variantStyles, color, style]);
 
   return (
     <RNText style={finalStyle} {...props}>
@@ -137,19 +106,15 @@ export const Text: React.FC<TextProps> = ({ variant = 'body', color, style, chil
   );
 };
 
-const styles = StyleSheet.create({
-  base: {
-    fontFamily: typography.fontFamily.sans,
-  },
-});
+export const Text = memo(TextComponent);
 
 // Exportar variantes como componentes separados para conveniência
-export const H1: React.FC<Omit<TextProps, 'variant'>> = (props) => <Text variant="h1" {...props} />;
+export const H1: React.FC<Omit<TextProps, 'variant'>> = memo((props) => <Text variant="h1" {...props} />);
 
-export const H2: React.FC<Omit<TextProps, 'variant'>> = (props) => <Text variant="h2" {...props} />;
+export const H2: React.FC<Omit<TextProps, 'variant'>> = memo((props) => <Text variant="h2" {...props} />);
 
-export const H3: React.FC<Omit<TextProps, 'variant'>> = (props) => <Text variant="h3" {...props} />;
+export const H3: React.FC<Omit<TextProps, 'variant'>> = memo((props) => <Text variant="h3" {...props} />);
 
-export const Body: React.FC<Omit<TextProps, 'variant'>> = (props) => <Text variant="body" {...props} />;
+export const Body: React.FC<Omit<TextProps, 'variant'>> = memo((props) => <Text variant="body" {...props} />);
 
-export const Caption: React.FC<Omit<TextProps, 'variant'>> = (props) => <Text variant="caption" {...props} />;
+export const Caption: React.FC<Omit<TextProps, 'variant'>> = memo((props) => <Text variant="caption" {...props} />);

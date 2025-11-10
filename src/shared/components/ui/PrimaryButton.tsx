@@ -8,6 +8,7 @@ import {
   TextStyle,
   View,
   ViewStyle,
+  type GestureResponderEvent,
 } from 'react-native';
 
 import useThemeStyles from '@/shared/hooks/useThemeStyles';
@@ -81,13 +82,16 @@ const BasePrimaryButton: React.FC<PrimaryButtonProps> = ({
     [disabled, makeStyles, text]
   );
 
-  const handlePress = useCallback(() => {
-    // Evita múltiplos disparos enquanto o botão está desabilitado ou carregando.
-    if (disabled || loading) {
-      return;
-    }
-    onPress?.();
-  }, [disabled, loading, onPress]);
+  const handlePress = useCallback(
+    (event: GestureResponderEvent) => {
+      // Evita múltiplos disparos enquanto o botão está desabilitado ou carregando.
+      if (disabled || loading) {
+        return;
+      }
+      onPress?.(event);
+    },
+    [disabled, loading, onPress]
+  );
 
   return (
     <Pressable

@@ -1,137 +1,124 @@
 /**
- * Testes: Cálculo de Streak
- *
- * Testa lógica de cálculo de sequências consecutivas
+ * Testes reais para utilitários de gamificação
  */
 
-import { describe, it, expect } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-// Função helper para calcular streak
-function calculateStreak(
-  lastCompletedDate: Date | null,
-  todayDate: Date
-): { current_streak: number; is_consecutive: boolean } {
-  if (!lastCompletedDate) {
-    return { current_streak: 1, is_consecutive: false };
-  }
+import {
+  calculatePoints,
+  calculateStreakFromDates,
+  formatPoints,
+  formatStreak,
+  getNewlyUnlockedBadges,
+  getStreakMultiplier,
+} from '../../src/shared/lib/gamification';
+import { BADGES, calculateLevel } from '../../src/shared/types/gamification.types';
 
-  const yesterday = new Date(todayDate);
-  yesterday.setDate(yesterday.getDate() - 1);
-  yesterday.setHours(0, 0, 0, 0);
+describe('Gamificação - Streak', () => {
+  const today = new Date('2025-01-08T08:00:00Z');
 
-  const lastCompleted = new Date(lastCompletedDate);
-  lastCompleted.setHours(0, 0, 0, 0);
-
-  const isConsecutive = lastCompleted.getTime() === yesterday.getTime();
-
-  return {
-    current_streak: isConsecutive ? 2 : 1, // Simplified - real implementation adds to existing
-    is_consecutive: isConsecutive,
-  };
-}
-
-describe('Streak Calculation', () => {
-  it('should start streak at 1 when no previous completion', () => {
-    const result = calculateStreak(null, new Date('2025-01-08'));
-
-    expect(result.current_streak).toBe(1);
-    expect(result.is_consecutive).toBe(false);
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(today);
   });
 
-  it('should increment streak when consecutive (completed yesterday)', () => {
-    const yesterday = new Date('2025-01-07');
-    const today = new Date('2025-01-08');
-
-    const result = calculateStreak(yesterday, today);
-
-    expect(result.current_streak).toBe(2);
-    expect(result.is_consecutive).toBe(true);
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
-  it('should reset streak when not consecutive (skipped days)', () => {
-    const twoDaysAgo = new Date('2025-01-06');
-    const today = new Date('2025-01-08');
-
-    const result = calculateStreak(twoDaysAgo, today);
-
-    expect(result.current_streak).toBe(1);
-    expect(result.is_consecutive).toBe(false);
+  it('deve retornar 0 quando não há completions', () => {
+    expect(calculateStreakFromDates([])).toBe(0);
   });
 
-  it('should handle same day completion (no increment)', () => {
-    const today = new Date('2025-01-08');
+  it('deve contar streak contínuo até hoje', () => {
+    const completions = [
+      new Date('2025-01-08T01:00:00Z'),
+      new Date('2025-01-07T09:00:00Z'),
+      new Date('2025-01-06T20:00:00Z'),
+    ];
 
-    const result = calculateStreak(today, today);
-
-    expect(result.current_streak).toBe(1);
-    expect(result.is_consecutive).toBe(false);
+    expect(calculateStreakFromDates(completions)).toBe(3);
   });
 
-  it('should handle date boundaries correctly', () => {
-    // 23:59 yesterday and 00:01 today should be consecutive
-    const yesterday = new Date('2025-01-07T23:59:00');
-    const today = new Date('2025-01-08T00:01:00');
+  it('deve quebrar streak quando última data é anterior a ontem', () => {
+    const completions = [new Date('2025-01-05T10:00:00Z')];
 
-    const result = calculateStreak(yesterday, today);
+    expect(calculateStreakFromDates(completions)).toBe(0);
+  });
 
-    expect(result.is_consecutive).toBe(true);
+  it('deve respeitar limites de fuso horário', () => {
+    const completions = [new Date('2025-01-07T23:59:59-03:00'), new Date('2025-01-08T00:01:00-03:00')];
+
+    expect(calculateStreakFromDates(completions)).toBe(2);
   });
 });
 
-describe('Level Calculation', () => {
-  function calculateLevel(points: number): number {
-    return Math.floor(points / 100) + 1;
-  }
-
-  it('should be level 1 with 0-99 points', () => {
-    expect(calculateLevel(0)).toBe(1);
-    expect(calculateLevel(50)).toBe(1);
-    expect(calculateLevel(99)).toBe(1);
+describe('Gamificação - Pontos e Multiplicadores', () => {
+  it('deve calcular pontos com multiplicador padrão', () => {
+    expect(calculatePoints(5)).toBe(50);
   });
 
-  it('should be level 2 with 100-199 points', () => {
-    expect(calculateLevel(100)).toBe(2);
-    expect(calculateLevel(150)).toBe(2);
-    expect(calculateLevel(199)).toBe(2);
+  it('deve aplicar multiplicador customizado', () => {
+    expect(calculatePoints(5, 10, 1.5)).toBe(75);
   });
 
-  it('should be level 10 with 900-999 points', () => {
-    expect(calculateLevel(900)).toBe(10);
-    expect(calculateLevel(950)).toBe(10);
-    expect(calculateLevel(999)).toBe(10);
+  it('deve aplicar multiplicadores de streak corretamente', () => {
+    expect(getStreakMultiplier(0)).toBe(1);
+    expect(getStreakMultiplier(5)).toBeCloseTo(1.1);
+    expect(getStreakMultiplier(15)).toBeCloseTo(1.2);
+    expect(getStreakMultiplier(45)).toBeCloseTo(1.3);
+    expect(getStreakMultiplier(80)).toBeCloseTo(2);
   });
 
-  it('should handle large point values', () => {
-    expect(calculateLevel(10000)).toBe(101);
+  it('deve formatar pontos para exibição', () => {
+    expect(formatPoints(500)).toBe('500');
+    expect(formatPoints(2500)).toBe('2.5K');
+    expect(formatPoints(1200000)).toBe('1.2M');
+  });
+
+  it('deve formatar streaks para exibição', () => {
+    expect(formatStreak(0)).toBe('Nenhum');
+    expect(formatStreak(1)).toBe('1 dia');
+    expect(formatStreak(7)).toBe('7 dias');
   });
 });
 
-describe('Daily Tip Non-Repetition', () => {
-  // Função para verificar se dica não repete nos últimos 7 dias
-  function canUseTip(tipId: string, recentTipIds: string[]): boolean {
-    return !recentTipIds.includes(tipId);
-  }
-
-  it('should allow tip not used in last 7 days', () => {
-    const recentTips = ['tip1', 'tip2', 'tip3'];
-
-    expect(canUseTip('tip4', recentTips)).toBe(true);
+describe('Gamificação - Níveis e Badges', () => {
+  it('deve determinar nível com base nos pontos', () => {
+    expect(calculateLevel(0).level).toBe(1);
+    expect(calculateLevel(150).level).toBe(2);
+    expect(calculateLevel(1200).level).toBe(5);
+    expect(calculateLevel(60000).level).toBe(10);
   });
 
-  it('should block tip used in last 7 days', () => {
-    const recentTips = ['tip1', 'tip2', 'tip3'];
+  it('deve desbloquear badges novos', () => {
+    const stats = {
+      current_streak: 8,
+      total_points: 1500,
+      level: calculateLevel(1500).level,
+      habits_completed: 120,
+    };
 
-    expect(canUseTip('tip2', recentTips)).toBe(false);
+    const unlocked = getNewlyUnlockedBadges(['first_habit'], stats);
+
+    expect(unlocked.map((badge) => badge.id)).toEqual(expect.arrayContaining(['streak_7', 'points_1000', 'level_5']));
   });
 
-  it('should handle empty recent tips', () => {
-    expect(canUseTip('tip1', [])).toBe(true);
+  it('não deve duplicar badges já desbloqueados', () => {
+    const stats = {
+      current_streak: 10,
+      total_points: 5000,
+      level: calculateLevel(5000).level,
+      habits_completed: 500,
+    };
+
+    const unlocked = getNewlyUnlockedBadges(['streak_7', 'points_1000'], stats);
+
+    expect(unlocked.some((badge) => ['streak_7', 'points_1000'].includes(badge.id))).toBe(false);
   });
 
-  it('should be case sensitive', () => {
-    const recentTips = ['Tip1', 'Tip2'];
-
-    expect(canUseTip('tip1', recentTips)).toBe(true);
-    expect(canUseTip('Tip1', recentTips)).toBe(false);
+  it('deve manter catálogo de badges sincronizado', () => {
+    expect(BADGES.length).toBeGreaterThan(0);
+    expect(BADGES.every((badge) => badge.id && badge.name && badge.requirement)).toBe(true);
   });
 });

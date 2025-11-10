@@ -59,7 +59,7 @@ const BaseSurfaceCard: React.FC<React.PropsWithChildren<SurfaceCardProps>> = ({
         // Usa estado pressed para comunicar interação sem perder a sombra.
         style={({ pressed }) => [styles.container, elevationStyle, pressed ? styles.pressFeedback : null, style]}
         accessibilityRole="button"
-        accessibilityState={{ disabled: false, pressed: false }}
+        accessibilityState={{ disabled: false }}
         accessible
         hitSlop={space('sm')}
       >

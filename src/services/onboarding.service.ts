@@ -5,6 +5,7 @@
  */
 
 import { supabase, UserProfile } from './supabase';
+import { sanitizeObject, validateProfile } from '@/utils/validation';
 import {
   OnboardingData,
   OnboardingQuestion,
@@ -29,16 +30,25 @@ export async function saveOnboardingResponse(
   value: string | string[] | number
 ): Promise<void> {
   try {
+    const sanitizedValue = Array.isArray(value)
+      ? value
+          .filter((item): item is string => typeof item === 'string')
+          .map((item) => item.trim())
+          .filter((item) => item.length > 0)
+      : typeof value === 'string'
+        ? value.trim()
+        : value;
+
     const response: OnboardingResponse = {
       questionId,
-      value,
+      value: sanitizedValue,
       timestamp: new Date().toISOString(),
     };
 
     const { error } = await supabase.from('onboarding_responses').upsert({
       user_id: userId,
       question_id: questionId,
-      response_value: value,
+      response_value: sanitizedValue,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     });
@@ -65,24 +75,29 @@ export async function saveOnboardingData(userId: string, data: Partial<Onboardin
       return stage as 'gestante' | 'mae' | 'tentante';
     };
 
-    const profile: Partial<UserProfile> = {
-      id: userId,
-      name: data.name || '',
-      type: mapMaternalStageToType(data.maternal_stage),
-      pregnancy_week: data.pregnancy_week,
-      baby_name: data.baby_name,
-      preferences: data.content_preferences || [],
-      subscription_tier: 'free',
-      daily_interactions: 0,
-      last_interaction_date: new Date().toISOString(),
-    };
+    const profile: Partial<UserProfile> = sanitizeObject(
+      {
+        id: userId,
+        name: data.name || '',
+        type: mapMaternalStageToType(data.maternal_stage),
+        pregnancy_week: data.pregnancy_week,
+        baby_name: data.baby_name,
+        preferences: data.content_preferences || [],
+        subscription_tier: 'free',
+        daily_interactions: 0,
+        last_interaction_date: new Date().toISOString(),
+      },
+      500
+    );
+
+    validateProfile(profile);
 
     const { error: profileError } = await supabase.from('user_profiles').upsert(profile, { onConflict: 'id' });
 
     if (profileError) throw profileError;
 
     // Salvar dados emocionais e situacionais em tabela separada
-    const { error: onboardingError } = await supabase.from('onboarding_data').upsert(
+    const onboardingPayload = sanitizeObject(
       {
         user_id: userId,
         emotional_state: data.emotional_state,
@@ -105,8 +120,12 @@ export async function saveOnboardingData(userId: string, data: Partial<Onboardin
         completed_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       },
-      { onConflict: 'user_id' }
+      1000
     );
+
+    const { error: onboardingError } = await supabase
+      .from('onboarding_data')
+      .upsert(onboardingPayload, { onConflict: 'user_id' });
 
     if (onboardingError) throw onboardingError;
 

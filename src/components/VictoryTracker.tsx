@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, type DimensionValue } from 'react-native';
 
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -45,7 +45,7 @@ export const VictoryTracker: React.FC<VictoryTrackerProps> = React.memo(({ items
 
       {items.map((item) => {
         const progress = Math.min(item.achieved / item.goal, 1);
-        const widthPercentage = `${progress * 100}%`;
+        const widthPercentage: DimensionValue = `${Math.round(progress * 100)}%`;
 
         return (
           <View key={item.label} style={styles.item} accessibilityRole="adjustable" accessibilityLabel={item.label}>

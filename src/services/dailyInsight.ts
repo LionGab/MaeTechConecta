@@ -110,13 +110,23 @@ export async function generateDailyInsight(userId: string, forceRegenerate = fal
  */
 export async function markInsightAsViewed(insightId: string): Promise<void> {
   try {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+
+    if (error || !user) {
+      throw new Error('Usuário não autenticado');
+    }
+
     await supabase
       .from('daily_insights')
       .update({
         viewed: true,
         viewed_at: new Date().toISOString(),
       })
-      .eq('id', insightId);
+      .eq('id', insightId)
+      .eq('user_id', user.id);
   } catch (error) {
     console.error('[DailyInsight] Error marking as viewed:', error);
   }

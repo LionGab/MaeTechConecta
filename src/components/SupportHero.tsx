@@ -40,8 +40,8 @@ export const SupportHero: React.FC<SupportHeroProps> = React.memo(
     );
 
     const titleStyle = useMemo(
-      () => [styles.title, typography.heading1, { color: colors.onPrimary }],
-      [colors.onPrimary, typography.heading1]
+      () => [styles.title, typography.display, { color: colors.onPrimary }],
+      [colors.onPrimary, typography.display]
     );
 
     const subtitleStyle = useMemo(

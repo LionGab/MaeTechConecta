@@ -4,11 +4,12 @@ import { View } from 'react-native';
 import { PersonalizedContentCard } from '@/components/PersonalizedContentCard';
 import { SectionHeader, SurfaceCard } from '@/shared/components';
 import useThemeStyles from '@/shared/hooks/useThemeStyles';
+import type { PersonalizedContent } from '@/hooks/usePersonalizedContent';
 
 interface PersonalizedContentSectionProps {
-  items: any[];
+  items: readonly PersonalizedContent[];
   isDark: boolean;
-  onTrack: (item: any) => void;
+  onTrack: (contentId: string, type: 'view' | 'like' | 'save' | 'share') => Promise<void>;
 }
 
 export const PersonalizedContentSection: React.FC<PersonalizedContentSectionProps> = ({ items, isDark, onTrack }) => {

@@ -102,3 +102,5 @@ export function useThemeStyles(): ThemeHelpers {
     makeStyles,
   };
 }
+
+export default useThemeStyles;

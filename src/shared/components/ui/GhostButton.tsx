@@ -1,5 +1,14 @@
 import React, { useCallback, useMemo } from 'react';
-import { Pressable, PressableProps, StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
+import {
+  Pressable,
+  PressableProps,
+  StyleProp,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle,
+  type GestureResponderEvent,
+} from 'react-native';
 
 import useThemeStyles from '@/shared/hooks/useThemeStyles';
 
@@ -69,13 +78,16 @@ const BaseGhostButton: React.FC<GhostButtonProps> = ({
     [disabled, makeStyles, text]
   );
 
-  const handlePress = useCallback(() => {
-    // Ignora interações quando o botão está desabilitado.
-    if (disabled) {
-      return;
-    }
-    onPress?.();
-  }, [disabled, onPress]);
+  const handlePress = useCallback(
+    (event: GestureResponderEvent) => {
+      // Ignora interações quando o botão está desabilitado.
+      if (disabled) {
+        return;
+      }
+      onPress?.(event);
+    },
+    [disabled, onPress]
+  );
 
   return (
     <Pressable

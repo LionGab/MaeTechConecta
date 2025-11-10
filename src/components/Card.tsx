@@ -1,7 +1,8 @@
-import { borderRadius, colors, shadows, spacing, typography } from '@/theme/colors';
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTheme } from '@/contexts/ThemeContext';
+import type { ThemeSpacingToken } from '@/theme';
 
 /**
  * Card Component - Sistema de Design Bubblegum
@@ -65,7 +66,7 @@ export interface CardProps {
   accessibilityHint?: string;
 
   /** Padding customizado (sobrescreve padrão) */
-  padding?: keyof typeof spacing;
+  padding?: ThemeSpacingToken;
 }
 
 const CardComponent: React.FC<CardProps> = ({
@@ -73,7 +74,7 @@ const CardComponent: React.FC<CardProps> = ({
   title,
   subtitle,
   icon,
-  iconColor = colors.primary,
+  iconColor,
   variant = 'elevated',
   onPress,
   style,
@@ -83,10 +84,18 @@ const CardComponent: React.FC<CardProps> = ({
   accessibilityHint,
   padding = 'lg',
 }) => {
+  const { colors, spacing, borderRadius, typography, theme } = useTheme();
+
+  const styles = useMemo(
+    () => createStyles({ colors, spacing, borderRadius, typography, shadows: theme.shadows }),
+    [borderRadius, colors, spacing, theme.shadows, typography]
+  );
+
+  const resolvedIconColor = iconColor ?? colors.primary;
   // Memoizar estilo do container
   const containerStyle = useMemo(
     () => [styles.base, styles[variant], { padding: spacing[padding] }, style],
-    [variant, padding, style]
+    [padding, style, styles, variant]
   );
 
   // Memoizar props de acessibilidade
@@ -112,7 +121,7 @@ const CardComponent: React.FC<CardProps> = ({
         {/* Header com título e ícone */}
         {(title || icon) && (
           <View style={styles.header}>
-            {icon && <Icon name={icon} size={24} color={iconColor} style={styles.headerIcon} />}
+            {icon && <Icon name={icon} size={24} color={resolvedIconColor} style={styles.headerIcon} />}
             <View style={styles.headerText}>
               {title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
               {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
@@ -131,7 +140,7 @@ const CardComponent: React.FC<CardProps> = ({
       {/* Header com título e ícone */}
       {(title || icon) && (
         <View style={styles.header}>
-          {icon && <Icon name={icon} size={24} color={iconColor} style={styles.headerIcon} />}
+          {icon && <Icon name={icon} size={24} color={resolvedIconColor} style={styles.headerIcon} />}
           <View style={styles.headerText}>
             {title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
             {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
@@ -145,61 +154,73 @@ const CardComponent: React.FC<CardProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  base: {
-    borderRadius: borderRadius.lg,
-    backgroundColor: colors.card,
-    overflow: 'hidden',
-  },
+type ThemeContextValue = ReturnType<typeof useTheme>;
 
-  // Variantes
-  elevated: {
-    ...shadows.light.md,
-  },
+interface StyleParams {
+  colors: ThemeContextValue['colors'];
+  spacing: ThemeContextValue['spacing'];
+  borderRadius: ThemeContextValue['borderRadius'];
+  typography: ThemeContextValue['typography'];
+  shadows: ThemeContextValue['theme']['shadows'];
+}
 
-  outlined: {
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
+function createStyles({ colors, spacing, borderRadius, typography, shadows }: StyleParams) {
+  return StyleSheet.create({
+    base: {
+      borderRadius: borderRadius.lg,
+      backgroundColor: colors.surfacePrimary,
+      overflow: 'hidden',
+    },
 
-  flat: {
-    // Sem sombra nem borda
-  },
+    // Variantes
+    elevated: {
+      ...shadows.md,
+    },
 
-  // Header
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
+    outlined: {
+      borderWidth: 1,
+      borderColor: colors.borderPrimary,
+    },
 
-  headerIcon: {
-    marginRight: spacing.sm,
-  },
+    flat: {
+      // Sem sombra nem borda
+    },
 
-  headerText: {
-    flex: 1,
-  },
+    // Header
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: spacing.md,
+    },
 
-  title: {
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.semibold,
-    color: colors.foreground,
-    fontFamily: typography.fontFamily.sans,
-  },
+    headerIcon: {
+      marginRight: spacing.sm,
+    },
 
-  subtitle: {
-    fontSize: typography.sizes.sm,
-    color: colors.mutedForeground,
-    marginTop: spacing.xs,
-    fontFamily: typography.fontFamily.sans,
-  },
+    headerText: {
+      flex: 1,
+    },
 
-  // Conteúdo
-  content: {
-    // Estilos customizados podem ser aplicados via contentStyle prop
-  },
-});
+    title: {
+      fontSize: typography.sizes.lg,
+      fontWeight: typography.weights.semibold,
+      color: colors.textPrimary,
+      fontFamily: typography.fontFamily.sans,
+    },
+
+    subtitle: {
+      fontSize: typography.sizes.sm,
+      color: colors.textSecondary,
+      marginTop: spacing.xs,
+      fontFamily: typography.fontFamily.sans,
+    },
+
+    // Conteúdo
+    content: {
+      // Estilos customizados podem ser aplicados via contentStyle prop
+    },
+  });
+}
 
 // Memoizar componente para evitar re-renders desnecessários
 export const Card = React.memo(CardComponent);

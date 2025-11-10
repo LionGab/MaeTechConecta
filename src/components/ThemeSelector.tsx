@@ -7,15 +7,23 @@
  * <ThemeSelector />
  */
 
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { memo, useMemo } from 'react';
+import { ScrollView, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTheme } from '@/contexts/ThemeContext';
 import { ThemeName } from '@/theme/themes';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export const ThemeSelector: React.FC = () => {
+const ThemeSelectorComponent: React.FC = () => {
   const { themeName, setThemeName, theme } = useTheme();
   const { colors, spacing, borderRadius, typography } = theme;
+  const spacingLg = spacing.lg;
+  const spacingMd = spacing.md;
+  const headingSize = typography.sizes['2xl'];
+  const bodySmSize = typography.sizes.sm;
+  const labelSize = typography.sizes.lg;
+  const boldWeight = typography.weights.bold;
+  const mediumWeight = typography.weights.medium;
+  const sansFont = typography.fontFamily.sans;
 
   const themes: Array<{ name: ThemeName; label: string; description: string }> = [
     {
@@ -30,37 +38,97 @@ export const ThemeSelector: React.FC = () => {
     },
   ];
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Escolher Tema</Text>
-      <Text style={styles.subtitle}>Selecione o tema visual do app</Text>
+  const containerStyle = useMemo<ViewStyle>(
+    () => ({
+      paddingHorizontal: spacingLg,
+      paddingVertical: spacingLg,
+      backgroundColor: colors.background,
+    }),
+    [colors.background, spacingLg]
+  );
 
-      <ScrollView style={styles.themesList}>
+  const titleStyle = useMemo<TextStyle>(
+    () => ({
+      fontSize: headingSize,
+      fontWeight: boldWeight,
+      color: colors.textPrimary ?? colors.foreground,
+    }),
+    [boldWeight, colors.foreground, colors.textPrimary, headingSize]
+  );
+
+  const subtitleStyle = useMemo<TextStyle>(
+    () => ({
+      fontSize: bodySmSize,
+      color: colors.textSecondary ?? colors.mutedForeground,
+      marginBottom: spacingMd,
+    }),
+    [bodySmSize, colors.mutedForeground, colors.textSecondary, spacingMd]
+  );
+
+  const baseCardStyle = useMemo<ViewStyle>(
+    () => ({
+      borderRadius: borderRadius.md,
+      paddingVertical: spacingLg,
+      paddingHorizontal: spacingLg,
+      marginBottom: spacingMd,
+      minHeight: 80,
+      borderWidth: 1,
+    }),
+    [borderRadius.md, spacingLg, spacingMd]
+  );
+
+  const themeLabelBase = useMemo<TextStyle>(
+    () => ({
+      fontSize: labelSize,
+    }),
+    [labelSize]
+  );
+
+  const descriptionBase = useMemo<TextStyle>(
+    () => ({
+      fontSize: bodySmSize,
+    }),
+    [bodySmSize]
+  );
+
+  return (
+    <View style={[styles.container, containerStyle]}>
+      <Text style={titleStyle}>Escolher Tema</Text>
+      <Text style={subtitleStyle}>Selecione o tema visual do app</Text>
+
+      <ScrollView style={styles.themesList} contentContainerStyle={styles.themesListContent}>
         {themes.map((theme) => {
           const isSelected = themeName === theme.name;
+          const primaryColor = typeof colors.primary === 'string' ? colors.primary : (colors.primary[500] ?? '#DD5B9A');
+          const cardColor = typeof colors.card === 'string' ? colors.card : '#FFFFFF';
+          const borderColorDefault = typeof colors.border === 'string' ? colors.border : '#E5E5E5';
+          const foregroundColor = colors.textPrimary ?? colors.foreground;
+          const mutedColor = colors.textSecondary ?? colors.mutedForeground;
+
+          const cardStyle = {
+            ...baseCardStyle,
+            backgroundColor: isSelected ? primaryColor : cardColor,
+            borderColor: isSelected ? primaryColor : borderColorDefault,
+            borderWidth: isSelected ? 2 : 1,
+          };
+
+          const labelStyle = {
+            ...themeLabelBase,
+            color: isSelected ? colors.primaryForeground : foregroundColor,
+            fontWeight: isSelected ? boldWeight : mediumWeight,
+            fontFamily: sansFont,
+          };
+
+          const descriptionStyle = {
+            ...descriptionBase,
+            color: isSelected ? colors.primaryForeground : mutedColor,
+            fontFamily: sansFont,
+          };
+
           return (
             <TouchableOpacity
               key={theme.name}
-              style={[
-                styles.themeCard,
-                {
-                  backgroundColor: isSelected
-                    ? typeof colors.primary === 'string'
-                      ? colors.primary
-                      : colors.primary[500] || '#DD5B9A'
-                    : typeof colors.card === 'string'
-                      ? colors.card
-                      : colors.card || '#FFFFFF',
-                  borderColor: isSelected
-                    ? typeof colors.primary === 'string'
-                      ? colors.primary
-                      : colors.primary[500] || '#DD5B9A'
-                    : typeof colors.border === 'string'
-                      ? colors.border
-                      : colors.border || '#E5E5E5',
-                  borderWidth: isSelected ? 2 : 1,
-                },
-              ]}
+              style={cardStyle}
               onPress={() => setThemeName(theme.name)}
               accessible={true}
               accessibilityRole="button"
@@ -70,27 +138,8 @@ export const ThemeSelector: React.FC = () => {
             >
               <View style={styles.themeContent}>
                 <View style={styles.themeInfo}>
-                  <Text
-                    style={[
-                      styles.themeLabel,
-                      {
-                        color: isSelected ? colors.primaryForeground : colors.foreground,
-                        fontWeight: isSelected ? typography.weights.bold : typography.weights.medium,
-                      },
-                    ]}
-                  >
-                    {theme.label}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.themeDescription,
-                      {
-                        color: isSelected ? colors.primaryForeground : colors.mutedForeground,
-                      },
-                    ]}
-                  >
-                    {theme.description}
-                  </Text>
+                  <Text style={labelStyle}>{theme.label}</Text>
+                  <Text style={descriptionStyle}>{theme.description}</Text>
                 </View>
 
                 {isSelected && (
@@ -105,28 +154,15 @@ export const ThemeSelector: React.FC = () => {
   );
 };
 
+export const ThemeSelector = memo(ThemeSelectorComponent);
+
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 14,
-    opacity: 0.7,
-    marginBottom: 24,
-  },
+  container: {},
   themesList: {
     flex: 1,
   },
-  themeCard: {
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    minHeight: 80,
+  themesListContent: {
+    paddingBottom: 24,
   },
   themeContent: {
     flexDirection: 'row',
@@ -135,13 +171,6 @@ const styles = StyleSheet.create({
   },
   themeInfo: {
     flex: 1,
-  },
-  themeLabel: {
-    fontSize: 18,
-    marginBottom: 4,
-  },
-  themeDescription: {
-    fontSize: 14,
   },
   checkIcon: {
     marginLeft: 12,

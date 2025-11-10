@@ -1,5 +1,14 @@
 import React, { useCallback, useMemo } from 'react';
-import { Pressable, PressableProps, StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
+import {
+  Pressable,
+  PressableProps,
+  StyleProp,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle,
+  type GestureResponderEvent,
+} from 'react-native';
 
 import useThemeStyles from '@/shared/hooks/useThemeStyles';
 
@@ -66,13 +75,16 @@ const BasePillChip: React.FC<PillChipProps> = ({
     [disabled, makeStyles, selected, text]
   );
 
-  const handlePress = useCallback(() => {
-    // Evita alterar filtros quando chip estiver inativo.
-    if (disabled) {
-      return;
-    }
-    onPress?.();
-  }, [disabled, onPress]);
+  const handlePress = useCallback(
+    (event: GestureResponderEvent) => {
+      // Evita alterar filtros quando chip estiver inativo.
+      if (disabled) {
+        return;
+      }
+      onPress?.(event);
+    },
+    [disabled, onPress]
+  );
 
   return (
     <Pressable

@@ -4,14 +4,15 @@ import { Text, View } from 'react-native';
 import { PlanoDoDia } from '@/components/PlanoDoDia';
 import { PillChip, SectionHeader, SurfaceCard } from '@/shared/components';
 import useThemeStyles from '@/shared/hooks/useThemeStyles';
+import type { MessagePlan, PlanItem } from '@/services/personalization';
 
 interface PlanSectionProps {
-  items: any[];
-  rationale?: string | null;
+  items: PlanItem[];
+  rationale?: MessagePlan['rationale'];
   isLoading: boolean;
   isReplanning: boolean;
   onWhyThisPressed: () => void;
-  onItemCtaPressed: (item: any) => void;
+  onItemCtaPressed: (item: PlanItem) => void;
   onReplan: () => void;
 }
 

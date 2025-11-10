@@ -4,7 +4,6 @@
  */
 
 import { supabase } from './supabase';
-import { SUPABASE_CONFIG } from '@/config/api';
 
 // =====================================================
 // TYPES
@@ -86,22 +85,20 @@ export interface ContentCatalog {
  * await ingestEvent(userId, 'mood_update', { mood: 4, energy: 3 });
  */
 export async function ingestEvent(userId: string, kind: string, payload: Record<string, any>): Promise<Event> {
-  const response = await fetch(`${SUPABASE_CONFIG.URL}/functions/v1/ingest-event`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${SUPABASE_CONFIG.ANON_KEY}`,
-    },
-    body: JSON.stringify({ userId, kind, payload }),
-  });
+  await ensureAuthenticatedUser(userId);
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to ingest event');
+  const { data, error } = await supabase.functions.invoke<{ event: Event; success: boolean; error?: string }>(
+    'ingest-event',
+    {
+      body: { userId, kind, payload },
+    }
+  );
+
+  if (error || data?.error) {
+    throw new Error(data?.error || error?.message || 'Failed to ingest event');
   }
 
-  const data = await response.json();
-  return data.event;
+  return data?.event;
 }
 
 // =====================================================
@@ -122,6 +119,8 @@ export async function ingestEvent(userId: string, kind: string, payload: Record<
  * }
  */
 export async function getPlanoDoDia(userId: string, date?: string): Promise<MessagePlan | null> {
+  await ensureAuthenticatedUser(userId);
+
   const planDate = date || new Date().toISOString().split('T')[0];
 
   const { data, error } = await supabase
@@ -153,27 +152,24 @@ export async function getPlanoDoDia(userId: string, date?: string): Promise<Mess
  * console.log('Novo plano criado:', newPlan.id);
  */
 export async function replanToday(userId: string): Promise<MessagePlan> {
-  // Registrar evento de replanejamento
+  await ensureAuthenticatedUser(userId);
+
   await ingestEvent(userId, 'plan_requested', {
     requested_at: new Date().toISOString(),
   });
 
-  // Chamar plan-daily para este usuário
-  const response = await fetch(`${SUPABASE_CONFIG.URL}/functions/v1/plan-daily`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${SUPABASE_CONFIG.ANON_KEY}`,
-    },
-    body: JSON.stringify({ userId, forceRegenerate: true }),
+  const { error, data } = await supabase.functions.invoke<{
+    success: boolean;
+    plan_date: string;
+    error?: string;
+  }>('plan-daily', {
+    body: { forceRegenerate: true },
   });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to replan');
+  if (error || data?.error || !data?.success) {
+    throw new Error(data?.error || error?.message || 'Failed to replan');
   }
 
-  // Buscar plano recém-criado
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const planDate = tomorrow.toISOString().split('T')[0];
@@ -203,6 +199,8 @@ export async function updateFrequencyCap(userId: string, cap: number): Promise<v
   if (cap < 0 || cap > 10) {
     throw new Error('Frequency cap must be between 0 and 10');
   }
+
+  await ensureAuthenticatedUser(userId);
 
   const { error } = await supabase.from('user_profiles').update({ frequency_cap: cap }).eq('id', userId);
 
@@ -235,6 +233,8 @@ export async function updateFrequencyCap(userId: string, cap: number): Promise<v
  * }
  */
 export async function getLatestSignal(userId: string): Promise<Signal | null> {
+  await ensureAuthenticatedUser(userId);
+
   const { data, error } = await supabase
     .from('signals')
     .select('*')
@@ -293,7 +293,19 @@ export async function getCuratedContent(tags: string[], limit = 10): Promise<Con
  * await markDeliveryAsOpened(deliveryId);
  */
 export async function markDeliveryAsOpened(deliveryId: string): Promise<void> {
-  const { error } = await supabase.from('message_deliveries').update({ opened: true }).eq('id', deliveryId);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error('Usuário não autenticado');
+  }
+
+  const { error } = await supabase
+    .from('message_deliveries')
+    .update({ opened: true })
+    .eq('id', deliveryId)
+    .eq('user_id', user.id);
 
   if (error) {
     throw error;
@@ -313,7 +325,19 @@ export async function markDeliveryAsOpened(deliveryId: string): Promise<void> {
  * await markDeliveryAsClicked(deliveryId);
  */
 export async function markDeliveryAsClicked(deliveryId: string): Promise<void> {
-  const { error } = await supabase.from('message_deliveries').update({ clicked: true }).eq('id', deliveryId);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error('Usuário não autenticado');
+  }
+
+  const { error } = await supabase
+    .from('message_deliveries')
+    .update({ clicked: true })
+    .eq('id', deliveryId)
+    .eq('user_id', user.id);
 
   if (error) {
     throw error;
@@ -355,20 +379,33 @@ export interface InferPreferencesResponse {
  * console.log('Atualizações realizadas:', result.updated_count);
  */
 export async function inferUserPreferences(userId: string): Promise<InferPreferencesResponse> {
-  const response = await fetch(`${SUPABASE_CONFIG.URL}/functions/v1/infer-preferences`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${SUPABASE_CONFIG.ANON_KEY}`,
-    },
-    body: JSON.stringify({ userId }),
-  });
+  await ensureAuthenticatedUser(userId);
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to infer preferences');
+  const { data, error } = await supabase.functions.invoke<InferPreferencesResponse & { error?: string }>(
+    'infer-preferences',
+    {
+      body: { userId },
+    }
+  );
+
+  if (error || data?.error) {
+    throw new Error(data?.error || error?.message || 'Failed to infer preferences');
   }
 
-  const data = await response.json();
   return data;
+}
+
+async function ensureAuthenticatedUser(expectedUserId?: string): Promise<void> {
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    throw new Error('Usuário não autenticado');
+  }
+
+  if (expectedUserId && user.id !== expectedUserId) {
+    throw new Error('userId diferente do usuário autenticado');
+  }
 }

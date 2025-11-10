@@ -26,13 +26,12 @@ export default function App() {
   }, []);
 
   // Performance: Memoize error handler para evitar recriação em cada render
-  const handleError = useMemo(
-    () => (error: Error, errorInfo: React.ErrorInfo) => {
+  const handleError = useMemo(() => {
+    return (error: Error, errorInfo: React.ErrorInfo) => {
       console.error('Erro capturado pelo ErrorBoundary:', error, errorInfo);
       // Sentry capturará automaticamente se inicializado
-    },
-    []
-  );
+    };
+  }, []);
 
   return (
     <ErrorBoundary onError={handleError}>

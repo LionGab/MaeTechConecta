@@ -97,6 +97,43 @@ export const FORBIDDEN_TOPICS: string[] = [
   'bebê não mexeu',
 ];
 
+const FORBIDDEN_TOPICS_NORMALIZED = FORBIDDEN_TOPICS.map((topic) => normalizeString(topic));
+
+const MEDICAL_INDICATORS = [
+  'remedio',
+  'remédio',
+  'medicamento',
+  'medicação',
+  'comprimido',
+  'pílula',
+  'cápsula',
+  'gota',
+  'gotas',
+  'dose',
+  'dosagem',
+  'posologia',
+  'receita',
+  'prescrição',
+  'antibiotico',
+  'antibiótico',
+  'antiinflamatorio',
+  'anti-inflamatório',
+  'analgésico',
+  'ansiolitico',
+  'ansiolítico',
+  'antidepressivo',
+  'dipirona',
+  'ibuprofeno',
+  'paracetamol',
+  'ranitidina',
+  'omeprazol',
+];
+
+const MEDICAL_INDICATORS_NORMALIZED = MEDICAL_INDICATORS.map((indicator) => normalizeString(indicator));
+
+const MEDICAL_VERBS = ['tomar', 'usar', 'aplicar', 'administrar', 'prescrever', 'indicar', 'recomendar', 'sugerir'];
+const MEDICAL_VERBS_NORMALIZED = MEDICAL_VERBS.map((verb) => normalizeString(verb));
+
 /**
  * Palavras-chave de risco - sinais de crise emocional ou perigo
  */
@@ -146,30 +183,91 @@ export const RISK_KEYWORDS: string[] = [
   'não tenho forças para cuidar',
 ];
 
+const RISK_KEYWORDS_NORMALIZED = RISK_KEYWORDS.map((keyword) => normalizeString(keyword));
+
+const SUICIDAL_PATTERNS = [
+  'suicidio',
+  'suicida',
+  'me matar',
+  'quero morrer',
+  'vou morrer',
+  'não vale a pena viver',
+  'acabar com tudo',
+  'não aguento mais viver',
+].map((pattern) => normalizeString(pattern));
+
+const HARM_TO_BABY_PATTERNS = [
+  'machucar o bebê',
+  'machucar o bebe',
+  'fazer mal ao bebê',
+  'fazer mal ao bebe',
+  'quero machucar o bebê',
+  'quero machucar o bebe',
+  'tenho vontade de machucar',
+].map((pattern) => normalizeString(pattern));
+
+const PSYCHOSIS_PATTERNS = [
+  'ouvir vozes',
+  'ouço vozes',
+  'ver coisas',
+  'vejo coisas',
+  'não é real',
+  'delirio',
+  'delírio',
+].map((pattern) => normalizeString(pattern));
+
+const SEVERE_DEPRESSION_PATTERNS = [
+  'não consigo levantar',
+  'não saio da cama',
+  'não consigo cuidar do bebê',
+  'não consigo cuidar do bebe',
+  'não me importo mais',
+  'nada importa',
+].map((pattern) => normalizeString(pattern));
+
+const OVERLOAD_PATTERNS = ['não aguento mais', 'não tenho forças', 'sem energia', 'exausta'].map((pattern) =>
+  normalizeString(pattern)
+);
+
+const ANXIETY_PATTERNS = ['muito ansiosa', 'pânico', 'panico', 'ataque de pânico', 'ataque de panico'].map((pattern) =>
+  normalizeString(pattern)
+);
+
+const SELF_HARM_PATTERNS = ['me cortar', 'me machucar', 'autoagressao', 'auto-agressão', 'auto agressao'].map(
+  (pattern) => normalizeString(pattern)
+);
+
+const PPD_PATTERNS = ['depressão pós-parto', 'depressao pos parto', 'ppd'].map((pattern) => normalizeString(pattern));
+const BURNOUT_PATTERNS = ['não aguento mais', 'sem energia', 'exausta'].map((pattern) => normalizeString(pattern));
+const NORMAL_STRESS_PATTERNS = ['desabafo', 'cansada', 'preciso desabafar'].map((pattern) => normalizeString(pattern));
+
 /**
  * Verifica se a mensagem contém tópicos proibidos (conselhos médicos)
  */
 export function containsForbiddenTopic(message: string): boolean {
-  const lowerMessage = message.toLowerCase();
-  const normalizedMessage = normalizeString(lowerMessage);
+  const normalizedMessage = normalizeString(message);
+  const normalizedTokens = new Set(normalizedMessage.split(' '));
 
-  return FORBIDDEN_TOPICS.some((topic) => {
-    const normalizedTopic = normalizeString(topic.toLowerCase());
-    return normalizedMessage.includes(normalizedTopic);
-  });
+  if (FORBIDDEN_TOPICS_NORMALIZED.some((topic) => normalizedMessage.includes(topic))) {
+    return true;
+  }
+
+  const hasMedicalVerb = MEDICAL_VERBS_NORMALIZED.some((verb) => normalizedTokens.has(verb));
+  if (!hasMedicalVerb) {
+    return false;
+  }
+
+  const hasMedicalIndicator = MEDICAL_INDICATORS_NORMALIZED.some((indicator) => normalizedMessage.includes(indicator));
+  return hasMedicalIndicator;
 }
 
 /**
  * Verifica se a mensagem contém palavras-chave de risco
  */
 export function containsRiskKeywords(message: string): boolean {
-  const lowerMessage = message.toLowerCase();
-  const normalizedMessage = normalizeString(lowerMessage);
+  const normalizedMessage = normalizeString(message);
 
-  return RISK_KEYWORDS.some((keyword) => {
-    const normalizedKeyword = normalizeString(keyword.toLowerCase());
-    return normalizedMessage.includes(normalizedKeyword);
-  });
+  return RISK_KEYWORDS_NORMALIZED.some((keyword) => normalizedMessage.includes(keyword));
 }
 
 /**
@@ -182,80 +280,88 @@ export function containsRiskKeywords(message: string): boolean {
  * 9-10: CRISE - requer intervenção imediata
  */
 export function getRiskLevel(message: string): number {
-  const lowerMessage = message.toLowerCase();
-  const normalizedMessage = normalizeString(lowerMessage);
-
+  const signals = detectRiskSignals(message);
   let riskLevel = 0;
 
   // Ideação suicida ou pensamentos de morte
-  if (
-    normalizedMessage.includes('suicidio') ||
-    normalizedMessage.includes('me matar') ||
-    normalizedMessage.includes('quero morrer') ||
-    normalizedMessage.includes('não vale a pena viver') ||
-    normalizedMessage.includes('acabar com tudo')
-  ) {
+  if (signals.suicidalIdeation) {
     riskLevel = Math.max(riskLevel, 10);
   }
 
   // Pensamentos de machucar o bebê
-  if (
-    normalizedMessage.includes('machucar o bebe') ||
-    normalizedMessage.includes('fazer mal ao bebe') ||
-    normalizedMessage.includes('quero machucar o bebe')
-  ) {
+  if (signals.harmToBaby) {
     riskLevel = Math.max(riskLevel, 10);
   }
 
   // Psicose ou alucinações
-  if (
-    normalizedMessage.includes('ouvir vozes') ||
-    normalizedMessage.includes('ver coisas') ||
-    normalizedMessage.includes('delirio')
-  ) {
+  if (signals.psychosis) {
     riskLevel = Math.max(riskLevel, 9);
   }
 
   // Depressão severa
-  if (
-    normalizedMessage.includes('não consigo levantar') ||
-    normalizedMessage.includes('não consigo cuidar do bebe') ||
-    normalizedMessage.includes('não saio da cama')
-  ) {
+  if (signals.severeDepression) {
     riskLevel = Math.max(riskLevel, 8);
   }
 
   // Estresse elevado / sobrecarga
-  if (
-    normalizedMessage.includes('não aguento mais') ||
-    normalizedMessage.includes('não tenho forças') ||
-    normalizedMessage.includes('sem energia') ||
-    normalizedMessage.includes('exausta')
-  ) {
+  if (signals.overload) {
     riskLevel = Math.max(riskLevel, 5);
   }
 
   // Ansiedade / preocupação
-  if (
-    normalizedMessage.includes('muito ansiosa') ||
-    normalizedMessage.includes('pânico') ||
-    normalizedMessage.includes('ataque de panico')
-  ) {
+  if (signals.anxiety) {
     riskLevel = Math.max(riskLevel, 4);
   }
 
   return Math.min(riskLevel, 10);
 }
 
+export interface RiskSignals {
+  suicidalIdeation: boolean;
+  harmToBaby: boolean;
+  psychosis: boolean;
+  selfHarm: boolean;
+  severeDepression: boolean;
+  postpartumDepression: boolean;
+  burnout: boolean;
+  overload: boolean;
+  anxiety: boolean;
+  normalStress: boolean;
+}
+
+export function detectRiskSignals(message: string): RiskSignals {
+  const normalizedMessage = normalizeString(message);
+
+  return {
+    suicidalIdeation: matchesAny(normalizedMessage, SUICIDAL_PATTERNS),
+    harmToBaby: matchesAny(normalizedMessage, HARM_TO_BABY_PATTERNS),
+    psychosis: matchesAny(normalizedMessage, PSYCHOSIS_PATTERNS),
+    selfHarm: matchesAny(normalizedMessage, SELF_HARM_PATTERNS),
+    severeDepression: matchesAny(normalizedMessage, SEVERE_DEPRESSION_PATTERNS),
+    postpartumDepression: matchesAny(normalizedMessage, PPD_PATTERNS),
+    burnout: matchesAny(normalizedMessage, BURNOUT_PATTERNS),
+    overload: matchesAny(normalizedMessage, OVERLOAD_PATTERNS),
+    anxiety: matchesAny(normalizedMessage, ANXIETY_PATTERNS),
+    normalStress: matchesAny(normalizedMessage, NORMAL_STRESS_PATTERNS),
+  };
+}
+
 /**
  * Normaliza string removendo acentos e caracteres especiais
  * para melhor detecção de variações
  */
-function normalizeString(str: string): string {
+export function normalizeString(str: string): string {
   return str
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '') // Remove acentos
-    .toLowerCase();
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function matchesAny(text: string, patterns: string[]): boolean {
+  return patterns.some((pattern) => pattern.length > 0 && text.includes(pattern));
 }
 
 /**

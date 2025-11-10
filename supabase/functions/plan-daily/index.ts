@@ -42,15 +42,65 @@ serve(async (req) => {
   }
 
   try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY');
+
+    if (!supabaseUrl || !supabaseServiceKey) {
+      throw new Error('Supabase env vars não configuradas');
+    }
+
+    const authHeader = req.headers.get('Authorization');
+    let authUserId: string | null = null;
+
+    if (authHeader) {
+      if (!supabaseAnonKey) {
+        throw new Error('SUPABASE_ANON_KEY não configurada');
+      }
+
+      const authClient = createClient(supabaseUrl, supabaseAnonKey, {
+        global: { headers: { Authorization: authHeader } },
+      });
+
+      const token = authHeader.replace('Bearer ', '');
+      const {
+        data: { user },
+        error: authError,
+      } = await authClient.auth.getUser(token);
+
+      if (authError || !user) {
+        return new Response(JSON.stringify({ error: 'Invalid token' }), {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      authUserId = user.id;
+    }
+
     const {
-      userId: singleUserId,
+      userId: rawSingleUserId,
       forceRegenerate = false,
       planDate: requestedPlanDate,
     }: PlanDailyRequest = await req.json();
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    if (!authUserId && rawSingleUserId) {
+      return new Response(JSON.stringify({ error: 'Authorization required for single user planning' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (authUserId && rawSingleUserId && rawSingleUserId !== authUserId) {
+      return new Response(JSON.stringify({ error: 'userId mismatch' }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const singleUserId = authUserId ?? rawSingleUserId;
+
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     if (requestedPlanDate && !/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(requestedPlanDate)) {
       return new Response(JSON.stringify({ error: 'Invalid planDate format' }), {

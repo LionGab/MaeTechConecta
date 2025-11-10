@@ -5,7 +5,7 @@
  * Adaptado para maternidade com foco em acolhimento visual
  */
 
-import { light, dark, shadows, typography, spacing, borderRadius } from '@/theme/colors';
+import { light, dark, shadows, typography, spacing, borderRadius, gradients } from '@/theme/colors';
 
 /**
  * Cores expandidas do tema
@@ -14,6 +14,7 @@ export const theme = {
   colors: {
     // Tema completo do light (base)
     ...light,
+    gradients,
 
     // Primárias (Rosa maternal do tema Bubblegum) - Escalas
     primaryScale: {
@@ -75,6 +76,7 @@ export const theme = {
   // Dark mode colors
   dark: {
     ...dark,
+    gradients,
     primary: {
       50: '#2D2426',
       100: '#3A3032',

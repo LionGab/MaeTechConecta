@@ -110,11 +110,24 @@ export class ContextManager {
    */
   private async loadOrCreateConversation() {
     if (this.conversationId) {
-      const { data } = await supabase.from('conversation_history').select('*').eq('id', this.conversationId).single();
+      const { data, error } = await supabase
+        .from('conversation_history')
+        .select('*')
+        .eq('id', this.conversationId)
+        .eq('user_id', this.userId)
+        .single();
 
-      if (data) {
+      if (error) {
+        console.warn('[ContextManager] Conversa informada não encontrada ou não pertence ao usuário', {
+          conversationId: this.conversationId,
+          userId: this.userId,
+          error,
+        });
+      } else if (data) {
         return data;
       }
+
+      this.conversationId = null;
     }
 
     // Criar nova conversa
@@ -143,6 +156,7 @@ export class ContextManager {
       .from('chat_messages')
       .select('*')
       .eq('user_id', this.userId)
+      .eq('conversation_id', conversationId)
       .order('created_at', { ascending: false })
       .limit(limit * 2); // Carregar mais para ter certeza
 
@@ -165,7 +179,13 @@ export class ContextManager {
         });
 
         // Procurar resposta correspondente
-        const response = messages.find((m) => m.role === 'assistant' && m.created_at > msg.created_at && m.response);
+        const response = messages.find(
+          (m) =>
+            m.role === 'assistant' &&
+            m.conversation_id === conversationId &&
+            m.created_at > msg.created_at &&
+            m.response
+        );
         if (response && response.response) {
           formattedMessages.push({
             id: response.id,
@@ -204,6 +224,7 @@ export class ContextManager {
         .from('chat_messages')
         .select('*')
         .eq('user_id', this.userId)
+        .eq('conversation_id', conversation.id)
         .order('created_at', { ascending: false })
         .range(30, 99); // Mensagens 31-100
 
@@ -216,7 +237,11 @@ export class ContextManager {
         const summary = await summarizeOldMessages(messagesToSummarize, NAT_AI_SYSTEM_PROMPT);
 
         // Salvar resumo na conversa
-        await supabase.from('conversation_history').update({ context_summary: summary }).eq('id', conversation.id);
+        await supabase
+          .from('conversation_history')
+          .update({ context_summary: summary })
+          .eq('id', conversation.id)
+          .eq('user_id', this.userId);
 
         this.cachedSummary = summary;
         this.lastSummaryCount = recentMessages.length;
@@ -283,6 +308,7 @@ export class ContextManager {
       .from('chat_messages')
       .select('*')
       .eq('user_id', this.userId)
+      .eq('conversation_id', this.conversationId)
       .order('created_at', { ascending: false });
 
     if (!messages || messages.length <= 50) {
@@ -294,6 +320,7 @@ export class ContextManager {
       .from('conversation_history')
       .select('context_summary, updated_at')
       .eq('id', this.conversationId)
+      .eq('user_id', this.userId)
       .single();
 
     if (conversation?.context_summary) {
@@ -323,7 +350,8 @@ export class ContextManager {
           context_summary: summary,
           updated_at: new Date().toISOString(),
         })
-        .eq('id', this.conversationId);
+        .eq('id', this.conversationId)
+        .eq('user_id', this.userId);
 
       this.cachedSummary = summary;
       this.lastSummaryCount = messages.length;

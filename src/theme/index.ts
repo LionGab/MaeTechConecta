@@ -46,8 +46,6 @@ interface ThemeSemanticColors {
   danger: string;
   overlaySoft: string;
   overlayStrong: string;
-  gradientPrimary: [string, string];
-  gradientSecondary: [string, string];
 }
 
 export interface ThemeTypographyVariants {
@@ -62,13 +60,15 @@ export interface ThemeTypographyVariants {
   overline: TextStyle;
 }
 
-export interface ThemeTypography {
+interface ThemeTypographyBase {
   fontFamily: typeof baseTypography.fontFamily;
   sizes: typeof baseTypography.sizes;
   weights: typeof baseTypography.weights;
   lineHeight: typeof baseTypography.lineHeight;
   variants: ThemeTypographyVariants;
 }
+
+export type ThemeTypography = ThemeTypographyBase & ThemeTypographyVariants;
 
 export interface ThemeTokens {
   mode: 'light' | 'dark';
@@ -83,9 +83,9 @@ export interface ThemeTokens {
 }
 
 function buildSemanticColors(palette: Palette, isDark: boolean): ThemeSemanticColors {
-  const success = '#81C784';
-  const warning = '#FFB74D';
-  const info = '#64B5F6';
+  const success = isDark ? '#6EE7B7' : '#2E7D32';
+  const warning = isDark ? '#F6AD55' : '#C05621';
+  const info = isDark ? '#93C5FD' : '#2563EB';
 
   return {
     bgPrimary: palette.background,
@@ -110,8 +110,6 @@ function buildSemanticColors(palette: Palette, isDark: boolean): ThemeSemanticCo
     danger: palette.destructive,
     overlaySoft: overlay.primary,
     overlayStrong: overlay.black,
-    gradientPrimary: gradients.pink,
-    gradientSecondary: gradients.lavender,
   };
 }
 
@@ -182,6 +180,7 @@ function buildTypographyVariants(): ThemeTypographyVariants {
 
 export function createTheme(isDark = false): ThemeTokens {
   const palette = isDark ? dark : light;
+  const variants = buildTypographyVariants();
 
   return {
     mode: isDark ? 'dark' : 'light',
@@ -197,8 +196,9 @@ export function createTheme(isDark = false): ThemeTokens {
       sizes: { ...baseTypography.sizes },
       weights: { ...baseTypography.weights },
       lineHeight: { ...baseTypography.lineHeight },
-      variants: buildTypographyVariants(),
-    },
+      variants,
+      ...variants,
+    } as ThemeTypography,
     shadows: isDark ? { ...shadows.dark } : { ...shadows.light },
     overlay: { ...overlay },
     gradients: { ...gradients },

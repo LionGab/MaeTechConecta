@@ -67,7 +67,7 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
   );
 
   return (
-    <Animated.View style={[animatedStyle, style]}>
+    <Animated.View style={[animatedStyle, style, enhancedPress ? styles.enhanced : null]}>
       <Card {...cardProps} />
     </Animated.View>
   );

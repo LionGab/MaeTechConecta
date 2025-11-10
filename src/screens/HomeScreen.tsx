@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactElement } from 'react';
 import { ScrollView, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
@@ -19,7 +19,7 @@ import { InsightSection } from './home/sections/InsightSection';
 import { TipSection } from './home/sections/TipSection';
 import { FaqSection } from './home/sections/FaqSection';
 
-export default function HomeScreen(): JSX.Element {
+export default function HomeScreen(): ReactElement {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { isDark, theme } = useTheme();
   const { styles, color } = useHomeStyles();

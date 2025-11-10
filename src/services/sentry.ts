@@ -4,15 +4,41 @@
  */
 
 import * as Sentry from '@sentry/react-native';
+import Constants from 'expo-constants';
 
 let isInitialized = false;
+
+function resolveSentryDsn(): string {
+  const extra = Constants.expoConfig?.extra;
+  if (extra && typeof extra === 'object') {
+    const sentryExtra = 'sentry' in extra ? extra.sentry : undefined;
+    if (sentryExtra && typeof sentryExtra === 'object' && sentryExtra !== null && 'dsn' in sentryExtra) {
+      const { dsn } = sentryExtra as { dsn?: unknown };
+      if (typeof dsn === 'string' && dsn.trim().length > 0) {
+        return dsn;
+      }
+    }
+  }
+
+  const expoPublicDsn = process.env.EXPO_PUBLIC_SENTRY_DSN;
+  if (expoPublicDsn && expoPublicDsn.trim().length > 0) {
+    return expoPublicDsn;
+  }
+
+  const genericDsn = process.env.SENTRY_DSN;
+  if (genericDsn && genericDsn.trim().length > 0) {
+    return genericDsn;
+  }
+
+  return '';
+}
 
 export function initSentry() {
   if (isInitialized) {
     return;
   }
 
-  const dsn = process.env.EXPO_PUBLIC_SENTRY_DSN;
+  const dsn = resolveSentryDsn();
 
   if (!dsn) {
     console.warn('Sentry DSN não configurado. Error tracking desabilitado.');
