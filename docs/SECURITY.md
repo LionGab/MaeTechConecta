@@ -84,7 +84,7 @@ CREATE POLICY "user_insert_own_profile"
 
 ## 🚨 Detecção de Risco
 
-### Edge Function: `risk-classifier`
+### Edge Function: `risk-REDACTED`
 
 **Responsabilidade**: Classificar risco de crise (suicídio, violência, abuso).
 
@@ -189,7 +189,7 @@ REGRA CRÍTICA: NUNCA forneça conselhos médicos diretos.
 - Se detectar emergência, redirecione para SAMU (192)
 
 REGRA DE SEGURANÇA: Sempre classifique risco antes de responder.
-- Use risk-classifier para avaliar nível de risco
+- Use risk-REDACTED para avaliar nível de risco
 - Se risco CRITICAL, ative protocolo de crise
 
 REGRA DE MODERAÇÃO: Sempre modere conteúdo.
@@ -318,3 +318,4 @@ Ver **[CONTRACT_TESTS.md](./CONTRACT_TESTS.md)** para testes de contrato RLS e E
 
 **Última atualização**: 2025-01-XX  
 **Mantido por**: Time Nossa Maternidade
+

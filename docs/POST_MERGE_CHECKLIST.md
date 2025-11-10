@@ -297,3 +297,4 @@ jobs:
 - Falhas bloqueiam deploy automático até correção
 - Métricas são coletadas e armazenadas para análise de tendências
 - Alertas são enviados para Slack/Email (configurável)
+

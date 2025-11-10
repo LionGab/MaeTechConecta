@@ -138,3 +138,4 @@ describe('RLS Policies - Contract Tests', () => {
     });
   });
 });
+
