@@ -25,10 +25,11 @@ export const useHomeScreenData = ({ navigation }: UseHomeScreenDataParams) => {
 
   const { insight, loading: insightLoading, regenerate, markAsViewed } = useDailyInsight();
   const { plan, isLoading: planLoading, replan, isReplanning } = usePlanoDoDia(userId ?? '', Boolean(userId));
-  const {
-    content: personalizedContent,
-    trackInteraction,
-  } = usePersonalizedContent({ userId: userId ?? '', limit: 5, autoFetch: Boolean(userId) });
+  const { content: personalizedContent, trackInteraction } = usePersonalizedContent({
+    userId: userId ?? '',
+    limit: 5,
+    autoFetch: Boolean(userId),
+  });
 
   const quickActions: QuickAction[] = useMemo(
     () => [
@@ -65,7 +66,7 @@ export const useHomeScreenData = ({ navigation }: UseHomeScreenDataParams) => {
         accessibilityLabel: 'Editar perfil',
       },
     ],
-    [navigation],
+    [navigation]
   );
 
   useEffect(() => {
@@ -115,7 +116,7 @@ export const useHomeScreenData = ({ navigation }: UseHomeScreenDataParams) => {
         console.error('Erro ao processar CTA:', error);
       }
     },
-    [navigation, userId],
+    [navigation, userId]
   );
 
   const handleDecreaseFrequency = useCallback(async () => {
@@ -159,7 +160,7 @@ export const useHomeScreenData = ({ navigation }: UseHomeScreenDataParams) => {
       [
         { text: 'Cancelar', style: 'cancel' },
         { text: 'Ligar agora', style: 'destructive', onPress: () => Linking.openURL(`tel:${EMERGENCY_NUMBER}`) },
-      ],
+      ]
     );
   }, []);
 

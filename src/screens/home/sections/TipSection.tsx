@@ -30,8 +30,8 @@ export const TipSection: React.FC = () => {
           <Text style={text('subtitle')}>Você sabia?</Text>
         </View>
         <Text style={styles.neutral}>
-          Durante a gravidez, o descanso também é cuidado. Respeite seu ritmo, celebre suas pausas e lembre-se de respirar
-          fundo. 💗
+          Durante a gravidez, o descanso também é cuidado. Respeite seu ritmo, celebre suas pausas e lembre-se de
+          respirar fundo. 💗
         </Text>
       </View>
     </SurfaceCard>

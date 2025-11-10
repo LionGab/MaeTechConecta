@@ -1,5 +1,14 @@
 import React, { useCallback, useMemo } from 'react';
-import { ActivityIndicator, Pressable, PressableProps, StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  PressableProps,
+  StyleProp,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import useThemeStyles from '@/shared/hooks/useThemeStyles';
 
@@ -69,7 +78,7 @@ const BasePrimaryButton: React.FC<PrimaryButtonProps> = ({
           opacity: 0.8,
         },
       })),
-    [disabled, makeStyles, text],
+    [disabled, makeStyles, text]
   );
 
   const handlePress = useCallback(() => {

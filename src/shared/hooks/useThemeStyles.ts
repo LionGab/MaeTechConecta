@@ -23,7 +23,7 @@ export interface ThemeHelpers {
   radius: (token: ThemeRadiusToken) => number;
   text: <Variant extends ThemeTextVariant>(
     variant: Variant,
-    overrides?: Partial<TypographyVariantsMap[Variant]>,
+    overrides?: Partial<TypographyVariantsMap[Variant]>
   ) => TextStyle;
   shadow: (token: ThemeShadowToken) => ViewStyle;
   makeStyles: <T extends NamedStyles>(factory: MakeStylesFactory<T>) => T;
@@ -59,7 +59,7 @@ export function useThemeStyles(): ThemeHelpers {
 
     const text = <Variant extends ThemeTextVariant>(
       variant: Variant,
-      overrides: Partial<TypographyVariantsMap[Variant]> = {},
+      overrides: Partial<TypographyVariantsMap[Variant]> = {}
     ): TextStyle => {
       const variantStyle = theme.typography.variants[variant];
       if (__DEV__ && !variantStyle) {
@@ -90,9 +90,12 @@ export function useThemeStyles(): ThemeHelpers {
     };
   }, [theme]);
 
-  const makeStyles = useCallback(<T extends NamedStyles>(factory: MakeStylesFactory<T>) => {
-    return StyleSheet.create(factory({ ...helpers, makeStyles } as ThemeHelpers));
-  }, [helpers]);
+  const makeStyles = useCallback(
+    <T extends NamedStyles>(factory: MakeStylesFactory<T>) => {
+      return StyleSheet.create(factory({ ...helpers, makeStyles } as ThemeHelpers));
+    },
+    [helpers]
+  );
 
   return {
     ...helpers,

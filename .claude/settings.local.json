@@ -18,7 +18,10 @@
       "Bash(pnpm check:*)",
       "Bash(node verificar-status.js:*)",
       "Bash(git restore:*)",
-      "Bash(nul)"
+      "Bash(nul)",
+      "Bash(git clone:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []

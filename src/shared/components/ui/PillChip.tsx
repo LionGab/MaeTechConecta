@@ -63,7 +63,7 @@ const BasePillChip: React.FC<PillChipProps> = ({
           },
         };
       }),
-    [disabled, makeStyles, selected, text],
+    [disabled, makeStyles, selected, text]
   );
 
   const handlePress = useCallback(() => {

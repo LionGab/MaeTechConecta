@@ -46,7 +46,7 @@ const BaseSurfaceCard: React.FC<React.PropsWithChildren<SurfaceCardProps>> = ({
           opacity: 0.95,
         },
       })),
-    [makeStyles, padding, rounded],
+    [makeStyles, padding, rounded]
   );
 
   const elevationStyle = elevation === 'none' ? null : shadow(ELEVATION_MAP[elevation] ?? 'md');
@@ -57,12 +57,7 @@ const BaseSurfaceCard: React.FC<React.PropsWithChildren<SurfaceCardProps>> = ({
         {...rest}
         onPress={onPress}
         // Usa estado pressed para comunicar interação sem perder a sombra.
-        style={({ pressed }) => [
-          styles.container,
-          elevationStyle,
-          pressed ? styles.pressFeedback : null,
-          style,
-        ]}
+        style={({ pressed }) => [styles.container, elevationStyle, pressed ? styles.pressFeedback : null, style]}
         accessibilityRole="button"
         accessibilityState={{ disabled: false, pressed: false }}
         accessible

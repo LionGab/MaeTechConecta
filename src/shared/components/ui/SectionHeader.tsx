@@ -65,7 +65,7 @@ const BaseSectionHeader: React.FC<SectionHeaderProps> = ({
           ...text('bodySmall', { color: themeColor('primary') }),
         },
       })),
-    [makeStyles, text],
+    [makeStyles, text]
   );
 
   return (

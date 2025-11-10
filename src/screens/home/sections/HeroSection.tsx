@@ -14,7 +14,13 @@ interface HeroSectionProps {
   onPressPlan: () => void;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ gradient, userName, pregnancyWeek, message, onPressPlan }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({
+  gradient,
+  userName,
+  pregnancyWeek,
+  message,
+  onPressPlan,
+}) => {
   const { color, makeStyles, text } = useThemeStyles();
   const styles = makeStyles(({ space, radius }) => ({
     hero: {

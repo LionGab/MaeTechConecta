@@ -11,11 +11,7 @@ interface PersonalizedContentSectionProps {
   onTrack: (item: any) => void;
 }
 
-export const PersonalizedContentSection: React.FC<PersonalizedContentSectionProps> = ({
-  items,
-  isDark,
-  onTrack,
-}) => {
+export const PersonalizedContentSection: React.FC<PersonalizedContentSectionProps> = ({ items, isDark, onTrack }) => {
   const { makeStyles } = useThemeStyles();
   const styles = makeStyles(({ space }) => ({
     stack: {

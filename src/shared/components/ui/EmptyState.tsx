@@ -70,7 +70,7 @@ const BaseEmptyState: React.FC<EmptyStateProps> = ({
           gap: themeSpace('sm'),
         },
       })),
-    [makeStyles, text],
+    [makeStyles, text]
   );
 
   return (

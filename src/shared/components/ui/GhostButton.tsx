@@ -66,7 +66,7 @@ const BaseGhostButton: React.FC<GhostButtonProps> = ({
           backgroundColor: themeColor('overlaySoft'),
         },
       })),
-    [disabled, makeStyles, text],
+    [disabled, makeStyles, text]
   );
 
   const handlePress = useCallback(() => {
