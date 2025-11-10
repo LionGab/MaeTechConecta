@@ -61,6 +61,7 @@ notepad .env.local
 ```
 
 **Variáveis obrigatórias:**
+
 ```env
 EXPO_PUBLIC_SUPABASE_URL=https://bbcwitnbnosyfpfjtzkr.supabase.co
 EXPO_PUBLIC_SUPABASE_ANON_KEY=sua_anon_key_aqui
@@ -121,6 +122,7 @@ pnpm -C apps/mobile dev
 ```
 
 **O que esperar:**
+
 - QR Code no terminal
 - Metro Bundler iniciado
 - App disponível em `exp://192.168.x.x:8081`
@@ -129,18 +131,21 @@ pnpm -C apps/mobile dev
 ### Passo 9: Testar no Dispositivo/Emulador
 
 **Android:**
+
 ```powershell
 # Pressionar 'a' no terminal do Expo
 # Ou escanear QR Code com Expo Go
 ```
 
 **iOS:**
+
 ```powershell
 # Pressionar 'i' no terminal do Expo
 # Ou escanear QR Code com Camera app
 ```
 
 **Web:**
+
 ```powershell
 # Pressionar 'w' no terminal do Expo
 # Ou acessar http://localhost:8081
@@ -213,6 +218,7 @@ git push origin teste-funcionalidades
 ### Passo 6: Verificar CI/CD no PR
 
 **No GitHub:**
+
 1. Acessar o PR criado
 2. Verificar se os workflows estão rodando:
    - ✅ `ci.yml` (lint, type-check, test, build)
@@ -220,6 +226,7 @@ git push origin teste-funcionalidades
    - ✅ `eas-preview.yml` (build preview mobile)
 
 **O que verificar:**
+
 - ✅ Todos os jobs passando (verde)
 - ✅ Sem erros de lint
 - ✅ Sem erros de TypeScript
@@ -229,6 +236,7 @@ git push origin teste-funcionalidades
 ### Passo 7: Testar Preview Deploy (Vercel)
 
 **Se `vercel-preview.yml` passou:**
+
 1. No PR, procurar por "Deployments" ou "Preview"
 2. Clicar no link do preview
 3. Testar funcionalidades web:
@@ -240,6 +248,7 @@ git push origin teste-funcionalidades
 ### Passo 8: Testar Preview Build (EAS)
 
 **Se `eas-preview.yml` passou:**
+
 1. No PR, procurar por "Artifacts" ou "Build"
 2. Baixar o APK/IPA gerado
 3. Instalar no dispositivo
@@ -287,6 +296,7 @@ Get-ChildItem *.json, *.md, *.yml -Recurse | Select-Object Name, Directory
 ### Passo 3: Verificar Secrets Não Bloqueados
 
 **Vantagem do repositório privado:**
+
 - ✅ Não há bloqueio de secrets
 - ✅ Pode fazer push direto na main
 - ✅ Histórico completo disponível
@@ -324,6 +334,7 @@ Get-ChildItem .github\workflows\*.yml | ForEach-Object { Write-Host $_.Name; Get
 ### Passo 6: Testar Funcionalidades Específicas
 
 **Testar Edge Functions:**
+
 ```powershell
 # Deploy Edge Functions
 supabase functions deploy nathia-chat
@@ -337,6 +348,7 @@ curl -X POST https://bbcwitnbnosyfpfjtzkr.supabase.co/functions/v1/nathia-chat \
 ```
 
 **Testar Migrations:**
+
 ```powershell
 # Verificar migrations pendentes
 supabase migration list
@@ -352,6 +364,7 @@ supabase db push
 ### Teste 1: Workflow `ci.yml`
 
 **O que testa:**
+
 - ✅ Lint (ESLint)
 - ✅ Type-check (TypeScript)
 - ✅ Testes (Vitest)
@@ -383,6 +396,7 @@ git push origin teste-ci
 ### Teste 2: Workflow `vercel-preview.yml`
 
 **O que testa:**
+
 - ✅ Deploy preview na Vercel
 - ✅ Build web funcionando
 
@@ -407,6 +421,7 @@ git push origin teste-vercel-preview
 ### Teste 3: Workflow `eas-preview.yml`
 
 **O que testa:**
+
 - ✅ Build preview no EAS
 - ✅ APK/IPA gerado
 
@@ -437,6 +452,7 @@ git push origin teste-eas-preview
 **Passo a passo:**
 
 1. **Abrir app**
+
    ```powershell
    pnpm dev
    # Pressionar 'w' para web ou escanear QR code
@@ -466,6 +482,7 @@ git push origin teste-eas-preview
 **Passo a passo:**
 
 1. **Limpar dados locais** (se necessário)
+
    ```powershell
    # No app, limpar AsyncStorage ou reinstalar
    ```
@@ -573,6 +590,7 @@ git push origin teste-eas-preview
 ## ✅ Checklist de Validação Final
 
 ### Repositório Público (MaeTechConecta)
+
 - [ ] Clone funciona
 - [ ] Dependências instalam
 - [ ] Lint passa
@@ -584,6 +602,7 @@ git push origin teste-eas-preview
 - [ ] Preview build funciona
 
 ### Repositório Privado (NossaMaternidade-Private)
+
 - [ ] Clone funciona
 - [ ] Push direto funciona (sem bloqueios)
 - [ ] Histórico completo disponível
@@ -591,6 +610,7 @@ git push origin teste-eas-preview
 - [ ] Migrations aplicam
 
 ### Funcionalidades do App
+
 - [ ] Chat NathIA funciona
 - [ ] Onboarding completo funciona
 - [ ] Plano do dia aparece e atualiza
@@ -608,6 +628,7 @@ git push origin teste-eas-preview
 ### Problema: CI/CD não roda
 
 **Solução:**
+
 ```powershell
 # Verificar se workflows estão no lugar certo
 Test-Path .github\workflows\ci.yml
@@ -619,6 +640,7 @@ Test-Path .github\workflows\ci.yml
 ### Problema: Secrets não configurados
 
 **Solução:**
+
 1. GitHub > Settings > Secrets and variables > Actions
 2. Adicionar secrets necessários:
    - `VERCEL_TOKEN`
@@ -628,6 +650,7 @@ Test-Path .github\workflows\ci.yml
 ### Problema: Build falha
 
 **Solução:**
+
 ```powershell
 # Limpar cache
 pnpm store prune
@@ -643,6 +666,7 @@ pnpm --version
 ### Problema: App não conecta ao Supabase
 
 **Solução:**
+
 ```powershell
 # Verificar .env.local
 Get-Content .env.local | Select-String "SUPABASE"
@@ -659,4 +683,3 @@ curl https://bbcwitnbnosyfpfjtzkr.supabase.co/rest/v1/ \
 
 **Última atualização:** 2025-11-10  
 **Versão:** 1.0.0
-

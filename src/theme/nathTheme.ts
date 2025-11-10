@@ -8,7 +8,54 @@
  * Design System Unificado para Nossa Maternidade
  */
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
+
+/**
+ * Converte shadow props para boxShadow (web) ou mantém shadow* (mobile)
+ */
+function createShadowStyle(
+  shadowColor: string,
+  shadowOffset: { width: number; height: number },
+  shadowOpacity: number,
+  shadowRadius: number,
+  elevation: number
+) {
+  if (Platform.OS === 'web') {
+    // Extrai valores RGBA da cor
+    const rgbaMatch = shadowColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+    let rgbaColor = shadowColor;
+    
+    if (rgbaMatch) {
+      // Se já é rgba, usa o alpha da cor ou shadowOpacity
+      const r = rgbaMatch[1];
+      const g = rgbaMatch[2];
+      const b = rgbaMatch[3];
+      const existingAlpha = rgbaMatch[4];
+      const a = existingAlpha ? existingAlpha : shadowOpacity.toString();
+      rgbaColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+    } else if (shadowColor.startsWith('#')) {
+      // Converte hex para rgba
+      const r = parseInt(shadowColor.slice(1, 3), 16);
+      const g = parseInt(shadowColor.slice(3, 5), 16);
+      const b = parseInt(shadowColor.slice(5, 7), 16);
+      rgbaColor = `rgba(${r}, ${g}, ${b}, ${shadowOpacity})`;
+    }
+
+    return {
+      boxShadow: `${shadowOffset.width}px ${shadowOffset.height}px ${shadowRadius}px ${rgbaColor}`,
+      elevation, // Mantém para compatibilidade
+    };
+  }
+
+  // React Native nativo
+  return {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+    elevation,
+  };
+}
 
 // =====================================================
 // 🎨 PALETA DE CORES - LIGHT MODE
@@ -171,41 +218,11 @@ export const gradients = {
 // =====================================================
 
 export const shadowsLight = {
-  xs: {
-    shadowColor: 'rgba(0,0,0,0.05)',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    elevation: 1,
-  },
-  sm: {
-    shadowColor: 'rgba(0,0,0,0.06)',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  md: {
-    shadowColor: 'rgba(0,0,0,0.08)',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    elevation: 4,
-  },
-  lg: {
-    shadowColor: 'rgba(0,0,0,0.10)',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 1,
-    shadowRadius: 15,
-    elevation: 8,
-  },
-  xl: {
-    shadowColor: 'rgba(0,0,0,0.12)',
-    shadowOffset: { width: 0, height: 20 },
-    shadowOpacity: 1,
-    shadowRadius: 25,
-    elevation: 12,
-  },
+  xs: createShadowStyle('rgba(0,0,0,0.05)', { width: 0, height: 1 }, 1, 2, 1),
+  sm: createShadowStyle('rgba(0,0,0,0.06)', { width: 0, height: 2 }, 1, 4, 2),
+  md: createShadowStyle('rgba(0,0,0,0.08)', { width: 0, height: 4 }, 1, 6, 4),
+  lg: createShadowStyle('rgba(0,0,0,0.10)', { width: 0, height: 10 }, 1, 15, 8),
+  xl: createShadowStyle('rgba(0,0,0,0.12)', { width: 0, height: 20 }, 1, 25, 12),
 };
 
 // =====================================================
@@ -213,41 +230,11 @@ export const shadowsLight = {
 // =====================================================
 
 export const shadowsDark = {
-  xs: {
-    shadowColor: 'rgba(0,0,0,0.30)',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    elevation: 1,
-  },
-  sm: {
-    shadowColor: 'rgba(0,0,0,0.40)',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  md: {
-    shadowColor: 'rgba(0,0,0,0.50)',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    elevation: 4,
-  },
-  lg: {
-    shadowColor: 'rgba(0,0,0,0.60)',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 1,
-    shadowRadius: 15,
-    elevation: 8,
-  },
-  xl: {
-    shadowColor: 'rgba(0,0,0,0.70)',
-    shadowOffset: { width: 0, height: 20 },
-    shadowOpacity: 1,
-    shadowRadius: 25,
-    elevation: 12,
-  },
+  xs: createShadowStyle('rgba(0,0,0,0.30)', { width: 0, height: 1 }, 1, 2, 1),
+  sm: createShadowStyle('rgba(0,0,0,0.40)', { width: 0, height: 2 }, 1, 4, 2),
+  md: createShadowStyle('rgba(0,0,0,0.50)', { width: 0, height: 4 }, 1, 6, 4),
+  lg: createShadowStyle('rgba(0,0,0,0.60)', { width: 0, height: 10 }, 1, 15, 8),
+  xl: createShadowStyle('rgba(0,0,0,0.70)', { width: 0, height: 20 }, 1, 25, 12),
 };
 
 export const shadows = { light: shadowsLight, dark: shadowsDark };
@@ -335,13 +322,7 @@ export const theme = {
     sub: { fontSize: 15, fontWeight: '500' as const, lineHeight: 20, opacity: 0.85 },
   },
   shadow: {
-    card: {
-      shadowColor: '#000',
-      shadowOpacity: 0.06,
-      shadowRadius: 8,
-      shadowOffset: { width: 0, height: 4 },
-      elevation: 3,
-    },
+    card: createShadowStyle('#000', { width: 0, height: 4 }, 0.06, 8, 3),
   },
 };
 

@@ -1,10 +1,39 @@
 /**
  * Sentry Configuration
  * Error tracking e performance monitoring
+ * Opcional: funciona mesmo se @sentry/react-native não estiver instalado
  */
 
-import * as Sentry from '@sentry/react-native';
 import Constants from 'expo-constants';
+
+// Interface para Sentry (quando não instalado)
+interface SentryType {
+  init: (config: {
+    dsn: string;
+    debug?: boolean;
+    tracesSampleRate?: number;
+    environment?: string;
+    enableNative?: boolean;
+    enableNativeNagger?: boolean;
+    beforeSend?: (event: any, hint: any) => any;
+  }) => void;
+  captureException: (error: Error, options?: any) => void;
+  captureMessage: (message: string, options?: any) => void;
+  setUser: (user: any) => void;
+  setContext: (name: string, context: any) => void;
+  addBreadcrumb: (breadcrumb: any) => void;
+}
+
+// Importação opcional do Sentry
+let Sentry: SentryType | null = null;
+
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  Sentry = require('@sentry/react-native') as SentryType;
+} catch (error) {
+  // Sentry não instalado - continuar sem error tracking
+  console.warn('@sentry/react-native não encontrado. Error tracking desabilitado.');
+}
 
 let isInitialized = false;
 
@@ -38,6 +67,12 @@ export function initSentry() {
     return;
   }
 
+  // Se Sentry não estiver instalado, não fazer nada
+  if (!Sentry) {
+    console.warn('Sentry não disponível. Error tracking desabilitado.');
+    return;
+  }
+
   const dsn = resolveSentryDsn();
 
   if (!dsn) {
@@ -52,7 +87,7 @@ export function initSentry() {
     environment: process.env.NODE_ENV || 'development',
     enableNative: true,
     enableNativeNagger: false,
-    beforeSend(event, hint) {
+    beforeSend(event: any, hint: any) {
       // Filtrar erros sensíveis ou não importantes
       if (event.exception) {
         const error = hint.originalException;
@@ -72,4 +107,13 @@ export function initSentry() {
   console.log('Sentry inicializado com sucesso');
 }
 
-export default Sentry;
+// Exportar Sentry ou objeto vazio se não estiver disponível
+export default Sentry ||
+  ({
+    init: () => {},
+    captureException: () => {},
+    captureMessage: () => {},
+    setUser: () => {},
+    setContext: () => {},
+    addBreadcrumb: () => {},
+  } as SentryType);

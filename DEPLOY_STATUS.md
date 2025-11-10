@@ -3,18 +3,21 @@
 ## 📦 Repositórios
 
 ### ✅ Repositório Principal (Público)
+
 - **Nome:** `MaeTechConecta`
 - **URL:** https://github.com/LionGab/MaeTechConecta
 - **Status:** ✅ Deploy completo
 - **Último commit:** `9d1862d`
 
 ### ✅ Novo Repositório (Privado)
+
 - **Nome:** `NossaMaternidade-Private`
 - **URL:** https://github.com/LionGab/NossaMaternidade-Private
 - **Status:** ✅ Deploy completo
 - **Tipo:** Privado (sem bloqueio de secrets)
 
 ### ⚠️ Repositório Bloqueado
+
 - **Nome:** `NossaMaternidadeValente`
 - **Status:** Bloqueado por GitHub Push Protection (secrets em commits antigos)
 - **Solução:** Permitir secrets manualmente ou usar repositório privado
@@ -58,4 +61,3 @@ novo     → https://github.com/LionGab/NossaMaternidade-Private.git (privado �
 
 **Data:** 2025-11-10  
 **Status:** ✅ Deploy completo em 2 repositórios
-

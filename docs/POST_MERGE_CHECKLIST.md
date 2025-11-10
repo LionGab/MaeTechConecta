@@ -317,4 +317,3 @@ jobs:
 - Falhas bloqueiam deploy automático até correção e geram auditoria nos logs (`logs/approvals`, `logs/agents`)
 - Métricas são coletadas e armazenadas para análise de tendências
 - Alertas são enviados para Slack/Email (configurável)
-
