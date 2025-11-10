@@ -4,10 +4,10 @@
  */
 
 import React, { useCallback, useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import useThemeStyles from '@/shared/hooks/useThemeStyles';
 import { PlanItem } from '@/services/personalization';
-import { colors, spacing, typography, borderRadius } from '@/theme/colors';
-import { getShadowStyle } from '@/utils/platformStyles';
 
 export interface PlanoDoDiaProps {
   /** Itens do plano (3 cards) */
@@ -40,8 +40,115 @@ export interface PlanoDoDiaProps {
  */
 export const PlanoDoDia: React.FC<PlanoDoDiaProps> = React.memo(
   ({ items, rationale, onWhyThisPressed, onItemCtaPressed, isLoading = false }) => {
-    // Note: Este componente usa os valores do tema diretamente dos imports
-    // para evitar problemas de tipagem com o ThemeContext
+    const { color, space, radius, text, shadow, theme } = useThemeStyles();
+
+    const semibold = theme.typography.weights.semibold;
+
+    const styles = useMemo(
+      () =>
+        StyleSheet.create({
+          container: {
+            flex: 1,
+          },
+          loadingContainer: {
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: space('lg'),
+          },
+          loadingText: {
+            ...text('bodySmall', { color: color('textSecondary') }),
+            textAlign: 'center',
+            marginTop: space('md'),
+          },
+          emptyContainer: {
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: space('lg'),
+          },
+          emptyIcon: {
+            opacity: 0.5,
+            fontSize: 48,
+          },
+          emptyText: {
+            ...text('body', { color: color('textSecondary') }),
+            textAlign: 'center',
+            marginTop: space('md'),
+          },
+          tagsContainer: {
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: space('sm'),
+            marginBottom: space('md'),
+          },
+          tagChip: {
+            paddingHorizontal: space('md'),
+            paddingVertical: space('xs'),
+            borderRadius: radius('xl'),
+            borderWidth: 1,
+            backgroundColor: color('muted'),
+            borderColor: color('primary'),
+          },
+          tagText: {
+            ...text('bodySmall', {
+              color: color('primary'),
+              fontWeight: semibold,
+            }),
+          },
+          itemCard: {
+            backgroundColor: color('card'),
+            borderRadius: radius('lg'),
+            padding: space('md'),
+            marginBottom: space('md'),
+            ...shadow('md'),
+          },
+          itemHeader: {
+            flexDirection: 'row',
+            alignItems: 'center',
+          },
+          itemIcon: {
+            fontSize: 24,
+          },
+          itemTime: {
+            ...text('bodySmall', {
+              color: color('textSecondary'),
+              fontWeight: theme.typography.weights.semibold,
+            }),
+            marginLeft: space('sm'),
+          },
+          itemMessage: {
+            ...text('body'),
+            marginTop: space('sm'),
+          },
+          ctaButton: {
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: 44,
+            backgroundColor: color('primary'),
+            borderRadius: radius('md'),
+            paddingVertical: space('sm'),
+            paddingHorizontal: space('md'),
+            marginTop: space('md'),
+          },
+          ctaText: {
+            ...text('button', {
+              color: color('textOnPrimary'),
+              fontWeight: semibold,
+            }),
+          },
+          whyThisButton: {
+            alignSelf: 'flex-start',
+            marginTop: space('sm'),
+          },
+          whyThisText: {
+            ...text('caption', { color: color('primary') }),
+            textDecorationLine: 'underline',
+          },
+          scrollContent: {
+            paddingBottom: space('lg'),
+          },
+        }),
+      [color, radius, shadow, semibold, space, text]
+    );
 
     // Ícones por tipo
     const iconByType = useMemo(
@@ -61,44 +168,28 @@ export const PlanoDoDia: React.FC<PlanoDoDiaProps> = React.memo(
     }, [items]);
 
     // Renderizar chip de tag
-    const renderTag = useCallback((tag: string) => {
-      const tagLabels: Record<string, string> = {
-        tag_father_absent: 'Pai ausente',
-        tag_lonely: 'Solidão',
-        tag_single_mom: 'Mãe solo',
-        support_low: 'Apoio baixo',
-        stress_high: 'Stress alto',
-        sleep_low: 'Sono ruim',
-        pp_intrusive: 'Alerta',
-      };
+    const renderTag = useCallback(
+      (tag: string) => {
+        const tagLabels: Record<string, string> = {
+          tag_father_absent: 'Pai ausente',
+          tag_lonely: 'Solidão',
+          tag_single_mom: 'Mãe solo',
+          support_low: 'Apoio baixo',
+          stress_high: 'Stress alto',
+          sleep_low: 'Sono ruim',
+          pp_intrusive: 'Alerta',
+        };
 
-      const label = tagLabels[tag] || tag;
+        const label = tagLabels[tag] || tag;
 
-      return (
-        <View
-          key={tag}
-          style={[
-            styles.tagChip,
-            {
-              backgroundColor: colors.muted,
-              borderColor: colors.primary,
-            },
-          ]}
-        >
-          <Text
-            style={[
-              styles.tagText,
-              {
-                color: colors.primary,
-                fontSize: typography.sizes.xs,
-              },
-            ]}
-          >
-            {label}
-          </Text>
-        </View>
-      );
-    }, []);
+        return (
+          <View key={tag} style={styles.tagChip}>
+            <Text style={styles.tagText}>{label}</Text>
+          </View>
+        );
+      },
+      [styles]
+    );
 
     // Renderizar card de item
     const renderItem = useCallback(
@@ -106,145 +197,59 @@ export const PlanoDoDia: React.FC<PlanoDoDiaProps> = React.memo(
         const icon = iconByType[item.type] || '✨';
 
         return (
-          <View
-            key={index}
-            style={[
-              styles.itemCard,
-              {
-                backgroundColor: colors.card,
-                borderRadius: borderRadius.lg,
-                padding: spacing.md,
-                marginBottom: spacing.md,
-              },
-            ]}
-          >
+          <View key={index} style={styles.itemCard}>
             {/* Horário + Tipo */}
             <View style={styles.itemHeader}>
-              <Text style={[styles.itemIcon, { fontSize: 24 }]}>{icon}</Text>
-              <Text
-                style={[
-                  styles.itemTime,
-                  {
-                    color: colors.mutedForeground,
-                    fontSize: typography.sizes.sm,
-                    marginLeft: spacing.sm,
-                  },
-                ]}
-              >
-                {item.scheduled_at}
-              </Text>
+              <Text style={styles.itemIcon}>{icon}</Text>
+              <Text style={styles.itemTime}>{item.scheduled_at}</Text>
             </View>
 
             {/* Mensagem */}
-            <Text
-              style={[
-                styles.itemMessage,
-                {
-                  color: colors.foreground,
-                  fontSize: typography.sizes.base,
-                  marginTop: spacing.sm,
-                  lineHeight: 22,
-                },
-              ]}
-            >
-              {item.message_text}
-            </Text>
+            <Text style={styles.itemMessage}>{item.message_text}</Text>
 
             {/* CTA (se houver) */}
             {item.cta && (
               <TouchableOpacity
-                style={[
-                  styles.ctaButton,
-                  {
-                    backgroundColor: colors.primary,
-                    borderRadius: borderRadius.md,
-                    paddingVertical: spacing.sm,
-                    paddingHorizontal: spacing.md,
-                    marginTop: spacing.md,
-                  },
-                ]}
+                style={styles.ctaButton}
                 onPress={() => onItemCtaPressed?.(item)}
                 accessible={true}
                 accessibilityRole="button"
                 accessibilityLabel={item.cta}
               >
-                <Text
-                  style={[
-                    styles.ctaText,
-                    {
-                      color: colors.primaryForeground,
-                      fontSize: typography.sizes.base,
-                      fontWeight: typography.weights.semibold,
-                    },
-                  ]}
-                >
-                  {item.cta}
-                </Text>
+                <Text style={styles.ctaText}>{item.cta}</Text>
               </TouchableOpacity>
             )}
 
             {/* Link "Por que isso?" */}
             <TouchableOpacity
-              style={[styles.whyThisButton, { marginTop: spacing.sm }]}
+              style={styles.whyThisButton}
               onPress={onWhyThisPressed}
               accessible={true}
               accessibilityRole="button"
               accessibilityLabel="Por que estou vendo isso?"
             >
-              <Text
-                style={[
-                  styles.whyThisText,
-                  {
-                    color: colors.primary,
-                    fontSize: typography.sizes.xs,
-                  },
-                ]}
-              >
-                Por que estou vendo isso?
-              </Text>
+              <Text style={styles.whyThisText}>Por que estou vendo isso?</Text>
             </TouchableOpacity>
           </View>
         );
       },
-      [iconByType, onWhyThisPressed, onItemCtaPressed]
+      [iconByType, onItemCtaPressed, onWhyThisPressed, styles]
     );
 
     if (isLoading) {
       return (
-        <View style={[styles.loadingContainer, { padding: spacing.lg }]}>
-          <ActivityIndicator size="large" color={colors.primary} />
-          <Text
-            style={[
-              styles.loadingText,
-              {
-                color: colors.mutedForeground,
-                fontSize: typography.sizes.sm,
-                marginTop: spacing.md,
-              },
-            ]}
-          >
-            Carregando seu plano do dia...
-          </Text>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={color('primary')} />
+          <Text style={styles.loadingText}>Carregando seu plano do dia...</Text>
         </View>
       );
     }
 
     if (items.length === 0) {
       return (
-        <View style={[styles.emptyContainer, { padding: spacing.lg }]}>
-          <Text style={[styles.emptyIcon, { fontSize: 48 }]}>📅</Text>
-          <Text
-            style={[
-              styles.emptyText,
-              {
-                color: colors.mutedForeground,
-                fontSize: typography.sizes.base,
-                marginTop: spacing.md,
-              },
-            ]}
-          >
-            Nenhum plano disponível para hoje
-          </Text>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyIcon}>📅</Text>
+          <Text style={styles.emptyText}>Nenhum plano disponível para hoje</Text>
         </View>
       );
     }
@@ -253,95 +258,14 @@ export const PlanoDoDia: React.FC<PlanoDoDiaProps> = React.memo(
       <View style={styles.container}>
         {/* Header com tags */}
         {rationale && rationale.tags.length > 0 && (
-          <View
-            style={[
-              styles.tagsContainer,
-              {
-                marginBottom: spacing.md,
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-              },
-            ]}
-          >
-            {rationale.tags.slice(0, 3).map(renderTag)}
-          </View>
+          <View style={styles.tagsContainer}>{rationale.tags.slice(0, 3).map(renderTag)}</View>
         )}
 
         {/* Itens do plano */}
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: spacing.lg }}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
           {sortedItems.map(renderItem)}
         </ScrollView>
       </View>
     );
   }
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  loadingContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loadingText: {
-    textAlign: 'center',
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emptyIcon: {
-    opacity: 0.5,
-  },
-  emptyText: {
-    textAlign: 'center',
-  },
-  tagsContainer: {
-    gap: 8,
-  },
-  tagChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    borderWidth: 1,
-  },
-  tagText: {
-    fontWeight: '600',
-  },
-  itemCard: {
-    ...getShadowStyle({
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
-    }),
-  },
-  itemHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  itemIcon: {
-    // Emoji spacing
-  },
-  itemTime: {
-    fontWeight: '600',
-  },
-  itemMessage: {
-    // Line height handled inline
-  },
-  ctaButton: {
-    alignItems: 'center',
-    minHeight: 44, // iOS touch target
-  },
-  ctaText: {
-    // Font handled inline
-  },
-  whyThisButton: {
-    alignSelf: 'flex-start',
-  },
-  whyThisText: {
-    textDecorationLine: 'underline',
-  },
-});

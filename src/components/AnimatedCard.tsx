@@ -6,9 +6,11 @@
  */
 
 import React, { useEffect, useRef, useMemo } from 'react';
-import { Animated, StyleSheet, ViewStyle } from 'react-native';
+import { Animated, ViewStyle } from 'react-native';
+
+import { useTheme } from '@/contexts/ThemeContext';
+
 import { Card, CardProps } from './Card';
-import { colors, shadows, spacing } from '@/theme/colors';
 
 export interface AnimatedCardProps extends CardProps {
   /** Animação de entrada (fade + scale) */
@@ -32,6 +34,8 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
   style,
   ...cardProps
 }) => {
+  const { theme } = useTheme();
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.95)).current;
 
@@ -66,16 +70,13 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
     [animated, fadeAnim, scaleAnim]
   );
 
+  const elevatedShadow = theme.shadows.lg;
+
+  const enhancedStyle = useMemo(() => (enhancedPress ? elevatedShadow : undefined), [enhancedPress, elevatedShadow]);
+
   return (
-    <Animated.View style={[animatedStyle, style, enhancedPress ? styles.enhanced : null]}>
+    <Animated.View style={[animatedStyle, style, enhancedStyle]}>
       <Card {...cardProps} />
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  enhanced: {
-    // Sombra mais pronunciada para feedback visual
-    ...shadows.light.lg,
-  },
-});
