@@ -56,4 +56,3 @@ export const MAE_VALENTE_DISTRIBUTION: readonly DistributionChannel[] = [
     kpis: ['Cliques para o app/site', 'Tempo médio nas páginas destino', 'Crescimento de boards seguidores'],
   },
 ];
-

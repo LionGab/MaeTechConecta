@@ -35,4 +35,3 @@ export const useUserProfile = () => {
 
   return { profile, loading, updateProfile, reload: loadProfile };
 };
-

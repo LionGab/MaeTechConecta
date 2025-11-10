@@ -151,4 +151,3 @@ pnpm dev
 ---
 
 **Execute os passos acima para reiniciar o app!** 🎉
-

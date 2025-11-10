@@ -38,4 +38,3 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ items, onSelect }) => {
 };
 
 FaqSection.displayName = 'FaqSection';
-

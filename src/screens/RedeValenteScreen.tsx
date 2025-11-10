@@ -449,4 +449,3 @@ const createStyles = (isDark: boolean) =>
       ...theme.shadows.lg,
     },
   });
-

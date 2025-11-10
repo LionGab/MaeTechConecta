@@ -154,4 +154,3 @@ async function sendWebhookNotification(
     console.error('Erro ao enviar webhook:', error);
   }
 }
-

@@ -13,12 +13,14 @@ Sistema de CI/CD mínimo com GitHub Actions para garantir qualidade antes de mer
 **Trigger:** PRs e pushes para `main`, `master`, `develop`
 
 **Jobs:**
+
 - ✅ Lint (`pnpm lint`)
 - ✅ Type check (`pnpm typecheck`)
 - ✅ Testes (`pnpm test:unit`)
 - ✅ Build (`pnpm build`)
 
 **Artefatos:**
+
 - Coverage report (se disponível)
 
 **Status:** Publica `CI_PASSED=true` se passar
@@ -30,9 +32,11 @@ Sistema de CI/CD mínimo com GitHub Actions para garantir qualidade antes de mer
 **Trigger:** PRs para `main`, `master`
 
 **Jobs:**
+
 - Deploy automático para preview no Vercel
 
 **Requisitos:**
+
 - `VERCEL_TOKEN` (GitHub Secrets)
 - `VERCEL_ORG_ID` (GitHub Secrets)
 - `VERCEL_PROJECT_ID` (GitHub Secrets)
@@ -46,9 +50,11 @@ Sistema de CI/CD mínimo com GitHub Actions para garantir qualidade antes de mer
 **Trigger:** PRs para `main`, `master`
 
 **Jobs:**
+
 - Build Android Preview (Ubuntu)
 
 **Requisitos:**
+
 - `EAS_TOKEN` (GitHub Secrets)
 
 **Status:** Links de download no PR
@@ -62,6 +68,7 @@ Sistema de CI/CD mínimo com GitHub Actions para garantir qualidade antes de mer
 **Settings → Secrets and variables → Actions**
 
 Adicionar:
+
 - `VERCEL_TOKEN` (se usar preview web)
 - `VERCEL_ORG_ID` (se usar preview web)
 - `VERCEL_PROJECT_ID` (se usar preview web)
@@ -87,6 +94,7 @@ Ver `configs/branch-protection.md`
 ### CI não roda
 
 **Verificar:**
+
 - Workflow está em `.github/workflows/ci.yml`
 - Branch do PR está em `branches:` do workflow
 - GitHub Actions está habilitado no repo
@@ -94,6 +102,7 @@ Ver `configs/branch-protection.md`
 ### Status check não aparece
 
 **Verificar:**
+
 - Job tem `name:` definido
 - Workflow tem `pull_request:` trigger
 - Branch protection está configurada
@@ -106,4 +115,3 @@ Ver `configs/branch-protection.md`
 - [ ] Drift check (supabase migrations)
 - [ ] Notificações Slack
 - [ ] Coverage gates (>70%)
-

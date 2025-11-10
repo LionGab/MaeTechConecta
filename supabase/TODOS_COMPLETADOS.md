@@ -130,4 +130,3 @@ EXPO_PUBLIC_SENTRY_DSN=https://xxx@sentry.io/xxx
 - Sentry só envia erros em produção (não em desenvolvimento)
 - Notificações precisam de projectId configurado para funcionar
 - Tudo está pronto, só falta configurar as variáveis de ambiente
-

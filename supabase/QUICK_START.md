@@ -147,4 +147,3 @@ CREATE EXTENSION IF NOT EXISTS vector;
 ---
 
 **🚀 Happy coding!**
-

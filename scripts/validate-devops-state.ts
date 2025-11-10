@@ -61,9 +61,10 @@ function checkCursorConfig(): CheckResult {
     return {
       name: 'Configuração do Cursor',
       ok: autoApprove && skipAwaiting,
-      details: autoApprove && skipAwaiting
-        ? undefined
-        : 'auto_approve e skip_awaiting_review devem ser false. Rode `node scripts/auto-approve.js configure`.',
+      details:
+        autoApprove && skipAwaiting
+          ? undefined
+          : 'auto_approve e skip_awaiting_review devem ser false. Rode `node scripts/auto-approve.js configure`.',
     };
   } catch (error) {
     return {

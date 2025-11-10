@@ -157,4 +157,3 @@ export function checkBadgeUnlock(
       return false;
   }
 }
-

@@ -91,4 +91,3 @@ pnpm dev:clear && pnpm dev:tunnel
 ---
 
 **Execute `pnpm dev:tunnel` e o iOS deve conectar!** 🎉
-

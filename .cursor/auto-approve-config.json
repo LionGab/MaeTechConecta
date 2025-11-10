@@ -1,65 +1,27 @@
 {
   "version": "1.0.0",
-  "description": "Configuração de auto-aprovação do Cursor - Aprova automaticamente todas as mudanças e mantém mudanças de revisão. SKIP ALL PERMISSIONS ATIVADO.",
-  "enabled": true,
-  "skip_all_permissions": true,
+  "description": "Configuração segura de auto-aprovação - Requer CI_PASSED e branch na allowlist",
+  "enabled": false,
   "auto_approve": {
-    "enabled": true,
-    "all_changes": true,
-    "review_changes": true,
-    "write_operations": true,
-    "shell_commands": true,
-    "read_operations": true,
-    "skip_all_confirmations": true
+    "enabled": false,
+    "require_ci_passed": true,
+    "require_branch_allowlist": true,
+    "allowlist_branches": ["main", "master", "develop", "release/*"],
+    "blocked_patterns": [
+      "**/.env*",
+      "**/supabase/**",
+      "**/eas.json",
+      "**/app.json",
+      "**/package.json",
+      "**/pnpm-lock.yaml"
+    ]
   },
   "skip_awaiting_review": {
-    "enabled": true,
-    "for_all_operations": true,
-    "skip_all": true
-  },
-  "keep_review_changes": {
-    "enabled": true,
-    "auto_approve": true,
-    "default_action": "keep_all",
-    "always_keep": true
+    "enabled": false
   },
   "approval_rules": {
-    "default_action": "approve",
-    "timeout": 0,
-    "skip_interactive": true,
-    "auto_approve_on_review": true,
-    "skip_all_permissions": true,
-    "auto_accept_all": true
-  },
-  "permissions": {
-    "skip_all": true,
-    "require_approval": false,
-    "auto_approve_all": true,
-    "write": {
-      "require_approval": false,
-      "auto_approve": true,
-      "keep_changes": true,
-      "skip_permission": true
-    },
-    "shell": {
-      "require_approval": false,
-      "auto_approve": true,
-      "keep_changes": true,
-      "skip_permission": true
-    },
-    "read": {
-      "require_approval": false,
-      "auto_approve": true,
-      "skip_permission": true
-    }
-  },
-  "review_workflow": {
-    "auto_approve": true,
-    "keep_all_changes": true,
-    "skip_awaiting": true,
-    "approve_on_review": true,
-    "default_action": "approve_and_keep",
-    "skip_all_permissions": true
+    "default_action": "require_approval",
+    "timeout": 30000,
+    "require_ci": true
   }
 }
-

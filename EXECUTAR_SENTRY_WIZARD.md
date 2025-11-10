@@ -109,4 +109,3 @@ SENTRY_DSN=sua_dsn_aqui
 ---
 
 **Execute o comando no seu terminal para configurar o Sentry!** 🎉
-

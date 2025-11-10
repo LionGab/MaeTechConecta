@@ -44,4 +44,3 @@ config.transformer = {
 };
 
 module.exports = config;
-

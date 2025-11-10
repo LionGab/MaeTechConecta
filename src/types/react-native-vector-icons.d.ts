@@ -6,4 +6,3 @@ declare module 'react-native-vector-icons/MaterialCommunityIcons' {
     TextProps & { name: string; size?: number; color?: string }
   > {}
 }
-

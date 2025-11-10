@@ -9,4 +9,3 @@ Instruções:
 - Remover duplicações e nomes ambíguos; usar nomes descritivos.
 - Manter compatibilidade de tipos e APIs públicas.
 - Adicionar testes se houver lógica crítica.
-

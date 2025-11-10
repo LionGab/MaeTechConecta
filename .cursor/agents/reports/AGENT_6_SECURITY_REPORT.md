@@ -62,4 +62,3 @@
 ---
 
 **Relatório gerado pelo Agente 6 (Security)**
-

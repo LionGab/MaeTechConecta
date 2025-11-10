@@ -189,4 +189,3 @@ tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
 **Sentry configurado e pronto para uso!** 🎉
 
 **Próximo passo:** Teste o app e verifique se os erros estão sendo capturados no dashboard do Sentry.
-

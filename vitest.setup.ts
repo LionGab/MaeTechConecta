@@ -62,4 +62,3 @@ vi.mock('@supabase/supabase-js', () => ({
     },
   })),
 }));
-

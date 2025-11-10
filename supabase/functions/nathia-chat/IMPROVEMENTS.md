@@ -453,4 +453,3 @@ supabase functions logs nathia-chat --tail
 ---
 
 **✅ MANTÉM GEMINI 2.0 FLASH - APENAS MELHORA GUARDRAILS E MODERAÇÃO**
-

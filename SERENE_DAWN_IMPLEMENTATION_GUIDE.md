@@ -510,4 +510,3 @@ const styles = StyleSheet.create({
 **🌅 Tema "Amanhecer Sereno" - Design Premium Elite**
 
 _Transforme Nossa Maternidade em um aplicativo inesquecível._ ✨
-

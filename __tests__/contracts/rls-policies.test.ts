@@ -128,7 +128,10 @@ describe('RLS Policies - Contract Tests', () => {
 
   describe('chat_messages table', () => {
     it('permite usuário autenticado ler suas próprias mensagens', async () => {
-      const { data, error } = await userA.client.from('chat_messages').select('id, user_id, message').eq('user_id', userA.id);
+      const { data, error } = await userA.client
+        .from('chat_messages')
+        .select('id, user_id, message')
+        .eq('user_id', userA.id);
 
       expect(error).toBeNull();
       expect(data?.every((row) => row.user_id === userA.id)).toBe(true);
@@ -236,4 +239,3 @@ describe('RLS Policies - Contract Tests', () => {
     });
   });
 });
-

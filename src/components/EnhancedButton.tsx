@@ -89,4 +89,3 @@ export const EnhancedButton: React.FC<EnhancedButtonProps> = ({
 };
 
 const styles = StyleSheet.create({});
-

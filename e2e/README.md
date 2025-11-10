@@ -70,4 +70,3 @@ Em caso de falha, logs e screenshots são salvos em `e2e/artifacts/`.
 
 - [Maestro Docs](https://maestro.mobile.dev/)
 - [Maestro Examples](https://github.com/mobile-dev-inc/maestro)
-

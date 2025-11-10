@@ -378,4 +378,3 @@ export default {
   spacing: sereneDawnSpacing,
   borderRadius: sereneDawnBorderRadius,
 };
-

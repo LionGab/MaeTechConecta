@@ -91,4 +91,3 @@ Para verificar se está funcionando:
 - Notificações só funcionam em dispositivos físicos (não em simulador)
 - ProjectId é necessário para gerar tokens de push
 - O serviço já está pronto, só falta configurar o projectId
-

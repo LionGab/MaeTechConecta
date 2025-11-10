@@ -284,4 +284,3 @@ pnpm dev
 **Foco: Apenas o Básico Bem Feito. Sem complicações.** ✅
 
 **Status:** Pronto para executar SQL migration e testar! 🚀
-

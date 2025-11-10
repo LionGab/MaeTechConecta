@@ -151,4 +151,3 @@ if (errors === 0) {
   console.error('\n⚠️  Corrija os erros acima antes de prosseguir.');
   process.exit(1);
 }
-

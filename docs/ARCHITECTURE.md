@@ -171,4 +171,3 @@ Response → App
 - **CI/CD**: GitHub Actions
 - **Build**: EAS Build
 - **Monorepo**: pnpm + Turborepo
-

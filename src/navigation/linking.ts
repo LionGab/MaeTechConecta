@@ -48,4 +48,3 @@ export function handleDeepLink(url: string) {
     params: params.length > 0 ? { contentId: params[0] } : undefined,
   };
 }
-

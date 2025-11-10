@@ -161,4 +161,3 @@ const SignInScreen: React.FC = () => {
 };
 
 export default SignInScreen;
-

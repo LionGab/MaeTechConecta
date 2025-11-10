@@ -72,4 +72,3 @@ await AsyncStorage.removeItem('onboarded');
 - ✅ Design claymorphism azul dark
 - ✅ Salva estado corretamente
 - ✅ Não aparece novamente após completar
-

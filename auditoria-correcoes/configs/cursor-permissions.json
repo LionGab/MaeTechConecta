@@ -11,11 +11,6 @@
       "**/pnpm-lock.yaml",
       "**/.cursor/**"
     ],
-    "require_approval_for": [
-      "write",
-      "delete",
-      "shell"
-    ]
+    "require_approval_for": ["write", "delete", "shell"]
   }
 }
-

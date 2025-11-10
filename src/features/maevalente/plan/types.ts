@@ -87,4 +87,3 @@ export interface MaeValentePlan {
   readonly distribution: readonly DistributionChannel[];
   readonly metrics: readonly MetricDefinition[];
 }
-

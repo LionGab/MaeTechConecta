@@ -176,4 +176,3 @@ export function formatStreak(days: number): string {
 // ==========================================
 
 export { calculateLevel, getProgressToNextLevel, BADGES, type BadgeDefinition };
-

@@ -42,4 +42,3 @@ Checklist: [pontos de verificação]
 ---
 
 **Quando usar:** Features que coletam dados, mudanças em auth, releases, compliance
-

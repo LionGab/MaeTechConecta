@@ -275,4 +275,3 @@ Acesse o Supabase Dashboard → Edge Functions para ver:
 1. Verificar limites configurados
 2. Implementar retry com backoff
 3. Monitorar uso por usuário
-

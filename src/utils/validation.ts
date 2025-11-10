@@ -355,4 +355,3 @@ export function sanitizeObject(obj: any, maxLength: number = 10000): any {
 
   return sanitized;
 }
-

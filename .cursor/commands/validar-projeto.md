@@ -136,4 +136,3 @@ Após validação, forneça:
 ## Instruções para o Cursor
 
 Execute a validação completa e corrija todos os erros antes de finalizar. Não pule nenhum passo.
-

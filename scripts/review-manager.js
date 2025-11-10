@@ -381,4 +381,3 @@ Examples:
     `);
     process.exit(1);
 }
-

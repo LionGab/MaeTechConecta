@@ -529,4 +529,3 @@ Observações:
 **⚠️ IMPORTANTE**: Se qualquer item NÃO estiver marcado, NÃO LANCE. Um único gap pode resultar em multa de R$ 50 milhões ou processo judicial.
 
 **Próxima revisão deste checklist**: Após 90 dias do lançamento (ou quando houver alteração na LGPD).
-

@@ -10,4 +10,3 @@ export type ThemeColors = typeof import('./colors').colors;
 
 // Type helper para shadows
 export type Shadows = typeof import('./colors').shadows;
-

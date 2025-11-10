@@ -365,4 +365,3 @@ serve(async (req: Request) => {
     );
   }
 });
-

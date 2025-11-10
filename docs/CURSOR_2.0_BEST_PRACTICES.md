@@ -864,4 +864,3 @@ required_status_checks:
 
 **Última atualização:** Novembro 2025
 **Versão do Cursor:** 2.0+
-

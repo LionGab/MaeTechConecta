@@ -31,4 +31,3 @@ Garanta que o `chatService` sempre injeta essa instrução ao construir o prompt
 - Verifique o Sentry para exceções capturadas (campos extras incluem modelo e request).
 - Valide o JSON com `parseChallengesResponse` e trate exceções para entender erros de categoria/dificuldade.
 - Rode `pnpm lint:errors` para garantir que `logger.error` segue o padrão seguro.
-

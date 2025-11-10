@@ -367,4 +367,3 @@ export class ContextManager {
     this.lastSummaryCount = 0;
   }
 }
-

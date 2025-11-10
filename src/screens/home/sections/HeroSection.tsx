@@ -73,4 +73,3 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 };
 
 HeroSection.displayName = 'HeroSection';
-

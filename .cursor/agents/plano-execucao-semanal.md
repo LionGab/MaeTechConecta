@@ -565,4 +565,3 @@
 ---
 
 **Próximo passo:** Começar com Semana 1, Dia 1! 🚀
-

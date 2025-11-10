@@ -198,4 +198,3 @@ Para o app completo em produção:
 **Expo**: 54.0.22
 **Node**: 20.x
 **Status**: ✅ **PRONTO PARA DEPLOY!**
-

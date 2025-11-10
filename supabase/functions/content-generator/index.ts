@@ -374,4 +374,3 @@ function unauthorized(message: string) {
     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
   });
 }
-

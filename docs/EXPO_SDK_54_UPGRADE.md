@@ -249,4 +249,3 @@ pnpm dev
 ---
 
 **Execute os passos acima para fazer o upgrade do SDK 52 para 54!** 🎉
-

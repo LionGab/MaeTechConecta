@@ -75,4 +75,3 @@ localStorage.removeItem('onboarded');
 - [ ] Pagination dots atualizam
 - [ ] Completar onboarding navega para Home
 - [ ] Reiniciar página não mostra onboarding novamente
-

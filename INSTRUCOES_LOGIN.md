@@ -80,4 +80,3 @@ pnpm dev
 ---
 
 **Tudo pronto! Siga os passos acima para finalizar a configuração.** 🎉
-

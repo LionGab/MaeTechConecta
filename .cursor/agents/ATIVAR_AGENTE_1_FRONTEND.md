@@ -127,4 +127,3 @@ Metas: 60fps constante, bundle size reduzido
 
 **Status**: ✅ Pronto para ativação  
 **Quando usar**: Qualquer necessidade de UI/UX, componentes, telas, animações
-

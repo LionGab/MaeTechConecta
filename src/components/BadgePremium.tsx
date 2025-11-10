@@ -209,4 +209,3 @@ const styles = StyleSheet.create({
 
 // Memoizar componente
 export const BadgePremium = React.memo(BadgePremiumComponent);
-

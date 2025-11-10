@@ -100,4 +100,3 @@ Se algo falhar:
 2. Verificar logs das Edge Functions
 3. Verificar logs do GitHub Actions
 4. Consultar documentação em `docs/`
-

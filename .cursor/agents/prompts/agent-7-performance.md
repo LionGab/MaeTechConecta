@@ -41,4 +41,3 @@ Soluções: [code splitting, tree shaking]
 ---
 
 **Quando usar:** Lags, bundle size alto, memory leaks, otimização geral
-

@@ -188,4 +188,3 @@ console.log('\n🎯 Revisão automática concluída!\n');
 console.log('💡 Dica: Use AUTO_STAGE=true para staging automático\n');
 
 process.exit(0);
-

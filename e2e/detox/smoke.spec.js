@@ -29,4 +29,3 @@ describe('Smoke Tests', () => {
     await expect(element(by.text('Plano diário'))).toBeVisible();
   });
 });
-

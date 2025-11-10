@@ -327,15 +327,8 @@ export async function generateConversationSummary(messages: ClaudeMessage[]): Pr
  * Helper: Constrói system prompt personalizado
  */
 function buildSystemPrompt(onboardingData: OnboardingData): string {
-  const {
-    name,
-    maternal_stage,
-    emotional_state,
-    main_challenges,
-    support_network,
-    communication_style,
-    expectations,
-  } = onboardingData;
+  const { name, maternal_stage, emotional_state, main_challenges, support_network, communication_style, expectations } =
+    onboardingData;
 
   const stageLabel = maternal_stage ? maternal_stage.replace(/_/g, ' ') : 'maternidade';
   const expectationsLabel =
@@ -505,4 +498,3 @@ export async function generateQuickSuggestions(onboardingData: OnboardingData): 
     };
   }
 }
-

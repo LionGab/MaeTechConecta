@@ -368,4 +368,3 @@ Se encontrar problemas:
 **✅ Setup Completo!**
 
 Seu banco de dados Supabase está configurado e pronto para uso com o app Nossa Maternidade.
-

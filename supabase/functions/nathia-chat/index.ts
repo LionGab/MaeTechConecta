@@ -367,4 +367,3 @@ serve(async (req: Request) => {
     );
   }
 });
-

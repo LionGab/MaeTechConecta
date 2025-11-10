@@ -207,4 +207,3 @@ git merge feature/notifications --no-ff
 
 **Resultado:**
 Feature completa, testada, documentada e em produção em **10 minutos** 🚀
-

@@ -87,7 +87,8 @@ function autoApproveAll() {
   console.log('🔍 Verificando aprovações pendentes...');
   console.log('='.repeat(60));
 
-  const branchName = process.env.BRANCH_NAME || 
+  const branchName =
+    process.env.BRANCH_NAME ||
     (() => {
       try {
         return execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf-8' }).trim();
@@ -231,7 +232,8 @@ function showStatus() {
     }
   }
 
-  const branchName = process.env.BRANCH_NAME ||
+  const branchName =
+    process.env.BRANCH_NAME ||
     (() => {
       try {
         return execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf-8' }).trim();
@@ -289,4 +291,3 @@ Gates de Segurança:
 
 console.log('✅ Auto-approve seguro concluído!\n');
 process.exit(0);
-

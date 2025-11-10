@@ -315,4 +315,3 @@ Consulte **[docs/ENVIRONMENTS.md](./ENVIRONMENTS.md)** para lista completa de se
 
 **Última atualização**: 2025-01-XX  
 **Mantido por**: Time Nossa Maternidade
-

@@ -180,4 +180,3 @@ Para verificar se está funcionando:
 **Última atualização**: Janeiro 2025  
 **Versão**: 1.0.0  
 **Dispositivo**: iPhone 13 (390×844)
-

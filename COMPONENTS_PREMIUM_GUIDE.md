@@ -507,4 +507,3 @@ const styles = StyleSheet.create({
 **🌅 Componentes Premium - Tema "Amanhecer Sereno"**
 
 _Transformando cada interação em uma experiência premium._ ✨
-

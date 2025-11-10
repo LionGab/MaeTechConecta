@@ -328,4 +328,3 @@ Execute o agente de browser automation apenas para detectar erros:
 
 **Última atualização**: Janeiro 2025  
 **Versão do Agente**: 1.0.0
-

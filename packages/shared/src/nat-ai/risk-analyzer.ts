@@ -314,4 +314,3 @@ Estou aqui sempre que precisar. 🤗`;
   // Nível < 7: Sem intervenção específica necessária
   return '';
 }
-

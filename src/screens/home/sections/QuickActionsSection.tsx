@@ -74,4 +74,3 @@ export const QuickActionsSection: React.FC<QuickActionsSectionProps> = ({ action
 };
 
 QuickActionsSection.displayName = 'QuickActionsSection';
-

@@ -58,4 +58,3 @@ export const useSignInStyles = () => {
     placeholderColor: color('textSecondary'),
   };
 };
-

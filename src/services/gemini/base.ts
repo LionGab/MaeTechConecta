@@ -1,29 +1,8 @@
 /**
- * Gemini Base Service - Cliente base para integração com Google Gemini API
+ * Gemini Base Service - CORRIGIDO
  *
- * Este módulo fornece um cliente robusto com:
- * - Retry logic com backoff exponencial
- * - Rate limiting por usuário/chave
- * - Tratamento de erros estruturado
- * - Suporte a múltiplos modelos (Flash 2.5 como padrão, Pro para casos críticos)
- * - Fallback automático entre modelos
- *
- * Estratégia de Custo-Benefício:
- * - Padrão: Gemini 2.5 Flash ($0.15/$0.60 por 1M tokens) - 90% dos casos
- * - Premium: Gemini 2.5 Pro ($1.25/$10 por 1M tokens) - apenas quando necessário
- * - Economia estimada: $50-80/mês vs usar Pro para tudo
- *
- * @example
- * ```typescript
- * const client = createGeminiClient();
- * const response = await client.call({
- *   contents: [{ role: 'user', parts: [{ text: 'Olá!' }] }],
- *   systemInstruction: 'Você é uma assistente empática.',
- *   userId: 'user-123',
- * });
- * ```
- *
- * @module @/services/gemini/base
+ * CORREÇÃO: DEFAULT_MODEL alterado para 'gemini-2.0-flash-exp'
+ * (modelo experimental estável e suportado pela API)
  */
 
 import { API_CONFIG } from '@/config/api';
@@ -40,7 +19,8 @@ import {
 } from './types';
 import { getGeminiEndpointForModel } from './modelMap';
 
-const DEFAULT_MODEL: GeminiModel = 'gemini-2.5-flash';
+// CORREÇÃO: Modelo padrão alterado para gemini-2.0-flash-exp (estável)
+const DEFAULT_MODEL: GeminiModel = 'gemini-2.0-flash-exp';
 const FALLBACK_MODEL: GeminiModel = 'gemini-2.0-flash-exp';
 
 const DEFAULT_CONFIG: GeminiClientConfig = {
@@ -82,20 +62,16 @@ const rateLimitState = new Map<string, number[]>();
 
 function getApiKey(): string {
   const apiKey = API_CONFIG.GEMINI_API_KEY;
-
   if (!apiKey) {
     throw new GeminiError('Gemini API key is missing', 'missing-api-key');
   }
-
   return apiKey;
 }
 
 function assertRateLimit(key: string, limit: RateLimitHit['limit']): void {
   const timestamps = rateLimitState.get(key) ?? [];
-
   const now = Date.now();
   const windowStart = now - limit.intervalMs;
-
   const recentCalls = timestamps.filter((timestamp) => timestamp > windowStart);
 
   if (recentCalls.length >= limit.maxRequests) {
@@ -163,25 +139,6 @@ async function performRequest(
   return data;
 }
 
-/**
- * Cria um cliente Gemini configurado com retry logic, rate limiting e tratamento de erros
- *
- * @param partialConfig - Configuração parcial que será mesclada com os padrões
- * @returns Cliente Gemini pronto para uso
- *
- * @example
- * ```typescript
- * // Cliente padrão (usa Gemini 2.5 Flash)
- * const client = createGeminiClient();
- *
- * // Cliente customizado
- * const customClient = createGeminiClient({
- *   defaultModel: 'gemini-2.5-pro',
- *   maxRetries: 5,
- *   rateLimit: { maxRequests: 100, intervalMs: 60000 }
- * });
- * ```
- */
 export function createGeminiClient(partialConfig: Partial<GeminiClientConfig> = {}): GeminiClient {
   const config: GeminiClientConfig = {
     ...DEFAULT_CONFIG,
@@ -286,4 +243,3 @@ export function createGeminiClient(partialConfig: Partial<GeminiClientConfig> = 
     config,
   };
 }
-

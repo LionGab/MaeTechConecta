@@ -41,4 +41,3 @@ Assertions: [o que validar]
 ---
 
 **Quando usar:** Qualquer necessidade de testes, debugging, validação de qualidade
-

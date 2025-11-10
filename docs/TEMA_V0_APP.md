@@ -195,4 +195,3 @@ src/
 **Status:** ✅ Estrutura criada | ⚠️ Cores do v0.app precisam ser preenchidas
 
 **Próximo passo:** Extrair cores do design do v0.app e preencher `src/theme/themes/v0-app.ts`
-

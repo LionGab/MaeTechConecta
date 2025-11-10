@@ -39,6 +39,7 @@ EXPO_PUBLIC_SENTRY_DSN=SUA_SENTRY_DSN_AQUI
 ### 1.2 Obter credenciais
 
 **Supabase:**
+
 1. Acesse: https://supabase.com/dashboard/project/mnszbkeuerjcevjvdqme
 2. Settings → API
 3. Copie:
@@ -46,6 +47,7 @@ EXPO_PUBLIC_SENTRY_DSN=SUA_SENTRY_DSN_AQUI
    - anon/public key → `EXPO_PUBLIC_SUPABASE_ANON_KEY`
 
 **Gemini API Key:**
+
 1. Acesse: https://makersuite.google.com/app/apikey
 2. Crie nova key
 3. Cole em `EXPO_PUBLIC_GEMINI_API_KEY`
@@ -69,6 +71,7 @@ supabase status
 ```
 
 **Se não conectado:**
+
 ```powershell
 supabase link --project-ref mnszbkeuerjcevjvdqme
 ```
@@ -181,10 +184,12 @@ eas build --platform ios --profile preview
 ### 5.1 Instalar app no Android
 
 **Opção A - QR Code:**
+
 1. Após build concluir, escaneie QR code
 2. Instale APK no dispositivo
 
 **Opção B - Link direto:**
+
 1. Acesse link do build no navegador
 2. Baixe APK
 3. Instale no dispositivo
@@ -206,6 +211,7 @@ eas build --platform ios --profile preview
 ### Erro: "Missing environment variables"
 
 **Solução:**
+
 ```powershell
 # Verificar se .env.local existe
 Test-Path .env.local
@@ -216,6 +222,7 @@ Test-Path .env.local
 ### Erro: "Function not found"
 
 **Solução:**
+
 ```powershell
 # Verificar functions deployadas
 supabase functions list
@@ -227,6 +234,7 @@ supabase functions deploy nathia-chat
 ### Erro: "Build failed"
 
 **Solução:**
+
 ```powershell
 # Limpar cache
 cd apps/mobile
@@ -239,6 +247,7 @@ eas build --platform android --profile preview --clear-cache
 ### App não conecta ao Supabase
 
 **Solução:**
+
 1. Verificar `.env.local` tem `EXPO_PUBLIC_` prefix
 2. Reiniciar Metro bundler: `pnpm dev --clear`
 3. Verificar URL do Supabase está correta
@@ -276,6 +285,7 @@ pnpm test:unit
 ## 🎯 MVP MÍNIMO FUNCIONAL
 
 **O que funciona:**
+
 - ✅ Onboarding básico
 - ✅ Home com dica do dia
 - ✅ Chat NathIA (Gemini)
@@ -283,6 +293,7 @@ pnpm test:unit
 - ✅ Feed MundoNath (se tiver conteúdo)
 
 **O que NÃO funciona (pode deixar para depois):**
+
 - ❌ Curadoria MãeValente (precisa Perplexity)
 - ❌ Gamificação completa
 - ❌ Notificações push
@@ -292,4 +303,3 @@ pnpm test:unit
 
 **Tempo total:** ~70 minutos  
 **Status:** ☐ Completo
-

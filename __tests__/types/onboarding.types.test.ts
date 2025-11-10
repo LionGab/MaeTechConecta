@@ -18,4 +18,3 @@ describe('OnboardingData fields', () => {
     expect('goals' in (sample as Record<string, unknown>)).toBe(false);
   });
 });
-

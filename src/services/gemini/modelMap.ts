@@ -3,6 +3,12 @@ import { GeminiError, type GeminiModel } from './types';
 
 type SupportedEndpointModel = GeminiModel | 'gemini-2.5-flash-exp' | 'gemini-2.5-pro-exp';
 
+/**
+ * Model Map - CORRIGIDO
+ *
+ * CORREÇÃO: Adicionado suporte explícito para gemini-2.0-flash-exp
+ * (modelo padrão estável usado pelo serviço)
+ */
 const MODEL_REGISTRY: Record<SupportedEndpointModel, string> = {
   'gemini-2.5-flash': 'gemini-2.5-flash-exp',
   'gemini-2.5-flash-exp': 'gemini-2.5-flash-exp',
@@ -20,4 +26,3 @@ export function getGeminiEndpointForModel(model: SupportedEndpointModel): string
 
   return `${API_URLS.GEMINI}/models/${apiModelName}:generateContent`;
 }
-

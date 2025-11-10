@@ -26,6 +26,7 @@
 ```
 
 **O que precisa:**
+
 - Supabase URL + Anon Key (Dashboard → Settings → API)
 - Gemini API Key (https://makersuite.google.com/app/apikey)
 
@@ -49,6 +50,7 @@ supabase db push
 ```
 
 **OU manualmente:**
+
 ```powershell
 supabase secrets set GEMINI_API_KEY="SUA_KEY"
 supabase secrets set LLM_PROVIDER="gemini"
@@ -76,6 +78,7 @@ pnpm lint
 ```
 
 **OU manualmente:**
+
 ```powershell
 cd apps/mobile
 eas login
@@ -90,7 +93,7 @@ eas build --platform android --profile preview
 ✅ Home com dica do dia  
 ✅ Chat NathIA (Gemini)  
 ✅ Hábitos básicos  
-✅ Feed MundoNath  
+✅ Feed MundoNath
 
 ---
 
@@ -99,7 +102,7 @@ eas build --platform android --profile preview
 ❌ Curadoria MãeValente (precisa Perplexity)  
 ❌ Gamificação completa  
 ❌ Notificações push  
-❌ Pagamentos  
+❌ Pagamentos
 
 ---
 
@@ -129,4 +132,3 @@ eas build --platform android --profile preview
 ---
 
 **Guia completo:** `MVP_ULTRATHIN_DEPLOY_HOJE.md`
-

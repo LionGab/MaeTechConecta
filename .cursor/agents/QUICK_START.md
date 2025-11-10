@@ -112,4 +112,3 @@ mkdir -p .cursor/agents/{prompts,workflows}
 ---
 
 **Divirta-se criando!** 🎉
-

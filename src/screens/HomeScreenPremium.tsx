@@ -481,4 +481,3 @@ const styles = StyleSheet.create({
     marginTop: sereneDawnSpacing.xl,
   },
 });
-

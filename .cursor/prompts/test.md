@@ -8,4 +8,3 @@ Instruções:
 - Testar componentes com casos de interação e estados.
 - Cobrir erros esperados e fluxos alternativos.
 - Evitar mocks excessivos; preferir comportamento realista.
-

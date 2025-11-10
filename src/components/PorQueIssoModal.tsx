@@ -493,4 +493,3 @@ const styles = StyleSheet.create({
     // Handled inline
   },
 });
-

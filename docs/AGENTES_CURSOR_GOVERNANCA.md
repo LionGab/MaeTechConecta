@@ -1,11 +1,13 @@
 # 🛡️ Governança dos Agentes Cursor
 
 ## 🎯 Objetivo
+
 Garantir que automações e agentes Cursor atuem com rastreabilidade completa, sem burlar as proteções de revisão humana, especialmente em fluxos críticos (CI/CD, releases rápidos para influenciadoras, hotfixes).
 
 ---
 
 ## 🔐 Guardrails Obrigatórios
+
 - **Auto-approve bloqueado por padrão**: `scripts/auto-approve.js` exige `CI_PASSED=true`, branch na allowlist (`release/agents`, `infra/automation`, `infra/ci`) e grava auditoria em `logs/approvals/YYYY-MM-DD.json`.
 - **Override controlado**: use `AUTO_APPROVE_OVERRIDE=true` ou `--force` somente em incidentes, com justificativa registrada (campo `notes`).
 - **Registro de ações**: toda execução automatizada deve chamar `scripts/register-agent-activity.ts` para gravar `logs/agents/YYYY-MM-DD.json`.
@@ -14,6 +16,7 @@ Garantir que automações e agentes Cursor atuem com rastreabilidade completa, s
 ---
 
 ## 🧭 Workflow de Execução
+
 ```bash
 # 1. Rodar validações locais
 pnpm run validate
@@ -40,6 +43,7 @@ pnpm exec tsx scripts/register-agent-activity.ts \
 ---
 
 ## 📂 Estrutura de Logs
+
 ```
 logs/
   approvals/
@@ -47,11 +51,13 @@ logs/
   agents/
     agents-2025-01-10.json      # Ações dos agentes Cursor
 ```
+
 Cada entrada contém `timestamp`, `actor`, `branch`, `ci_pipeline_id`, `decision` e metadados específicos da ação.
 
 ---
 
 ## 🧾 Checklist Semanal de Auditoria
+
 - [ ] Revisar `logs/approvals` e confirmar que toda aprovação teve CI verde.
 - [ ] Conferir `logs/agents` e cruzar com PRs/commits criados por agentes.
 - [ ] Validar se branches fora da allowlist receberam revisão humana.
@@ -61,6 +67,7 @@ Cada entrada contém `timestamp`, `actor`, `branch`, `ci_pipeline_id`, `decision
 ---
 
 ## 🚨 Procedimento de Incidente
+
 1. Suspender `AUTO_APPROVE_OVERRIDE` imediatamente.
 2. Rodar `git log --author="Cursor" --since="7 days"` e revisar commits.
 3. Criar issue `Security` descrevendo impacto e mitigação.
@@ -70,6 +77,7 @@ Cada entrada contém `timestamp`, `actor`, `branch`, `ci_pipeline_id`, `decision
 ---
 
 ## 📎 Referências
+
 - `scripts/auto-approve.js`
 - `scripts/register-agent-activity.ts`
 - `.github/workflows/ci.yml`

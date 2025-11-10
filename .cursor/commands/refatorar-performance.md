@@ -198,4 +198,3 @@ Após refatoração, forneça:
 ## Instruções para o Cursor
 
 Refatore o código aplicando TODAS as otimizações relevantes. Não quebre funcionalidade existente. Execute validação após refatoração.
-

@@ -295,4 +295,3 @@ CONFIGURAÇÃO AUTOMÁTICA:
 ```
 
 **Veja mais comandos de browser em:** `.cursor/agents/comando-browser-visualizacao.md`
-

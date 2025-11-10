@@ -62,4 +62,3 @@ export const API_URLS = {
   HEYGEN: 'https://api.heygen.com/v2',
   SUPABASE: SUPABASE_CONFIG.URL,
 };
-

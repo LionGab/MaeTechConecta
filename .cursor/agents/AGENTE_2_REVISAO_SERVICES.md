@@ -426,4 +426,3 @@ export const checkSubscriptionStatus = async (userId: string): Promise<'free' | 
 ---
 
 **Relatório gerado pelo Agente 2 (Backend Architect)**
-

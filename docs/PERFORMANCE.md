@@ -214,4 +214,3 @@ supabase functions serve nathia-chat --debug
 
 **Última atualização**: 2025-01-XX  
 **Mantido por**: Time Nossa Maternidade
-

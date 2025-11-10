@@ -208,4 +208,3 @@ npm run format
 4. Use Multi-Agente para refatorações paralelas
 5. Valide frequentemente
 6. Mantenha funcionalidade sempre funcionando
-

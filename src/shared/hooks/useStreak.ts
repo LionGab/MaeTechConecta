@@ -100,4 +100,3 @@ export function useStreak(userId: string | null) {
     checkNewBadges,
   };
 }
-

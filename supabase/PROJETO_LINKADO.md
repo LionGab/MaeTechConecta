@@ -82,4 +82,3 @@ supabase functions logs nathia-chat
 - O projeto está linkado ao Supabase remoto
 - Para desenvolvimento local, é necessário Docker Desktop
 - Para produção, use o Supabase Dashboard ou CLI com projeto linkado
-

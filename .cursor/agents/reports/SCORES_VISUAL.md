@@ -264,4 +264,3 @@ ESFORÇO│         │ Limiting│
 **Atualização:** 2025-01-XX
 **Score Atual:** 65/100
 **Score Alvo:** 85/100
-

@@ -26,4 +26,3 @@ export function getGeminiEndpointForModel(model: SupportedEndpointModel): string
 
   return `${API_URLS.GEMINI}/models/${apiModelName}:generateContent`;
 }
-

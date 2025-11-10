@@ -147,4 +147,3 @@ export const MAE_VALENTE_COMMUNITY_LOOP: readonly CommunityLoopInitiative[] = [
     ],
   },
 ];
-

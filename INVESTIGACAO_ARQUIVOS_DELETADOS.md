@@ -133,4 +133,3 @@ ls -la <diretório>
 
 **Investigação realizada por:** Cursor AI Assistant  
 **Método:** Git history + filesystem analysis
-

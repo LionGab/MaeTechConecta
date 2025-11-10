@@ -292,4 +292,3 @@ __tests__/
 - [ ] Testes de acessibilidade incluídos
 - [ ] Edge cases cobertos
 - [ ] Erros testados
-

@@ -81,4 +81,3 @@ pnpm dev
 ---
 
 **Execute `supabase login` no seu terminal e depois o script de configuração!** 🎉
-

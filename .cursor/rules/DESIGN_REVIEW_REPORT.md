@@ -932,4 +932,3 @@ O projeto está **produção-ready** em termos de design e acessibilidade. As me
 **Data:** Janeiro 2025  
 **Versão:** 1.0.0  
 **Próxima revisão:** Março 2025
-

@@ -170,4 +170,3 @@ Os relatórios serão gerados em:
 3. Revise os relatórios gerados
 4. Aplique as correções sugeridas
 5. Valide com `npm run validate`
-

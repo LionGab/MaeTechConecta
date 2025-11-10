@@ -167,4 +167,3 @@ pnpm e2e:android
 ---
 
 **Lembre-se**: Qualidade > Velocidade. É melhor revisar bem do que ter que corrigir depois! 🚀
-

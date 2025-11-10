@@ -387,4 +387,3 @@ export function createThemeTokens(isDark: boolean) {
 }
 
 export default theme;
-

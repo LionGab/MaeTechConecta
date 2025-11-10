@@ -165,4 +165,3 @@ Resumo:`;
     return `Resumo da conversa anterior: ${messages.length} mensagens trocadas sobre temas de maternidade e apoio emocional.`;
   }
 }
-

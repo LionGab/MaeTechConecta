@@ -155,4 +155,3 @@ export const MUNDO_NATH_PLAN: MundoNathPlan = {
   integrations: INTEGRATIONS,
   analytics: ANALYTICS,
 };
-

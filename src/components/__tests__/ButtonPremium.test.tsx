@@ -225,4 +225,3 @@ describe('ButtonPremium', () => {
     expect(getByText('Custom')).toBeTruthy();
   });
 });
-

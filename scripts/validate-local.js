@@ -49,4 +49,3 @@ if (hasErrors) {
 
 console.log('\n✅ Validação local concluída com sucesso!');
 process.exit(0);
-

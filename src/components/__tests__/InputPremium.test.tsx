@@ -154,4 +154,3 @@ describe('InputPremium', () => {
     expect(getByPlaceholderText('Password')).toBeTruthy();
   });
 });
-

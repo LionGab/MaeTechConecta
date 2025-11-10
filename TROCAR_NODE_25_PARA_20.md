@@ -189,4 +189,3 @@ pnpm:     9.x.x     ✅
 - Node.js 20 Downloads: https://nodejs.org/en/download
 - Release Schedule: https://nodejs.org/en/about/previous-releases
 - Expo Requirements: https://docs.expo.dev/get-started/installation/#requirements
-

@@ -224,4 +224,3 @@ const space: number = nathTheme.spacing.md; // OK
 // Type-safe radius
 const radius: number = nathTheme.radius.sm; // OK
 ```
-

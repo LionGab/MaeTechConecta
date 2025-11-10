@@ -295,4 +295,3 @@ serve(async (req) => {
     );
   }
 });
-

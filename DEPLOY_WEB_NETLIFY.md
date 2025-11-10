@@ -217,4 +217,3 @@ Problemas com o deploy? Verifique:
 **Última atualização**: 2025-11-07
 **Versão do Expo**: 54.0.22
 **Node**: 20.x
-

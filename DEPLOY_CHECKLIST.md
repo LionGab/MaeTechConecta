@@ -402,4 +402,3 @@ pnpm validate:quick
 
 **Tempo total gasto:** **\_** horas  
 **Status final:** ☐ Completo
-

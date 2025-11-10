@@ -88,4 +88,3 @@ O OnboardingScreen agora tem:
 ---
 
 **Status**: ✅ Melhorias aplicadas pelo Agente 1 (Frontend Master)
-

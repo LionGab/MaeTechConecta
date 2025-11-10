@@ -343,4 +343,3 @@ LIMIT 10;
 ---
 
 **Status Final:** ✅ **BUG CORRIGIDO E TESTADO**
-

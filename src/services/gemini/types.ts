@@ -130,4 +130,3 @@ export interface GeminiClient {
   call: (options: GeminiCallOptions) => Promise<GeminiResponseData>;
   config: GeminiClientConfig;
 }
-

@@ -255,4 +255,3 @@ Crie o componente seguindo **TODOS** os requisitos acima.
 5. **Se algo não for aplicável**, explique o motivo no código
 
 **Referências**: Ver componentes em `src/components/` (Button.tsx, Card.tsx) como exemplos do padrão do projeto.
-

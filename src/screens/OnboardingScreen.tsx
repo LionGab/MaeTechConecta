@@ -230,4 +230,3 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
 };
 
 export default OnboardingScreen;
-

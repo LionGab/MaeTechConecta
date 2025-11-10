@@ -338,4 +338,3 @@ export const ONBOARDING_STEPS: OnboardingStepConfig[] = [
     requiredFields: ['expectations', 'communication_style'],
   },
 ];
-

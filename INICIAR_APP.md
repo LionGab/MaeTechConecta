@@ -151,4 +151,3 @@ Scan the QR code above with Expo Go (Android) or the Camera app (iOS)
 ---
 
 **Execute `pnpm dev` no terminal para iniciar o app!** 🎉
-

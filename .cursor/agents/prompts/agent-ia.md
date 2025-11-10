@@ -253,4 +253,3 @@ const CRISIS_KEYWORDS = {
 - Prompt Engineering Best Practices
 - LLM Safety Guidelines
 - LGPD Compliance para IA
-

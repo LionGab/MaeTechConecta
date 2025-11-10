@@ -147,4 +147,3 @@ describe('Edge Functions - Contract Tests', () => {
     });
   });
 });
-

@@ -119,4 +119,3 @@ Se preferir ativar um agente por vez:
 ---
 
 **Copie o comando acima e cole no Cursor Composer!** 🚀
-

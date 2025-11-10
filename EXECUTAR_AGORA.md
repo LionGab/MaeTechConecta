@@ -118,4 +118,3 @@ pnpm dev
 ---
 
 **Tudo pronto! Execute os 3 passos acima e está configurado!** 🎉
-

@@ -249,4 +249,3 @@ export function getShadow(token: ThemeShadowToken, isDark = false): ViewStyle {
 }
 
 export default theme;
-

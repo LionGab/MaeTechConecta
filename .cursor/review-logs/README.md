@@ -43,4 +43,3 @@ Após 90 dias, logs antigos podem ser arquivados ou removidos.
 ```bash
 node scripts/review-manager.js report 2025-01-01 2025-01-30
 ```
-

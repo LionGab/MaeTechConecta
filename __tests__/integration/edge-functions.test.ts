@@ -57,4 +57,3 @@ describe('Edge Functions Integration', () => {
     });
   });
 });
-

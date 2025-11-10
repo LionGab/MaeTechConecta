@@ -711,4 +711,3 @@ const styles = makeStyles((t) => ({
     lineHeight: 22,
   },
 }));
-

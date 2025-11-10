@@ -73,4 +73,3 @@ export function initSentry() {
 }
 
 export default Sentry;
-

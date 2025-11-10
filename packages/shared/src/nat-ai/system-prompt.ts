@@ -171,4 +171,3 @@ Estou aqui te ouvindo, sem julgamento. Desabafe o quanto precisar. Seus sentimen
 
 Como você está se sentindo agora que compartilhou isso? 💝`,
 };
-

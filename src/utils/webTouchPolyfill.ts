@@ -48,4 +48,3 @@ export function ensureWebTouchPolyfill(): void {
     console.warn('[WebTouchPolyfill] Falha ao aplicar patch do responder:', error);
   }
 }
-

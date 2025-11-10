@@ -103,4 +103,3 @@ Acessibilidade: labels e states
 ---
 
 **Quando usar:** Qualquer necessidade de UI/UX, componentes, telas, animações
-

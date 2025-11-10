@@ -444,4 +444,3 @@ $$);
 ---
 
 **Security Score:** 65/100 (Bom | Requer Atenção Crítica)
-

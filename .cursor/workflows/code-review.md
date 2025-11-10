@@ -268,4 +268,3 @@ npm run test
 4. Forneça exemplos de código quando apropriado
 5. Seja construtivo e educado
 6. Aprecie o bom trabalho também
-

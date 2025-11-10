@@ -116,4 +116,3 @@ WCAG 2.1 AA compliant.
 ---
 
 **PRÓXIMO PASSO:** Cole o prompt acima no Cursor Composer e execute!
-

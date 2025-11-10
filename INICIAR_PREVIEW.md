@@ -55,4 +55,3 @@ Veja o guia completo em: [`docs/PREVIEW_E_HOT_RELOAD.md`](./docs/PREVIEW_E_HOT_R
 ---
 
 **🎉 Pronto! Agora você pode desenvolver com preview sempre visível!**
-

@@ -74,4 +74,3 @@ Após executar a migration:
 - A migration usa `ivfflat` ao invés de `hnsw` para compatibilidade com planos gratuitos
 - Embeddings são de 768 dimensões (Gemini text-embedding-004)
 - Conversas antigas (>30 dias) podem ser limpas automaticamente
-

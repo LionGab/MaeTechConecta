@@ -6,4 +6,3 @@ export const FAQ_ITEMS = [
   { icon: 'run', question: 'Quais exercícios posso fazer?' },
   { icon: 'stethoscope', question: 'Quando devo procurar o médico?' },
 ] as const;
-

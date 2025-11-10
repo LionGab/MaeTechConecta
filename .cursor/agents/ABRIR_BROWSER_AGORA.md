@@ -66,4 +66,3 @@ Abra o browser integrado do Cursor e acesse http://localhost:8081:
 
 **Status**: ✅ App rodando na porta 8081
 **Pronto para**: Visualização e testes
-

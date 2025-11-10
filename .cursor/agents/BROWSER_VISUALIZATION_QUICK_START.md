@@ -106,4 +106,3 @@ Abra o browser integrado do Cursor
 ---
 
 **Pronto para começar!** 🎉
-

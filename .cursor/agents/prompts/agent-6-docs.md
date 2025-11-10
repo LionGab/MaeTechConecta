@@ -41,4 +41,3 @@ Troubleshooting: [problemas comuns]
 ---
 
 **Quando usar:** READMEs, guias, tutoriais, troubleshooting, onboarding
-

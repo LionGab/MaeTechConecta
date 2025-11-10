@@ -472,4 +472,3 @@ Os contract tests são executados automaticamente no GitHub Actions:
 
 **Última atualização**: 2025-01-XX  
 **Mantido por**: Time Nossa Maternidade
-

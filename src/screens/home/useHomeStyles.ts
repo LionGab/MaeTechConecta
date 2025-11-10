@@ -18,4 +18,3 @@ export const useHomeStyles = () => {
 
   return { styles, ...helpers };
 };
-

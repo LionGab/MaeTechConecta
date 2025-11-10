@@ -240,4 +240,3 @@ pnpm dev
 ---
 
 **Foco: Apenas o Básico Bem Feito. Sem complicações.** ✅
-

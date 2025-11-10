@@ -591,4 +591,3 @@ curl -X POST http://localhost:54321/functions/v1/daily-insight \
 ---
 
 **🎉 80% DO BACKEND ESTÁ PRONTO. AGORA É INTEGRAR NO FRONTEND! 🎉**
-

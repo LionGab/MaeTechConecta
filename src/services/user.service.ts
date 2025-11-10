@@ -191,4 +191,3 @@ export async function incrementDailyInteractions(userId: string): Promise<void> 
     console.error('Erro ao incrementar interações:', error);
   }
 }
-

@@ -72,4 +72,3 @@ export const detectUrgency = (message: string): boolean => {
   const lowerMessage = message.toLowerCase();
   return urgencyKeywords.some((keyword) => lowerMessage.includes(keyword));
 };
-

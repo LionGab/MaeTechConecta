@@ -197,4 +197,3 @@ const sendMessage = useCallback(async (content: string) => {
 ---
 
 > Pronto para execução via Composer ou manual. Seguir ordem: Passo 1 → 2 → 3 → 4 → 5 → 6, validando cada um antes de avançar.
-

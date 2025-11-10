@@ -122,4 +122,3 @@ Após a revisão, forneça:
 ## Instruções para o Cursor
 
 Revise o código seguindo TODOS os itens do checklist. Seja específico e forneça correções concretas. Não seja genérico - forneça exemplos de código quando apropriado.
-
