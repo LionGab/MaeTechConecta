@@ -1,7 +1,9 @@
 /**
  * Bottom Tab Navigator da Nossa Maternidade
  *
- * Navegação principal do app com 5 tabs
+ * Navegação principal com 5 tabs MVP Influencer
+ * Home → NathIA → DesafiosDoDia → RedeValente → MãeValente
+ * Personalização completa via onboarding
  * Otimizado com lazy loading
  */
 
@@ -16,11 +18,13 @@ import { TabParamList } from './types';
 // Lazy load screens para melhor performance
 const HomeScreen = lazy(() => import('@/screens/HomeScreen').then((m) => ({ default: m.default })));
 const ChatScreen = lazy(() => import('@/screens/ChatScreen').then((m) => ({ default: m.default })));
-const HabitsScreen = lazy(() => import('@/features/habits/HabitsScreen').then((m) => ({ default: m.default })));
-const ContentFeedScreen = lazy(() =>
-  import('@/features/content/ContentFeedScreen').then((m) => ({ default: m.default }))
+const DesafiosDoDiaScreen = lazy(() =>
+  import('@/screens/DailyPlanScreen').then((m) => ({ default: m.default }))
 );
-const ProfileScreen = lazy(() => import('@/screens/ProfileScreen').then((m) => ({ default: m.default })));
+const RedeValenteScreen = lazy(() =>
+  import('@/screens/RedeValenteScreen').then((m) => ({ default: m.default }))
+);
+const MaeValenteScreen = lazy(() => import('@/features/habits/HabitsScreen').then((m) => ({ default: m.default })));
 
 // Wrapper com Suspense para lazy loaded screens
 const withSuspense = <P extends object>(Component: React.ComponentType<P>) => {
@@ -35,9 +39,9 @@ const withSuspense = <P extends object>(Component: React.ComponentType<P>) => {
 
 const HomeScreenSuspended = withSuspense(HomeScreen);
 const ChatScreenSuspended = withSuspense(ChatScreen);
-const HabitsScreenSuspended = withSuspense(HabitsScreen);
-const ContentFeedScreenSuspended = withSuspense(ContentFeedScreen);
-const ProfileScreenSuspended = withSuspense(ProfileScreen);
+const DesafiosDoDiaScreenSuspended = withSuspense(DesafiosDoDiaScreen);
+const RedeValenteScreenSuspended = withSuspense(RedeValenteScreen);
+const MaeValenteScreenSuspended = withSuspense(MaeValenteScreen);
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -71,7 +75,7 @@ export function TabNavigator() {
         name="Home"
         component={HomeScreenSuspended}
         options={{
-          tabBarLabel: 'Início',
+          tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => <Icon name="home" size={size} color={color} />,
           tabBarAccessibilityLabel: 'Página inicial',
         }}
@@ -82,34 +86,34 @@ export function TabNavigator() {
         options={{
           tabBarLabel: 'NathIA',
           tabBarIcon: ({ color, size }) => <Icon name="robot" size={size} color={color} />,
-          tabBarAccessibilityLabel: 'Conversar com NathIA',
+          tabBarAccessibilityLabel: 'Conversar com IA',
         }}
       />
       <Tab.Screen
-        name="Habits"
-        component={HabitsScreenSuspended}
+        name="DesafiosDoDia"
+        component={DesafiosDoDiaScreenSuspended}
         options={{
-          tabBarLabel: 'Hábitos',
-          tabBarIcon: ({ color, size }) => <Icon name="check-circle" size={size} color={color} />,
-          tabBarAccessibilityLabel: 'Meus hábitos',
+          tabBarLabel: 'Desafios',
+          tabBarIcon: ({ color, size }) => <Icon name="target" size={size} color={color} />,
+          tabBarAccessibilityLabel: 'Desafios do Dia',
         }}
       />
       <Tab.Screen
-        name="Content"
-        component={ContentFeedScreenSuspended}
+        name="RedeValente"
+        component={RedeValenteScreenSuspended}
         options={{
-          tabBarLabel: 'Conteúdos',
-          tabBarIcon: ({ color, size }) => <Icon name="play-circle" size={size} color={color} />,
-          tabBarAccessibilityLabel: 'Conteúdos exclusivos',
+          tabBarLabel: 'Rede',
+          tabBarIcon: ({ color, size }) => <Icon name="account-group" size={size} color={color} />,
+          tabBarAccessibilityLabel: 'Rede Valente - Comunidade',
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={ProfileScreenSuspended}
+        name="MaeValente"
+        component={MaeValenteScreenSuspended}
         options={{
-          tabBarLabel: 'Perfil',
-          tabBarIcon: ({ color, size }) => <Icon name="account-circle" size={size} color={color} />,
-          tabBarAccessibilityLabel: 'Meu perfil',
+          tabBarLabel: 'Mãe Valente',
+          tabBarIcon: ({ color, size }) => <Icon name="heart" size={size} color={color} />,
+          tabBarAccessibilityLabel: 'Mãe Valente - Hábitos',
         }}
       />
     </Tab.Navigator>

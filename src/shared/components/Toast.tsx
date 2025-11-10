@@ -8,6 +8,7 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, TouchableOpacity, Platform } from 'react-native';
 import { colors, spacing, typography, borderRadius } from '@/theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { shouldUseNativeDriver } from '@/utils/animations';
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -69,14 +70,14 @@ export const Toast: React.FC<ToastProps> = ({
       Animated.parallel([
         Animated.spring(slideAnim, {
           toValue: 0,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
           damping: 15,
           stiffness: 90,
         }),
         Animated.timing(opacityAnim, {
           toValue: 1,
           duration: 250,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
       ]).start();
 
@@ -96,12 +97,12 @@ export const Toast: React.FC<ToastProps> = ({
       Animated.timing(slideAnim, {
         toValue: -100,
         duration: 250,
-        useNativeDriver: true,
+        useNativeDriver: shouldUseNativeDriver,
       }),
       Animated.timing(opacityAnim, {
         toValue: 0,
         duration: 250,
-        useNativeDriver: true,
+        useNativeDriver: shouldUseNativeDriver,
       }),
     ]).start(() => {
       onDismiss?.();

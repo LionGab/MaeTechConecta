@@ -46,7 +46,13 @@ export function useDailyInsight(): UseDailyInsightReturn {
 
       setInsight(data);
     } catch (err: any) {
-      logger.error('Error fetching daily insight:', err);
+      logger.error(
+        'Error fetching daily insight:',
+        err instanceof Error ? err : undefined,
+        {
+          error: err instanceof Error ? err.message : String(err),
+        }
+      );
       setError('Não foi possível carregar sua dica do dia');
     } finally {
       setIsLoading(false);
@@ -73,7 +79,14 @@ export function useDailyInsight(): UseDailyInsightReturn {
 
       setInsight(data.tip);
     } catch (err: any) {
-      logger.error('Error generating insight:', err);
+      logger.error(
+        'Error generating insight:',
+        err instanceof Error ? err : undefined,
+        {
+          userId: user?.id,
+          error: err instanceof Error ? err.message : String(err),
+        }
+      );
       setError('Não foi possível gerar sua dica do dia');
     } finally {
       setIsLoading(false);
@@ -96,7 +109,14 @@ export function useDailyInsight(): UseDailyInsightReturn {
 
       setInsight((prev) => (prev ? { ...prev, viewed: true } : null));
     } catch (err: any) {
-      logger.error('Error marking insight as viewed:', err);
+      logger.error(
+        'Error marking insight as viewed:',
+        err instanceof Error ? err : undefined,
+        {
+          insightId: insight?.id,
+          error: err instanceof Error ? err.message : String(err),
+        }
+      );
     }
   }, [insight]);
 

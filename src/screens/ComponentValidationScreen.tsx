@@ -65,7 +65,7 @@ export default function ComponentValidationScreen() {
               size="sm"
               icon="home"
               accessibilityLabel="Navegar para Home"
-              onPress={() => navigation.navigate('Home' as never)}
+              onPress={() => navigation.navigate('MainTabs' as never)}
               style={styles.navButton}
             >
               Home

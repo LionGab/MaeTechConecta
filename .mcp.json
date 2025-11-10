@@ -1,0 +1,29 @@
+{
+  "mcpServers": {
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp",
+      "description": "Integração com Notion para documentação e bases de dados"
+    },
+    "linear": {
+      "type": "http",
+      "url": "https://mcp.linear.app/mcp",
+      "description": "Integração com Linear para gerenciamento de issues e tarefas"
+    },
+    "sentry": {
+      "type": "http",
+      "url": "https://mcp.sentry.dev/mcp",
+      "description": "Integração com Sentry para monitoramento de erros"
+    },
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp",
+      "description": "Integração com Supabase para banco de dados e APIs"
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.github.com/graphql",
+      "description": "Integração com GitHub para repositório e CI/CD"
+    }
+  }
+}

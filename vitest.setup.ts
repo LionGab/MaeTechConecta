@@ -5,6 +5,13 @@
 
 import { vi } from 'vitest';
 
+declare global {
+  // eslint-disable-next-line no-var
+  var __DEV__: boolean;
+}
+
+globalThis.__DEV__ = false;
+
 // Mock do Expo
 vi.mock('expo', () => ({
   default: {

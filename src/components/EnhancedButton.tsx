@@ -8,6 +8,7 @@
  */
 
 import { shadows } from '@/theme/colors';
+import { shouldUseNativeDriver } from '@/utils/animations';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { Animated, StyleSheet, ViewStyle } from 'react-native';
 import { Button, ButtonProps } from './Button';
@@ -42,23 +43,23 @@ export const EnhancedButton: React.FC<EnhancedButtonProps> = ({
           Animated.parallel([
             Animated.spring(scaleAnim, {
               toValue: 0.95,
-              useNativeDriver: true,
+              useNativeDriver: shouldUseNativeDriver,
             }),
             Animated.timing(opacityAnim, {
               toValue: 0.8,
               duration: 100,
-              useNativeDriver: true,
+              useNativeDriver: shouldUseNativeDriver,
             }),
           ]),
           Animated.parallel([
             Animated.spring(scaleAnim, {
               toValue: 1,
-              useNativeDriver: true,
+              useNativeDriver: shouldUseNativeDriver,
             }),
             Animated.timing(opacityAnim, {
               toValue: 1,
               duration: 150,
-              useNativeDriver: true,
+              useNativeDriver: shouldUseNativeDriver,
             }),
           ]),
         ]).start();

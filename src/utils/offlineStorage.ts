@@ -51,8 +51,13 @@ export async function saveOfflineMessage(
 
     return id;
   } catch (error) {
-    logger.error('Erro ao salvar mensagem offline', {}, error);
-    throw error;
+    logger.error(
+      'Erro ao salvar mensagem offline',
+      error instanceof Error ? error : undefined,
+      {
+        error: error instanceof Error ? error.message : String(error),
+      }
+    );
   }
 }
 
@@ -81,7 +86,14 @@ export async function markMessageAsSynced(messageId: string): Promise<void> {
     // Remover mensagens sincronizadas antigas (mais de 24h)
     await cleanOldSyncedMessages();
   } catch (error) {
-    logger.error('Erro ao marcar mensagem como sincronizada', { messageId }, error);
+    logger.error(
+      'Erro ao marcar mensagem como sincronizada',
+      error instanceof Error ? error : undefined,
+      {
+        messageId,
+        error: error instanceof Error ? error.message : String(error),
+      }
+    );
   }
 }
 
@@ -104,7 +116,13 @@ async function cleanOldSyncedMessages() {
       logger.info(`Removidas ${pendingMessages.length - filteredMessages.length} mensagens sincronizadas antigas`);
     }
   } catch (error) {
-    logger.error('Erro ao limpar mensagens antigas', {}, error);
+    logger.error(
+      'Erro ao limpar mensagens antigas',
+      error instanceof Error ? error : undefined,
+      {
+        error: error instanceof Error ? error.message : String(error),
+      }
+    );
   }
 }
 
@@ -134,7 +152,13 @@ export async function syncPendingMessages(syncFunction: (message: PendingMessage
 
     return syncedCount;
   } catch (error) {
-    logger.error('Erro ao sincronizar mensagens pendentes', {}, error);
+    logger.error(
+      'Erro ao sincronizar mensagens pendentes',
+      error instanceof Error ? error : undefined,
+      {
+        error: error instanceof Error ? error.message : String(error),
+      }
+    );
     return 0;
   }
 }
@@ -155,6 +179,12 @@ export async function clearPendingMessages() {
     await AsyncStorage.removeItem('pending_messages');
     logger.info('Mensagens pendentes limpas');
   } catch (error) {
-    logger.error('Erro ao limpar mensagens pendentes', {}, error);
+    logger.error(
+      'Erro ao limpar mensagens pendentes',
+      error instanceof Error ? error : undefined,
+      {
+        error: error instanceof Error ? error.message : String(error),
+      }
+    );
   }
 }

@@ -6,6 +6,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import { colors, spacing, typography } from '@/theme/colors';
+import { shouldUseNativeDriver } from '@/utils/animations';
 
 export const TypingIndicator = React.memo(() => {
   const fadeAnim = useRef(new Animated.Value(0.5)).current;
@@ -16,12 +17,12 @@ export const TypingIndicator = React.memo(() => {
         Animated.timing(fadeAnim, {
           toValue: 1,
           duration: 1000,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
         Animated.timing(fadeAnim, {
           toValue: 0.5,
           duration: 1000,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
       ])
     );

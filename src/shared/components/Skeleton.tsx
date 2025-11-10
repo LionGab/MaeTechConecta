@@ -7,6 +7,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated, ViewStyle } from 'react-native';
 import { colors, spacing, borderRadius } from '@/theme/colors';
+import { shouldUseNativeDriver } from '@/utils/animations';
 
 export interface SkeletonProps {
   /** Largura do skeleton */
@@ -36,12 +37,12 @@ export const Skeleton: React.FC<SkeletonProps> = ({
         Animated.timing(shimmerAnim, {
           toValue: 1,
           duration: 1000,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
         Animated.timing(shimmerAnim, {
           toValue: 0,
           duration: 1000,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
       ])
     ).start();

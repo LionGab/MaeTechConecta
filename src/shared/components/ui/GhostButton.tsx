@@ -1,11 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
 import {
+  Platform,
   Pressable,
   PressableProps,
   StyleProp,
   Text,
   TextStyle,
   View,
+  ViewProps,
   ViewStyle,
   type GestureResponderEvent,
 } from 'react-native';
@@ -17,6 +19,12 @@ import useThemeStyles from '@/shared/hooks/useThemeStyles';
  *
  * Mantém tokens de cor e acessibilidade alinhados ao tema.
  */
+type PointerEventsValue = ViewProps['pointerEvents'];
+
+interface PointerEventsStyle extends ViewStyle {
+  pointerEvents?: PointerEventsValue;
+}
+
 export interface GhostButtonProps extends Omit<PressableProps, 'style'> {
   label: string;
   icon?: React.ReactNode;
@@ -89,6 +97,13 @@ const BaseGhostButton: React.FC<GhostButtonProps> = ({
     [disabled, onPress]
   );
 
+  // Web exige style.pointerEvents; plataformas nativas ainda dependem da prop pointerEvents.
+  const contentPointerEventsStyle = useMemo<PointerEventsStyle | null>(
+    () => (Platform.OS === 'web' ? { pointerEvents: 'none' } : null),
+    []
+  );
+  const contentPointerEvents: PointerEventsValue | undefined = Platform.OS === 'web' ? undefined : 'none';
+
   return (
     <Pressable
       {...rest}
@@ -107,7 +122,7 @@ const BaseGhostButton: React.FC<GhostButtonProps> = ({
       accessibilityState={{ disabled }}
       hitSlop={space('xs')}
     >
-      <View style={styles.content} pointerEvents="none">
+      <View style={[styles.content, contentPointerEventsStyle]} pointerEvents={contentPointerEvents}>
         {icon ? <View style={styles.icon}>{icon}</View> : null}
         <Text style={[styles.label, textStyle]}>{label}</Text>
       </View>

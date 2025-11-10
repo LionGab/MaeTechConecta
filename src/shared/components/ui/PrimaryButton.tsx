@@ -1,12 +1,14 @@
 import React, { useCallback, useMemo } from 'react';
 import {
   ActivityIndicator,
+  Platform,
   Pressable,
   PressableProps,
   StyleProp,
   Text,
   TextStyle,
   View,
+  ViewProps,
   ViewStyle,
   type GestureResponderEvent,
 } from 'react-native';
@@ -18,6 +20,12 @@ import useThemeStyles from '@/shared/hooks/useThemeStyles';
  *
  * Usa tokens do tema para garantir consistência visual e acessibilidade.
  */
+type PointerEventsValue = ViewProps['pointerEvents'];
+
+interface PointerEventsStyle extends ViewStyle {
+  pointerEvents?: PointerEventsValue;
+}
+
 export interface PrimaryButtonProps extends Omit<PressableProps, 'style'> {
   label: string;
   icon?: React.ReactNode;
@@ -93,6 +101,13 @@ const BasePrimaryButton: React.FC<PrimaryButtonProps> = ({
     [disabled, loading, onPress]
   );
 
+  // Garante compatibilidade entre web (usa style.pointerEvents) e nativo (usa prop pointerEvents).
+  const contentPointerEventsStyle = useMemo<PointerEventsStyle | null>(
+    () => (Platform.OS === 'web' ? { pointerEvents: 'none' } : null),
+    []
+  );
+  const contentPointerEvents: PointerEventsValue | undefined = Platform.OS === 'web' ? undefined : 'none';
+
   return (
     <Pressable
       {...rest}
@@ -112,7 +127,7 @@ const BasePrimaryButton: React.FC<PrimaryButtonProps> = ({
       accessibilityState={{ disabled: disabled || loading, busy: loading }}
       hitSlop={space('xs')}
     >
-      <View style={styles.content} pointerEvents="none">
+      <View style={[styles.content, contentPointerEventsStyle]} pointerEvents={contentPointerEvents}>
         {/* Indicador de carregamento ou ícone à esquerda */}
         {loading ? (
           <ActivityIndicator size="small" color={color('textOnPrimary')} />

@@ -25,5 +25,12 @@
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "supabase",
+    "notion",
+    "linear",
+    "sentry",
+    "github"
+  ]
 }

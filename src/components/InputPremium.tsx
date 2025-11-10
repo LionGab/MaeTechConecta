@@ -39,6 +39,7 @@ import {
   TextInput,
   TextInputProps,
   View,
+  ViewProps,
   ViewStyle,
   Animated,
   NativeSyntheticEvent,
@@ -85,6 +86,12 @@ export interface InputPremiumProps extends TextInputProps {
 
   /** Usar efeito glass */
   useGlass?: boolean;
+}
+
+type PointerEventsValue = ViewProps['pointerEvents'];
+
+interface PointerEventsStyle extends ViewStyle {
+  pointerEvents?: PointerEventsValue;
 }
 
 // =====================================================
@@ -144,6 +151,13 @@ const InputPremiumComponent: React.FC<InputPremiumProps> = ({
     outputRange: [0, 0.3],
   });
 
+  // Evita warning na web movendo pointerEvents para style, mantendo comportamento nativo inalterado.
+  const gradientPointerEventsStyle = useMemo<PointerEventsStyle | null>(
+    () => (Platform.OS === 'web' ? { pointerEvents: 'none' } : null),
+    []
+  );
+  const gradientPointerEvents: PointerEventsValue | undefined = Platform.OS === 'web' ? undefined : 'none';
+
   // Estilos memoizados
   const inputContainerStyle = useMemo(
     () => [styles.inputContainer, error && styles.inputContainerError, containerStyle],
@@ -194,8 +208,8 @@ const InputPremiumComponent: React.FC<InputPremiumProps> = ({
             colors={[sereneDawnOverlay.gold, 'transparent']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={StyleSheet.absoluteFill}
-            pointerEvents="none"
+            style={[StyleSheet.absoluteFill, gradientPointerEventsStyle]}
+            pointerEvents={gradientPointerEvents}
           />
         )}
 

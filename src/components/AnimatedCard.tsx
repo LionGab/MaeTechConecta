@@ -9,6 +9,7 @@ import React, { useEffect, useRef, useMemo } from 'react';
 import { Animated, ViewStyle } from 'react-native';
 
 import { useTheme } from '@/contexts/ThemeContext';
+import { shouldUseNativeDriver } from '@/utils/animations';
 
 import { Card, CardProps } from './Card';
 
@@ -46,14 +47,14 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
           toValue: 1,
           duration,
           delay,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
         Animated.spring(scaleAnim, {
           toValue: 1,
           tension: 50,
           friction: 7,
           delay,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
       ]).start();
     }

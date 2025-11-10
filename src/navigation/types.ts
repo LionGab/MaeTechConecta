@@ -4,7 +4,7 @@
 
 export type RootStackParamList = {
   Onboarding: { onComplete?: () => void } | undefined;
-  Home: undefined;
+  MainTabs: undefined;
   Chat: { context?: string; initialPrompt?: string } | undefined;
   DailyPlan: undefined;
   Profile: undefined;
@@ -17,9 +17,9 @@ export type RootStackParamList = {
 export type TabParamList = {
   Home: undefined;
   Chat: { context?: string; initialPrompt?: string } | undefined;
-  Habits: undefined;
-  Content: undefined;
-  Profile: undefined;
+  DesafiosDoDia: undefined;
+  RedeValente: undefined;
+  MaeValente: undefined;
 };
 
 declare global {

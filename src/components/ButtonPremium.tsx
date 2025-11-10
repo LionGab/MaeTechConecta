@@ -33,6 +33,7 @@ import {
   sereneDawnBorderRadius,
 } from '@/theme/sereneDawn';
 import { getShadowStyle } from '@/utils/platformStyles';
+import { shouldUseNativeDriver } from '@/utils/animations';
 
 // Haptics opcional - tipado corretamente
 interface HapticsType {
@@ -193,7 +194,7 @@ const ButtonPremiumComponent: React.FC<ButtonPremiumProps> = ({
   const handlePressIn = useCallback(() => {
     Animated.spring(scaleAnim, {
       toValue: 0.96,
-      useNativeDriver: true,
+      useNativeDriver: shouldUseNativeDriver,
       speed: 50,
     }).start();
   }, [scaleAnim]);
@@ -201,7 +202,7 @@ const ButtonPremiumComponent: React.FC<ButtonPremiumProps> = ({
   const handlePressOut = useCallback(() => {
     Animated.spring(scaleAnim, {
       toValue: 1,
-      useNativeDriver: true,
+      useNativeDriver: shouldUseNativeDriver,
       speed: 50,
     }).start();
   }, [scaleAnim]);

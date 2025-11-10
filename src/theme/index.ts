@@ -1,29 +1,53 @@
 /**
- * Tema Unificado - Tokens declarativos para o Design System mobile-first
+ * Tema Unificado - Nossa Maternidade
+ * Design System Mobile-First: Terracota, Sage, Lavanda
  */
 
 import type { TextStyle, ViewStyle } from 'react-native';
 
-export { theme as nathTheme, makeStyles, useThemeStyles } from './nathTheme';
+// =====================================================
+// EXPORT PRINCIPAL
+// =====================================================
+
+export {
+  theme as nathTheme,
+  makeStyles,
+  useThemeStyles,
+  getTheme,
+  createThemeTokens,
+  light,
+  dark,
+  overlay,
+  gradients,
+  shadows,
+  shadowsLight,
+  shadowsDark,
+  typography,
+  spacing,
+  borderRadius,
+} from './nathTheme';
+
 export { default as defaultTheme } from './nathTheme';
+
+// =====================================================
+// TIPOS E INTERFACES
+// =====================================================
 
 import {
   light,
   dark,
-  colors as baseColors,
   overlay,
   gradients,
-  getTheme as getPalette,
   shadows,
-  typography as baseTypography,
-  spacing as baseSpacing,
-  borderRadius as baseBorderRadius,
-} from './colors';
+  typography,
+  spacing,
+  borderRadius,
+} from './nathTheme';
 
 type Palette = typeof light;
 type ShadowSet = typeof shadows.light;
 
-interface ThemeSemanticColors {
+export interface ThemeSemanticColors {
   bgPrimary: string;
   bgSecondary: string;
   bgTertiary: string;
@@ -61,10 +85,10 @@ export interface ThemeTypographyVariants {
 }
 
 interface ThemeTypographyBase {
-  fontFamily: typeof baseTypography.fontFamily;
-  sizes: typeof baseTypography.sizes;
-  weights: typeof baseTypography.weights;
-  lineHeight: typeof baseTypography.lineHeight;
+  fontFamily: typeof typography.fontFamily;
+  sizes: typeof typography.sizes;
+  weights: typeof typography.weights;
+  lineHeight: typeof typography.lineHeight;
   variants: ThemeTypographyVariants;
 }
 
@@ -74,13 +98,17 @@ export interface ThemeTokens {
   mode: 'light' | 'dark';
   isDark: boolean;
   colors: Palette & ThemeSemanticColors;
-  spacing: typeof baseSpacing;
-  borderRadius: typeof baseBorderRadius;
+  spacing: typeof spacing;
+  borderRadius: typeof borderRadius;
   typography: ThemeTypography;
   shadows: ShadowSet;
   overlay: typeof overlay;
   gradients: typeof gradients;
 }
+
+// =====================================================
+// FUNÇÕES AUXILIARES
+// =====================================================
 
 function buildSemanticColors(palette: Palette, isDark: boolean): ThemeSemanticColors {
   const success = isDark ? '#6EE7B7' : '#2E7D32';
@@ -114,7 +142,7 @@ function buildSemanticColors(palette: Palette, isDark: boolean): ThemeSemanticCo
 }
 
 function buildTypographyVariants(): ThemeTypographyVariants {
-  const { sizes, weights, fontFamily, lineHeight } = baseTypography;
+  const { sizes, weights, fontFamily, lineHeight } = typography;
   const lineHeightFor = (size: number, factor: keyof typeof lineHeight = 'relaxed') =>
     Math.round(size * lineHeight[factor]);
 
@@ -189,13 +217,13 @@ export function createTheme(isDark = false): ThemeTokens {
       ...palette,
       ...buildSemanticColors(palette, isDark),
     },
-    spacing: { ...baseSpacing },
-    borderRadius: { ...baseBorderRadius },
+    spacing,
+    borderRadius,
     typography: {
-      fontFamily: { ...baseTypography.fontFamily },
-      sizes: { ...baseTypography.sizes },
-      weights: { ...baseTypography.weights },
-      lineHeight: { ...baseTypography.lineHeight },
+      fontFamily: { ...typography.fontFamily },
+      sizes: { ...typography.sizes },
+      weights: { ...typography.weights },
+      lineHeight: { ...typography.lineHeight },
       variants,
       ...variants,
     } as ThemeTypography,
@@ -228,18 +256,5 @@ export function getShadow(token: ThemeShadowToken, isDark = false): ViewStyle {
   const currentTheme = createTheme(isDark);
   return currentTheme.shadows[token];
 }
-
-export {
-  light,
-  dark,
-  baseColors as colors,
-  overlay,
-  gradients,
-  getPalette as getTheme,
-  shadows,
-  baseTypography as typography,
-  baseSpacing as spacing,
-  baseBorderRadius as borderRadius,
-};
 
 export default theme;

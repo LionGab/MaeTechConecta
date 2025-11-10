@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text } from 'react-native';
 import { borderRadius, colors, spacing, typography } from '@/theme/colors';
+import { shouldUseNativeDriver } from '@/utils/animations';
 
 export interface MessageItemProps {
   message: {
@@ -22,13 +23,13 @@ export const MessageItem = React.memo<MessageItemProps>(({ message, onPress }) =
         toValue: 1,
         tension: 50,
         friction: 8,
-        useNativeDriver: true,
+        useNativeDriver: shouldUseNativeDriver,
       }),
       Animated.spring(scaleAnim, {
         toValue: 1,
         tension: 40,
         friction: 7,
-        useNativeDriver: true,
+        useNativeDriver: shouldUseNativeDriver,
       }),
     ]).start();
   }, []);

@@ -67,6 +67,8 @@ nul
 
 # Turbo cache
 .turbo/
+.github/
+.claude/
 
 # Screenshots and images (temporary)
 .playwright-mcp/

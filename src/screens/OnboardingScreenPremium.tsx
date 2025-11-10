@@ -181,7 +181,7 @@ export default function OnboardingScreenPremium() {
       await AsyncStorage.setItem('onboarded', 'true');
       (navigation as any).reset({
         index: 0,
-        routes: [{ name: 'Home' }],
+        routes: [{ name: 'MainTabs' }],
       });
     } catch (error) {
       console.error('Erro ao completar onboarding:', error);

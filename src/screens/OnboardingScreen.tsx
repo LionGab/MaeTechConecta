@@ -92,7 +92,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
         console.log('Onboarding:selectedWord', selectedWordId);
       }
       onComplete?.();
-      navigation.reset({ index: 0, routes: [{ name: 'Home' as never }] });
+      navigation.reset({ index: 0, routes: [{ name: 'MainTabs' as never }] });
     } catch (error) {
       console.error('Erro ao concluir onboarding', error);
     }

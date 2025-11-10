@@ -7,6 +7,19 @@
 import { supabase } from '@/services/supabase';
 import { logger } from '@/lib/logger';
 
+function normalizeError(input: unknown): Error {
+  if (input instanceof Error) {
+    return input;
+  }
+
+  if (typeof input === 'object' && input !== null && 'message' in input) {
+    const message = String((input as { message?: unknown }).message ?? 'Unknown error');
+    return new Error(message);
+  }
+
+  return new Error(String(input));
+}
+
 export type FeatureFlag =
   | 'use_grok'
   | 'use_gemini_pro'
@@ -51,8 +64,11 @@ export async function getUserFeatureFlags(userId: string): Promise<UserFeatureFl
         return await createDefaultFeatureFlags(userId);
       }
 
-      logger.error('Failed to get user feature flags', new Error(error.message), {
+      const safeError = normalizeError(error);
+      const safeMessage = safeError instanceof Error ? safeError.message : String(safeError);
+      logger.error('Failed to get user feature flags', safeError, {
         userId,
+        error: safeMessage,
       });
       return null;
     }
@@ -64,8 +80,11 @@ export async function getUserFeatureFlags(userId: string): Promise<UserFeatureFl
       updated_at: data.updated_at,
     };
   } catch (error) {
-    logger.error('Error getting user feature flags', error instanceof Error ? error : new Error(String(error)), {
+    const safeError = normalizeError(error);
+    const safeMessage = safeError instanceof Error ? safeError.message : String(safeError);
+    logger.error('Error getting user feature flags', safeError, {
       userId,
+      error: safeMessage,
     });
     return null;
   }
@@ -96,8 +115,11 @@ async function createDefaultFeatureFlags(userId: string): Promise<UserFeatureFla
       .single();
 
     if (error) {
-      logger.error('Failed to create default feature flags', new Error(error.message), {
+      const safeError = normalizeError(error);
+      const safeMessage = safeError instanceof Error ? safeError.message : String(safeError);
+      logger.error('Failed to create default feature flags', safeError, {
         userId,
+        error: safeMessage,
       });
       return null;
     }
@@ -109,8 +131,11 @@ async function createDefaultFeatureFlags(userId: string): Promise<UserFeatureFla
       updated_at: data.updated_at,
     };
   } catch (error) {
-    logger.error('Error creating default feature flags', error instanceof Error ? error : new Error(String(error)), {
+    const safeError = normalizeError(error);
+    const safeMessage = safeError instanceof Error ? safeError.message : String(safeError);
+    logger.error('Error creating default feature flags', safeError, {
       userId,
+      error: safeMessage,
     });
     return null;
   }
@@ -173,8 +198,11 @@ export async function updateFeatureFlags(
     });
 
     if (error) {
-      logger.error('Failed to update feature flags', new Error(error.message), {
+      const safeError = normalizeError(error);
+      const safeMessage = safeError instanceof Error ? safeError.message : String(safeError);
+      logger.error('Failed to update feature flags', safeError, {
         userId,
+        error: safeMessage,
       });
       return false;
     }
@@ -187,8 +215,11 @@ export async function updateFeatureFlags(
 
     return true;
   } catch (error) {
-    logger.error('Error updating feature flags', error instanceof Error ? error : new Error(String(error)), {
+    const safeError = normalizeError(error);
+    const safeMessage = safeError instanceof Error ? safeError.message : String(safeError);
+    logger.error('Error updating feature flags', safeError, {
       userId,
+      error: safeMessage,
     });
     return false;
   }
@@ -222,9 +253,11 @@ export async function assignToABTestGroup(userId: string, group: ABTestGroup): P
     });
 
     if (error) {
-      logger.error('Failed to assign AB test group', new Error(error.message), {
+      const safeError = normalizeError(error);
+      const safeMessage = safeError instanceof Error ? safeError.message : String(safeError);
+      logger.error('Failed to assign AB test group', safeError, {
         userId,
-        group,
+        error: safeMessage,
       });
       return false;
     }
@@ -246,9 +279,11 @@ export async function assignToABTestGroup(userId: string, group: ABTestGroup): P
 
     return true;
   } catch (error) {
-    logger.error('Error assigning AB test group', error instanceof Error ? error : new Error(String(error)), {
+    const safeError = normalizeError(error);
+    const safeMessage = safeError instanceof Error ? safeError.message : String(safeError);
+    logger.error('Error assigning AB test group', safeError, {
       userId,
-      group,
+      error: safeMessage,
     });
     return false;
   }
@@ -262,7 +297,11 @@ export async function getABTestDistribution(): Promise<Record<ABTestGroup, numbe
     const { data, error } = await supabase.from('user_feature_flags').select('ab_test_group');
 
     if (error) {
-      logger.error('Failed to get AB test distribution', new Error(error.message), {});
+      const safeError = normalizeError(error);
+      const safeMessage = safeError instanceof Error ? safeError.message : String(safeError);
+      logger.error('Failed to get AB test distribution', safeError, {
+        error: safeMessage,
+      });
       return {
         control: 0,
         grok: 0,
@@ -285,7 +324,11 @@ export async function getABTestDistribution(): Promise<Record<ABTestGroup, numbe
 
     return distribution;
   } catch (error) {
-    logger.error('Error getting AB test distribution', error instanceof Error ? error : new Error(String(error)), {});
+    const safeError = normalizeError(error);
+    const safeMessage = safeError instanceof Error ? safeError.message : String(safeError);
+    logger.error('Error getting AB test distribution', safeError, {
+      error: safeMessage,
+    });
     return {
       control: 0,
       grok: 0,

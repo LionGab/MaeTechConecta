@@ -194,7 +194,14 @@ export const logger = new Logger();
  * try {
  *   // código
  * } catch (error) {
- *   logger.error('Failed to process request', error as Error, { userId: '123' })
+ *   logger.error(
+ *     'Failed to process request',
+ *     error instanceof Error ? error : undefined,
+ *     {
+ *       userId: '123',
+ *       error: error instanceof Error ? error.message : String(error),
+ *     }
+ *   );
  * }
  *
  * // API Request

@@ -14,11 +14,15 @@
 import React, { useEffect, useMemo } from 'react';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { ThemeProvider } from '@/contexts/ThemeContext';
+import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { AppNavigator } from '@/navigation/index';
 import { initSentry } from '@/services/sentry';
+import { ensureWebTouchPolyfill } from '@/utils/webTouchPolyfill';
 
 export default function App() {
   useEffect(() => {
+    ensureWebTouchPolyfill();
+
     // Performance: Inicializar Sentry apenas em produção
     if (process.env.NODE_ENV === 'production') {
       initSentry();
@@ -36,7 +40,9 @@ export default function App() {
   return (
     <ErrorBoundary onError={handleError}>
       <ThemeProvider>
-        <AppNavigator />
+        <OnboardingProvider>
+          <AppNavigator />
+        </OnboardingProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

@@ -6,6 +6,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { borderRadius, colors, spacing } from '@/theme/colors';
+import { shouldUseNativeDriver } from '@/utils/animations';
 
 export const MessageSkeleton = React.memo(() => {
   const pulseAnim = useRef(new Animated.Value(0.5)).current;
@@ -16,12 +17,12 @@ export const MessageSkeleton = React.memo(() => {
         Animated.timing(pulseAnim, {
           toValue: 1,
           duration: 1000,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
         Animated.timing(pulseAnim, {
           toValue: 0.5,
           duration: 1000,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
       ])
     );

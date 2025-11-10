@@ -9,9 +9,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Loading } from '@/shared/components/Loading';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useOnboardingContext } from '@/contexts/OnboardingContext';
 import { theme } from '@/theme/nathTheme';
 
 import { RootStackParamList } from './types';
@@ -19,7 +19,7 @@ import { TabNavigator } from './TabNavigator';
 import { linking } from './linking';
 
 // Lazy load screens para melhor performance
-const OnboardingScreen = lazy(() => import('@/screens/OnboardingScreen').then((m) => ({ default: m.default })));
+const OnboardingScreen = lazy(() => import('@/screens/onboarding/OnboardingScreen').then((m) => ({ default: m.default })));
 const DailyPlanScreen = lazy(() => import('@/screens/DailyPlanScreen').then((m) => ({ default: m.default })));
 const ContentDetailScreen = lazy(() =>
   import('@/features/content/ContentDetailScreen').then((m) => ({ default: m.default }))
@@ -46,86 +46,71 @@ const ComponentValidationScreenSuspended = withSuspense(ComponentValidationScree
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export function AppNavigator() {
+function AppNavigatorContent() {
   const { isDark } = useTheme();
-  const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { isOnboardingCompleted, isLoadingOnboarding } = useOnboardingContext();
 
-  useEffect(() => {
-    checkOnboardingStatus();
-  }, []);
-
-  const checkOnboardingStatus = async () => {
-    try {
-      const onboarded = await AsyncStorage.getItem('onboarded');
-      setIsOnboarded(onboarded === 'true');
-    } catch (error) {
-      console.error('Erro ao verificar onboarding:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <SafeAreaProvider>
-        <Loading message="Carregando..." />
-      </SafeAreaProvider>
-    );
+  if (isLoadingOnboarding) {
+    return <Loading message="Carregando..." />;
   }
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer linking={linking}>
-        <StatusBar style={isDark ? 'light' : 'dark'} />
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {!isOnboarded ? (
+    <NavigationContainer linking={linking}>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {!isOnboardingCompleted ? (
+          <Stack.Screen
+            name="Onboarding"
+            component={OnboardingScreenSuspended}
+            options={{
+              animationEnabled: false,
+              gestureEnabled: false,
+            }}
+          />
+        ) : (
+          <>
+            <Stack.Screen name="MainTabs" component={TabNavigator} />
             <Stack.Screen
-              name="Onboarding"
-              component={OnboardingScreenSuspended}
-              listeners={{
-                focus: () => {
-                  // Callback será gerenciado via navigation listener
-                },
+              name="DailyPlan"
+              component={DailyPlanScreenSuspended}
+              options={{
+                headerShown: true,
+                title: 'Plano Diário',
+                headerStyle: { backgroundColor: theme.colors.bg },
+                headerTintColor: theme.colors.text,
               }}
             />
-          ) : (
-            <>
-              <Stack.Screen name="Home" component={TabNavigator} />
-              <Stack.Screen
-                name="DailyPlan"
-                component={DailyPlanScreenSuspended}
-                options={{
-                  headerShown: true,
-                  title: 'Plano Diário',
-                  headerStyle: { backgroundColor: theme.colors.bg },
-                  headerTintColor: theme.colors.text,
-                }}
-              />
-              <Stack.Screen
-                name="ContentDetail"
-                component={ContentDetailScreenSuspended}
-                options={{
-                  headerShown: true,
-                  title: 'Conteúdo',
-                  headerStyle: { backgroundColor: theme.colors.bg },
-                  headerTintColor: theme.colors.text,
-                }}
-              />
-              <Stack.Screen
-                name="ComponentValidation"
-                component={ComponentValidationScreenSuspended}
-                options={{
-                  headerShown: true,
-                  title: 'Validação de Componentes',
-                  headerStyle: { backgroundColor: theme.colors.bg },
-                  headerTintColor: theme.colors.text,
-                }}
-              />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
+            <Stack.Screen
+              name="ContentDetail"
+              component={ContentDetailScreenSuspended}
+              options={{
+                headerShown: true,
+                title: 'Conteúdo',
+                headerStyle: { backgroundColor: theme.colors.bg },
+                headerTintColor: theme.colors.text,
+              }}
+            />
+            <Stack.Screen
+              name="ComponentValidation"
+              component={ComponentValidationScreenSuspended}
+              options={{
+                headerShown: true,
+                title: 'Validação de Componentes',
+                headerStyle: { backgroundColor: theme.colors.bg },
+                headerTintColor: theme.colors.text,
+              }}
+            />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export function AppNavigator() {
+  return (
+    <SafeAreaProvider>
+      <AppNavigatorContent />
     </SafeAreaProvider>
   );
 }

@@ -4,11 +4,33 @@
  */
 
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors, spacing, typography, borderRadius, shadows } from '@/theme/colors';
 import { DailyInsight } from '@/services/dailyInsight';
+import { shouldUseNativeDriver } from '@/utils/animations';
+
+type ShadowLevel = keyof typeof shadows.dark;
+
+function getShadowStyle(level: ShadowLevel) {
+  const { boxShadow, elevation, shadowColor, shadowOffset, shadowOpacity, shadowRadius } = shadows.dark[level];
+
+  if (Platform.OS === 'web') {
+    return { boxShadow };
+  }
+
+  return {
+    elevation,
+    shadowColor,
+    shadowOffset: {
+      width: shadowOffset.width,
+      height: shadowOffset.height,
+    },
+    shadowOpacity,
+    shadowRadius,
+  };
+}
 
 interface DailyInsightCardProps {
   insight: DailyInsight | null;
@@ -25,7 +47,7 @@ export function DailyInsightCard({ insight, loading, onRefresh, onActionPress }:
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 600,
-        useNativeDriver: true,
+        useNativeDriver: shouldUseNativeDriver,
       }).start();
     }
   }, [insight, fadeAnim]);
@@ -140,12 +162,12 @@ function DailyInsightSkeleton() {
         Animated.timing(pulse, {
           toValue: 1,
           duration: 1000,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
         Animated.timing(pulse, {
           toValue: 0,
           duration: 1000,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
       ])
     ).start();
@@ -182,7 +204,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xl,
     borderRadius: borderRadius.xl,
     overflow: 'hidden',
-    ...shadows.dark.lg,
+    ...getShadowStyle('lg'),
   },
   gradient: {
     padding: spacing.xl,
@@ -228,7 +250,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: spacing.sm,
-    ...shadows.dark.md,
+    ...getShadowStyle('md'),
   },
   avatarLabel: {
     fontSize: typography.sizes.sm,
@@ -283,7 +305,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     borderRadius: borderRadius.lg,
     gap: spacing.sm,
-    ...shadows.dark.md,
+    ...getShadowStyle('md'),
   },
   primaryButtonText: {
     fontSize: typography.sizes.base,

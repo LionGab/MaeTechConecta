@@ -20,6 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Logo } from '@/components/Logo';
 import { spacing, typography, borderRadius, shadows } from '@/theme/colors';
+import { shouldUseNativeDriver } from '@/utils/animations';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -64,19 +65,19 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, onLogin }
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 800,
-        useNativeDriver: true,
+        useNativeDriver: shouldUseNativeDriver,
       }),
       Animated.spring(scaleAnim, {
         toValue: 1,
         friction: 8,
         tension: 40,
-        useNativeDriver: true,
+        useNativeDriver: shouldUseNativeDriver,
       }),
       Animated.timing(slideUpAnim, {
         toValue: 0,
         duration: 600,
         delay: 200,
-        useNativeDriver: true,
+        useNativeDriver: shouldUseNativeDriver,
       }),
     ]).start();
   }, []);
@@ -93,7 +94,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart, onLogin }
     if (onLogin) {
       onLogin();
     } else {
-      (navigation as any).navigate('Home');
+      (navigation as any).navigate('MainTabs');
     }
   };
 

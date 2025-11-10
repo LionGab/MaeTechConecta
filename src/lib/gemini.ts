@@ -1,57 +1,35 @@
 /**
- * Gemini Client - Integração com Google Gemini 2.5 Pro
+ * Gemini Client - Integração com Google Gemini (Legacy - Mantido para compatibilidade)
+ *
+ * @deprecated Use os serviços especializados de @/services/gemini:
+ * - createChatService() para chat empático
+ * - createContentService() para geração de conteúdo
+ *
+ * Este arquivo mantém compatibilidade com código existente mas
+ * internamente usa o novo serviço base otimizado.
  *
  * Cliente para comunicação com Gemini API para NAT-AI
- * Usa fetch diretamente para compatibilidade universal
  */
 
-const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY || '';
-
-if (!GEMINI_API_KEY) {
-  console.warn('GEMINI_API_KEY não configurada');
-}
-
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
+import { createGeminiClient } from '@/services/gemini/base';
+import { extractPrimaryText } from '@/services/gemini/utils';
+import type { GeminiContent } from '@/services/gemini/types';
 
 /**
- * Configuração de segurança permissiva para mães desabafarem livremente
- */
-const SAFETY_SETTINGS = [
-  {
-    category: 'HARM_CATEGORY_HARASSMENT',
-    threshold: 'BLOCK_NONE' as const,
-  },
-  {
-    category: 'HARM_CATEGORY_HATE_SPEECH',
-    threshold: 'BLOCK_NONE' as const,
-  },
-  {
-    category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-    threshold: 'BLOCK_MEDIUM_AND_ABOVE' as const,
-  },
-  {
-    category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
-    threshold: 'BLOCK_NONE' as const, // Permitir desabafos sobre pensamentos difíceis
-  },
-];
-
-/**
- * Configuração de geração
- */
-const GENERATION_CONFIG = {
-  temperature: 0.8, // Criatividade e empatia
-  maxOutputTokens: 800, // Respostas concisas mas completas
-  topP: 0.95,
-  topK: 40,
-};
-
-/**
- * Interface para chat Gemini
+ * Interface para chat Gemini (mantida para compatibilidade)
  */
 export interface GeminiChat {
   history: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }>;
   systemPrompt: string;
 }
+
+const FALLBACK_RESPONSE = `Oi querida! Peço desculpas, mas estou tendo dificuldades técnicas no momento.
+
+Mas quero que você saiba: estou aqui para você, e seus sentimentos são importantes. Você não está sozinha.
+
+Pode tentar novamente em alguns instantes? Ou, se precisar de ajuda urgente, por favor busque apoio profissional (CVV 188, SAMU 192).
+
+Estou aqui sempre que você precisar. 💝`;
 
 /**
  * Cria uma sessão de chat NAT-AI com Gemini
@@ -90,72 +68,46 @@ export async function createNatAIChat(
  * Envia mensagem para o chat e retorna resposta
  */
 export async function sendMessage(chat: GeminiChat, message: string, maxRetries = 3): Promise<string> {
-  let lastError: Error | null = null;
+  try {
+    const client = createGeminiClient();
 
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      if (!GEMINI_API_KEY) {
-        throw new Error('GEMINI_API_KEY não configurada');
-      }
+    // Converter histórico para formato Gemini
+    const contents: GeminiContent[] = [
+      ...chat.history.map((msg) => ({
+        role: msg.role,
+        parts: msg.parts,
+      })),
+      {
+        role: 'user' as const,
+        parts: [{ text: message }],
+      },
+    ];
 
-      // Construir histórico completo
-      const allMessages = [...chat.history, { role: 'user' as const, parts: [{ text: message }] }];
+    const response = await client.call({
+      contents,
+      systemInstruction: chat.systemPrompt,
+      userId: 'nat-ai-legacy',
+      requestId: `nat-ai-${Date.now()}`,
+    });
 
-      // Chamar API Gemini
-      const url = `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`;
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: allMessages.map((msg) => ({
-            role: msg.role,
-            parts: msg.parts,
-          })),
-          systemInstruction: chat.systemPrompt,
-          generationConfig: GENERATION_CONFIG,
-          safetySettings: SAFETY_SETTINGS,
-        }),
-      });
+    const text = extractPrimaryText(response);
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Gemini API error: ${response.status} - ${JSON.stringify(errorData)}`);
-      }
-
-      const data = await response.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-      if (!text || text.trim().length === 0) {
-        throw new Error('Resposta vazia do Gemini');
-      }
-
-      return text.trim();
-    } catch (error: any) {
-      lastError = error;
-      console.error(`Tentativa ${attempt}/${maxRetries} falhou:`, error);
-
-      // Se não for erro recuperável, não tenta novamente
-      if (error.message?.includes('SAFETY') || error.message?.includes('blocked')) {
-        throw new Error('Mensagem bloqueada por segurança');
-      }
-
-      // Backoff exponencial: 1s, 2s, 4s
-      if (attempt < maxRetries) {
-        const delay = Math.pow(2, attempt - 1) * 1000;
-        await new Promise((resolve) => setTimeout(resolve, delay));
-      }
+    if (!text) {
+      throw new Error('Resposta vazia do Gemini');
     }
-  }
 
-  // Se todas as tentativas falharam, retornar resposta empática de fallback
-  if (lastError) {
-    console.error('Todas as tentativas falharam, usando fallback:', lastError);
+    return text;
+  } catch (error: any) {
+    console.error('Erro ao enviar mensagem:', error);
+
+    // Se for erro de segurança, não usar fallback
+    if (error.message?.includes('SAFETY') || error.message?.includes('blocked')) {
+      throw new Error('Mensagem bloqueada por segurança');
+    }
+
+    // Retornar fallback empático em caso de erro
     return FALLBACK_RESPONSE;
   }
-
-  return FALLBACK_RESPONSE;
 }
 
 /**
@@ -182,35 +134,29 @@ ${messagesText}
 
 Resumo:`;
 
-    if (!GEMINI_API_KEY) {
-      throw new Error('GEMINI_API_KEY não configurada');
-    }
+    const client = createGeminiClient();
 
-    // Chamar API Gemini diretamente
-    const url = `${GEMINI_API_URL}?key=${GEMINI_API_KEY}`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        systemInstruction: systemPrompt,
-        generationConfig: {
-          ...GENERATION_CONFIG,
-          maxOutputTokens: 400, // Resumo mais curto
-          temperature: 0.5, // Mais objetivo para resumos
+    const response = await client.call({
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: prompt }],
         },
-        safetySettings: SAFETY_SETTINGS,
-      }),
+      ],
+      systemInstruction: systemPrompt,
+      generationConfig: {
+        temperature: 0.5,
+        maxOutputTokens: 400,
+      },
+      userId: 'nat-ai-summary',
+      requestId: `summary-${Date.now()}`,
     });
 
-    if (!response.ok) {
-      throw new Error(`Gemini API error: ${response.status}`);
-    }
+    const summary = extractPrimaryText(response);
 
-    const data = await response.json();
-    const summary = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!summary) {
+      throw new Error('Resumo vazio');
+    }
 
     return summary.trim();
   } catch (error: any) {
@@ -219,14 +165,3 @@ Resumo:`;
     return `Resumo da conversa anterior: ${messages.length} mensagens trocadas sobre temas de maternidade e apoio emocional.`;
   }
 }
-
-/**
- * Resposta empática de fallback quando Gemini falha
- */
-const FALLBACK_RESPONSE = `Oi querida! Peço desculpas, mas estou tendo dificuldades técnicas no momento.
-
-Mas quero que você saiba: estou aqui para você, e seus sentimentos são importantes. Você não está sozinha.
-
-Pode tentar novamente em alguns instantes? Ou, se precisar de ajuda urgente, por favor busque apoio profissional (CVV 188, SAMU 192).
-
-Estou aqui sempre que você precisar. 💝`;
