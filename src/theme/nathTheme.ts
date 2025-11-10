@@ -24,7 +24,7 @@ function createShadowStyle(
     // Extrai valores RGBA da cor
     const rgbaMatch = shadowColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
     let rgbaColor = shadowColor;
-    
+
     if (rgbaMatch) {
       // Se já é rgba, usa o alpha da cor ou shadowOpacity
       const r = rgbaMatch[1];

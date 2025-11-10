@@ -154,7 +154,7 @@ Crie/edite: `C:\Users\Usuario\Documents\WindowsPowerShell\Microsoft.PowerShell_p
 # Auto-carregar contexto do projeto
 function Set-NossaMaternidadeContext {
     Set-Location C:\Users\Usuario\Documents\NossaMaternidade
-    
+
     if (Test-Path .env.local) {
         Get-Content .env.local | ForEach-Object {
             if ($_ -match '^([^#][^=]+)=(.*)$') {
@@ -174,6 +174,7 @@ Set-Alias -Name nm -Value Set-NossaMaternidadeContext
 ```
 
 Uso:
+
 ```powershell
 # No novo terminal, execute:
 nm
@@ -228,4 +229,3 @@ git branch
 ---
 
 **Última atualização:** 2025-11-10
-
