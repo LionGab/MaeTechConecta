@@ -99,13 +99,9 @@ function assertRateLimit(key: string, limit: RateLimitHit['limit']): void {
   const recentCalls = timestamps.filter((timestamp) => timestamp > windowStart);
 
   if (recentCalls.length >= limit.maxRequests) {
-    throw new GeminiError(
-      'Rate limit exceeded',
-      'rate-limit',
-      {
-        retryAfterSeconds: Math.ceil((recentCalls[0] + limit.intervalMs - now) / 1_000),
-      }
-    );
+    throw new GeminiError('Rate limit exceeded', 'rate-limit', {
+      retryAfterSeconds: Math.ceil((recentCalls[0] + limit.intervalMs - now) / 1_000),
+    });
   }
 
   rateLimitState.set(key, [...recentCalls, now]);
@@ -248,24 +244,23 @@ export function createGeminiClient(partialConfig: Partial<GeminiClientConfig> = 
           throw error;
         }
 
-        const isRetryable = error.code === 'http-error' && error.metadata?.status !== 400 && error.metadata?.status !== 401;
+        const isRetryable =
+          error.code === 'http-error' && error.metadata?.status !== 400 && error.metadata?.status !== 401;
 
         if (!isRetryable || attempt > config.maxRetries) {
-          logger.error(
-            'Gemini call failed',
-            error instanceof Error ? error : undefined,
-            {
-              model: currentModel,
-              attempt,
-              error: error instanceof Error ? error.message : String(error),
-              requestId,
-            }
-          );
+          logger.error('Gemini call failed', error instanceof Error ? error : undefined, {
+            model: currentModel,
+            attempt,
+            error: error instanceof Error ? error.message : String(error),
+            requestId,
+          });
           throw error;
         }
 
         const retryAfterSeconds = error.metadata?.retryAfterSeconds;
-        const backoffMs = retryAfterSeconds ? retryAfterSeconds * 1_000 : config.retryDelayMs * Math.pow(2, attempt - 1);
+        const backoffMs = retryAfterSeconds
+          ? retryAfterSeconds * 1_000
+          : config.retryDelayMs * Math.pow(2, attempt - 1);
 
         logger.warn('Gemini call retrying', {
           model: currentModel,

@@ -111,9 +111,7 @@ function chooseModel(preferProModel: boolean | undefined, client: GeminiClient):
 export function createAnalysisService(customClient?: GeminiClient) {
   const client = customClient ?? createGeminiClient();
 
-  async function analyzePostpartumScreening(
-    input: PostpartumScreeningInput
-  ): Promise<PostpartumScreeningResult> {
+  async function analyzePostpartumScreening(input: PostpartumScreeningInput): Promise<PostpartumScreeningResult> {
     const { onboardingData, epdsScore, epdsAnswers, sentimentHistory, recentConversations, userId, requestId } = input;
 
     try {
@@ -158,14 +156,10 @@ export function createAnalysisService(customClient?: GeminiClient) {
         usage: response.usageMetadata,
       };
     } catch (error) {
-      logger.error(
-        'Erro ao executar triagem pós-parto com Gemini',
-        error instanceof Error ? error : undefined,
-        {
-          error: error instanceof Error ? error.message : String(error),
-          requestId: input.requestId,
-        }
-      );
+      logger.error('Erro ao executar triagem pós-parto com Gemini', error instanceof Error ? error : undefined, {
+        error: error instanceof Error ? error.message : String(error),
+        requestId: input.requestId,
+      });
 
       return {
         success: false,
@@ -218,14 +212,10 @@ export function createAnalysisService(customClient?: GeminiClient) {
         usage: response.usageMetadata,
       };
     } catch (error) {
-      logger.error(
-        'Erro ao analisar perfil de usuária com Gemini',
-        error instanceof Error ? error : undefined,
-        {
-          error: error instanceof Error ? error.message : String(error),
-          userId,
-        }
-      );
+      logger.error('Erro ao analisar perfil de usuária com Gemini', error instanceof Error ? error : undefined, {
+        error: error instanceof Error ? error.message : String(error),
+        userId,
+      });
 
       return {
         success: false,

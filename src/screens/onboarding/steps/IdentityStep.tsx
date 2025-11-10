@@ -4,15 +4,7 @@
  */
 
 import React, { useCallback, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { theme } from '@/theme/nathTheme';
 import { OnboardingData, MaternalStage, LABELS } from '@/types/onboarding';
 import { RadioGroup } from '@/components/onboarding/RadioGroup';
@@ -34,163 +26,129 @@ const MATERNAL_STAGES: { value: MaternalStage; label: string }[] = [
   { value: 'mae_estabelecida', label: 'Mãe já estabelecida' },
 ];
 
-export const IdentityStep = React.memo<IdentityStepProps>(
-  ({ data, stepImage, onUpdate, onNext, onPrev, errors }) => {
-    const [showGestationInput, setShowGestationInput] = useState(
-      data.maternal_stage === 'gestante'
-    );
+export const IdentityStep = React.memo<IdentityStepProps>(({ data, stepImage, onUpdate, onNext, onPrev, errors }) => {
+  const [showGestationInput, setShowGestationInput] = useState(data.maternal_stage === 'gestante');
 
-    const handleMaternalStageChange = useCallback(
-      (value: MaternalStage) => {
-        onUpdate({ maternal_stage: value });
-        setShowGestationInput(value === 'gestante');
-      },
-      [onUpdate]
-    );
+  const handleMaternalStageChange = useCallback(
+    (value: MaternalStage) => {
+      onUpdate({ maternal_stage: value });
+      setShowGestationInput(value === 'gestante');
+    },
+    [onUpdate]
+  );
 
-    const handleGestationWeekChange = useCallback(
-      (text: string) => {
-        const value = parseInt(text, 10);
-        if (!isNaN(value) && value >= 1 && value <= 40) {
-          onUpdate({ gestation_week: value });
-        }
-      },
-      [onUpdate]
-    );
+  const handleGestationWeekChange = useCallback(
+    (text: string) => {
+      const value = parseInt(text, 10);
+      if (!isNaN(value) && value >= 1 && value <= 40) {
+        onUpdate({ gestation_week: value });
+      }
+    },
+    [onUpdate]
+  );
 
-    const handleNameChange = useCallback(
-      (text: string) => {
-        onUpdate({ name: text });
-      },
-      [onUpdate]
-    );
+  const handleNameChange = useCallback(
+    (text: string) => {
+      onUpdate({ name: text });
+    },
+    [onUpdate]
+  );
 
-    const handleBabyNameChange = useCallback(
-      (text: string) => {
-        onUpdate({ baby_name: text });
-      },
-      [onUpdate]
-    );
+  const handleBabyNameChange = useCallback(
+    (text: string) => {
+      onUpdate({ baby_name: text });
+    },
+    [onUpdate]
+  );
 
-    return (
-      <AnimatedStepContainer style={styles.container}>
-        <ScrollView
-          contentContainerStyle={styles.scroll}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Imagem da Nath */}
-          <Image
-            source={stepImage}
-            style={styles.image}
-            resizeMode="contain"
+  return (
+    <AnimatedStepContainer style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+        {/* Imagem da Nath */}
+        <Image source={stepImage} style={styles.image} resizeMode="contain" />
+
+        {/* Texto de boas-vindas */}
+        <Text style={styles.title}>Oi, eu sou a Nath 🌸</Text>
+        <Text style={styles.subtitle}>Quero te conhecer melhor pra deixar tudo aqui com a sua cara.</Text>
+
+        {/* Campo de nome */}
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Qual é o seu nome?</Text>
+          <TextInput
+            style={[styles.input, errors.name && styles.inputError]}
+            placeholder="Digite seu nome"
+            placeholderTextColor={theme.colors.textMuted}
+            value={data.name || ''}
+            onChangeText={handleNameChange}
+            accessible={true}
+            accessibilityLabel="Campo de nome"
+            accessibilityHint="Digite seu nome completo"
           />
-
-          {/* Texto de boas-vindas */}
-          <Text style={styles.title}>Oi, eu sou a Nath 🌸</Text>
-          <Text style={styles.subtitle}>
-            Quero te conhecer melhor pra deixar tudo aqui com a sua cara.
-          </Text>
-
-          {/* Campo de nome */}
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Qual é o seu nome?</Text>
-            <TextInput
-              style={[styles.input, errors.name && styles.inputError]}
-              placeholder="Digite seu nome"
-              placeholderTextColor={theme.colors.textMuted}
-              value={data.name || ''}
-              onChangeText={handleNameChange}
-              accessible={true}
-              accessibilityLabel="Campo de nome"
-              accessibilityHint="Digite seu nome completo"
-            />
-            {errors.name && (
-              <Text style={styles.errorText}>{errors.name}</Text>
-            )}
-          </View>
-
-          {/* Seleção de tipo de mãe */}
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Como você se identifica?</Text>
-            <RadioGroup
-              options={MATERNAL_STAGES}
-              value={data.maternal_stage}
-              onChange={handleMaternalStageChange}
-            />
-            {errors.maternal_stage && (
-              <Text style={styles.errorText}>{errors.maternal_stage}</Text>
-            )}
-          </View>
-
-          {/* Campo de semana de gestação (condicional) */}
-          {showGestationInput && (
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>
-                Em que semana de gestação você está?
-              </Text>
-              <TextInput
-                style={[styles.input, errors.gestation_week && styles.inputError]}
-                placeholder="Ex: 20"
-                placeholderTextColor={theme.colors.textMuted}
-                value={data.gestation_week?.toString() || ''}
-                onChangeText={handleGestationWeekChange}
-                keyboardType="number-pad"
-                maxLength={2}
-                accessible={true}
-                accessibilityLabel="Semana de gestação"
-                accessibilityHint="Digite um número entre 1 e 40"
-              />
-              {errors.gestation_week && (
-                <Text style={styles.errorText}>{errors.gestation_week}</Text>
-              )}
-            </View>
-          )}
-
-          {/* Campo de nome do bebê (opcional) */}
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>
-              Qual é o nome do seu bebê? (opcional)
-            </Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite o nome do bebê"
-              placeholderTextColor={theme.colors.textMuted}
-              value={data.baby_name || ''}
-              onChangeText={handleBabyNameChange}
-              accessible={true}
-              accessibilityLabel="Nome do bebê"
-              accessibilityHint="Campo opcional"
-            />
-          </View>
-
-          {/* Espaçador */}
-          <View style={styles.spacer} />
-        </ScrollView>
-
-        {/* Botões de ação */}
-        <View style={styles.actions}>
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={onPrev}
-          >
-            <Text style={styles.secondaryButtonText}>Voltar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.primaryButton,
-              (!data.name || !data.maternal_stage) &&
-                styles.primaryButtonDisabled,
-            ]}
-            onPress={onNext}
-            disabled={!data.name || !data.maternal_stage}
-          >
-            <Text style={styles.primaryButtonText}>Avançar</Text>
-          </TouchableOpacity>
+          {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
         </View>
-      </AnimatedStepContainer>
-    );
-  }
-);
+
+        {/* Seleção de tipo de mãe */}
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Como você se identifica?</Text>
+          <RadioGroup options={MATERNAL_STAGES} value={data.maternal_stage} onChange={handleMaternalStageChange} />
+          {errors.maternal_stage && <Text style={styles.errorText}>{errors.maternal_stage}</Text>}
+        </View>
+
+        {/* Campo de semana de gestação (condicional) */}
+        {showGestationInput && (
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Em que semana de gestação você está?</Text>
+            <TextInput
+              style={[styles.input, errors.gestation_week && styles.inputError]}
+              placeholder="Ex: 20"
+              placeholderTextColor={theme.colors.textMuted}
+              value={data.gestation_week?.toString() || ''}
+              onChangeText={handleGestationWeekChange}
+              keyboardType="number-pad"
+              maxLength={2}
+              accessible={true}
+              accessibilityLabel="Semana de gestação"
+              accessibilityHint="Digite um número entre 1 e 40"
+            />
+            {errors.gestation_week && <Text style={styles.errorText}>{errors.gestation_week}</Text>}
+          </View>
+        )}
+
+        {/* Campo de nome do bebê (opcional) */}
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Qual é o nome do seu bebê? (opcional)</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Digite o nome do bebê"
+            placeholderTextColor={theme.colors.textMuted}
+            value={data.baby_name || ''}
+            onChangeText={handleBabyNameChange}
+            accessible={true}
+            accessibilityLabel="Nome do bebê"
+            accessibilityHint="Campo opcional"
+          />
+        </View>
+
+        {/* Espaçador */}
+        <View style={styles.spacer} />
+      </ScrollView>
+
+      {/* Botões de ação */}
+      <View style={styles.actions}>
+        <TouchableOpacity style={styles.secondaryButton} onPress={onPrev}>
+          <Text style={styles.secondaryButtonText}>Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.primaryButton, (!data.name || !data.maternal_stage) && styles.primaryButtonDisabled]}
+          onPress={onNext}
+          disabled={!data.name || !data.maternal_stage}
+        >
+          <Text style={styles.primaryButtonText}>Avançar</Text>
+        </TouchableOpacity>
+      </View>
+    </AnimatedStepContainer>
+  );
+});
 
 IdentityStep.displayName = 'IdentityStep';
 

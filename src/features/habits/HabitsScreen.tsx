@@ -261,15 +261,21 @@ export default function HabitsScreen() {
           <View style={styles.infoList}>
             <View style={styles.infoItem}>
               <Icon name="bell-ring" size={16} color={theme.colors.secondary} />
-              <Text style={styles.infoItemText}><Text style={styles.bold}>Deixa:</Text> O que te lembra de fazer</Text>
+              <Text style={styles.infoItemText}>
+                <Text style={styles.bold}>Deixa:</Text> O que te lembra de fazer
+              </Text>
             </View>
             <View style={styles.infoItem}>
               <Icon name="repeat" size={16} color={theme.colors.secondary} />
-              <Text style={styles.infoItemText}><Text style={styles.bold}>Rotina:</Text> A ação em si</Text>
+              <Text style={styles.infoItemText}>
+                <Text style={styles.bold}>Rotina:</Text> A ação em si
+              </Text>
             </View>
             <View style={styles.infoItem}>
               <Icon name="star" size={16} color={theme.colors.secondary} />
-              <Text style={styles.infoItemText}><Text style={styles.bold}>Recompensa:</Text> O que você ganha ao fazer</Text>
+              <Text style={styles.infoItemText}>
+                <Text style={styles.bold}>Recompensa:</Text> O que você ganha ao fazer
+              </Text>
             </View>
           </View>
         </Card>
@@ -308,7 +314,9 @@ export default function HabitsScreen() {
           title="Nenhum hábito criado ainda"
           description="Vamos começar sua jornada de autocuidado juntas. Criar hábitos saudáveis é um ato de amor próprio."
           actionLabel="Criar meu primeiro hábito"
-          onAction={() => Alert.alert('Em breve', 'Funcionalidade de criar hábitos personalizados será adicionada em breve!')}
+          onAction={() =>
+            Alert.alert('Em breve', 'Funcionalidade de criar hábitos personalizados será adicionada em breve!')
+          }
         />
       ) : (
         <>
@@ -369,7 +377,9 @@ export default function HabitsScreen() {
           <View style={styles.ctaSection}>
             <Pressable
               style={styles.ctaButton}
-              onPress={() => Alert.alert('Em breve', 'Funcionalidade de criar hábitos personalizados será adicionada em breve!')}
+              onPress={() =>
+                Alert.alert('Em breve', 'Funcionalidade de criar hábitos personalizados será adicionada em breve!')
+              }
             >
               <Icon name="plus-circle" size={24} color={theme.colors.primary} />
               <Text style={styles.ctaText}>Adicionar novo hábito personalizado</Text>

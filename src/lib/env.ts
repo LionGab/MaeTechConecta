@@ -89,14 +89,10 @@ export function getEnvConfig(): EnvConfig {
   if (missingRequired.length > 0) {
     const errorMessage = `CRÍTICO: Variáveis de ambiente obrigatórias faltando: ${missingRequired.join(', ')}`;
     const envError = new Error(errorMessage);
-    logger.error(
-      errorMessage,
-      envError,
-      {
-        missing: missingRequired,
-        error: envError instanceof Error ? envError.message : String(envError),
-      }
-    );
+    logger.error(errorMessage, envError, {
+      missing: missingRequired,
+      error: envError instanceof Error ? envError.message : String(envError),
+    });
 
     // Em produção, lançar erro para evitar que app quebre silenciosamente
     if (!__DEV__) {

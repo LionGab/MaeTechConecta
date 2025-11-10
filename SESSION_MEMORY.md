@@ -1,9 +1,11 @@
 # 📚 SESSION MEMORY - NOSSA MATERNIDADE
+
 **Data:** 2025-11-10 | **Status:** Ambiente MCP Configurado ✅
 
 ---
 
 ## 🎯 OBJETIVO FINAL
+
 Montar um **ambiente imbatível** para desenvolvimento de Nossa Maternidade com IA integrada
 
 ---
@@ -11,7 +13,9 @@ Montar um **ambiente imbatível** para desenvolvimento de Nossa Maternidade com 
 ## ✅ O QUE FOI CONCLUÍDO NESTA SESSÃO
 
 ### 1️⃣ ONBOARDING IMPLEMENTADO (3000+ linhas)
+
 **Arquivos Criados:**
+
 - `src/types/onboarding.ts` - Tipos e configurações
 - `src/services/onboardingService.ts` - Lógica Supabase
 - `src/hooks/useOnboardingForm.ts` - Gerenciamento de form
@@ -21,17 +25,20 @@ Montar um **ambiente imbatível** para desenvolvimento de Nossa Maternidade com 
 - `src/screens/onboarding/steps/*` - 5 steps (Identity, Emotional, Challenges, Support, Preferences)
 
 **Integração Supabase:** ✅
+
 - Persistence de dados
 - Geração de insights para personalização
 - Cache com AsyncStorage
 
 **Imagens:** ✅
+
 - nat1.png, nat2.png, nat3.png copiadas para assets
 - Mapeadas em ONBOARDING_STEP_IMAGES
 
 ### 2️⃣ MCP SERVERS CONFIGURADOS (5 servidores)
 
 **Servidores Instalados:**
+
 1. **Notion** - Documentação e bases de dados
 2. **Linear** - Gerenciamento de issues
 3. **Sentry** - Monitoramento de erros
@@ -39,6 +46,7 @@ Montar um **ambiente imbatível** para desenvolvimento de Nossa Maternidade com 
 5. **GitHub** - Repositório e CI/CD
 
 **Credenciais Fornecidas:**
+
 ```
 Notion:    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
 Linear:    lin_wh_ryHazSPhZzVXqAuGiGNUfeadRHRT6o7AIWHqGB0BxISh
@@ -49,10 +57,12 @@ Supabase:  https://mnszbkeuerjcevjvdqme.supabase.co
 ```
 
 **Arquivo Compartilhado:**
+
 - `.mcp.json` criado em `C:\Users\Usuario\Documents\NossaMaternidade\.mcp.json`
 - Todos os MCPs salvos com autenticação
 
 ### 3️⃣ NAVEGAÇÃO ATUALIZADA
+
 - ✅ 4 Tabs: Home → NathIA → Meu Dia → Mãe Valente
 - ✅ Removidos: Content, Profile
 - ✅ Renomeado: Habits → Mãe Valente
@@ -62,7 +72,9 @@ Supabase:  https://mnszbkeuerjcevjvdqme.supabase.co
 ## 🔑 CREDENCIAIS IMPORTANTES
 
 ### MCP Servers
+
 Todas as credenciais estão salvas em:
+
 ```
 ~/.claude.json
 └── projects["C:\\Users\\Usuario\\Documents\\NossaMaternidade"]
@@ -70,6 +82,7 @@ Todas as credenciais estão salvas em:
 ```
 
 ### Supabase
+
 - **URL:** https://mnszbkeuerjcevjvdqme.supabase.co
 - **Projeto:** nossa-maternidade
 - Tipo de chave usada: ANON_KEY (para cliente)
@@ -79,6 +92,7 @@ Todas as credenciais estão salvas em:
 ## 🧪 PRÓXIMOS PASSOS - PRIORIDADE
 
 ### CRÍTICOS (Fazer Primeiro)
+
 1. **Integrar Onboarding na Navegação**
    - OnboardingContext precisa ser conectado ao AppNavigator
    - Mostrar OnboardingScreen para novos usuários
@@ -95,6 +109,7 @@ Todas as credenciais estão salvas em:
    - Validar que funciona em toda parte
 
 ### IMPORTANTES (Segunda Semana)
+
 4. **Integrar Onboarding Insights**
    - Feed deve usar dados personalizados
    - Chat (NathIA) deve ter tom configurável
@@ -106,6 +121,7 @@ Todas as credenciais estão salvas em:
    - Teste prompts para cada servidor
 
 ### DESEJÁVEIS (Backlog)
+
 6. **Integração com Perplexity Pro** (para MãeValente)
 7. **Melhorias de UX** (animações, feedback)
 8. **Performance Optimization**
@@ -114,34 +130,38 @@ Todas as credenciais estão salvas em:
 
 ## 📊 STATUS ATUAL
 
-| Item | Status | Progresso |
-|------|--------|-----------|
-| Onboarding Implementado | ✅ Completo | 100% |
-| MCP Servers | ✅ Configurados | 100% |
-| Credenciais | ✅ Salvas | 100% |
-| Navegação | ✅ Atualizada | 100% |
-| Theme | ⚠️ Duplicado | Precisa consolidar |
-| Integração Onboarding | ⏳ Pendente | 0% |
-| Testes | ⏳ Pendente | 0% |
+| Item                    | Status          | Progresso          |
+| ----------------------- | --------------- | ------------------ |
+| Onboarding Implementado | ✅ Completo     | 100%               |
+| MCP Servers             | ✅ Configurados | 100%               |
+| Credenciais             | ✅ Salvas       | 100%               |
+| Navegação               | ✅ Atualizada   | 100%               |
+| Theme                   | ⚠️ Duplicado    | Precisa consolidar |
+| Integração Onboarding   | ⏳ Pendente     | 0%                 |
+| Testes                  | ⏳ Pendente     | 0%                 |
 
 ---
 
 ## 🔄 COMO RETOMAR NA PRÓXIMA SESSÃO
 
 **Opção 1 (Automático):**
+
 ```bash
 claude --continue
 ```
 
 **Opção 2 (Contexto Limpo):**
+
 ```bash
 claude --resume [session_id]
 ```
 
 **Opção 3 (Nova Sessão):**
+
 ```bash
 claude
 ```
+
 Todos os arquivos e MCPs permanecerão salvos.
 
 ---
@@ -149,6 +169,7 @@ Todos os arquivos e MCPs permanecerão salvos.
 ## 📝 NOTAS TÉCNICAS
 
 ### Decisões Tomadas
+
 1. ✅ MCP via CLI (`claude mcp add`) em vez de arquivo manual
 2. ✅ HTTP transport para servidores remotos
 3. ✅ Credenciais via headers (Authorization: Bearer)
@@ -156,12 +177,14 @@ Todos os arquivos e MCPs permanecerão salvos.
 5. ✅ Git nativo para operações de repositório
 
 ### Problemas Resolvidos
+
 - ❌ → ✅ Arquivo manual `claude_desktop_config.json` deletado
 - ❌ → ✅ Servidores não oficiais (Postgres) removidos
 - ❌ → ✅ Figma substituído por GitHub (mais relevante)
 - ❌ → ✅ Supabase reconfigurado como HTTP (não stdio)
 
 ### Arquivos Críticos
+
 ```
 NossaMaternidade/
 ├── .mcp.json ← Compartilhado com equipe
@@ -186,6 +209,7 @@ NossaMaternidade/
 Para montar o melhor ambiente possível, sugiro:
 
 ### Stack Final Recomendado
+
 1. **IDE:** Claude Code + Cursor (dual setup)
 2. **MCP:** 5 servidores (Notion, Linear, Sentry, Supabase, GitHub) ✅
 3. **Theme:** Consolidado (nathTheme.ts) - Pendente
@@ -193,7 +217,9 @@ Para montar o melhor ambiente possível, sugiro:
 5. **Testing:** Jest + E2E (Playwright via MCP)
 
 ### Próxima Sessão - Foco
+
 Recomendo começar por:
+
 1. **Consolidar tema** (30 min)
 2. **Integrar Onboarding** no nav (1h)
 3. **Testar fluxo completo** (30 min)

@@ -86,11 +86,7 @@ const FORMATS = [
       'Bloco de perguntas ao vivo',
       'Resumo com direcionamento para conteúdo aprofundado',
     ],
-    ctas: [
-      'Baixe a toolbox desta semana',
-      'Entre na Missão de Coragem',
-      'Inscreva-se no domingo Plano com Nath',
-    ],
+    ctas: ['Baixe a toolbox desta semana', 'Entre na Missão de Coragem', 'Inscreva-se no domingo Plano com Nath'],
   },
   {
     id: 'newsletter-carta-da-nath',
@@ -102,26 +98,14 @@ const FORMATS = [
       'Links favoritos e bastidores',
       'Próximo grande movimento da comunidade',
     ],
-    ctas: [
-      'Responder com feedback',
-      'Compartilhar com outra mãe',
-      'Participar do próximo sprint temático',
-    ],
+    ctas: ['Responder com feedback', 'Compartilhar com outra mãe', 'Participar do próximo sprint temático'],
   },
   {
     id: 'colabs',
     cadence: 'Bimestral ou quando houver oportunidade estratégica.',
     channel: 'Lives ou conteúdos co-criados com outras criadoras.',
-    structure: [
-      'Introdução das convidadas',
-      'Discussão prática',
-      'Troca de recursos',
-      'CTA cruzado para comunidades',
-    ],
-    ctas: [
-      'Seguir convidada e baixar recurso conjunto',
-      'Participar da comunidade para acompanhamento pós-live',
-    ],
+    structure: ['Introdução das convidadas', 'Discussão prática', 'Troca de recursos', 'CTA cruzado para comunidades'],
+    ctas: ['Seguir convidada e baixar recurso conjunto', 'Participar da comunidade para acompanhamento pós-live'],
   },
 ] as const;
 
@@ -137,18 +121,12 @@ const INTEGRATIONS = [
   {
     context: 'Analytics compartilhado',
     expectation: 'Dashboard simples com posts top performers e triggers de CTA.',
-    crossPromotion: [
-      'Time envia insights toda segunda',
-      'Nath comenta principais aprendizados na live semanal',
-    ],
+    crossPromotion: ['Time envia insights toda segunda', 'Nath comenta principais aprendizados na live semanal'],
   },
   {
     context: 'Conteúdos destacados',
     expectation: 'Cortes das lives da Nath viram anúncios nativos e cápsulas dentro do app.',
-    crossPromotion: [
-      'Marcação no app com selo “Da Nath”',
-      'Link nos stories para assistir corte exclusivo',
-    ],
+    crossPromotion: ['Marcação no app com selo “Da Nath”', 'Link nos stories para assistir corte exclusivo'],
   },
 ] as const;
 

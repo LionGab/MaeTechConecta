@@ -1,13 +1,6 @@
 import { MaeValentePillarId, MaeValenteRitualId, MaeValenteSprintId } from './values';
 
-export type DayOfWeek =
-  | 'monday'
-  | 'tuesday'
-  | 'wednesday'
-  | 'thursday'
-  | 'friday'
-  | 'saturday'
-  | 'sunday';
+export type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 
 export interface EditorialPillar {
   readonly id: MaeValentePillarId;

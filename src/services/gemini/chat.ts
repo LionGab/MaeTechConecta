@@ -26,13 +26,7 @@
  */
 
 import { createGeminiClient } from './base';
-import {
-  GeminiCallOptions,
-  GeminiClient,
-  GeminiModel,
-  GeminiResponseData,
-  GeminiUsageMetadata,
-} from './types';
+import { GeminiCallOptions, GeminiClient, GeminiModel, GeminiResponseData, GeminiUsageMetadata } from './types';
 import { buildChatContents, buildChatSystemPrompt, extractPrimaryText } from './utils';
 import { logger } from '@/lib/logger';
 import { OnboardingData } from '@/types/onboarding';
@@ -121,15 +115,16 @@ export function createChatService(customClient?: GeminiClient) {
         requestId,
         abortSignal,
         rateLimitKey: `chat:${userId}`,
-        generationConfig: model === 'gemini-2.5-pro'
-          ? {
-              temperature: 0.75,
-              maxOutputTokens: 900,
-            }
-          : {
-              temperature: 0.8,
-              maxOutputTokens: 600,
-            },
+        generationConfig:
+          model === 'gemini-2.5-pro'
+            ? {
+                temperature: 0.75,
+                maxOutputTokens: 900,
+              }
+            : {
+                temperature: 0.8,
+                maxOutputTokens: 600,
+              },
       };
 
       const response = await client.call(callOptions);
@@ -150,15 +145,11 @@ export function createChatService(customClient?: GeminiClient) {
         usage: response.usageMetadata,
       };
     } catch (error) {
-      logger.error(
-        'Erro ao enviar mensagem para NathIA',
-        error instanceof Error ? error : undefined,
-        {
-          error: error instanceof Error ? error.message : String(error),
-          requestId: params.requestId,
-          userId: params.userId,
-        }
-      );
+      logger.error('Erro ao enviar mensagem para NathIA', error instanceof Error ? error : undefined, {
+        error: error instanceof Error ? error.message : String(error),
+        requestId: params.requestId,
+        userId: params.userId,
+      });
 
       return {
         success: false,

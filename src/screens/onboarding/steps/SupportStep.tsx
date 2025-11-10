@@ -4,15 +4,7 @@
  */
 
 import React, { useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { theme } from '@/theme/nathTheme';
 import { OnboardingData, SupportNetworkLevel } from '@/types/onboarding';
 import { RadioGroup } from '@/components/onboarding/RadioGroup';
@@ -49,99 +41,75 @@ const SUPPORT_OPTIONS = [
   },
 ];
 
-export const SupportStep = React.memo<SupportStepProps>(
-  ({ data, stepImage, onUpdate, onNext, onPrev }) => {
-    const handleSupportChange = useCallback(
-      (value: SupportNetworkLevel) => {
-        onUpdate({ support_network: value });
-      },
-      [onUpdate]
-    );
+export const SupportStep = React.memo<SupportStepProps>(({ data, stepImage, onUpdate, onNext, onPrev }) => {
+  const handleSupportChange = useCallback(
+    (value: SupportNetworkLevel) => {
+      onUpdate({ support_network: value });
+    },
+    [onUpdate]
+  );
 
-    const handleDetailsChange = useCallback(
-      (text: string) => {
-        onUpdate({ support_details: text });
-      },
-      [onUpdate]
-    );
+  const handleDetailsChange = useCallback(
+    (text: string) => {
+      onUpdate({ support_details: text });
+    },
+    [onUpdate]
+  );
 
-    return (
-      <AnimatedStepContainer style={styles.container}>
-        <ScrollView
-          contentContainerStyle={styles.scroll}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Imagem */}
-          <Image
-            source={stepImage}
-            style={styles.image}
-            resizeMode="contain"
-          />
+  return (
+    <AnimatedStepContainer style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+        {/* Imagem */}
+        <Image source={stepImage} style={styles.image} resizeMode="contain" />
 
-          {/* Título */}
-          <Text style={styles.title}>
-            Ninguém deveria viver maternidade sozinha
-          </Text>
-          <Text style={styles.subtitle}>
-            Me conta um pouco sobre o seu círculo.
-          </Text>
+        {/* Título */}
+        <Text style={styles.title}>Ninguém deveria viver maternidade sozinha</Text>
+        <Text style={styles.subtitle}>Me conta um pouco sobre o seu círculo.</Text>
 
-          {/* Rede de apoio */}
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>
-              Você tem uma rede de apoio (família, amigos, parceiro)?
-            </Text>
-            <RadioGroup
-              options={SUPPORT_OPTIONS}
-              value={data.support_network}
-              onChange={handleSupportChange}
-            />
-          </View>
-
-          {/* Detalhes da rede */}
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>
-              Quer contar mais sobre sua rede de apoio? (opcional)
-            </Text>
-            <TextInput
-              style={styles.textarea}
-              placeholder="Ex: Minha mãe ajuda nos fins de semana, meu parceiro está sempre perto..."
-              placeholderTextColor={theme.colors.textMuted}
-              value={data.support_details || ''}
-              onChangeText={handleDetailsChange}
-              multiline
-              numberOfLines={4}
-              textAlignVertical="top"
-            />
-          </View>
-
-          {/* Mensagem de apoio */}
-          <View style={styles.supportMessage}>
-            <Text style={styles.supportText}>
-              💙 Mesmo que você sinta que está sozinha agora, sabe que estou aqui
-              pra você. A gente tira força uma da outra.
-            </Text>
-          </View>
-
-          <View style={styles.spacer} />
-        </ScrollView>
-
-        {/* Botões */}
-        <View style={styles.actions}>
-          <TouchableOpacity style={styles.secondaryButton} onPress={onPrev}>
-            <Text style={styles.secondaryButtonText}>Voltar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.primaryButton}
-            onPress={onNext}
-          >
-            <Text style={styles.primaryButtonText}>Avançar</Text>
-          </TouchableOpacity>
+        {/* Rede de apoio */}
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Você tem uma rede de apoio (família, amigos, parceiro)?</Text>
+          <RadioGroup options={SUPPORT_OPTIONS} value={data.support_network} onChange={handleSupportChange} />
         </View>
-      </AnimatedStepContainer>
-    );
-  }
-);
+
+        {/* Detalhes da rede */}
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Quer contar mais sobre sua rede de apoio? (opcional)</Text>
+          <TextInput
+            style={styles.textarea}
+            placeholder="Ex: Minha mãe ajuda nos fins de semana, meu parceiro está sempre perto..."
+            placeholderTextColor={theme.colors.textMuted}
+            value={data.support_details || ''}
+            onChangeText={handleDetailsChange}
+            multiline
+            numberOfLines={4}
+            textAlignVertical="top"
+          />
+        </View>
+
+        {/* Mensagem de apoio */}
+        <View style={styles.supportMessage}>
+          <Text style={styles.supportText}>
+            💙 Mesmo que você sinta que está sozinha agora, sabe que estou aqui pra você. A gente tira força uma da
+            outra.
+          </Text>
+        </View>
+
+        <View style={styles.spacer} />
+      </ScrollView>
+
+      {/* Botões */}
+      <View style={styles.actions}>
+        <TouchableOpacity style={styles.secondaryButton} onPress={onPrev}>
+          <Text style={styles.secondaryButtonText}>Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.primaryButton} onPress={onNext}>
+          <Text style={styles.primaryButtonText}>Avançar</Text>
+        </TouchableOpacity>
+      </View>
+    </AnimatedStepContainer>
+  );
+});
 
 SupportStep.displayName = 'SupportStep';
 

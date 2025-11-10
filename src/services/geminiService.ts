@@ -21,9 +21,7 @@ import { extractPrimaryText } from './gemini/utils';
  * Gera insights diários personalizados para a Home
  * Baseado no perfil e preferências da mãe
  */
-export async function generateDailyInsight(
-  onboardingData: OnboardingData
-): Promise<{
+export async function generateDailyInsight(onboardingData: OnboardingData): Promise<{
   success: boolean;
   insight?: string;
   error?: string;
@@ -46,9 +44,7 @@ export async function generateDailyInsight(
  * Gera desafios diários personalizados
  * Baseado nos desafios e objetivos da mãe
  */
-export async function generateDailyChallenges(
-  onboardingData: OnboardingData
-): Promise<{
+export async function generateDailyChallenges(onboardingData: OnboardingData): Promise<{
   success: boolean;
   challenges?: Array<{
     title: string;

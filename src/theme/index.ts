@@ -33,16 +33,7 @@ export { default as defaultTheme } from './nathTheme';
 // TIPOS E INTERFACES
 // =====================================================
 
-import {
-  light,
-  dark,
-  overlay,
-  gradients,
-  shadows,
-  typography,
-  spacing,
-  borderRadius,
-} from './nathTheme';
+import { light, dark, overlay, gradients, shadows, typography, spacing, borderRadius } from './nathTheme';
 
 type Palette = typeof light;
 type ShadowSet = typeof shadows.light;

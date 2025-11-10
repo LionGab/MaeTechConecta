@@ -6,11 +6,11 @@ Serviço robusto e otimizado para integração com Google Gemini API, focado em 
 
 ### Modelos Disponíveis
 
-| Modelo | Custo Input | Custo Output | Uso Recomendado |
-|--------|------------|--------------|-----------------|
-| **Gemini 2.5 Flash** | $0.15/1M | $0.60/1M | **Padrão (90% dos casos)** - Chat, insights, desafios |
-| **Gemini 2.5 Pro** | $1.25/1M | $10/1M | **Casos críticos** - Triagem EPDS, análise complexa |
-| **Gemini 2.0 Flash** | $0.10/1M | $0.40/1M | Fallback quando Flash 2.5 não disponível |
+| Modelo               | Custo Input | Custo Output | Uso Recomendado                                       |
+| -------------------- | ----------- | ------------ | ----------------------------------------------------- |
+| **Gemini 2.5 Flash** | $0.15/1M    | $0.60/1M     | **Padrão (90% dos casos)** - Chat, insights, desafios |
+| **Gemini 2.5 Pro**   | $1.25/1M    | $10/1M       | **Casos críticos** - Triagem EPDS, análise complexa   |
+| **Gemini 2.0 Flash** | $0.10/1M    | $0.40/1M     | Fallback quando Flash 2.5 não disponível              |
 
 **Economia estimada**: $50-80/mês vs usar Pro para tudo
 
@@ -126,6 +126,7 @@ const customClient = createGeminiClient({
 ## 🔄 Retry Logic
 
 O serviço implementa retry automático com:
+
 - **Máximo 3 tentativas** (configurável)
 - **Backoff exponencial**: 1s, 2s, 4s
 - **Fallback de modelo**: Se Flash falhar, tenta Pro (se configurado)
@@ -206,10 +207,7 @@ const result = await chatService.sendMessage({
     pregnancy_stage: 'gestante',
     communication_style: 'calorosa',
   },
-  extraContext: [
-    'Última consulta: há 2 semanas',
-    'Medicamentos: ácido fólico',
-  ],
+  extraContext: ['Última consulta: há 2 semanas', 'Medicamentos: ácido fólico'],
   userId: 'user-123',
   preferProModel: false, // Usa Flash (padrão)
 });
@@ -225,11 +223,7 @@ const contentService = createContentService();
 const mundoNath = await contentService.generateMundoNathContent({
   onboardingData: userOnboarding,
   theme: 'Rotina matinal com bebê',
-  highlights: [
-    'Acordar às 6h',
-    'Primeira mamada do dia',
-    'Momento de autocuidado',
-  ],
+  highlights: ['Acordar às 6h', 'Primeira mamada do dia', 'Momento de autocuidado'],
   callToAction: 'Compartilhe sua rotina nos comentários!',
   userId: 'user-123',
   preferProModel: true, // Usa Pro para conteúdo premium
@@ -255,4 +249,3 @@ Verifique se a mensagem não foi bloqueada por safety settings. Tente ajustar `s
 - [Gemini API Docs](https://ai.google.dev/gemini-api/docs)
 - [Pricing](https://ai.google.dev/pricing)
 - [Safety Settings](https://ai.google.dev/gemini-api/docs/safety-settings)
-

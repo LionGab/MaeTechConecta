@@ -5,16 +5,7 @@
  */
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-} from 'react-native';
+import { View, StyleSheet, SafeAreaView, StatusBar, Alert, KeyboardAvoidingView, Platform, Text } from 'react-native';
 import { useAuth } from '@clerk/clerk-react';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,11 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { theme } from '@/theme/nathTheme';
 import { useOnboardingForm } from '@/hooks/useOnboardingForm';
 import { useOnboardingContext } from '@/contexts/OnboardingContext';
-import {
-  saveOnboardingData,
-  ONBOARDING_STEP_IMAGES,
-  generateOnboardingInsights,
-} from '@/services/onboardingService';
+import { saveOnboardingData, ONBOARDING_STEP_IMAGES, generateOnboardingInsights } from '@/services/onboardingService';
 
 // Steps
 import { IdentityStep } from './steps/IdentityStep';
@@ -137,10 +124,7 @@ export default function OnboardingScreen() {
       const insights = generateOnboardingInsights(dataToSave);
 
       // Salvar localmente insights para uso imediato
-      await AsyncStorage.setItem(
-        'onboarding_insights',
-        JSON.stringify(insights)
-      );
+      await AsyncStorage.setItem('onboarding_insights', JSON.stringify(insights));
 
       // Marcar onboarding como completo no contexto
       markOnboardingComplete();
@@ -153,14 +137,10 @@ export default function OnboardingScreen() {
         routes: [{ name: 'MainTabs' }],
       });
     } catch (err) {
-      logger.error(
-        'Erro ao completar onboarding',
-        err instanceof Error ? err : undefined,
-        {
-          userId: user?.id,
-          error: err instanceof Error ? err.message : String(err),
-        }
-      );
+      logger.error('Erro ao completar onboarding', err instanceof Error ? err : undefined, {
+        userId: user?.id,
+        error: err instanceof Error ? err.message : String(err),
+      });
       setError('Erro ao processar seus dados. Tente novamente.');
     } finally {
       setIsLoading(false);
@@ -228,32 +208,16 @@ export default function OnboardingScreen() {
       default:
         return null;
     }
-  }, [
-    currentStep,
-    formData,
-    stepImage,
-    updateMultipleFields,
-    handleNextStep,
-    handlePrevStep,
-    fieldErrors,
-    isLoading,
-  ]);
+  }, [currentStep, formData, stepImage, updateMultipleFields, handleNextStep, handlePrevStep, fieldErrors, isLoading]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor={theme.colors.bg} />
 
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      >
+      <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         {/* Header com progresso */}
         <View style={styles.header}>
-          <StepIndicator
-            currentStep={currentStep}
-            totalSteps={5}
-            completedSteps={formData.completed_steps || 0}
-          />
+          <StepIndicator currentStep={currentStep} totalSteps={5} completedSteps={formData.completed_steps || 0} />
         </View>
 
         {/* Erro message (se houver) */}
@@ -264,9 +228,7 @@ export default function OnboardingScreen() {
         )}
 
         {/* Step atual */}
-        <View style={styles.stepContainer}>
-          {renderCurrentStep()}
-        </View>
+        <View style={styles.stepContainer}>{renderCurrentStep()}</View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

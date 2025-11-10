@@ -22,82 +22,60 @@ interface CheckboxGroupProps<T = string> {
   maxSelect?: number;
 }
 
-export const CheckboxGroup = React.memo<CheckboxGroupProps>(
-  ({ options, value, onChange, style, maxSelect }) => {
-    const handleToggle = useCallback(
-      (optionValue: string) => {
-        const newValue = value.includes(optionValue as any)
-          ? value.filter((v) => v !== optionValue)
-          : [...value, optionValue as any];
+export const CheckboxGroup = React.memo<CheckboxGroupProps>(({ options, value, onChange, style, maxSelect }) => {
+  const handleToggle = useCallback(
+    (optionValue: string) => {
+      const newValue = value.includes(optionValue as any)
+        ? value.filter((v) => v !== optionValue)
+        : [...value, optionValue as any];
 
-        // Respeitar limite de seleção
-        if (maxSelect && newValue.length > maxSelect) {
-          return;
-        }
+      // Respeitar limite de seleção
+      if (maxSelect && newValue.length > maxSelect) {
+        return;
+      }
 
-        onChange(newValue);
-      },
-      [value, onChange, maxSelect]
-    );
+      onChange(newValue);
+    },
+    [value, onChange, maxSelect]
+  );
 
-    const isDisabled = (optionValue: string) => {
-      return maxSelect && value.length >= maxSelect && !value.includes(optionValue as any);
-    };
+  const isDisabled = (optionValue: string) => {
+    return maxSelect && value.length >= maxSelect && !value.includes(optionValue as any);
+  };
 
-    return (
-      <View style={[styles.container, style]}>
-        {options.map((option) => {
-          const isSelected = value.includes(option.value as any);
-          const disabled = isDisabled(option.value as string);
+  return (
+    <View style={[styles.container, style]}>
+      {options.map((option) => {
+        const isSelected = value.includes(option.value as any);
+        const disabled = isDisabled(option.value as string);
 
-          return (
-            <TouchableOpacity
-              key={option.value as string}
-              style={[
-                styles.checkbox,
-                isSelected && styles.checkboxSelected,
-                disabled && styles.checkboxDisabled,
-              ]}
-              onPress={() => handleToggle(option.value as string)}
-              disabled={disabled}
-              accessible={true}
-              accessibilityLabel={option.label}
-              accessibilityRole="checkbox"
-              accessibilityState={{ checked: isSelected, disabled }}
-              activeOpacity={0.7}
-            >
-              <View
-                style={[
-                  styles.checkboxBox,
-                  isSelected && styles.checkboxBoxSelected,
-                ]}
-              >
-                {isSelected && (
-                  <Icon name="check" size={18} color={theme.colors.primary} />
-                )}
-              </View>
-              <View style={styles.content}>
-                <Text
-                  style={[
-                    styles.label,
-                    disabled && styles.labelDisabled,
-                  ]}
-                >
-                  {option.label}
-                </Text>
-                {option.description && (
-                  <Text style={[styles.description, disabled && styles.descriptionDisabled]}>
-                    {option.description}
-                  </Text>
-                )}
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    );
-  }
-);
+        return (
+          <TouchableOpacity
+            key={option.value as string}
+            style={[styles.checkbox, isSelected && styles.checkboxSelected, disabled && styles.checkboxDisabled]}
+            onPress={() => handleToggle(option.value as string)}
+            disabled={disabled}
+            accessible={true}
+            accessibilityLabel={option.label}
+            accessibilityRole="checkbox"
+            accessibilityState={{ checked: isSelected, disabled }}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.checkboxBox, isSelected && styles.checkboxBoxSelected]}>
+              {isSelected && <Icon name="check" size={18} color={theme.colors.primary} />}
+            </View>
+            <View style={styles.content}>
+              <Text style={[styles.label, disabled && styles.labelDisabled]}>{option.label}</Text>
+              {option.description && (
+                <Text style={[styles.description, disabled && styles.descriptionDisabled]}>{option.description}</Text>
+              )}
+            </View>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+});
 
 CheckboxGroup.displayName = 'CheckboxGroup';
 

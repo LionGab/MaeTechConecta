@@ -50,7 +50,7 @@ export const MAIN_CHALLENGES = [
   'trabalho',
 ] as const;
 
-export type MainChallenge = typeof MAIN_CHALLENGES[number];
+export type MainChallenge = (typeof MAIN_CHALLENGES)[number];
 
 /**
  * Necessidades principais
@@ -65,7 +65,7 @@ export const MAIN_NEEDS = [
   'dicas_praticas',
 ] as const;
 
-export type MainNeed = typeof MAIN_NEEDS[number];
+export type MainNeed = (typeof MAIN_NEEDS)[number];
 
 /**
  * Expectativas e objetivo
@@ -79,7 +79,7 @@ export const EXPECTATIONS = [
   'celebrar_conquistas',
 ] as const;
 
-export type Expectation = typeof EXPECTATIONS[number];
+export type Expectation = (typeof EXPECTATIONS)[number];
 
 /**
  * Conteúdos de interesse
@@ -97,7 +97,7 @@ export const CONTENT_INTERESTS = [
   'estilo_vida',
 ] as const;
 
-export type ContentInterest = typeof CONTENT_INTERESTS[number];
+export type ContentInterest = (typeof CONTENT_INTERESTS)[number];
 
 /**
  * Dados completos do onboarding

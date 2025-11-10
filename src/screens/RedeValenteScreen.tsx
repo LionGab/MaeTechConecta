@@ -6,14 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -174,18 +167,10 @@ export default function RedeValenteScreen() {
           {categories.map((category) => (
             <TouchableOpacity
               key={category}
-              style={[
-                styles.categoryChip,
-                selectedCategory === category && styles.categoryChipActive,
-              ]}
+              style={[styles.categoryChip, selectedCategory === category && styles.categoryChipActive]}
               onPress={() => setSelectedCategory(category)}
             >
-              <Text
-                style={[
-                  styles.categoryChipText,
-                  selectedCategory === category && styles.categoryChipTextActive,
-                ]}
-              >
+              <Text style={[styles.categoryChipText, selectedCategory === category && styles.categoryChipTextActive]}>
                 {category}
               </Text>
             </TouchableOpacity>
@@ -211,9 +196,7 @@ export default function RedeValenteScreen() {
                 <Text style={styles.groupDescription}>{group.description}</Text>
                 <View style={styles.groupMeta}>
                   <Icon name="account-group" size={14} color={theme.colors.textMuted} />
-                  <Text style={styles.groupMembers}>
-                    {group.members.toLocaleString('pt-BR')} membros
-                  </Text>
+                  <Text style={styles.groupMembers}>{group.members.toLocaleString('pt-BR')} membros</Text>
                 </View>
               </View>
               <Icon name="chevron-right" size={24} color={theme.colors.textMuted} />
@@ -235,7 +218,9 @@ export default function RedeValenteScreen() {
                 </View>
                 <View style={styles.postAuthorInfo}>
                   <Text style={styles.postAuthorName}>{post.author}</Text>
-                  <Text style={styles.postGroup}>{post.group} • {post.timestamp}</Text>
+                  <Text style={styles.postGroup}>
+                    {post.group} • {post.timestamp}
+                  </Text>
                 </View>
               </View>
               <Text style={styles.postContent}>{post.content}</Text>

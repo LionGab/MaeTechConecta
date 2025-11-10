@@ -12,28 +12,31 @@
 ## 📊 STATUS ATUAL
 
 ### SERVIDORES PRONTOS PARA USO (sem credenciais)
-| Servidor | Status | Uso |
-|----------|--------|-----|
-| **Git** | ✅ Pronto | Operações git, log, status, diff |
-| **Playwright** | ✅ Pronto | Testes E2E, screenshots, automação web |
-| **Filesystem** | ✅ Pronto (3x) | Acesso a arquivos dos projetos |
-| **Brave Search** | ✅ Pronto | Busca web integrada |
+
+| Servidor         | Status         | Uso                                    |
+| ---------------- | -------------- | -------------------------------------- |
+| **Git**          | ✅ Pronto      | Operações git, log, status, diff       |
+| **Playwright**   | ✅ Pronto      | Testes E2E, screenshots, automação web |
+| **Filesystem**   | ✅ Pronto (3x) | Acesso a arquivos dos projetos         |
+| **Brave Search** | ✅ Pronto      | Busca web integrada                    |
 
 ### SERVIDORES AGUARDANDO CREDENCIAIS
-| Servidor | Credencial | Prioridade |
-|----------|-----------|-----------|
-| **Supabase** | SERVICE_ROLE_KEY | 🔴 CRÍTICA |
-| **GitHub** | Personal Access Token | 🔴 ALTA |
-| **Notion** | API Key | 🟡 Opcional |
-| **Linear** | API Key | 🟡 Opcional |
-| **Figma** | Access Token | 🟡 Opcional |
-| **Sentry** | Auth Token | 🟡 Opcional |
+
+| Servidor     | Credencial            | Prioridade  |
+| ------------ | --------------------- | ----------- |
+| **Supabase** | SERVICE_ROLE_KEY      | 🔴 CRÍTICA  |
+| **GitHub**   | Personal Access Token | 🔴 ALTA     |
+| **Notion**   | API Key               | 🟡 Opcional |
+| **Linear**   | API Key               | 🟡 Opcional |
+| **Figma**    | Access Token          | 🟡 Opcional |
+| **Sentry**   | Auth Token            | 🟡 Opcional |
 
 ---
 
 ## 🚀 PRÓXIMOS PASSOS (Para Você)
 
 ### PASSO 1: Supabase (CRÍTICO)
+
 ```bash
 1. Acesse: https://app.supabase.com
 2. Projeto: "nossa-maternidade"
@@ -44,6 +47,7 @@
 ```
 
 ### PASSO 2: GitHub (ALTA)
+
 ```bash
 1. Acesse: https://github.com/settings/tokens
 2. Clique: "Generate new token (classic)"
@@ -56,6 +60,7 @@
 ```
 
 ### PASSO 3: Salve e Reinicie
+
 ```bash
 1. Salve o arquivo claude_desktop_config.json
 2. Feche Claude Desktop completamente
@@ -64,6 +69,7 @@
 ```
 
 ### PASSO 4: Valide (no Claude)
+
 ```
 Teste Supabase: "List all tables in my Supabase database"
 Teste GitHub: "Show me the last 5 commits in nossa-maternidade"
@@ -74,6 +80,7 @@ Teste GitHub: "Show me the last 5 commits in nossa-maternidade"
 ## 💡 O QUE CADA MCP SERVER FAZ
 
 ### 🔵 SUPABASE (Banco de Dados)
+
 ```
 Claude pode:
 ✅ Listar tabelas e schemas
@@ -89,6 +96,7 @@ Exemplos de uso:
 ```
 
 ### 🔵 GITHUB (Repositório)
+
 ```
 Claude pode:
 ✅ Listar commits e branches
@@ -104,6 +112,7 @@ Exemplos de uso:
 ```
 
 ### 🔵 GIT (Operações Locais)
+
 ```
 Claude pode:
 ✅ Ver status do repositório
@@ -118,6 +127,7 @@ Exemplos de uso:
 ```
 
 ### 🔵 PLAYWRIGHT (Testes E2E)
+
 ```
 Claude pode:
 ✅ Navegar em sites
@@ -133,6 +143,7 @@ Exemplos de uso:
 ```
 
 ### 🟡 NOTION (Documentação)
+
 ```
 Claude pode:
 ✅ Listar databases
@@ -146,6 +157,7 @@ Exemplos de uso:
 ```
 
 ### 🟡 LINEAR (Tarefas)
+
 ```
 Claude pode:
 ✅ Ver issues e tarefas
@@ -159,6 +171,7 @@ Exemplos de uso:
 ```
 
 ### 🟡 FIGMA (Design System)
+
 ```
 Claude pode:
 ✅ Listar arquivos e componentes
@@ -171,6 +184,7 @@ Exemplos de uso:
 ```
 
 ### 🟡 SENTRY (Error Tracking)
+
 ```
 Claude pode:
 ✅ Ver erros recentes
@@ -187,15 +201,17 @@ Exemplos de uso:
 ## 📈 IMPACTO ESPERADO
 
 ### Ganho de Produtividade
-| Tarefa | Antes | Depois | Ganho |
-|--------|-------|--------|-------|
-| Query SQL | 3 min | 30 seg | -83% |
-| Ver commits | 2 min | 20 seg | -83% |
-| Take screenshot | 5 min | 1 min | -80% |
-| Create issue | 5 min | 1 min | -80% |
-| Audit RLS | 15 min | 2 min | -87% |
+
+| Tarefa          | Antes  | Depois | Ganho |
+| --------------- | ------ | ------ | ----- |
+| Query SQL       | 3 min  | 30 seg | -83%  |
+| Ver commits     | 2 min  | 20 seg | -83%  |
+| Take screenshot | 5 min  | 1 min  | -80%  |
+| Create issue    | 5 min  | 1 min  | -80%  |
+| Audit RLS       | 15 min | 2 min  | -87%  |
 
 ### Economia de Tempo (Por Mês)
+
 - GitHub: -10 horas
 - Supabase: -15 horas
 - Playwright: -5 horas
@@ -206,12 +222,14 @@ Exemplos de uso:
 ## 🔒 SEGURANÇA
 
 ### Boas Práticas
+
 ✅ **GitHub PAT:** Expiração 90 dias (regenerar depois)
 ✅ **Supabase:** Usar Service Role Key (nunca anon key)
 ✅ **Arquivo config:** Manter seguro, não commitar em Git
 ✅ **Tokens:** Nunca compartilhar ou versionar
 
 ### Se comprometer um token:
+
 1. GitHub: Revogue em https://github.com/settings/tokens
 2. Supabase: Regenere a chave em Settings → API
 3. Atualize o arquivo `claude_desktop_config.json`
@@ -221,6 +239,7 @@ Exemplos de uso:
 ## 🐛 TROUBLESHOOTING
 
 ### Servidor não aparece em `claude mcp list`
+
 ```
 1. Verificar JSON válido (usar jsonlint.com)
 2. Reiniciar Claude Desktop completamente
@@ -229,6 +248,7 @@ Exemplos de uso:
 ```
 
 ### Supabase retorna erro "Invalid token"
+
 ```
 1. Verificar que é SERVICE_ROLE_KEY (não anon)
 2. Verificar que a chave começa com "eyJ"
@@ -236,6 +256,7 @@ Exemplos de uso:
 ```
 
 ### GitHub retorna erro "401 Unauthorized"
+
 ```
 1. Verificar token não expirou
 2. Verificar scopes incluem "repo"
@@ -243,6 +264,7 @@ Exemplos de uso:
 ```
 
 ### Playwright não consegue abrir browser
+
 ```
 1. Instalar Chromium: npx playwright install
 2. Verificar que PLAYWRIGHT_HEADLESS=true
@@ -288,4 +310,3 @@ Após completar, você terá:
 **Instruções detalhadas:** `C:\Users\Usuario\Documents\NossaMaternidade\MCP_SERVERS_SETUP.md`
 
 **Status:** 🟡 Aguardando configuração de credenciais (2 passos fáceis!)
-

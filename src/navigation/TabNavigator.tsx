@@ -18,12 +18,8 @@ import { TabParamList } from './types';
 // Lazy load screens para melhor performance
 const HomeScreen = lazy(() => import('@/screens/HomeScreen').then((m) => ({ default: m.default })));
 const ChatScreen = lazy(() => import('@/screens/ChatScreen').then((m) => ({ default: m.default })));
-const DesafiosDoDiaScreen = lazy(() =>
-  import('@/screens/DailyPlanScreen').then((m) => ({ default: m.default }))
-);
-const RedeValenteScreen = lazy(() =>
-  import('@/screens/RedeValenteScreen').then((m) => ({ default: m.default }))
-);
+const DesafiosDoDiaScreen = lazy(() => import('@/screens/DailyPlanScreen').then((m) => ({ default: m.default })));
+const RedeValenteScreen = lazy(() => import('@/screens/RedeValenteScreen').then((m) => ({ default: m.default })));
 const MaeValenteScreen = lazy(() => import('@/features/habits/HabitsScreen').then((m) => ({ default: m.default })));
 
 // Wrapper com Suspense para lazy loaded screens

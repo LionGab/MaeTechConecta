@@ -4,17 +4,8 @@
  */
 
 import { useState, useCallback, useMemo } from 'react';
-import {
-  OnboardingFormState,
-  OnboardingData,
-  ONBOARDING_STEPS,
-  OnboardingStepConfig,
-} from '@/types/onboarding';
-import {
-  validateOnboardingStep,
-  validateOnboardingData,
-  ValidationResult,
-} from '@/services/onboardingService';
+import { OnboardingFormState, OnboardingData, ONBOARDING_STEPS, OnboardingStepConfig } from '@/types/onboarding';
+import { validateOnboardingStep, validateOnboardingData, ValidationResult } from '@/services/onboardingService';
 import { logger } from '@/utils/logger';
 
 /**
@@ -102,17 +93,14 @@ export function useOnboardingForm(): UseOnboardingFormReturn {
   /**
    * Atualizar campo individual
    */
-  const updateField = useCallback(
-    <T extends keyof OnboardingData>(field: T, value: OnboardingData[T]) => {
-      setFormData((prev) => ({
-        ...prev,
-        [field]: value,
-      }));
+  const updateField = useCallback(<T extends keyof OnboardingData>(field: T, value: OnboardingData[T]) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
 
-      logger.debug('Onboarding field updated', { field, value });
-    },
-    []
-  );
+    logger.debug('Onboarding field updated', { field, value });
+  }, []);
 
   /**
    * Atualizar múltiplos campos de uma vez
@@ -168,17 +156,14 @@ export function useOnboardingForm(): UseOnboardingFormReturn {
   /**
    * Ir para step específico
    */
-  const goToStep = useCallback(
-    (step: number) => {
-      if (step >= 0 && step < ONBOARDING_STEPS.length) {
-        setFormData((prev) => ({
-          ...prev,
-          current_step: step,
-        }));
-      }
-    },
-    []
-  );
+  const goToStep = useCallback((step: number) => {
+    if (step >= 0 && step < ONBOARDING_STEPS.length) {
+      setFormData((prev) => ({
+        ...prev,
+        current_step: step,
+      }));
+    }
+  }, []);
 
   /**
    * Obter erro de um campo específico

@@ -32,12 +32,7 @@
  */
 
 import { createGeminiClient } from './base';
-import {
-  GeminiClient,
-  GeminiModel,
-  GeminiResponseData,
-  GeminiUsageMetadata,
-} from './types';
+import { GeminiClient, GeminiModel, GeminiResponseData, GeminiUsageMetadata } from './types';
 import {
   buildDailyChallengesPrompt,
   buildDailyInsightPrompt,
@@ -160,15 +155,16 @@ export function createContentService(customClient?: GeminiClient) {
       const response = await client.call({
         contents: prompt.contents,
         systemInstruction: prompt.systemInstruction,
-        generationConfig: model === 'gemini-2.5-pro'
-          ? {
-              temperature: 0.7,
-              maxOutputTokens: 450,
-            }
-          : {
-              temperature: 0.8,
-              maxOutputTokens: 300,
-            },
+        generationConfig:
+          model === 'gemini-2.5-pro'
+            ? {
+                temperature: 0.7,
+                maxOutputTokens: 450,
+              }
+            : {
+                temperature: 0.8,
+                maxOutputTokens: 300,
+              },
         model,
         userId,
         requestId,
@@ -192,15 +188,11 @@ export function createContentService(customClient?: GeminiClient) {
         usage: response.usageMetadata,
       };
     } catch (error) {
-      logger.error(
-        'Erro ao gerar insight diário com Gemini',
-        error instanceof Error ? error : undefined,
-        {
-          error: error instanceof Error ? error.message : String(error),
-          requestId,
-          userId,
-        }
-      );
+      logger.error('Erro ao gerar insight diário com Gemini', error instanceof Error ? error : undefined, {
+        error: error instanceof Error ? error.message : String(error),
+        requestId,
+        userId,
+      });
 
       return {
         success: false,
@@ -246,15 +238,11 @@ export function createContentService(customClient?: GeminiClient) {
         usage: response.usageMetadata,
       };
     } catch (error) {
-      logger.error(
-        'Erro ao gerar desafios diários com Gemini',
-        error instanceof Error ? error : undefined,
-        {
-          error: error instanceof Error ? error.message : String(error),
-          requestId,
-          userId,
-        }
-      );
+      logger.error('Erro ao gerar desafios diários com Gemini', error instanceof Error ? error : undefined, {
+        error: error instanceof Error ? error.message : String(error),
+        requestId,
+        userId,
+      });
 
       return {
         success: false,
@@ -263,9 +251,7 @@ export function createContentService(customClient?: GeminiClient) {
     }
   }
 
-  async function generateMotivationalMessage(
-    params: MotivationalMessageParams
-  ): Promise<MotivationalMessageResult> {
+  async function generateMotivationalMessage(params: MotivationalMessageParams): Promise<MotivationalMessageResult> {
     const { onboardingData, context, userId, requestId, preferProModel } = params;
 
     try {
@@ -302,15 +288,11 @@ export function createContentService(customClient?: GeminiClient) {
         usage: response.usageMetadata,
       };
     } catch (error) {
-      logger.error(
-        'Erro ao gerar mensagem motivacional com Gemini',
-        error instanceof Error ? error : undefined,
-        {
-          error: error instanceof Error ? error.message : String(error),
-          requestId,
-          userId,
-        }
-      );
+      logger.error('Erro ao gerar mensagem motivacional com Gemini', error instanceof Error ? error : undefined, {
+        error: error instanceof Error ? error.message : String(error),
+        requestId,
+        userId,
+      });
 
       return {
         success: false,
@@ -356,15 +338,11 @@ export function createContentService(customClient?: GeminiClient) {
         usage: response.usageMetadata,
       };
     } catch (error) {
-      logger.error(
-        'Erro ao gerar conteúdo Mundo Nath com Gemini',
-        error instanceof Error ? error : undefined,
-        {
-          error: error instanceof Error ? error.message : String(error),
-          requestId,
-          userId,
-        }
-      );
+      logger.error('Erro ao gerar conteúdo Mundo Nath com Gemini', error instanceof Error ? error : undefined, {
+        error: error instanceof Error ? error.message : String(error),
+        requestId,
+        userId,
+      });
 
       return {
         success: false,

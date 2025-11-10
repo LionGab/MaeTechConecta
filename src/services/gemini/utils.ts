@@ -125,7 +125,10 @@ export function parseJsonResponse<T>(raw: string | null | undefined): T | null {
   }
 }
 
-export function buildDailyInsightPrompt(params: ContentPromptParams['onboardingData'], context?: ContentPromptParams['context']): SystemPromptResult {
+export function buildDailyInsightPrompt(
+  params: ContentPromptParams['onboardingData'],
+  context?: ContentPromptParams['context']
+): SystemPromptResult {
   const systemInstruction = `${DEFAULT_TONE}
 Você gera insights diários curtos (2-3 frases) com uma dica prática.`;
 
@@ -250,19 +253,19 @@ Siga protocolos EPDS + DSM-5. Use linguagem clara em português.`;
 
   const prompt = `Dados da usuária:
 ${JSON.stringify(
-    {
-      name: params.onboardingData.name,
-      stage: params.onboardingData.maternal_stage,
-      goals: params.onboardingData.expectations,
-      challenges: params.onboardingData.main_challenges,
-      epdsScore: params.epdsScore,
-      epdsAnswers: params.epdsAnswers,
-      sentimentHistory: params.sentimentHistory,
-      recentConversations: params.recentConversations,
-    },
-    null,
-    2
-  )}
+  {
+    name: params.onboardingData.name,
+    stage: params.onboardingData.maternal_stage,
+    goals: params.onboardingData.expectations,
+    challenges: params.onboardingData.main_challenges,
+    epdsScore: params.epdsScore,
+    epdsAnswers: params.epdsAnswers,
+    sentimentHistory: params.sentimentHistory,
+    recentConversations: params.recentConversations,
+  },
+  null,
+  2
+)}
 
 Retorne APENAS JSON válido com campos:
 {
@@ -335,11 +338,14 @@ export function parseChallengesResponse(response: GeminiResponseData): Array<{
     const title = item.title;
     const description = item.description;
 
-    if (typeof category !== 'string' || !validCategories.includes(category as typeof validCategories[number])) {
+    if (typeof category !== 'string' || !validCategories.includes(category as (typeof validCategories)[number])) {
       throw new Error(`Categoria inválida em challenges[${index}]`);
     }
 
-    if (typeof difficulty !== 'string' || !validDifficulties.includes(difficulty as typeof validDifficulties[number])) {
+    if (
+      typeof difficulty !== 'string' ||
+      !validDifficulties.includes(difficulty as (typeof validDifficulties)[number])
+    ) {
       throw new Error(`Dificuldade inválida em challenges[${index}]`);
     }
 
@@ -355,8 +361,8 @@ export function parseChallengesResponse(response: GeminiResponseData): Array<{
   return parsed.map((item) => ({
     title: item.title as string,
     description: item.description as string,
-    category: item.category as typeof validCategories[number],
-    difficulty: item.difficulty as typeof validDifficulties[number],
+    category: item.category as (typeof validCategories)[number],
+    difficulty: item.difficulty as (typeof validDifficulties)[number],
     cta: typeof item.cta === 'string' ? item.cta : undefined,
   }));
 }

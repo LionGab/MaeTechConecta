@@ -1,10 +1,7 @@
 import { API_URLS } from '@/config/api';
 import { GeminiError, type GeminiModel } from './types';
 
-type SupportedEndpointModel =
-  | GeminiModel
-  | 'gemini-2.5-flash-exp'
-  | 'gemini-2.5-pro-exp';
+type SupportedEndpointModel = GeminiModel | 'gemini-2.5-flash-exp' | 'gemini-2.5-pro-exp';
 
 const MODEL_REGISTRY: Record<SupportedEndpointModel, string> = {
   'gemini-2.5-flash': 'gemini-2.5-flash-exp',

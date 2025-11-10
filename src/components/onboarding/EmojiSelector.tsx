@@ -21,39 +21,34 @@ interface EmojiSelectorProps {
   style?: ViewStyle;
 }
 
-export const EmojiSelector = React.memo<EmojiSelectorProps>(
-  ({ value, onChange, options, style }) => {
-    const handlePress = useCallback(
-      (optionValue: Emotion) => {
-        onChange(optionValue);
-      },
-      [onChange]
-    );
+export const EmojiSelector = React.memo<EmojiSelectorProps>(({ value, onChange, options, style }) => {
+  const handlePress = useCallback(
+    (optionValue: Emotion) => {
+      onChange(optionValue);
+    },
+    [onChange]
+  );
 
-    return (
-      <View style={[styles.container, style]}>
-        {options.map((option) => (
-          <TouchableOpacity
-            key={option.value}
-            style={[
-              styles.option,
-              value === option.value && styles.optionSelected,
-            ]}
-            onPress={() => handlePress(option.value)}
-            accessible={true}
-            accessibilityLabel={option.label}
-            accessibilityRole="radio"
-            accessibilityState={{ selected: value === option.value }}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.emoji}>{option.emoji}</Text>
-            <Text style={styles.label}>{option.label}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    );
-  }
-);
+  return (
+    <View style={[styles.container, style]}>
+      {options.map((option) => (
+        <TouchableOpacity
+          key={option.value}
+          style={[styles.option, value === option.value && styles.optionSelected]}
+          onPress={() => handlePress(option.value)}
+          accessible={true}
+          accessibilityLabel={option.label}
+          accessibilityRole="radio"
+          accessibilityState={{ selected: value === option.value }}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.emoji}>{option.emoji}</Text>
+          <Text style={styles.label}>{option.label}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+});
 
 EmojiSelector.displayName = 'EmojiSelector';
 

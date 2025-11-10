@@ -7,10 +7,7 @@
 import React, { createContext, useContext, ReactNode, useState, useCallback, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '@/services/supabase';
-import {
-  checkOnboardingCompleted,
-  loadOnboardingData,
-} from '@/services/onboardingService';
+import { checkOnboardingCompleted, loadOnboardingData } from '@/services/onboardingService';
 import { OnboardingData } from '@/types/onboarding';
 import { logger } from '@/utils/logger';
 
@@ -78,14 +75,10 @@ export function OnboardingProvider({ children }: OnboardingProviderProps) {
         setIsOnboardingCompleted(false);
       }
     } catch (err) {
-      logger.error(
-        'Erro ao carregar onboarding',
-        err instanceof Error ? err : undefined,
-        {
-          userId,
-          error: err instanceof Error ? err.message : String(err),
-        }
-      );
+      logger.error('Erro ao carregar onboarding', err instanceof Error ? err : undefined, {
+        userId,
+        error: err instanceof Error ? err.message : String(err),
+      });
       setIsOnboardingCompleted(false);
     } finally {
       setIsLoadingOnboarding(false);
@@ -112,14 +105,10 @@ export function OnboardingProvider({ children }: OnboardingProviderProps) {
       await AsyncStorage.removeItem(`onboarding_${userId}`);
       logger.info('Onboarding resetado', { userId });
     } catch (err) {
-      logger.error(
-        'Erro ao resetar onboarding',
-        err instanceof Error ? err : undefined,
-        {
-          userId,
-          error: err instanceof Error ? err.message : String(err),
-        }
-      );
+      logger.error('Erro ao resetar onboarding', err instanceof Error ? err : undefined, {
+        userId,
+        error: err instanceof Error ? err.message : String(err),
+      });
     }
   }, [userId]);
 
@@ -128,17 +117,19 @@ export function OnboardingProvider({ children }: OnboardingProviderProps) {
    */
   useEffect(() => {
     const getCurrentUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       setUserId(user?.id || null);
     };
 
     getCurrentUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUserId(session?.user?.id || null);
-      }
-    );
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUserId(session?.user?.id || null);
+    });
 
     return () => {
       subscription.unsubscribe();
@@ -164,11 +155,7 @@ export function OnboardingProvider({ children }: OnboardingProviderProps) {
     loadUserOnboarding,
   };
 
-  return (
-    <OnboardingContext.Provider value={value}>
-      {children}
-    </OnboardingContext.Provider>
-  );
+  return <OnboardingContext.Provider value={value}>{children}</OnboardingContext.Provider>;
 }
 
 /**

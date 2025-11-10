@@ -4,14 +4,7 @@
  */
 
 import React, { useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { theme } from '@/theme/nathTheme';
 import { OnboardingData, SelfCareFrequency, LABELS, EMOTION_EMOJIS } from '@/types/onboarding';
 import { EmojiSelector } from '@/components/onboarding/EmojiSelector';
@@ -53,140 +46,114 @@ const SLEEP_OPTIONS = [
   { value: 'otima', label: 'Ótima' },
 ];
 
-export const EmotionalStep = React.memo<EmotionalStepProps>(
-  ({ data, stepImage, onUpdate, onNext, onPrev, errors }) => {
-    const handleSelfCareChange = useCallback(
-      (value: SelfCareFrequency) => {
-        onUpdate({ self_care_frequency: value });
-      },
-      [onUpdate]
-    );
+export const EmotionalStep = React.memo<EmotionalStepProps>(({ data, stepImage, onUpdate, onNext, onPrev, errors }) => {
+  const handleSelfCareChange = useCallback(
+    (value: SelfCareFrequency) => {
+      onUpdate({ self_care_frequency: value });
+    },
+    [onUpdate]
+  );
 
-    const handleEmotionChange = useCallback(
-      (value: string) => {
-        onUpdate({ emotional_state: value as any });
-      },
-      [onUpdate]
-    );
+  const handleEmotionChange = useCallback(
+    (value: string) => {
+      onUpdate({ emotional_state: value as any });
+    },
+    [onUpdate]
+  );
 
-    const handleStressChange = useCallback(
-      (value: number) => {
-        onUpdate({ stress_level: value });
-      },
-      [onUpdate]
-    );
+  const handleStressChange = useCallback(
+    (value: number) => {
+      onUpdate({ stress_level: value });
+    },
+    [onUpdate]
+  );
 
-    const handleSleepChange = useCallback(
-      (value: string) => {
-        onUpdate({ sleep_quality: value as any });
-      },
-      [onUpdate]
-    );
+  const handleSleepChange = useCallback(
+    (value: string) => {
+      onUpdate({ sleep_quality: value as any });
+    },
+    [onUpdate]
+  );
 
-    const handleEnergyChange = useCallback(
-      (value: number) => {
-        onUpdate({ energy_level: value });
-      },
-      [onUpdate]
-    );
+  const handleEnergyChange = useCallback(
+    (value: number) => {
+      onUpdate({ energy_level: value });
+    },
+    [onUpdate]
+  );
 
-    return (
-      <AnimatedStepContainer style={styles.container}>
-        <ScrollView
-          contentContainerStyle={styles.scroll}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Imagem da Nath */}
-          <Image
-            source={stepImage}
-            style={styles.image}
-            resizeMode="contain"
-          />
+  return (
+    <AnimatedStepContainer style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+        {/* Imagem da Nath */}
+        <Image source={stepImage} style={styles.image} resizeMode="contain" />
 
-          {/* Título */}
-          <Text style={styles.title}>Eu sei que a maternidade pode ser intensa</Text>
-          <Text style={styles.subtitle}>
-            Vamos entender como você está hoje?
-          </Text>
+        {/* Título */}
+        <Text style={styles.title}>Eu sei que a maternidade pode ser intensa</Text>
+        <Text style={styles.subtitle}>Vamos entender como você está hoje?</Text>
 
-          {/* Self-care frequency */}
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>
-              Com que frequência você consegue fazer algo por você?
-            </Text>
-            <RadioGroup
-              options={SELF_CARE_OPTIONS}
-              value={data.self_care_frequency}
-              onChange={handleSelfCareChange}
-            />
-          </View>
-
-          {/* Emoção */}
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Como você está se sentindo hoje?</Text>
-            <EmojiSelector
-              value={data.emotional_state as any}
-              onChange={handleEmotionChange}
-              options={EMOTION_OPTIONS}
-            />
-          </View>
-
-          {/* Stress level */}
-          <View style={styles.formGroup}>
-            <SliderQuestion
-              label="Em uma escala de 1 a 10, qual seu nível de estresse hoje?"
-              value={data.stress_level || 5}
-              onChange={handleStressChange}
-              leftLabel="Baixo"
-              rightLabel="Alto"
-            />
-          </View>
-
-          {/* Sleep quality */}
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Como está a qualidade do seu sono?</Text>
-            <ScaleQuestion
-              value={data.sleep_quality}
-              onChange={handleSleepChange}
-              options={SLEEP_OPTIONS}
-            />
-          </View>
-
-          {/* Energy level */}
-          <View style={styles.formGroup}>
-            <SliderQuestion
-              label="Em uma escala de 1 a 10, qual seu nível de energia hoje?"
-              value={data.energy_level || 5}
-              onChange={handleEnergyChange}
-              leftLabel="Cansada"
-              rightLabel="Energética"
-            />
-          </View>
-
-          <View style={styles.spacer} />
-        </ScrollView>
-
-        {/* Botões de ação */}
-        <View style={styles.actions}>
-          <TouchableOpacity style={styles.secondaryButton} onPress={onPrev}>
-            <Text style={styles.secondaryButtonText}>Voltar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.primaryButton,
-              (!data.self_care_frequency || !data.emotional_state) &&
-                styles.primaryButtonDisabled,
-            ]}
-            onPress={onNext}
-            disabled={!data.self_care_frequency || !data.emotional_state}
-          >
-            <Text style={styles.primaryButtonText}>Avançar</Text>
-          </TouchableOpacity>
+        {/* Self-care frequency */}
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Com que frequência você consegue fazer algo por você?</Text>
+          <RadioGroup options={SELF_CARE_OPTIONS} value={data.self_care_frequency} onChange={handleSelfCareChange} />
         </View>
-      </AnimatedStepContainer>
-    );
-  }
-);
+
+        {/* Emoção */}
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Como você está se sentindo hoje?</Text>
+          <EmojiSelector value={data.emotional_state as any} onChange={handleEmotionChange} options={EMOTION_OPTIONS} />
+        </View>
+
+        {/* Stress level */}
+        <View style={styles.formGroup}>
+          <SliderQuestion
+            label="Em uma escala de 1 a 10, qual seu nível de estresse hoje?"
+            value={data.stress_level || 5}
+            onChange={handleStressChange}
+            leftLabel="Baixo"
+            rightLabel="Alto"
+          />
+        </View>
+
+        {/* Sleep quality */}
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Como está a qualidade do seu sono?</Text>
+          <ScaleQuestion value={data.sleep_quality} onChange={handleSleepChange} options={SLEEP_OPTIONS} />
+        </View>
+
+        {/* Energy level */}
+        <View style={styles.formGroup}>
+          <SliderQuestion
+            label="Em uma escala de 1 a 10, qual seu nível de energia hoje?"
+            value={data.energy_level || 5}
+            onChange={handleEnergyChange}
+            leftLabel="Cansada"
+            rightLabel="Energética"
+          />
+        </View>
+
+        <View style={styles.spacer} />
+      </ScrollView>
+
+      {/* Botões de ação */}
+      <View style={styles.actions}>
+        <TouchableOpacity style={styles.secondaryButton} onPress={onPrev}>
+          <Text style={styles.secondaryButtonText}>Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.primaryButton,
+            (!data.self_care_frequency || !data.emotional_state) && styles.primaryButtonDisabled,
+          ]}
+          onPress={onNext}
+          disabled={!data.self_care_frequency || !data.emotional_state}
+        >
+          <Text style={styles.primaryButtonText}>Avançar</Text>
+        </TouchableOpacity>
+      </View>
+    </AnimatedStepContainer>
+  );
+});
 
 EmotionalStep.displayName = 'EmotionalStep';
 

@@ -32,17 +32,13 @@ describe('parseChallengesResponse', () => {
   });
 
   it('rejeita category inválida', () => {
-    const bad = [
-      { title: 'X', description: 'Y', category: 'zzz', difficulty: 'easy' },
-    ];
+    const bad = [{ title: 'X', description: 'Y', category: 'zzz', difficulty: 'easy' }];
 
     expect(() => parseChallengesResponse(buildResponse(bad))).toThrow();
   });
 
   it('rejeita difficulty inválida', () => {
-    const bad = [
-      { title: 'X', description: 'Y', category: 'saude', difficulty: 'ultra' },
-    ];
+    const bad = [{ title: 'X', description: 'Y', category: 'saude', difficulty: 'ultra' }];
 
     expect(() => parseChallengesResponse(buildResponse(bad))).toThrow();
   });

@@ -94,13 +94,9 @@ export function useChatOptimized() {
           });
         }
       } catch (error) {
-        logger.error(
-          'Erro ao verificar mensagens pendentes',
-          error instanceof Error ? error : undefined,
-          {
-            error: error instanceof Error ? error.message : String(error),
-          }
-        );
+        logger.error('Erro ao verificar mensagens pendentes', error instanceof Error ? error : undefined, {
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
     };
 
@@ -145,13 +141,9 @@ export function useChatOptimized() {
         }
       }
     } catch (error) {
-      logger.error(
-        'Erro ao carregar perfil',
-        error instanceof Error ? error : undefined,
-        {
-          error: error instanceof Error ? error.message : String(error),
-        }
-      );
+      logger.error('Erro ao carregar perfil', error instanceof Error ? error : undefined, {
+        error: error instanceof Error ? error.message : String(error),
+      });
     } finally {
       setInitialLoading(false);
     }
@@ -263,14 +255,10 @@ export function useChatOptimized() {
           } catch (dbError: any) {
             // Se erro for "duplicate" ou "já existe", ignorar (Edge Function já salvou)
             if (!dbError.message?.includes('duplicate') && !dbError.code?.includes('23505')) {
-              logger.error(
-                'Erro ao salvar mensagem no banco',
-                dbError instanceof Error ? dbError : undefined,
-                {
-                  userId,
-                  error: dbError instanceof Error ? dbError.message : String(dbError),
-                }
-              );
+              logger.error('Erro ao salvar mensagem no banco', dbError instanceof Error ? dbError : undefined, {
+                userId,
+                error: dbError instanceof Error ? dbError.message : String(dbError),
+              });
 
               // Fallback: salvar offline
               try {
@@ -278,27 +266,19 @@ export function useChatOptimized() {
                 await saveOfflineMessage(aiResponse, 'assistant', { userId });
                 logger.info('Mensagens salvas offline como backup');
               } catch (offlineError) {
-                logger.error(
-                  'Falha ao salvar offline',
-                  offlineError instanceof Error ? offlineError : undefined,
-                  {
-                    error: offlineError instanceof Error ? offlineError.message : String(offlineError),
-                  }
-                );
+                logger.error('Falha ao salvar offline', offlineError instanceof Error ? offlineError : undefined, {
+                  error: offlineError instanceof Error ? offlineError.message : String(offlineError),
+                });
               }
             }
           }
         }
       } catch (error: any) {
-        logger.error(
-          'Erro ao processar mensagem completa',
-          error instanceof Error ? error : undefined,
-          {
-            userId,
-            contentLength: content.length,
-            error: error instanceof Error ? error.message : String(error),
-          }
-        );
+        logger.error('Erro ao processar mensagem completa', error instanceof Error ? error : undefined, {
+          userId,
+          contentLength: content.length,
+          error: error instanceof Error ? error.message : String(error),
+        });
 
         dispatch({ type: 'SET_LOADING', payload: false });
 

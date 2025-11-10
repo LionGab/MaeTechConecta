@@ -114,13 +114,9 @@ export default function ChatScreen() {
     try {
       await reloadHistory();
     } catch (error) {
-      logger.error(
-        'Erro ao recarregar histórico',
-        error instanceof Error ? error : undefined,
-        {
-          error: error instanceof Error ? error.message : String(error),
-        }
-      );
+      logger.error('Erro ao recarregar histórico', error instanceof Error ? error : undefined, {
+        error: error instanceof Error ? error.message : String(error),
+      });
     } finally {
       setRefreshing(false);
     }

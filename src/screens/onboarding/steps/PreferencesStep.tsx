@@ -4,15 +4,7 @@
  */
 
 import React, { useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { theme } from '@/theme/nathTheme';
 import { OnboardingData, CommunicationStyle } from '@/types/onboarding';
 import { CheckboxGroup } from '@/components/onboarding/CheckboxGroup';
@@ -90,30 +82,17 @@ export const PreferencesStep = React.memo<PreferencesStepProps>(
 
     return (
       <AnimatedStepContainer style={styles.container}>
-        <ScrollView
-          contentContainerStyle={styles.scroll}
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
           {/* Imagem */}
-          <Image
-            source={stepImage}
-            style={styles.image}
-            resizeMode="contain"
-          />
+          <Image source={stepImage} style={styles.image} resizeMode="contain" />
 
           {/* Título */}
-          <Text style={styles.title}>
-            Por fim, quero saber suas expectativas
-          </Text>
-          <Text style={styles.subtitle}>
-            Pra que cada momento aqui faça sentido pra você 💙
-          </Text>
+          <Text style={styles.title}>Por fim, quero saber suas expectativas</Text>
+          <Text style={styles.subtitle}>Pra que cada momento aqui faça sentido pra você 💙</Text>
 
           {/* O que trouxe até aqui */}
           <View style={styles.formGroup}>
-            <Text style={styles.label}>
-              O que te trouxe até aqui hoje? (opcional)
-            </Text>
+            <Text style={styles.label}>O que te trouxe até aqui hoje? (opcional)</Text>
             <TextInput
               style={styles.textarea}
               placeholder="Conte-nos brevemente o que te motivou..."
@@ -134,9 +113,7 @@ export const PreferencesStep = React.memo<PreferencesStepProps>(
               value={data.expectations || []}
               onChange={handleExpectationsChange}
             />
-            {errors.expectations && (
-              <Text style={styles.errorText}>{errors.expectations}</Text>
-            )}
+            {errors.expectations && <Text style={styles.errorText}>{errors.expectations}</Text>}
           </View>
 
           {/* Conteúdos de interesse */}
@@ -151,24 +128,19 @@ export const PreferencesStep = React.memo<PreferencesStepProps>(
 
           {/* Estilo de comunicação */}
           <View style={styles.formGroup}>
-            <Text style={styles.label}>
-              Como você prefere que eu fale com você?
-            </Text>
+            <Text style={styles.label}>Como você prefere que eu fale com você?</Text>
             <RadioGroup
               options={COMMUNICATION_OPTIONS}
               value={data.communication_style}
               onChange={handleCommunicationChange}
             />
-            {errors.communication_style && (
-              <Text style={styles.errorText}>{errors.communication_style}</Text>
-            )}
+            {errors.communication_style && <Text style={styles.errorText}>{errors.communication_style}</Text>}
           </View>
 
           {/* Mensagem final */}
           <View style={styles.finalMessage}>
             <Text style={styles.finalMessageText}>
-              🌸 Perfeito! Agora já te conheço melhor. Vamos criar uma jornada
-              especial, só sua. Você merece.
+              🌸 Perfeito! Agora já te conheço melhor. Vamos criar uma jornada especial, só sua. Você merece.
             </Text>
           </View>
 
@@ -177,30 +149,19 @@ export const PreferencesStep = React.memo<PreferencesStepProps>(
 
         {/* Botões */}
         <View style={styles.actions}>
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={onPrev}
-            disabled={isLoading}
-          >
+          <TouchableOpacity style={styles.secondaryButton} onPress={onPrev} disabled={isLoading}>
             <Text style={styles.secondaryButtonText}>Voltar</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
               styles.primaryButton,
-              (!data.expectations || data.expectations.length === 0) &&
-                styles.primaryButtonDisabled,
+              (!data.expectations || data.expectations.length === 0) && styles.primaryButtonDisabled,
               isLoading && styles.primaryButtonLoading,
             ]}
             onPress={onNext}
-            disabled={
-              !data.expectations ||
-              data.expectations.length === 0 ||
-              isLoading
-            }
+            disabled={!data.expectations || data.expectations.length === 0 || isLoading}
           >
-            <Text style={styles.primaryButtonText}>
-              {isLoading ? 'Finalizando...' : 'Finalizar'}
-            </Text>
+            <Text style={styles.primaryButtonText}>{isLoading ? 'Finalizando...' : 'Finalizar'}</Text>
           </TouchableOpacity>
         </View>
       </AnimatedStepContainer>

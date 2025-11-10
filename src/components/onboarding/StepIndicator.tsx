@@ -31,21 +31,12 @@ export const StepIndicator = React.memo<StepIndicatorProps>(
         {dots.map((dot, idx) => (
           <View
             key={dot.index}
-            style={[
-              styles.dot,
-              dot.isCompleted && styles.dotCompleted,
-              dot.isCurrent && styles.dotCurrent,
-            ]}
+            style={[styles.dot, dot.isCompleted && styles.dotCompleted, dot.isCurrent && styles.dotCurrent]}
           >
             {dot.isCompleted ? (
               <Icon name="check" size={12} color="#FFFFFF" />
             ) : (
-              <View
-                style={[
-                  styles.dotInner,
-                  dot.isCurrent && styles.dotInnerCurrent,
-                ]}
-              />
+              <View style={[styles.dotInner, dot.isCurrent && styles.dotInnerCurrent]} />
             )}
           </View>
         ))}

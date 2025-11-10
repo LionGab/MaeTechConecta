@@ -19,7 +19,9 @@ import { TabNavigator } from './TabNavigator';
 import { linking } from './linking';
 
 // Lazy load screens para melhor performance
-const OnboardingScreen = lazy(() => import('@/screens/onboarding/OnboardingScreen').then((m) => ({ default: m.default })));
+const OnboardingScreen = lazy(() =>
+  import('@/screens/onboarding/OnboardingScreen').then((m) => ({ default: m.default }))
+);
 const DailyPlanScreen = lazy(() => import('@/screens/DailyPlanScreen').then((m) => ({ default: m.default })));
 const ContentDetailScreen = lazy(() =>
   import('@/features/content/ContentDetailScreen').then((m) => ({ default: m.default }))

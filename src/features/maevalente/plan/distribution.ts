@@ -6,22 +6,14 @@ export const MAE_VALENTE_DISTRIBUTION: readonly DistributionChannel[] = [
     objective: 'Ser hub central de suporte ativo e material de referência.',
     frequency: 'Atualizações diárias + destaque para rituais semanais.',
     owner: 'Conteúdo & Produto',
-    kpis: [
-      'Tempo médio no app por sessão',
-      'Conversões para recursos baixáveis',
-      'Retenção semanal',
-    ],
+    kpis: ['Tempo médio no app por sessão', 'Conversões para recursos baixáveis', 'Retenção semanal'],
   },
   {
     name: 'Newsletter “MãeValente Brief”',
     objective: 'Resumo semanal com links e call-to-actions claros.',
     frequency: 'Envio toda segunda-feira 07:30 com edições especiais aos domingos.',
     owner: 'Conteúdo & CRM',
-    kpis: [
-      'Taxa de abertura ≥ 48%',
-      'CTR para toolbox ≥ 15%',
-      'Respostas qualitativas (reply rate ≥ 8%)',
-    ],
+    kpis: ['Taxa de abertura ≥ 48%', 'CTR para toolbox ≥ 15%', 'Respostas qualitativas (reply rate ≥ 8%)'],
   },
   {
     name: 'Instagram / TikTok',
@@ -61,10 +53,6 @@ export const MAE_VALENTE_DISTRIBUTION: readonly DistributionChannel[] = [
     objective: 'Gerar tráfego evergreen e salvar conteúdos estruturados.',
     frequency: 'Publicações 2x por semana com otimização SEO.',
     owner: 'Design & Experiência',
-    kpis: [
-      'Cliques para o app/site',
-      'Tempo médio nas páginas destino',
-      'Crescimento de boards seguidores',
-    ],
+    kpis: ['Cliques para o app/site', 'Tempo médio nas páginas destino', 'Crescimento de boards seguidores'],
   },
 ];

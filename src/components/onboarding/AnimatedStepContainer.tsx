@@ -5,14 +5,7 @@
 
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
-import Animated, {
-  FadeIn,
-  FadeOut,
-  SlideInUp,
-  SlideOutDown,
-  withTiming,
-  Easing,
-} from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, SlideInUp, SlideOutDown, withTiming, Easing } from 'react-native-reanimated';
 import { theme } from '@/theme/nathTheme';
 
 interface AnimatedStepContainerProps {
@@ -21,19 +14,17 @@ interface AnimatedStepContainerProps {
   duration?: number;
 }
 
-export const AnimatedStepContainer = React.memo<AnimatedStepContainerProps>(
-  ({ children, style, duration = 300 }) => {
-    return (
-      <Animated.View
-        style={[styles.container, style]}
-        entering={FadeIn.duration(duration).springify()}
-        exiting={FadeOut.duration(duration / 2)}
-      >
-        <View style={styles.inner}>{children}</View>
-      </Animated.View>
-    );
-  }
-);
+export const AnimatedStepContainer = React.memo<AnimatedStepContainerProps>(({ children, style, duration = 300 }) => {
+  return (
+    <Animated.View
+      style={[styles.container, style]}
+      entering={FadeIn.duration(duration).springify()}
+      exiting={FadeOut.duration(duration / 2)}
+    >
+      <View style={styles.inner}>{children}</View>
+    </Animated.View>
+  );
+});
 
 AnimatedStepContainer.displayName = 'AnimatedStepContainer';
 

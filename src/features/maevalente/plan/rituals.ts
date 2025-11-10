@@ -13,12 +13,7 @@ export const MAE_VALENTE_WEEKLY_RITUALS: readonly WeeklyRitual[] = [
       'Carrossel com resumo e links para aprofundamento',
       'Nota no app com insights e CTA para discussão na comunidade',
     ],
-    distributionChannels: [
-      'Instagram Reels',
-      'TikTok',
-      'App MãeValente (push + card destaque)',
-      'Newsletter Brief',
-    ],
+    distributionChannels: ['Instagram Reels', 'TikTok', 'App MãeValente (push + card destaque)', 'Newsletter Brief'],
     successSignals: [
       'Taxa de salvamento > 18%',
       'Tempo médio > 75% do vídeo assistido',

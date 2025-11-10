@@ -7,6 +7,7 @@
 ## ✅ O QUE JÁ FOI FEITO
 
 ### 1️⃣ ONBOARDING COMPLETO (3000+ linhas)
+
 - ✅ 5 steps implementados (Identity, Emotional, Challenges, Support, Preferences)
 - ✅ Integração Supabase + persistência
 - ✅ OnboardingContext com global state
@@ -14,11 +15,13 @@
 - ✅ App.tsx com OnboardingProvider
 
 ### 2️⃣ MCP SERVERS CONFIGURADOS
+
 - ✅ 5 MCPs autenticados (Notion, Linear, Sentry, Supabase, GitHub)
 - ✅ `.mcp.json` compartilhado com equipe
 - ✅ Credenciais salvas
 
 ### 3️⃣ INTEGRAÇÃO ONBOARDING → APP
+
 - ✅ OnboardingScreen novo (5 steps) com navegação
 - ✅ AppNavigator com condicional (onboarding vs app)
 - ✅ generateOnboardingInsights() pronto
@@ -28,9 +31,11 @@
 ## 🎯 PRÓXIMO CHECKPOINT - MVP INFLUENCER (PAUSADO AQUI)
 
 ### ETAPA 1: ESTRUTURA FINAL DE TABS (Prioridade 1)
+
 **Status:** Analisado - TabNavigator atual tem 4 tabs
 
 **Estrutura Final (5 TABS):**
+
 ```
 1. Home         → Dashboard personalizado (Gemini 2.0 Flash)
 2. NathIA       → Chat com memória (Claude Haiku 3.5)
@@ -40,28 +45,35 @@
 ```
 
 **Mudanças Necessárias:**
+
 - Remover "Meu Dia" (renomear para "DesafiosDoDia")
 - Adicionar "Rede Valente" (NEW - Comunidade)
 - Atualizar types.ts com novos tabs
 - Criar RedeVaienteScreen
 
 ### ETAPA 2: INTEGRAÇÃO DE IA (Prioridade 1)
+
 **Gemini 2.0 Flash:**
+
 - HOME: Insights diários personalizados
 - DESAFIOS: Tarefas sugeridas baseadas em onboarding
 - MÃE VALENTE: Motivação + habit tracking
 
 **Claude Haiku 3.5:**
+
 - NATHIA: Chat com contexto + memória
 - Economia de custos
 - Qualidade excelente
 
 **Perplexity PRO:**
+
 - Pesquisa current sobre maternidade
 - Edge Function para chamar API
 
 ### ETAPA 3: MEMÓRIA E CONTEXTO
+
 **Supabase Tables:**
+
 ```
 - user_memory (conversas + contexto)
 - user_preferences (personalização do onboarding)
@@ -70,7 +82,9 @@
 ```
 
 ### ETAPA 4: PERSONALIZAÇÃO COMPLETA
+
 **generateOnboardingInsights() → Condicionará:**
+
 - Home feed (baseado em preferências)
 - Desafios do dia (baseado em challenges coletados)
 - MãeValente (baseado em goals + preferências)
@@ -82,6 +96,7 @@
 ## 📋 CHECKLIST - RETOMAR A PARTIR DAQUI
 
 ### FASE IMEDIATA (Quando retomar):
+
 - [ ] Atualizar TabNavigator.tsx (5 tabs finais)
 - [ ] Atualizar types.ts (TabParamList)
 - [ ] Criar RedeVaienteScreen.tsx
@@ -92,6 +107,7 @@
 - [ ] Build e validar
 
 ### OBJETIVO FINAL:
+
 **MVP funcional, lindo e pronto para influencer testar em 1-2 horas de código**
 
 ---
@@ -99,16 +115,19 @@
 ## 🎨 DESIGN NOTES
 
 **Tema Consolidado (nathTheme.ts):**
+
 - Paleta: Terracota (Rosa), Sage (Verde), Lavanda (Roxo)
 - Light + Dark mode
 - Shadows, gradients, typography prontos
 
 **Não fazer:**
+
 - ❌ Simplificar nada (app precisa estar 100% funcional)
 - ❌ Remover componentes
 - ❌ Consolidações de tema agora
 
 **Fazer:**
+
 - ✅ Features completas
 - ✅ IA integrada
 - ✅ Personalização ativa
@@ -145,11 +164,13 @@
 ## 🚀 PRÓXIMA SESSÃO
 
 **Inicie com:**
+
 ```bash
 claude --continue
 ```
 
 **Primeira coisa:**
+
 ```
 "Atualizar TabNavigator para 5 tabs finais (DesafiosDoDia + RedeValente)"
 ```

@@ -4,15 +4,7 @@
  */
 
 import React, { useCallback, useMemo } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { theme } from '@/theme/nathTheme';
 import { OnboardingData, MAIN_CHALLENGES, MAIN_NEEDS } from '@/types/onboarding';
 import { CheckboxGroup } from '@/components/onboarding/CheckboxGroup';
@@ -77,24 +69,13 @@ export const ChallengesStep = React.memo<ChallengesStepProps>(
 
     return (
       <AnimatedStepContainer style={styles.container}>
-        <ScrollView
-          contentContainerStyle={styles.scroll}
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
           {/* Imagem */}
-          <Image
-            source={stepImage}
-            style={styles.image}
-            resizeMode="contain"
-          />
+          <Image source={stepImage} style={styles.image} resizeMode="contain" />
 
           {/* Título */}
-          <Text style={styles.title}>
-            Agora quero entender seus desafios
-          </Text>
-          <Text style={styles.subtitle}>
-            O que está mais desafiador pra você nesse momento?
-          </Text>
+          <Text style={styles.title}>Agora quero entender seus desafios</Text>
+          <Text style={styles.subtitle}>O que está mais desafiador pra você nesse momento?</Text>
 
           {/* Principais desafios */}
           <View style={styles.formGroup}>
@@ -104,16 +85,12 @@ export const ChallengesStep = React.memo<ChallengesStepProps>(
               value={data.main_challenges || []}
               onChange={handleChallengesChange}
             />
-            {errors.main_challenges && (
-              <Text style={styles.errorText}>{errors.main_challenges}</Text>
-            )}
+            {errors.main_challenges && <Text style={styles.errorText}>{errors.main_challenges}</Text>}
           </View>
 
           {/* Detalhes dos desafios */}
           <View style={styles.formGroup}>
-            <Text style={styles.label}>
-              Quer compartilhar mais sobre algum desafio? (opcional)
-            </Text>
+            <Text style={styles.label}>Quer compartilhar mais sobre algum desafio? (opcional)</Text>
             <TextInput
               style={styles.textarea}
               placeholder="Digite o que você gostaria de compartilhar..."
@@ -128,9 +105,7 @@ export const ChallengesStep = React.memo<ChallengesStepProps>(
 
           {/* Necessidades principais */}
           <View style={styles.formGroup}>
-            <Text style={styles.label}>
-              O que você mais precisa agora? (Escolha até 3)
-            </Text>
+            <Text style={styles.label}>O que você mais precisa agora? (Escolha até 3)</Text>
             <CheckboxGroup
               options={NEEDS_OPTIONS}
               value={data.main_needs || []}
@@ -150,13 +125,10 @@ export const ChallengesStep = React.memo<ChallengesStepProps>(
           <TouchableOpacity
             style={[
               styles.primaryButton,
-              (!data.main_challenges || data.main_challenges.length === 0) &&
-                styles.primaryButtonDisabled,
+              (!data.main_challenges || data.main_challenges.length === 0) && styles.primaryButtonDisabled,
             ]}
             onPress={onNext}
-            disabled={
-              !data.main_challenges || data.main_challenges.length === 0
-            }
+            disabled={!data.main_challenges || data.main_challenges.length === 0}
           >
             <Text style={styles.primaryButtonText}>Avançar</Text>
           </TouchableOpacity>

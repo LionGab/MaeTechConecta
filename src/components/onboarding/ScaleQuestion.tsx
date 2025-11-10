@@ -20,51 +20,41 @@ interface ScaleQuestionProps {
   style?: ViewStyle;
 }
 
-export const ScaleQuestion = React.memo<ScaleQuestionProps>(
-  ({ value, onChange, options, style }) => {
-    const handlePress = useCallback(
-      (optionValue: string) => {
-        onChange(optionValue);
-      },
-      [onChange]
-    );
+export const ScaleQuestion = React.memo<ScaleQuestionProps>(({ value, onChange, options, style }) => {
+  const handlePress = useCallback(
+    (optionValue: string) => {
+      onChange(optionValue);
+    },
+    [onChange]
+  );
 
-    return (
-      <View style={[styles.container, style]}>
-        {options.map((option, index) => (
-          <TouchableOpacity
-            key={option.value}
-            style={[
-              styles.option,
-              value === option.value && styles.optionSelected,
-              index === 0 && styles.optionFirst,
-              index === options.length - 1 && styles.optionLast,
-            ]}
-            onPress={() => handlePress(option.value)}
-            accessible={true}
-            accessibilityLabel={option.label}
-            accessibilityRole="radio"
-            accessibilityState={{ selected: value === option.value }}
-            activeOpacity={0.7}
-          >
-            {option.emoji && (
-              <Text style={styles.emoji}>{option.emoji}</Text>
-            )}
-            <Text
-              style={[
-                styles.label,
-                value === option.value && styles.labelSelected,
-              ]}
-              numberOfLines={2}
-            >
-              {option.label}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    );
-  }
-);
+  return (
+    <View style={[styles.container, style]}>
+      {options.map((option, index) => (
+        <TouchableOpacity
+          key={option.value}
+          style={[
+            styles.option,
+            value === option.value && styles.optionSelected,
+            index === 0 && styles.optionFirst,
+            index === options.length - 1 && styles.optionLast,
+          ]}
+          onPress={() => handlePress(option.value)}
+          accessible={true}
+          accessibilityLabel={option.label}
+          accessibilityRole="radio"
+          accessibilityState={{ selected: value === option.value }}
+          activeOpacity={0.7}
+        >
+          {option.emoji && <Text style={styles.emoji}>{option.emoji}</Text>}
+          <Text style={[styles.label, value === option.value && styles.labelSelected]} numberOfLines={2}>
+            {option.label}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+});
 
 ScaleQuestion.displayName = 'ScaleQuestion';
 

@@ -20,57 +20,43 @@ interface RadioGroupProps<T = string> {
   style?: ViewStyle;
 }
 
-export const RadioGroup = React.memo<RadioGroupProps>(
-  ({ options, value, onChange, style }) => {
-    const handlePress = useCallback(
-      (optionValue: any) => {
-        onChange(optionValue);
-      },
-      [onChange]
-    );
+export const RadioGroup = React.memo<RadioGroupProps>(({ options, value, onChange, style }) => {
+  const handlePress = useCallback(
+    (optionValue: any) => {
+      onChange(optionValue);
+    },
+    [onChange]
+  );
 
-    return (
-      <View style={[styles.container, style]}>
-        {options.map((option) => {
-          const isSelected = value === option.value;
+  return (
+    <View style={[styles.container, style]}>
+      {options.map((option) => {
+        const isSelected = value === option.value;
 
-          return (
-            <TouchableOpacity
-              key={option.value as string}
-              style={[
-                styles.radio,
-                isSelected && styles.radioSelected,
-              ]}
-              onPress={() => handlePress(option.value)}
-              accessible={true}
-              accessibilityLabel={option.label}
-              accessibilityRole="radio"
-              accessibilityState={{ selected: isSelected }}
-              activeOpacity={0.7}
-            >
-              <View
-                style={[
-                  styles.radioCircle,
-                  isSelected && styles.radioCircleSelected,
-                ]}
-              >
-                {isSelected && <View style={styles.radioDot} />}
-              </View>
-              <View style={styles.content}>
-                <Text style={styles.label}>{option.label}</Text>
-                {option.description && (
-                  <Text style={styles.description}>
-                    {option.description}
-                  </Text>
-                )}
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    );
-  }
-);
+        return (
+          <TouchableOpacity
+            key={option.value as string}
+            style={[styles.radio, isSelected && styles.radioSelected]}
+            onPress={() => handlePress(option.value)}
+            accessible={true}
+            accessibilityLabel={option.label}
+            accessibilityRole="radio"
+            accessibilityState={{ selected: isSelected }}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.radioCircle, isSelected && styles.radioCircleSelected]}>
+              {isSelected && <View style={styles.radioDot} />}
+            </View>
+            <View style={styles.content}>
+              <Text style={styles.label}>{option.label}</Text>
+              {option.description && <Text style={styles.description}>{option.description}</Text>}
+            </View>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+});
 
 RadioGroup.displayName = 'RadioGroup';
 

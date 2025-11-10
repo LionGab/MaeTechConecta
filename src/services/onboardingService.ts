@@ -8,13 +8,7 @@
  */
 
 import { supabase } from './supabase';
-import {
-  OnboardingData,
-  UserProfile,
-  UserPreferences,
-  ValidationResult,
-  ONBOARDING_STEPS,
-} from '@/types/onboarding';
+import { OnboardingData, UserProfile, UserPreferences, ValidationResult, ONBOARDING_STEPS } from '@/types/onboarding';
 import { logger } from '@/utils/logger';
 
 /**
@@ -50,41 +44,35 @@ export async function saveOnboardingData(
     }
 
     // Salvar em user_onboarding table
-    const { error: onboardingError } = await supabase
-      .from('user_onboarding')
-      .upsert({
-        user_id: userId,
-        name: data.name,
-        maternal_stage: data.maternal_stage,
-        gestation_week: data.gestation_week || null,
-        baby_name: data.baby_name || null,
-        baby_age_months: data.baby_age_months || null,
-        self_care_frequency: data.self_care_frequency,
-        emotional_state: data.emotional_state,
-        stress_level: data.stress_level,
-        sleep_quality: data.sleep_quality,
-        energy_level: data.energy_level,
-        main_challenges: data.main_challenges,
-        challenges_details: data.challenges_details || null,
-        main_needs: data.main_needs,
-        support_network: data.support_network,
-        support_details: data.support_details || null,
-        what_brought_here: data.what_brought_here || null,
-        expectations: data.expectations,
-        content_interests: data.content_interests,
-        communication_style: data.communication_style,
-        completed_at: new Date(),
-      });
+    const { error: onboardingError } = await supabase.from('user_onboarding').upsert({
+      user_id: userId,
+      name: data.name,
+      maternal_stage: data.maternal_stage,
+      gestation_week: data.gestation_week || null,
+      baby_name: data.baby_name || null,
+      baby_age_months: data.baby_age_months || null,
+      self_care_frequency: data.self_care_frequency,
+      emotional_state: data.emotional_state,
+      stress_level: data.stress_level,
+      sleep_quality: data.sleep_quality,
+      energy_level: data.energy_level,
+      main_challenges: data.main_challenges,
+      challenges_details: data.challenges_details || null,
+      main_needs: data.main_needs,
+      support_network: data.support_network,
+      support_details: data.support_details || null,
+      what_brought_here: data.what_brought_here || null,
+      expectations: data.expectations,
+      content_interests: data.content_interests,
+      communication_style: data.communication_style,
+      completed_at: new Date(),
+    });
 
     if (onboardingError) {
-      logger.error(
-        'Erro ao salvar onboarding',
-        onboardingError instanceof Error ? onboardingError : undefined,
-        {
-          userId,
-          error: onboardingError instanceof Error ? onboardingError.message : String(onboardingError),
-        }
-      );
+      logger.error('Erro ao salvar onboarding', onboardingError instanceof Error ? onboardingError : undefined, {
+        userId,
+        error: onboardingError instanceof Error ? onboardingError.message : String(onboardingError),
+      });
       return { success: false, error: 'Erro ao salvar dados' };
     }
 
@@ -98,14 +86,10 @@ export async function saveOnboardingData(
 
     return { success: true };
   } catch (onboardingError) {
-    logger.error(
-      'Erro ao salvar onboarding',
-      onboardingError instanceof Error ? onboardingError : undefined,
-      {
-        userId,
-        error: onboardingError instanceof Error ? onboardingError.message : String(onboardingError),
-      }
-    );
+    logger.error('Erro ao salvar onboarding', onboardingError instanceof Error ? onboardingError : undefined, {
+      userId,
+      error: onboardingError instanceof Error ? onboardingError.message : String(onboardingError),
+    });
     throw onboardingError;
   }
 }
@@ -137,30 +121,20 @@ async function updateUserProfile(userId: string, data: OnboardingData): Promise<
       profile.baby_age_months = data.baby_age_months;
     }
 
-    const { error } = await supabase
-      .from('user_profiles')
-      .upsert(profile as any);
+    const { error } = await supabase.from('user_profiles').upsert(profile as any);
 
     if (error) {
-      logger.error(
-        'Erro ao atualizar profile',
-        error instanceof Error ? error : undefined,
-        {
-          userId,
-          error: error instanceof Error ? error.message : String(error),
-        }
-      );
+      logger.error('Erro ao atualizar profile', error instanceof Error ? error : undefined, {
+        userId,
+        error: error instanceof Error ? error.message : String(error),
+      });
       throw error;
     }
   } catch (error) {
-    logger.error(
-      'Erro ao atualizar perfil',
-      error instanceof Error ? error : undefined,
-      {
-        userId,
-        error: error instanceof Error ? error.message : String(error),
-      }
-    );
+    logger.error('Erro ao atualizar perfil', error instanceof Error ? error : undefined, {
+      userId,
+      error: error instanceof Error ? error.message : String(error),
+    });
     throw error;
   }
 }
@@ -168,10 +142,7 @@ async function updateUserProfile(userId: string, data: OnboardingData): Promise<
 /**
  * Atualizar preferências para personalização
  */
-export async function updateUserPreferences(
-  userId: string,
-  data: OnboardingData
-): Promise<void> {
+export async function updateUserPreferences(userId: string, data: OnboardingData): Promise<void> {
   try {
     const preferences: Partial<UserPreferences> = {
       user_id: userId,
@@ -185,30 +156,20 @@ export async function updateUserPreferences(
       chat_personalization_enabled: true,
     };
 
-    const { error } = await supabase
-      .from('user_preferences')
-      .upsert(preferences as any);
+    const { error } = await supabase.from('user_preferences').upsert(preferences as any);
 
     if (error) {
-      logger.error(
-        'Erro ao atualizar preferences',
-        error instanceof Error ? error : undefined,
-        {
-          userId,
-          error: error instanceof Error ? error.message : String(error),
-        }
-      );
+      logger.error('Erro ao atualizar preferences', error instanceof Error ? error : undefined, {
+        userId,
+        error: error instanceof Error ? error.message : String(error),
+      });
       throw error;
     }
   } catch (error) {
-    logger.error(
-      'Erro ao atualizar preferências',
-      error instanceof Error ? error : undefined,
-      {
-        userId,
-        error: error instanceof Error ? error.message : String(error),
-      }
-    );
+    logger.error('Erro ao atualizar preferências', error instanceof Error ? error : undefined, {
+      userId,
+      error: error instanceof Error ? error.message : String(error),
+    });
     throw error;
   }
 }
@@ -281,10 +242,7 @@ export function validateOnboardingData(data: OnboardingData): ValidationResult {
 /**
  * Validar um step específico (validação parcial)
  */
-export function validateOnboardingStep(
-  stepNumber: number,
-  data: Partial<OnboardingData>
-): ValidationResult {
+export function validateOnboardingStep(stepNumber: number, data: Partial<OnboardingData>): ValidationResult {
   const errors: string[] = [];
 
   const stepConfig = ONBOARDING_STEPS[stepNumber];
@@ -344,34 +302,22 @@ export function validateOnboardingStep(
  */
 export async function checkOnboardingCompleted(userId: string): Promise<boolean> {
   try {
-    const { data, error } = await supabase
-      .from('user_onboarding')
-      .select('id')
-      .eq('user_id', userId)
-      .single();
+    const { data, error } = await supabase.from('user_onboarding').select('id').eq('user_id', userId).single();
 
     if (error && error.code !== 'PGRST116') {
       // PGRST116 = no rows returned
-      logger.error(
-        'Erro ao verificar onboarding',
-        error instanceof Error ? error : undefined,
-        {
-          userId,
-          error: error instanceof Error ? error.message : String(error),
-        }
-      );
+      logger.error('Erro ao verificar onboarding', error instanceof Error ? error : undefined, {
+        userId,
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
 
     return !!data;
   } catch (error) {
-    logger.error(
-      'Erro ao verificar onboarding',
-      error instanceof Error ? error : undefined,
-      {
-        userId,
-        error: error instanceof Error ? error.message : String(error),
-      }
-    );
+    logger.error('Erro ao verificar onboarding', error instanceof Error ? error : undefined, {
+      userId,
+      error: error instanceof Error ? error.message : String(error),
+    });
     throw error;
   }
 }
@@ -381,37 +327,25 @@ export async function checkOnboardingCompleted(userId: string): Promise<boolean>
  */
 export async function loadOnboardingData(userId: string): Promise<OnboardingData | null> {
   try {
-    const { data, error } = await supabase
-      .from('user_onboarding')
-      .select('*')
-      .eq('user_id', userId)
-      .single();
+    const { data, error } = await supabase.from('user_onboarding').select('*').eq('user_id', userId).single();
 
     if (error) {
       if (error.code !== 'PGRST116') {
         // PGRST116 = no rows returned (esperado)
-        logger.error(
-          'Erro ao carregar onboarding',
-          error instanceof Error ? error : undefined,
-          {
-            userId,
-            error: error instanceof Error ? error.message : String(error),
-          }
-        );
+        logger.error('Erro ao carregar onboarding', error instanceof Error ? error : undefined, {
+          userId,
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
       return null;
     }
 
     return data as OnboardingData;
   } catch (error) {
-    logger.error(
-      'Erro ao carregar onboarding',
-      error instanceof Error ? error : undefined,
-      {
-        userId,
-        error: error instanceof Error ? error.message : String(error),
-      }
-    );
+    logger.error('Erro ao carregar onboarding', error instanceof Error ? error : undefined, {
+      userId,
+      error: error instanceof Error ? error.message : String(error),
+    });
     return null;
   }
 }
@@ -421,39 +355,25 @@ export async function loadOnboardingData(userId: string): Promise<OnboardingData
  */
 export async function resetOnboarding(userId: string): Promise<boolean> {
   try {
-    const { error } = await supabase
-      .from('user_onboarding')
-      .delete()
-      .eq('user_id', userId);
+    const { error } = await supabase.from('user_onboarding').delete().eq('user_id', userId);
 
     if (error) {
-      logger.error(
-        'Erro ao resetar onboarding',
-        error instanceof Error ? error : undefined,
-        {
-          userId,
-          error: error instanceof Error ? error.message : String(error),
-        }
-      );
+      logger.error('Erro ao resetar onboarding', error instanceof Error ? error : undefined, {
+        userId,
+        error: error instanceof Error ? error.message : String(error),
+      });
       throw error;
     }
 
     // Atualizar profile
-    await supabase
-      .from('user_profiles')
-      .update({ onboarding_completed: false })
-      .eq('user_id', userId);
+    await supabase.from('user_profiles').update({ onboarding_completed: false }).eq('user_id', userId);
 
     return true;
   } catch (error) {
-    logger.error(
-      'Erro ao resetar onboarding',
-      error instanceof Error ? error : undefined,
-      {
-        userId,
-        error: error instanceof Error ? error.message : String(error),
-      }
-    );
+    logger.error('Erro ao resetar onboarding', error instanceof Error ? error : undefined, {
+      userId,
+      error: error instanceof Error ? error.message : String(error),
+    });
   }
 }
 

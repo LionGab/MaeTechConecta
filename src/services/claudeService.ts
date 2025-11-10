@@ -186,12 +186,10 @@ export async function loadConversationHistory(
     }
 
     // Convert to Claude message format (reverse to get chronological order)
-    const history: ClaudeMessage[] = data
-      .reverse()
-      .flatMap((item) => [
-        { role: 'user' as const, content: item.user_message },
-        { role: 'assistant' as const, content: item.assistant_message },
-      ]);
+    const history: ClaudeMessage[] = data.reverse().flatMap((item) => [
+      { role: 'user' as const, content: item.user_message },
+      { role: 'assistant' as const, content: item.assistant_message },
+    ]);
 
     return {
       success: true,
@@ -264,9 +262,7 @@ export async function clearConversationHistory(userId: string): Promise<{
 /**
  * Gera resumo da conversa para análise
  */
-export async function generateConversationSummary(
-  messages: ClaudeMessage[]
-): Promise<{
+export async function generateConversationSummary(messages: ClaudeMessage[]): Promise<{
   success: boolean;
   summary?: string;
   error?: string;
@@ -331,15 +327,8 @@ export async function generateConversationSummary(
  * Helper: Constrói system prompt personalizado
  */
 function buildSystemPrompt(onboardingData: OnboardingData): string {
-  const {
-    name,
-    pregnancy_stage,
-    emotional_state,
-    main_challenges,
-    support_network,
-    communication_style,
-    goals,
-  } = onboardingData;
+  const { name, pregnancy_stage, emotional_state, main_challenges, support_network, communication_style, goals } =
+    onboardingData;
 
   return `Você é NathIA, a assistente virtual carinhosa e especializada da Nossa Maternidade.
 
@@ -443,9 +432,7 @@ export async function testClaudeConnection(): Promise<{
 /**
  * Gera sugestões rápidas de perguntas baseadas no contexto
  */
-export async function generateQuickSuggestions(
-  onboardingData: OnboardingData
-): Promise<{
+export async function generateQuickSuggestions(onboardingData: OnboardingData): Promise<{
   success: boolean;
   suggestions?: string[];
   error?: string;
